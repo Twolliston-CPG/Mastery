@@ -12,6 +12,29 @@ rather than a failing build.
 Read [`README.md`](README.md) for the program, [`curriculum/STEP-BY-STEP.md`](curriculum/STEP-BY-STEP.md)
 for how a learner moves through it.
 
+## Status
+
+<!-- Keep this current. Overwrite it, don't append — history is in `git log`. Updated 2026-10-10. -->
+- **Git:** repo initialised 2026-10-10 on `main`, 2 commits, **no remote yet**. Repo-local identity
+  "Sergino Delia" with the GitHub email (not the personal one).
+- **GitHub repo:** not created. Blocked on a fine-grained PAT; then `terraform apply` in `infra/github/`,
+  then `git remote add origin` + first push (steps in `infra/github/README.md`).
+- **Flags still off:** `enable_rulesets` (needs GitHub Pro), `require_signed_commits` (needs SSH signing).
+- **Unknown:** GitHub username and plan (Free vs Pro).
+- **Next:** first push → confirm CI green → second-pass `terraform apply -var enable_rulesets=true`.
+
+## Where state lives
+
+| Kind of information | Where |
+|---|---|
+| Stable rules, layout, invariants, commands | This file |
+| Current stage, blockers, next step | `## Status` above (short, dated, overwritten) |
+| What changed and why | `git log` — commit messages carry the rationale |
+| Facts that cut across folders (identities, rates, preferences stated mid-session) | Claude's auto-memory |
+| Pre-git snapshots | `_backups/*.tar.gz` (gitignored; safe to delete once the remote exists) |
+
+Don't put dates, versions, or blockers anywhere but `## Status` — they go stale everywhere else.
+
 ## Hard constraints
 
 1. **Anonymize company names.** The reference library and case studies are derived from real material
@@ -21,6 +44,8 @@ for how a learner moves through it.
 2. **Never read or touch personal directories** outside this repo (e.g. `~/projects/taxes`).
 3. **`real-projects/` figures are style references only.** Their visual language was copied; their
    content never is.
+4. **Only `mastery/` goes to GitHub.** The parent `serge/` workspace holds résumés with PII and is not a
+   git repo; never `git init` it, never add it as a remote, never copy files from it into here.
 
 ## Commands
 
@@ -52,6 +77,24 @@ mermaid-cli installs into `_shared/diagrams/.tools/`, never globally.
 
 **After any edit under `curriculum/_reference/`, run both checkers.** They are the only thing standing
 between a small edit and 600 quietly-broken files.
+
+## Repo-as-code and guardrails
+
+| Piece | What it does |
+|---|---|
+| `infra/github/` | Terraform (`integrations/github`) that creates and hardens the private repo: squash-only, Dependabot, GitHub-authored actions only, archive-on-destroy, opt-in `main` ruleset. State is local and gitignored. Bootstrap pattern: the config lives inside the repo it creates |
+| `.github/workflows/ci.yml` | `secrets-scan` (gitleaks, pinned + sha256-checked, full history), `content-checks` (`check-diagrams.py` whole repo), `terraform-validate` (`fmt -check`, `validate`). These three job names are the required checks in `rulesets.tf` — rename in both places or never |
+| `.github/workflows/links.yml` | Weekly external link check |
+| `.pre-commit-config.yaml` | gitleaks, private-key, large-file (5 MB), yaml/json, `terraform fmt`, `check-diagrams.py` on changed `.md`. **No formatters on purpose** — a fixer would rewrite ~1,000 files |
+| `.gitleaks.toml` | Allowlist for documented placeholder secrets in the reference library |
+
+Rules:
+
+- `pre-commit install` once per clone. If a hook fails, fix the cause; don't `--no-verify`.
+- A new gitleaks hit: decode it and confirm it is a placeholder **before** adding it to `.gitleaks.toml`.
+- The gitleaks version is pinned in two places (`ci.yml` env and `.pre-commit-config.yaml` rev). Bump both.
+- Tokens are shell env only (`GITHUB_TOKEN`); never in `.tf`, `.tfvars`, or this file.
+- Commit messages explain *why*; the Status block above is the only other place state is recorded.
 
 ## Architecture
 
@@ -113,7 +156,8 @@ Each of these has already caused a repo-wide failure; `check-diagrams.py` now ca
 
 ## Notes
 
-- **This is not a git repository.** ~1,000 content files and 34 MB of generated figures with no version
-  control — worth raising before any large mechanical edit.
+- **Git repo since 2026-10-10.** ~1,000 content files and 34 MB of generated figures; a mechanical edit is
+  now reversible, but still state the blast radius (file count) before running one, and commit before and
+  after so the diff is reviewable.
 - Mermaid diagrams are validated against both mermaid-cli 10.9 and 11 (installed under
   `_shared/diagrams/.tools/`, gitignored).
