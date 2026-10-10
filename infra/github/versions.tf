@@ -13,7 +13,7 @@ terraform {
   #
   # backend "s3" {
   #   bucket       = "<your-tfstate-bucket>"
-  #   key          = "github/TheWayOfTheSurge/terraform.tfstate"
+  #   key          = "github/thewayofthesurge/terraform.tfstate"
   #   region       = "us-east-1"
   #   encrypt      = true
   #   use_lockfile = true

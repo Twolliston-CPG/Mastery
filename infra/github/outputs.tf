@@ -15,10 +15,10 @@ output "next_steps" {
   description = "What Terraform cannot do for you, in order."
   value       = <<-EOT
     1. Push the existing codebase (from the repository root):
-         git remote add origin ${try(github_repository.this["TheWayOfTheSurge"].ssh_clone_url, "<ssh_clone_url>")}
+         git remote add origin ${try(github_repository.this["thewayofthesurge"].ssh_clone_url, "<ssh_clone_url>")}
          git push -u origin main
     2. Set the account-level Actions token default to read-only (no Terraform resource for this):
-         gh api -X PUT repos/{owner}/TheWayOfTheSurge/actions/permissions/workflow \
+         gh api -X PUT repos/{owner}/thewayofthesurge/actions/permissions/workflow \
            -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
     3. After the first CI run succeeds, if the account is on GitHub Pro:
          terraform apply -var enable_rulesets=true

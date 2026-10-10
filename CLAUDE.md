@@ -17,7 +17,7 @@ for how a learner moves through it.
 <!-- Keep this current. Overwrite it, don't append — history is in `git log`. Updated 2026-10-10. -->
 - **Git:** repo initialised 2026-10-10 on `main`, 2 commits, **no remote yet**. Repo-local identity
   "Sergino Delia" with the GitHub email (not the personal one).
-- **GitHub repo:** `TheWayOfTheSurge` (private, name set in `infra/github/variables.tf`), not created yet. Blocked on a fine-grained PAT; then `terraform apply` in `infra/github/`,
+- **GitHub repo:** `thewayofthesurge` (private, name set in `infra/github/variables.tf`), not created yet. Blocked on a fine-grained PAT; then `terraform apply` in `infra/github/`,
   then `git remote add origin` + first push (steps in `infra/github/README.md`).
 - **Flags still off:** `enable_rulesets` (needs GitHub Pro), `require_signed_commits` (needs SSH signing).
 - **Unknown:** GitHub username and plan (Free vs Pro).
@@ -44,7 +44,7 @@ Don't put dates, versions, or blockers anywhere but `## Status` — they go stal
 2. **Never read or touch personal directories** outside this repo (e.g. `~/projects/taxes`).
 3. **`real-projects/` figures are style references only.** Their visual language was copied; their
    content never is.
-4. **Only `mastery/` goes to GitHub** (as the repo `TheWayOfTheSurge`). The parent `serge/` workspace holds résumés with PII and is not a
+4. **Only `mastery/` goes to GitHub** (as the repo `thewayofthesurge`). The parent `serge/` workspace holds résumés with PII and is not a
    git repo; never `git init` it, never add it as a remote, never copy files from it into here.
 
 ## Commands

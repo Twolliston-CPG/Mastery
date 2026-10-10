@@ -12,15 +12,15 @@ variable "repositories" {
     homepage_url = optional(string)
   }))
   default = {
-    TheWayOfTheSurge = {
+    thewayofthesurge = {
       description = "26-week DevOps / DevSecOps / Platform Engineering curriculum: weekly labs, break/fix library, anonymized reference corpus, and the Python toolchain that validates it."
       topics      = ["devops", "devsecops", "platform-engineering", "kubernetes", "terraform", "curriculum"]
     }
   }
 
   validation {
-    condition     = alltrue([for k, _ in var.repositories : can(regex("^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$", k))])
-    error_message = "Repository names must start alphanumeric and use only [A-Za-z0-9._-] (GitHub allows mixed case)."
+    condition     = alltrue([for k, _ in var.repositories : can(regex("^[a-z0-9][a-z0-9._-]{0,99}$", k))])
+    error_message = "Repository names must be lowercase, start alphanumeric, and use only [a-z0-9._-]."
   }
 }
 
