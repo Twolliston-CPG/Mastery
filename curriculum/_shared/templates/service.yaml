@@ -1,0 +1,60 @@
+# Project CHARLIE -- the platform contract.
+# A developer fills this in, opens a PR, and gets a running service.
+# Everything else (IAM, namespace, pipeline, DNS, dashboard, alerts) is generated.
+#
+# JSON Schema: platform/schemas/service.schema.json
+# Validated in CI. A malformed file must fail fast with a message that says how to fix it.
+
+apiVersion: platform.internal/v1
+kind: Service
+
+metadata:
+  name: payments-api          # DNS-1123 label: lowercase alphanumeric and '-', <= 40 chars
+  owner: team-payments        # must exist in platform/teams.yaml
+  description: "Handles payment authorization and capture"
+  slack: "#team-payments"
+  repo: https://github.com/example/payments-api
+
+spec:
+  language: python            # python | go | node | java  -> selects the golden-path pipeline
+  port: 8080
+
+  tier: standard              # critical | standard | experimental
+                              #   critical     -> multi-AZ, PDB, 99.9% SLO, pages on-call
+                              #   standard     -> single-AZ ok, 99.5% SLO, tickets
+                              #   experimental -> no SLO, no paging, auto-expires in 30 days
+
+  resources:
+    cpu: 200m                 # request; limit is derived by tier
+    memory: 256Mi
+    replicas:
+      min: 2
+      max: 10
+
+  dependencies:
+    - type: postgres          # provisions RDS + secret + network path + a dashboard panel
+      version: "16"
+      size: small             # small | medium | large -> maps to instance classes
+    - type: s3
+      access: readwrite       # generates a least-privilege IAM policy for exactly this bucket
+    - type: sqs
+      name: payment-events
+
+  routing:
+    public: true
+    path: /api/payments       # -> payments-api.example.com/api/payments
+    rateLimit: 1000           # requests/min
+
+  observability:
+    slo:
+      availability: 99.5      # generates the recording rule + burn-rate alerts
+      latencyP99Ms: 500
+    # A dashboard, alerts, and a runbook stub are always generated. Not optional --
+    # a service with no observability is not a service, it's a liability.
+
+  env:
+    - name: LOG_LEVEL
+      value: info
+    - name: DB_PASSWORD
+      fromSecret: payments/db      # resolved via External Secrets. NEVER a literal here.
+                                   # CI rejects any value that looks like a credential.

@@ -1,0 +1,9 @@
+# Copy to terraform.tfvars (gitignored) and adjust. The token is NOT a variable: export GITHUB_TOKEN.
+
+# github_owner = "your-github-username"   # optional; defaults to the token's account
+
+# Flip to true once the account is on GitHub Pro (rulesets on private repos need it).
+enable_rulesets = false
+
+# Flip to true only after SSH/GPG commit signing works locally.
+require_signed_commits = false

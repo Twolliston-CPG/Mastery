@@ -1,0 +1,23 @@
+What does `set -euo pipefail` do?	-e exit on error; -u error on undefined variable; -o pipefail a pipeline fails if ANY command fails (not just the last)	linux bash
+df shows disk full but du shows space free. Why?	A process holds a deleted file open. Space isn't freed until the fd closes. Find with `lsof +L1`; fix by restarting the holder.	linux disk
+Container/process exit code 137 means what?	SIGKILL - almost always the OOM killer. Check `OOMKilled: true`.	linux containers
+Exit code 127 means what?	Command not found - usually a missing binary in a slim or distroless base image.	linux containers
+Permissions for ~/.ssh and authorized_keys?	.ssh = 700, authorized_keys = 600, private key = 600. sshd refuses keys if group/world-writable.	linux ssh
+Difference between load average and CPU%?	Load counts processes waiting for CPU OR uninterruptible I/O. High load + low CPU% = I/O wait.	linux perf
+What does `systemctl daemon-reload` do and when is it required?	Re-reads unit files. Required after ANY edit to a .service file; systemd caches units.	linux systemd
+systemd exit code 203/EXEC means?	ExecStart binary not found or not executable.	linux systemd
+Why does a cron job work manually but fail from cron?	cron runs with a nearly empty environment; PATH is typically just /usr/bin:/bin. Use absolute paths.	linux cron
+How many usable IPs in a /28 on AWS?	11. 16 total minus 5 reserved (network, router, DNS, future, broadcast).	networking aws
+How many addresses in a /20?	4096. Usable on AWS: 4091.	networking
+Smallest subnet for 500 hosts on AWS?	/23. 500 + 5 reserved = 505, round up to 512.	networking aws
+What makes an AWS subnet "public"?	Its route table has a route to an internet gateway. It is not a property you set directly.	networking aws
+Stateful vs stateless firewall - one sentence?	Stateful tracks connections so return traffic is automatic (Security Groups). Stateless evaluates every packet independently so you must allow return traffic explicitly (NACLs).	networking
+iptables rule evaluation order?	Top to bottom, first match wins. A DROP above an ACCEPT means the ACCEPT is never reached.	networking
+502 vs 504 from a proxy?	502 = upstream refused or died. 504 = upstream accepted but did not respond within the timeout. Different fixes.	networking
+TLS error "unable to verify the first certificate" means?	Missing intermediate certificate. Serve the full chain. Works in browsers (they cache intermediates) but fails in curl and CI.	networking tls
+Symptom of an MTU problem?	Small requests work, large transfers hang. Test with `ping -M do -s 1472`.	networking
+Three RFC1918 private ranges?	10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16	networking
+Why can't you peer two VPCs with the same CIDR?	Peering has no NAT, so routes would be ambiguous. CIDRs must not overlap.	networking aws
+What does `lsof -i :8080` tell you?	Which process is listening on or connected to port 8080.	linux networking
+rebase vs merge?	Merge preserves history and creates a merge commit. Rebase rewrites commits onto a new base for linear history. Never rebase shared branches.	git
+What does `git bisect` do?	Binary search through commits to find the one that introduced a bug.	git

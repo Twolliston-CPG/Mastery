@@ -1,0 +1,16 @@
+# Copy to terraform.tfvars and fill in.
+project_id = "your-lab-project-id"
+distro     = "ubuntu" # or "arch" -- see ../DISTRO.md. Choose once: changing it replaces the VM
+
+# region    = "us-central1"
+# zone      = "us-central1-a"
+# time_zone = "America/New_York"
+
+# enable_serial_console = true            # Week 2: the way back in after an SSH lockout
+# open_web              = true            # Week 3
+# web_source_ranges     = ["203.0.113.7/32"]   # your own IP; leave the default for Let's Encrypt
+# flow_logs             = false
+
+# Arch only. Public key seeded into the VM's metadata for the `arch` user before first boot;
+# cloud-init reads it once. Must exist before apply. README step 8 explains.
+# ssh_public_key_file   = "~/.ssh/google_compute_engine.pub"

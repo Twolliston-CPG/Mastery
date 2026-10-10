@@ -1,0 +1,98 @@
+name: provision
+
+# On merge to main: apply the generated infrastructure, scaffold the repository,
+# register the ArgoCD Application, and report the URLs back on the PR.
+#
+# Zero manual steps between merge and a running service. That is the deliverable.
+
+on:
+  push:
+    branches: [main]
+    paths: ['services/**']
+
+permissions:
+  id-token: write        # OIDC to AWS -- no static credentials anywhere
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: provision-${{ github.ref }}
+  cancel-in-progress: false   # NEVER cancel a running apply (BF-33 / BF-39)
+
+jobs:
+  provision:
+    runs-on: ubuntu-latest
+    environment: platform      # protected: required reviewer
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: '1.9.8' }
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_PLATFORM_ROLE_ARN }}
+          aws-region: us-east-1
+          role-session-name: platform-${{ github.run_id }}
+
+      - name: which services changed
+        id: svc
+        run: |
+          names=$(git diff --name-only --diff-filter=d HEAD~1 HEAD -- 'services/*/service.yaml' \
+                  | awk -F/ '{print $2}' | sort -u | tr '\n' ' ')
+          echo "names=$names" >> "$GITHUB_OUTPUT"
+
+      - name: provision infrastructure
+        run: |
+          set -euo pipefail
+          for name in ${{ steps.svc.outputs.names }}; do
+            echo "::group::provisioning $name"
+            terraform -chdir=platform/modules init -upgrade
+            terraform -chdir=platform/modules apply -auto-approve \
+              -var="service_file=$GITHUB_WORKSPACE/services/$name/service.yaml"
+            echo "::endgroup::"
+          done
+
+      - name: idempotency check
+        run: |
+          # Re-applying an unchanged definition must produce NO changes.
+          # A non-zero result means something non-deterministic: timestamp(),
+          # a random_* without keepers, or a moving data source.
+          for name in ${{ steps.svc.outputs.names }}; do
+            terraform -chdir=platform/modules plan -detailed-exitcode \
+              -var="service_file=$GITHUB_WORKSPACE/services/$name/service.yaml"
+          done
+
+      - name: scaffold the repository and register with ArgoCD
+        run: |
+          for name in ${{ steps.svc.outputs.names }}; do
+            ./cli/platform scaffold --name "$name"
+            ./cli/platform register --name "$name"
+          done
+
+      - name: report the URLs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const names = '${{ steps.svc.outputs.names }}'.trim().split(/\s+/).filter(Boolean);
+            const body = names.map(n => [
+              `### \`${n}\` is live`,
+              ``,
+              `| | |`,
+              `|---|---|`,
+              `| Repository | https://github.com/${owner}/${n} |`,
+              `| URL | https://${n}.internal |`,
+              `| Dashboard | https://grafana.internal/d/${n} |`,
+              `| Runbook | https://github.com/${owner}/${n}/blob/main/RUNBOOK.md |`,
+              ``,
+              `Your service is running, monitored, and has a pipeline. Nothing else to do.`,
+            ].join('\n')).join('\n\n');
+
+            await github.rest.repos.createCommitComment({
+              owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body,
+            });

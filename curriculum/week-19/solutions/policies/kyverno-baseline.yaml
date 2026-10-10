@@ -1,0 +1,200 @@
+# Baseline Kyverno policies for the Bravo cluster.
+#
+# EVERY policy here ships as Audit first. Promote to Enforce only after a week
+# of PolicyReports showing what it WOULD have blocked. And every policy excludes
+# system namespaces -- enforcing cluster-wide breaks the CNI and locks you out
+# (BF-52).
+---
+# MUTATE, don't reject. A developer who has never heard of seccompProfile still
+# gets one. This is the difference between a platform that is an obstacle and a
+# platform that is a service.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-safe-defaults
+  annotations:
+    policies.kyverno.io/category: Pod Security
+    policies.kyverno.io/description: >-
+      Adds a conservative securityContext when the author did not specify one.
+      Mutation over validation: make the secure thing the default rather than
+      the thing people get rejected for forgetting.
+spec:
+  rules:
+    - name: default-securitycontext
+      match:
+        any: [{ resources: { kinds: [Pod] } }]
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+                - kube-public
+                - kube-node-lease
+                - kyverno
+                - ingress-nginx
+                - monitoring
+                - argocd
+                - external-secrets
+                - falco
+      mutate:
+        patchStrategicMerge:
+          spec:
+            securityContext:
+              +(runAsNonRoot): true
+              +(seccompProfile):
+                type: RuntimeDefault
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-resource-limits
+  annotations:
+    policies.kyverno.io/category: Resource Management
+    policies.kyverno.io/description: >-
+      Without limits one workload can starve a node. Mitigates STRIDE:
+      Denial of Service. Note the LimitRange in each namespace supplies
+      defaults, so this rarely fires in practice -- which is the point.
+spec:
+  validationFailureAction: Audit   # -> Enforce after a week of clean reports
+  background: true
+  failurePolicy: Ignore
+  rules:
+    - name: require-limits
+      match:
+        any: [{ resources: { kinds: [Pod] } }]
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+                - kube-public
+                - kube-node-lease
+                - kyverno
+                - ingress-nginx
+                - monitoring
+                - argocd
+                - external-secrets
+                - falco
+      validate:
+        message: >-
+          CPU and memory limits are required on every container.
+          See docs/runbooks/resource-limits.md
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  limits:
+                    memory: "?*"
+                    cpu: "?*"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-latest-tag
+  annotations:
+    policies.kyverno.io/description: >-
+      `:latest` is mutable, so what runs is not reproducible and a rollback is
+      not exact. Prefer a digest.
+spec:
+  validationFailureAction: Audit
+  background: true
+  failurePolicy: Ignore
+  rules:
+    - name: require-explicit-tag
+      match:
+        any: [{ resources: { kinds: [Pod] } }]
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+                - kube-public
+                - kube-node-lease
+                - kyverno
+                - ingress-nginx
+                - monitoring
+                - argocd
+                - external-secrets
+                - falco
+      validate:
+        message: "Images must use an explicit tag or digest, never :latest."
+        pattern:
+          spec:
+            containers:
+              - image: "!*:latest"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-ownership-labels
+  annotations:
+    policies.kyverno.io/description: >-
+      An unowned workload is nobody's problem at 3am, and cannot be
+      cost-attributed. Organization-specific -- exactly the kind of rule a
+      generic scanner cannot know for you.
+spec:
+  validationFailureAction: Audit
+  background: true
+  failurePolicy: Ignore
+  rules:
+    - name: require-labels
+      match:
+        any:
+          - resources:
+              kinds: [Deployment, StatefulSet, DaemonSet, CronJob]
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+                - kube-public
+                - kube-node-lease
+                - kyverno
+                - ingress-nginx
+                - monitoring
+                - argocd
+                - external-secrets
+                - falco
+      validate:
+        message: "Labels `team` and `app.kubernetes.io/name` are required."
+        pattern:
+          metadata:
+            labels:
+              team: "?*"
+              app.kubernetes.io/name: "?*"
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-image-registries
+  annotations:
+    policies.kyverno.io/description: >-
+      Only images from our registry may run. Mitigates STRIDE: Spoofing /
+      Tampering -- a typosquatted public image cannot be pulled.
+spec:
+  validationFailureAction: Audit
+  background: true
+  failurePolicy: Ignore
+  rules:
+    - name: allowed-registries
+      match:
+        any: [{ resources: { kinds: [Pod] } }]
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+                - kube-public
+                - kube-node-lease
+                - kyverno
+                - ingress-nginx
+                - monitoring
+                - argocd
+                - external-secrets
+                - falco
+      validate:
+        message: "Images must come from the organization ECR registry."
+        pattern:
+          spec:
+            containers:
+              - image: "*.dkr.ecr.*.amazonaws.com/*"

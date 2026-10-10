@@ -1,0 +1,15 @@
+# Example 1: the MINIMAL case. Three required fields, nothing else.
+# This is what a developer's first service looks like.
+apiVersion: platform.internal/v1
+kind: Service
+
+metadata:
+  name: hello-api
+  owner: team-catalog
+  description: "Minimal example service"
+  slack: "#team-catalog"
+
+spec:
+  language: python
+  port: 8080
+  tier: experimental      # no SLO, no paging, auto-expires in 30 days

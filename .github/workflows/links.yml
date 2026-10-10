@@ -1,0 +1,27 @@
+name: link-check
+
+# External URLs rot independently of commits, so this runs on a schedule rather than per PR.
+on:
+  schedule:
+    - cron: "0 13 * * 1" # Mondays 13:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    name: link-check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Validate every external URL (honours .linkcheck-ignore)
+        run: python3 curriculum/_shared/diagrams/check-diagrams.py --links curriculum/_reference

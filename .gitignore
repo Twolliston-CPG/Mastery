@@ -1,0 +1,46 @@
+# ---- macOS ---------------------------------------------------------------
+.DS_Store
+
+# ---- Local-only artifacts ------------------------------------------------
+_backups/
+/curriculum/_setup/gcp-lab/state.zip
+
+# ---- Toolchain installs and render output (curriculum/_shared/diagrams) --
+.tools/
+_out/
+__pycache__/
+*.pyc
+
+# ---- Image build downloads: 1 GB+, reproducible with fetch.sh -----------
+_build/
+gnupg/
+
+# ---- Terraform: state, plans, provider cache, real variable values -------
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+backend.hcl
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# ---- Secrets and local environment --------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+kubeconfig
+kubeconfig.*

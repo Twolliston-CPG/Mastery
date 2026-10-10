@@ -1,0 +1,147 @@
+name: terraform
+
+# Plan on every PR; apply only on merge to main, behind an approval gate.
+on:
+  pull_request:
+    paths: ['environments/**', 'modules/**', '.github/workflows/terraform.yml']
+  push:
+    branches: [main]
+    paths: ['environments/**', 'modules/**']
+  workflow_dispatch:
+
+# There are NO AWS access keys in this repo. The workflow requests an OIDC
+# token from GitHub and exchanges it for a short-lived role via STS.
+permissions:
+  id-token: write      # required to request the OIDC token
+  contents: read
+  pull-requests: write # to post the plan as a comment
+
+env:
+  TF_VERSION: '1.9.8'
+  AWS_REGION: us-east-1
+
+concurrency:
+  group: terraform-${{ github.ref }}
+  # NEVER cancel a running apply. A cancelled apply leaves a stuck state lock
+  # and possibly half-created infrastructure. Queue instead.
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - name: fmt
+        run: terraform fmt -check -recursive
+
+      - name: validate modules
+        run: |
+          for d in modules/*/; do
+            echo "::group::validate $d"
+            terraform -chdir="$d" init -backend=false
+            terraform -chdir="$d" validate
+            echo "::endgroup::"
+          done
+
+      - uses: terraform-linters/setup-tflint@v4
+        with: { tflint_version: latest }
+      - name: tflint
+        run: |
+          tflint --init
+          tflint --recursive --format compact
+
+      - name: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          framework: terraform
+          soft_fail: false
+          output_format: cli,sarif
+          output_file_path: console,checkov.sarif
+          skip_check: CKV_AWS_18,CKV_AWS_144  # documented in docs/adr/0005
+
+      - name: upload sarif
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with: { sarif_file: checkov.sarif }
+
+  plan:
+    needs: validate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [dev, prod]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_PLAN_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: gha-plan-${{ github.run_id }}
+
+      - name: plan
+        id: plan
+        working-directory: environments/${{ matrix.environment }}
+        run: |
+          terraform init
+          terraform plan -no-color -out=tf.plan | tee plan.txt
+          {
+            echo 'stdout<<PLANEOF'
+            tail -c 60000 plan.txt
+            echo 'PLANEOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: comment plan on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `#### Terraform plan — \`${{ matrix.environment }}\`
+            <details><summary>Show plan</summary>
+
+            \`\`\`terraform
+            ${{ steps.plan.outputs.stdout }}
+            \`\`\`
+            </details>`;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });
+
+  apply:
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        environment: [dev, prod]
+    # A GitHub Environment with required reviewers is the approval gate.
+    environment: ${{ matrix.environment }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_APPLY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: gha-apply-${{ github.run_id }}
+
+      - name: apply
+        working-directory: environments/${{ matrix.environment }}
+        run: |
+          terraform init
+          terraform apply -auto-approve -input=false

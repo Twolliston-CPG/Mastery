@@ -1,0 +1,7 @@
+# State and variables describe your project; the provider cache is large. None belong in a repo.
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+crash.log
+backend.hcl

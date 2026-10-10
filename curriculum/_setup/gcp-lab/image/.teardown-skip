@@ -1,0 +1,2 @@
+03-teardown.sh skips any Terraform directory that contains this file.
+The imported Arch image is reused across rebuilds; deleting it nightly would mean a 600 MB re-import each morning.

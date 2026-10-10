@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://platform.internal/schemas/service.schema.json",
+  "title": "Platform Service Contract",
+  "description": "The complete contract between a product team and the platform. Everything not specified here is decided by the platform -- deliberately.",
+  "type": "object",
+  "required": ["apiVersion", "kind", "metadata", "spec"],
+  "additionalProperties": false,
+
+  "properties": {
+    "apiVersion": { "const": "platform.internal/v1" },
+    "kind": { "const": "Service" },
+
+    "metadata": {
+      "type": "object",
+      "required": ["name", "owner"],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z]([-a-z0-9]{0,38}[a-z0-9])?$",
+          "maxLength": 40,
+          "description": "DNS-1123 label. Becomes the namespace, DNS name, ECR repository, and repo name. Cannot be changed later without recreating the service."
+        },
+        "owner": {
+          "type": "string",
+          "pattern": "^team-[a-z0-9-]+$",
+          "description": "Must exist in platform/teams/teams.yaml. Drives alert routing, cost-center tagging, and RBAC."
+        },
+        "description": { "type": "string", "maxLength": 200 },
+        "slack": { "type": "string", "pattern": "^#[a-z0-9-]+$" }
+      }
+    },
+
+    "spec": {
+      "type": "object",
+      "required": ["language", "port", "tier"],
+      "additionalProperties": false,
+      "properties": {
+        "language": {
+          "enum": ["python", "go", "node", "java"],
+          "description": "Selects the golden-path pipeline and the repo template. Need something else? See docs/escape-hatches.md."
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1024,
+          "maximum": 65535,
+          "description": "The port your application listens on. Must be >=1024 because containers run as non-root."
+        },
+        "tier": {
+          "enum": ["critical", "standard", "experimental"],
+          "description": "critical: 3 replicas across AZs, PDB, 99.9% SLO, pages on-call 24/7. standard: 2 replicas, 99.5% SLO, tickets in business hours. experimental: 1 replica, no SLO, no paging, AUTO-EXPIRES after 30 days."
+        },
+
+        "resources": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional. Sensible defaults come from the tier.",
+          "properties": {
+            "cpu": { "type": "string", "pattern": "^[0-9]+m?$" },
+            "memory": { "type": "string", "pattern": "^[0-9]+(Mi|Gi)$" },
+            "replicas": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "min": { "type": "integer", "minimum": 1, "maximum": 20 },
+                "max": { "type": "integer", "minimum": 1, "maximum": 50 }
+              }
+            }
+          }
+        },
+
+        "dependencies": {
+          "type": "array",
+          "maxItems": 5,
+          "description": "Each entry provisions the resource AND a least-privilege IAM policy scoped to exactly it. Declare nothing and you get no AWS permissions at all.",
+          "items": {
+            "type": "object",
+            "required": ["type"],
+            "additionalProperties": false,
+            "properties": {
+              "type": { "enum": ["postgres", "s3", "sqs", "redis"] },
+              "version": { "type": "string" },
+              "size": { "enum": ["small", "medium", "large"] },
+              "access": { "enum": ["read", "readwrite"], "default": "read" },
+              "name": { "type": "string", "pattern": "^[a-z0-9-]+$" }
+            }
+          }
+        },
+
+        "routing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "public": { "type": "boolean", "default": false },
+            "path": { "type": "string", "pattern": "^/" },
+            "rateLimitPerMinute": { "type": "integer", "minimum": 1, "maximum": 100000 }
+          }
+        },
+
+        "env": {
+          "type": "array",
+          "maxItems": 30,
+          "description": "Non-secret configuration only. A value that looks like a credential is REJECTED -- use fromSecret.",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "additionalProperties": false,
+            "oneOf": [
+              { "required": ["value"] },
+              { "required": ["fromSecret"] }
+            ],
+            "properties": {
+              "name": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" },
+              "value": { "type": "string" },
+              "fromSecret": {
+                "type": "string",
+                "description": "A path in AWS Secrets Manager. Resolved at runtime by External Secrets; never stored in Git."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

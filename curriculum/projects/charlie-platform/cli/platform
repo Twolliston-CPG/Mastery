@@ -1,0 +1,188 @@
+#!/usr/bin/env bash
+#
+# platform -- the developer-facing CLI.
+#
+# Every second of friction on the paved road is an argument for going around it.
+# Target: `platform new-service` to an open PR in under 2 minutes.
+#
+set -euo pipefail
+
+readonly ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+readonly DOCS="https://platform.internal/docs"
+
+if [[ -t 1 ]]; then B=$'\e[1m'; G=$'\e[32m'; R=$'\e[31m'; Y=$'\e[33m'; N=$'\e[0m'
+else B=""; G=""; R=""; Y=""; N=""; fi
+
+die()  { printf '%sError:%s %s\n' "$R" "$N" "$*" >&2; exit 1; }
+info() { printf '%s==>%s %s\n' "$B" "$N" "$*"; }
+ok()   { printf '  %sok%s %s\n' "$G" "$N" "$*"; }
+
+usage() {
+  cat <<USAGE
+${B}platform${N} - ship a service on the paved road
+
+  ${B}new-service${N}  --name NAME --language LANG [--tier TIER] [--owner TEAM]
+                 Scaffold a service.yaml, commit it, and open a pull request.
+
+  ${B}validate${N}     [FILE...]
+                 Check service definitions. Defaults to everything in services/.
+
+  ${B}plan${N}         --name NAME
+                 Show what would be created, and what it costs per month.
+
+  ${B}scaffold${N}     --name NAME       (used by CI)
+  ${B}register${N}     --name NAME       (used by CI)
+
+  ${B}tiers${N}        Explain the tiers.
+  ${B}status${N}       --name NAME       Where is my service?
+
+Docs: $DOCS
+USAGE
+}
+
+cmd_validate() {
+  local files=("$@")
+  [[ ${#files[@]} -gt 0 ]] || files=("$ROOT"/services/*/service.yaml)
+  python3 "$ROOT/cli/validate.py" "${files[@]}"
+}
+
+cmd_tiers() {
+  cat <<'TIERS'
+You make ONE decision: how important is this service?
+
+  critical      3 replicas across AZs, PDB, 99.9% SLO (43 min budget/month),
+                pages on-call 24/7, Multi-AZ database, 14-day backups   ~$160/mo
+
+  standard      2 replicas, 99.5% SLO, tickets in business hours,
+                single-AZ database, 7-day backups                        ~$45/mo
+
+  experimental  1 replica, no SLO, no paging, 1-day backups,
+                AUTO-EXPIRES AFTER 30 DAYS                               ~$15/mo
+
+Unsure? Pick standard. Moving up later is a one-line change with no downtime.
+TIERS
+}
+
+cmd_new_service() {
+  local name="" language="" tier="standard" owner=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --name)     name="${2:?}";     shift 2 ;;
+      --language) language="${2:?}"; shift 2 ;;
+      --tier)     tier="${2:?}";     shift 2 ;;
+      --owner)    owner="${2:?}";    shift 2 ;;
+      *) die "unknown flag: $1" ;;
+    esac
+  done
+
+  [[ -n "$name" ]]     || die "--name is required"
+  [[ -n "$language" ]] || die "--language is required (python|go|node|java)"
+
+  if [[ -z "$owner" ]]; then
+    owner=$(git config --get platform.team 2>/dev/null || true)
+    [[ -n "$owner" ]] || die "--owner is required, or set it once:
+    git config --global platform.team team-yourteam"
+  fi
+
+  local dir="$ROOT/services/$name"
+  [[ -e "$dir" ]] && die "services/$name already exists.
+    Owned by: $(grep -m1 owner "$dir/service.yaml" | awk '{print $2}')
+    See $DOCS/existing-services"
+
+  info "creating services/$name/service.yaml"
+  mkdir -p "$dir"
+  cat > "$dir/service.yaml" <<YAML
+apiVersion: platform.internal/v1
+kind: Service
+
+metadata:
+  name: $name
+  owner: $owner
+
+spec:
+  language: $language
+  port: 8080
+  tier: $tier
+
+  # Uncomment what you need. Each dependency provisions the resource AND an
+  # IAM policy scoped to exactly it. Declare nothing and you get no AWS
+  # permissions at all -- which is the correct default.
+  #
+  # dependencies:
+  #   - { type: postgres, version: "16", size: small }
+  #   - { type: s3, access: readwrite }
+  #
+  # routing:
+  #   public: true
+  #   path: /api/$name
+YAML
+  ok "written"
+
+  info "validating"
+  cmd_validate "$dir/service.yaml" || die "validation failed -- fix the above and re-run"
+
+  info "opening a pull request"
+  local branch="add-service-$name"
+  git checkout -b "$branch" >/dev/null 2>&1 || git checkout "$branch"
+  git add "$dir/service.yaml"
+  git commit -q -m "feat($name): onboard service
+
+Tier: $tier. Language: $language. Owner: $owner."
+
+  if command -v gh >/dev/null; then
+    git push -q -u origin "$branch"
+    gh pr create --fill --label "new-service"
+    ok "PR opened. A bot will comment with what will be created and what it costs."
+  else
+    printf '  %sgh not installed%s -- push and open the PR manually:\n' "$Y" "$N"
+    printf '    git push -u origin %s\n' "$branch"
+  fi
+
+  cat <<NEXT
+
+${B}Next:${N}
+  1. Get one approval on the PR.
+  2. Merge.
+  3. In about 8 minutes you will get a comment with your URLs.
+
+  Choosing a tier:  $DOCS/tiers
+  Adding a database: $DOCS/adding-a-database
+NEXT
+}
+
+cmd_plan() {
+  local name="${2:?--name NAME required}"
+  info "planning services/$name"
+  terraform -chdir="$ROOT/platform/modules" plan \
+    -var="service_file=$ROOT/services/$name/service.yaml"
+  command -v infracost >/dev/null && \
+    infracost breakdown --path "$ROOT/platform/modules" --format table
+}
+
+cmd_status() {
+  local name="${2:?--name NAME required}"
+  printf '%sservice:%s %s\n' "$B" "$N" "$name"
+  kubectl -n "$name" get deploy,svc,ingress 2>/dev/null || echo "  not deployed"
+  printf '\n%sargocd:%s\n' "$B" "$N"
+  kubectl -n argocd get application "$name" \
+    -o custom-columns=SYNC:.status.sync.status,HEALTH:.status.health.status 2>/dev/null \
+    || echo "  not registered"
+  printf '\n  Dashboard: https://grafana.internal/d/%s\n' "$name"
+}
+
+main() {
+  [[ $# -gt 0 ]] || { usage; exit 2; }
+  local sub="$1"; shift
+  case "$sub" in
+    new-service) cmd_new_service "$@" ;;
+    validate)    cmd_validate "$@" ;;
+    plan)        cmd_plan "$@" ;;
+    status)      cmd_status "$@" ;;
+    tiers)       cmd_tiers ;;
+    scaffold)    info "scaffolding repo for ${2:-}"  ;;  # implemented in week 23
+    register)    info "registering ArgoCD app for ${2:-}" ;;
+    -h|--help|help) usage ;;
+    *) usage >&2; die "unknown command: $sub" ;;
+  esac
+}
+main "$@"

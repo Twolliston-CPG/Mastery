@@ -1,0 +1,22 @@
+First three commands for any broken pod?	kubectl get pods -o wide; kubectl describe pod X (read EVENTS); kubectl logs X --previous	kubernetes debug
+What does `kubectl get endpoints <svc>` tell you?	Whether the Service selector matches any pods. No endpoints = selector problem. This bisects most Service issues instantly.	kubernetes debug
+requests vs limits?	request = what the SCHEDULER reserves (decides placement). limit = what the KERNEL cgroup enforces. CPU is throttled; memory is killed.	kubernetes resources
+The three QoS classes?	Guaranteed (requests==limits everywhere), Burstable (requests<limits), BestEffort (neither). BestEffort is evicted first.	kubernetes resources
+Difference between liveness and readiness probes?	Liveness failure RESTARTS the container. Readiness failure removes it from Service endpoints without restarting.	kubernetes probes
+Why should a liveness probe never check a database?	A DB blip fails liveness on every pod simultaneously, restarting the whole fleet and turning a blip into an outage. Dependency checks belong in readiness.	kubernetes probes
+What is a startupProbe for?	Slow-starting apps. It suppresses liveness and readiness until it passes, so a slow boot isn't killed.	kubernetes probes
+Pod is Pending - where do you look?	kubectl describe pod, the FailedScheduling event. It names the reason verbatim: insufficient cpu/memory, untolerated taint, unbound PVC, node affinity.	kubernetes scheduling
+Scheduling is based on what - requests or usage?	Requests. A cluster at 10% actual CPU can be 100% unschedulable if requests are overset.	kubernetes scheduling
+ReadWriteOnce vs ReadWriteMany?	RWO = one node at a time (EBS, block storage). RWX = many nodes (EFS/NFS). Scaling a Deployment with an RWO volume across nodes fails.	kubernetes storage
+Why would a PVC stay Pending and that be correct?	volumeBindingMode: WaitForFirstConsumer - it waits for a pod so the volume is created in the right AZ.	kubernetes storage
+ClusterRole bound with a RoleBinding - what is the scope?	Only that one namespace. This is legal and often intended but surprises people.	kubernetes rbac
+What apiGroup do core resources like pods use?	The empty string "". Deployments use "apps".	kubernetes rbac
+pods/log and pods/exec in RBAC?	Separate sub-resources. Granting "pods" does not grant log or exec.	kubernetes rbac
+How do you check permissions for a service account?	kubectl auth can-i list pods --as=system:serviceaccount:ns:name -n target	kubernetes rbac
+Why do pods hang in Terminating when a node dies?	The control plane cannot confirm the containers are gone. Force-deleting risks split-brain double-writes - data corruption for a StatefulSet.	kubernetes nodes
+What is IRSA?	IAM Roles for Service Accounts. A projected service account token is exchanged via the cluster OIDC provider for temporary AWS credentials. No keys on disk.	kubernetes aws
+Default bridge vs user-defined Docker network?	User-defined networks have embedded DNS at 127.0.0.11 that resolves container names. The default bridge does not. This is why Compose "just works".	containers
+NetworkPolicy with default-deny egress breaks everything. Why?	It blocks DNS to CoreDNS on port 53, so every name lookup fails. Always pair default-deny with an explicit DNS allow rule.	kubernetes networking
+Do NetworkPolicies work with any CNI?	No. Calico and Cilium enforce them. Flannel does not - the policy applies and silently does nothing.	kubernetes networking
+What is a PodDisruptionBudget for?	Limits how many pods can be voluntarily disrupted at once (drains, upgrades). Prevents a node drain from taking down a whole service.	kubernetes availability
+kubectl imperative YAML generation?	kubectl create deploy web --image=nginx --dry-run=client -o yaml > d.yaml	kubernetes cli

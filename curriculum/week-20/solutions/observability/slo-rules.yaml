@@ -1,0 +1,133 @@
+# Recording rules + multi-window burn-rate alerts for a 99.9% availability SLO.
+#
+# Budget arithmetic:  30d x 24h x 60m x 0.001 = 43.2 minutes per 30-day window.
+#
+# Alerts use RECORDING rules, not raw expressions. Otherwise every alert
+# evaluation and every dashboard refresh re-runs the same expensive query.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: shop-slo
+  namespace: monitoring
+  labels:
+    release: kps          # must match the operator's ruleSelector
+spec:
+  groups:
+    # ------------------------------------------------------------ recording --
+    - name: shop.sli
+      interval: 30s
+      rules:
+        - record: job:sli_error_ratio:rate5m
+          expr: |
+            sum by (job) (rate(http_requests_total{job="shop-app",status=~"5.."}[5m]))
+            /
+            sum by (job) (rate(http_requests_total{job="shop-app"}[5m]))
+
+        - record: job:sli_error_ratio:rate30m
+          expr: |
+            sum by (job) (rate(http_requests_total{job="shop-app",status=~"5.."}[30m]))
+            /
+            sum by (job) (rate(http_requests_total{job="shop-app"}[30m]))
+
+        - record: job:sli_error_ratio:rate1h
+          expr: |
+            sum by (job) (rate(http_requests_total{job="shop-app",status=~"5.."}[1h]))
+            /
+            sum by (job) (rate(http_requests_total{job="shop-app"}[1h]))
+
+        - record: job:sli_error_ratio:rate6h
+          expr: |
+            sum by (job) (rate(http_requests_total{job="shop-app",status=~"5.."}[6h]))
+            /
+            sum by (job) (rate(http_requests_total{job="shop-app"}[6h]))
+
+        - record: job:sli_error_ratio:rate30d
+          expr: |
+            sum by (job) (rate(http_requests_total{job="shop-app",status=~"5.."}[30d]))
+            /
+            sum by (job) (rate(http_requests_total{job="shop-app"}[30d]))
+
+        # Fraction of the 30-day budget still unspent. 1.0 = untouched, 0 = gone.
+        - record: job:error_budget_remaining:ratio30d
+          expr: 1 - (job:sli_error_ratio:rate30d / 0.001)
+
+        # Aggregate the BUCKETS keeping `le`, THEN take the quantile.
+        # Averaging per-instance quantiles is mathematically invalid.
+        - record: job:latency_p99:5m
+          expr: |
+            histogram_quantile(0.99,
+              sum by (job, le) (rate(http_request_duration_seconds_bucket{job="shop-app"}[5m]))
+            )
+
+        - record: job:latency_p50:5m
+          expr: |
+            histogram_quantile(0.50,
+              sum by (job, le) (rate(http_request_duration_seconds_bucket{job="shop-app"}[5m]))
+            )
+
+    # --------------------------------------------------------------- alerts --
+    # SYMPTOM-based. Page on what users feel; diagnose with causes afterwards.
+    - name: shop.slo.alerts
+      rules:
+        # 14.4x burn exhausts a 30-day budget in ~2 days.
+        # TWO windows: the long one detects it, the short one confirms it is
+        # STILL happening -- which is what stops a one-minute blip paging anyone.
+        - alert: ErrorBudgetBurnFast
+          expr: |
+            job:sli_error_ratio:rate1h  > (14.4 * 0.001)
+            and
+            job:sli_error_ratio:rate5m  > (14.4 * 0.001)
+          for: 2m
+          labels:
+            severity: page
+            slo: availability
+          annotations:
+            summary: "{{ $labels.job }} burning the error budget 14.4x"
+            description: >-
+              Current 1h error ratio {{ $value | humanizePercentage }}.
+              At this rate the 30-day budget (43.2 min) is exhausted in ~2 days.
+            runbook_url: "https://runbooks.example/error-budget-burn"
+
+        # 6x burn exhausts the budget in ~5 days. Not worth waking someone.
+        - alert: ErrorBudgetBurnSlow
+          expr: |
+            job:sli_error_ratio:rate6h  > (6 * 0.001)
+            and
+            job:sli_error_ratio:rate30m > (6 * 0.001)
+          for: 15m
+          labels:
+            severity: ticket
+            slo: availability
+          annotations:
+            summary: "{{ $labels.job }} burning the error budget 6x"
+            runbook_url: "https://runbooks.example/error-budget-burn"
+
+        - alert: LatencySLOBreach
+          expr: job:latency_p99:5m > 0.5
+          for: 10m
+          labels: { severity: ticket, slo: latency }
+          annotations:
+            summary: "p99 latency {{ $value }}s exceeds the 500ms objective"
+            runbook_url: "https://runbooks.example/high-latency"
+
+        # A metric that STOPS being published is not "healthy". This is the
+        # counterpart to treat_missing_data and catches the case where the
+        # thing reporting the metric is the thing that died.
+        - alert: TargetDisappeared
+          expr: absent(up{job="shop-app"}) == 1
+          for: 5m
+          labels: { severity: page }
+          annotations:
+            summary: "Prometheus is no longer scraping shop-app at all"
+            runbook_url: "https://runbooks.example/target-missing"
+
+        - alert: ErrorBudgetNearlyExhausted
+          expr: job:error_budget_remaining:ratio30d < 0.1
+          for: 1h
+          labels: { severity: ticket }
+          annotations:
+            summary: "Less than 10% of the 30-day error budget remains"
+            description: >-
+              Convention: when the budget is exhausted, feature work pauses and
+              reliability work takes priority until it recovers. The budget is a
+              decision-making tool, not just a number.

@@ -1,0 +1,97 @@
+name: deprovision
+
+# Deleting services/<name>/service.yaml removes everything -- IN THE RIGHT ORDER.
+#
+# Step 2 exists because the AWS Load Balancer Controller created those ALBs;
+# Terraform does not know they exist. Destroying the infrastructure without
+# first deleting the Kubernetes objects ORPHANS them, and they keep billing.
+
+on:
+  push:
+    branches: [main]
+    paths: ['services/**']
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deprovision:
+    runs-on: ubuntu-latest
+    environment: platform
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 2 }
+
+      - name: which services were deleted
+        id: gone
+        run: |
+          names=$(git diff --name-only --diff-filter=D HEAD~1 HEAD -- 'services/*/service.yaml' \
+                  | awk -F/ '{print $2}' | sort -u | tr '\n' ' ')
+          echo "names=$names" >> "$GITHUB_OUTPUT"
+          [ -n "$names" ] || echo "nothing to deprovision"
+
+      # Guardrail 1: deletion must be explicit, not a side effect of a refactor.
+      - name: require an explicit confirmation label
+        if: steps.gone.outputs.names != ''
+        run: |
+          for name in ${{ steps.gone.outputs.names }}; do
+            gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/pulls" \
+              --jq '.[0].labels[].name' | grep -qx "confirm-delete:$name" || {
+                echo "::error::add the label confirm-delete:$name to the PR to proceed"
+                exit 1
+              }
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        if: steps.gone.outputs.names != ''
+        with:
+          role-to-assume: ${{ secrets.AWS_PLATFORM_ROLE_ARN }}
+          aws-region: us-east-1
+
+      # Guardrail 2: do not destroy a database with no recent snapshot.
+      - name: require a recent database snapshot
+        if: steps.gone.outputs.names != ''
+        run: |
+          for name in ${{ steps.gone.outputs.names }}; do
+            if aws rds describe-db-instances --db-instance-identifier "$name" >/dev/null 2>&1; then
+              latest=$(aws rds describe-db-snapshots --db-instance-identifier "$name" \
+                --query 'max_by(DBSnapshots,&SnapshotCreateTime).SnapshotCreateTime' --output text)
+              echo "latest snapshot for $name: $latest"
+              [ "$latest" != "None" ] || { echo "::error::no snapshot for $name"; exit 1; }
+            fi
+          done
+
+      - name: 1. delete the ArgoCD Application (removes the workloads)
+        if: steps.gone.outputs.names != ''
+        run: |
+          for name in ${{ steps.gone.outputs.names }}; do
+            kubectl delete application "$name" -n argocd --wait=true --ignore-not-found
+          done
+
+      - name: 2. WAIT for cloud load balancers to be released
+        if: steps.gone.outputs.names != ''
+        run: |
+          for name in ${{ steps.gone.outputs.names }}; do
+            timeout 300 bash -c "
+              until [ \"\$(kubectl get ingress,svc -n $name -o name 2>/dev/null | wc -l)\" -eq 0 ]; do
+                echo 'waiting for the ALB controller to release load balancers...'; sleep 10
+              done" || echo "::warning::timed out; check for orphaned load balancers"
+          done
+
+      - name: 3. destroy the infrastructure
+        if: steps.gone.outputs.names != ''
+        run: |
+          for name in ${{ steps.gone.outputs.names }}; do
+            terraform -chdir=platform/modules destroy -auto-approve \
+              -var="service_name=$name"
+          done
+
+      - name: 4. verify nothing was orphaned
+        if: steps.gone.outputs.names != ''
+        run: |
+          aws elbv2 describe-load-balancers \
+            --query 'LoadBalancers[].LoadBalancerName' --output text
+          echo "^ anything listed here that belonged to a deleted service is STILL BILLING"

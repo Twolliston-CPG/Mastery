@@ -1,0 +1,13 @@
+# Hosts and paths deliberately anonymised in the case-study material.
+# They are SUPPOSED to be unresolvable — resolving them would undo the
+# anonymisation. Listed here so the link report stays worth reading.
+#
+# One substring per line; a URL containing it is skipped.
+ataudiowave.com
+streamcotechblog.com
+streamco.github.io
+craftmarket.com
+identityco.com
+threatgroup-a
+threatgroup-b
+filetransferapp

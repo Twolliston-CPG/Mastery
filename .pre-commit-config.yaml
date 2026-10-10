@@ -1,0 +1,48 @@
+# Local guardrails that run before anything reaches GitHub.
+#   pre-commit install            # once per clone
+#   pre-commit run --all-files    # whole tree
+#
+# Deliberately NO formatters/fixers (trailing-whitespace, end-of-file-fixer): a first run would
+# rewrite ~1,000 content files. Only checks that block bad commits.
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.30.1 # keep in step with GITLEAKS_VERSION in .github/workflows/ci.yml
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: detect-private-key
+        # Four reference files show an OpenSSH key header followed by "..." as a placeholder
+        # (or mention the marker in a regex). Reviewed 2026-10-10; nothing in them is a key.
+        exclude: |
+          (?x)^(
+            curriculum/_reference/kubernetes/04-platform/01-gitops-argocd-exercises-01-argocd-setup\.md|
+            curriculum/_reference/linux-networking/python/PYTHON_DEVOPS_ROADMAP\.md|
+            curriculum/_reference/cicd-gitops/argocd/ARGOCD_MASTERY_ROADMAP\.md|
+            curriculum/_reference/cicd-gitops/argocd/phase-7-security-README\.md
+          )$
+      - id: check-added-large-files
+        args: ["--maxkb=5120"] # 5 MB; GitHub warns at 50 MB and refuses at 100 MB
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-yaml
+        files: ^(\.github/|\.pre-commit-config\.yaml)
+      - id: check-json
+        files: ^(\.github/|infra/)
+
+  - repo: local
+    hooks:
+      - id: terraform-fmt
+        name: terraform fmt -check (infra/)
+        entry: terraform fmt -check -recursive infra
+        language: system
+        files: ^infra/.*\.tf$
+        pass_filenames: false
+      - id: mermaid-structure
+        name: check-diagrams.py on changed Markdown
+        entry: python3 curriculum/_shared/diagrams/check-diagrams.py
+        language: system
+        files: \.md$
+        pass_filenames: true

@@ -1,0 +1,202 @@
+name: bravo-secure-ci
+
+# Fast, cheap checks first. A developer learns about a committed secret in 20
+# seconds, not after a four-minute image build. Pipeline ORDER is a
+# developer-experience decision as much as a security one.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write          # OIDC to AWS, and keyless cosign signing
+  packages: write
+  security-events: write   # SARIF upload to the Security tab
+
+env:
+  AWS_REGION: us-east-1
+  IMAGE_NAME: bravo-app
+
+jobs:
+  # ---------------------------------------------------------------- stage 1 --
+  # Seconds. Fail here before anything expensive runs.
+  secrets:
+    name: secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0     # gitleaks needs FULL history: a secret removed in a
+                             # later commit is still cloneable and still valid
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ---------------------------------------------------------------- stage 2 --
+  # ~1 minute. Static analysis of OUR code and OUR dependencies.
+  static-analysis:
+    name: sast + sca
+    runs-on: ubuntu-latest
+    needs: secrets
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: >-
+            p/security-audit
+            p/secrets
+            p/owasp-top-ten
+            .semgrep/
+          generateSarif: true
+
+      - name: trivy filesystem (dependencies + IaC misconfig)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          scanners: vuln,misconfig
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true     # fail only on what can be fixed; unfixable
+          exit-code: '1'           # findings still reach the Security tab below
+          format: sarif
+          output: trivy-fs.sarif
+
+      - name: report unfixable findings (does NOT fail the build)
+        if: always()
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: fs
+          severity: HIGH,CRITICAL
+          ignore-unfixed: false
+          exit-code: '0'
+          format: table
+
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-fs.sarif
+          category: trivy-fs
+
+  # ---------------------------------------------------------------- stage 3 --
+  build:
+    name: build, scan, sign
+    runs-on: ubuntu-latest
+    needs: static-analysis
+    outputs:
+      digest: ${{ steps.push.outputs.digest }}
+      image:  ${{ steps.meta.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ECR_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: bravo-ci-${{ github.run_id }}
+
+      - id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.ecr.outputs.registry }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=sha,format=long
+            type=ref,event=branch
+
+      - name: build and push
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' }}
+          load:  ${{ github.event_name == 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: true    # SLSA-style build provenance attestation
+          sbom: true
+
+      - name: trivy image scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ steps.meta.outputs.tags != '' && fromJSON(steps.meta.outputs.json).tags[0] || '' }}
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: '1'
+          format: sarif
+          output: trivy-image.sarif
+
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: trivy-image.sarif
+          category: trivy-image
+
+      # ------------------------------------------------------ sign + attest --
+      - uses: sigstore/cosign-installer@v3
+      - uses: anchore/sbom-action@v0
+        if: github.event_name != 'pull_request'
+        with:
+          image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          format: spdx-json
+          output-file: sbom.spdx.json
+
+      - name: sign the DIGEST and attach the SBOM
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          REPO="${{ steps.ecr.outputs.registry }}/${{ env.IMAGE_NAME }}"
+          REF="${REPO}@${{ steps.push.outputs.digest }}"
+
+          # Sign the DIGEST, never the tag. A tag is mutable; a digest is not.
+          # This is also why a docker pull/push to another registry leaves the
+          # signature behind -- use `cosign copy` (BF-53).
+          cosign sign --yes "$REF"
+          cosign attest --yes --predicate sbom.spdx.json --type spdxjson "$REF"
+
+          echo "::notice::signed $REF"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sbom
+          path: sbom.spdx.json
+
+  # ---------------------------------------------------------------- stage 4 --
+  # Proves the gates actually block. This job is EXPECTED to demonstrate a
+  # rejection -- it is the evidence the acceptance criteria demand.
+  verify-gates:
+    name: prove the gates block
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: sigstore/cosign-installer@v3
+
+      - name: an unsigned image must fail verification
+        run: |
+          set +e
+          cosign verify docker.io/library/nginx:alpine \
+            --certificate-identity-regexp "https://github.com/${{ github.repository_owner }}/.*" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com
+          rc=$?
+          set -e
+          if [ $rc -eq 0 ]; then
+            echo "::error::an unsigned image verified -- the gate is NOT working"
+            exit 1
+          fi
+          echo "::notice::unsigned image correctly rejected (exit $rc)"

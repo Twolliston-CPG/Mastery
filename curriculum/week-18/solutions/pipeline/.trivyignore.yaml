@@ -1,0 +1,23 @@
+# Documented, time-boxed, owned exceptions.
+#
+# The rule: never disable the scanner. Never block a release indefinitely.
+# Write down WHY it is not exploitable HERE, what compensates for it, who owns
+# it, and WHEN it comes back onto the board.
+#
+# An exception without an expiry is a permanent unmanaged risk wearing a
+# justification.
+
+vulnerabilities:
+  - id: CVE-2024-00000
+    paths:
+      - "usr/local/lib/python3.12/site-packages/example"
+    statement: >-
+      EXAMPLE ENTRY -- replace with a real one.
+      Not reachable: the vulnerable XML external-entity parser is only invoked by
+      the SAML login path, which is disabled in this deployment (AUTH_MODE=oidc,
+      enforced by config and asserted in tests/test_auth_mode.py).
+      Compensating control: NetworkPolicy `deny-all-egress-except-db-and-oidc`
+      prevents outbound connections that an SSRF-style exploit would require.
+      No fixed version is published upstream as of 2026-03-01.
+    expires: 2026-09-01
+    owner: platform-team

@@ -1,0 +1,77 @@
+# Headless Service: clusterIP: None means DNS returns POD IPs directly,
+# giving each StatefulSet pod a stable name: db-0.db.shop.svc.cluster.local
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: shop
+spec:
+  clusterIP: None
+  selector:
+    app: db
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+  namespace: shop
+spec:
+  serviceName: db
+  replicas: 1
+  selector:
+    matchLabels: { app: db }
+  template:
+    metadata:
+      labels: { app: db }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999          # the postgres user in the official image
+        runAsGroup: 999
+        fsGroup: 999            # makes the mounted volume group-writable
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - { name: postgres, containerPort: 5432 }
+          envFrom:
+            - secretRef: { name: db-credentials }
+          env:
+            # The official image will not initialise into a non-empty mount
+            # point. A subdirectory avoids the `lost+found` problem on real PVs.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits:   { cpu: 500m, memory: 512Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false   # postgres writes to its data dir
+            capabilities: { drop: ["ALL"] }
+          readinessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+            initialDelaySeconds: 30
+            periodSeconds: 20
+            failureThreshold: 3
+          volumeMounts:
+            - { name: data, mountPath: /var/lib/postgresql/data }
+  # One PVC per pod, retained when the pod is deleted. This is the whole reason
+  # a database is a StatefulSet and not a Deployment.
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]   # block storage: ONE node at a time
+        resources:
+          requests: { storage: 2Gi }

@@ -1,0 +1,53 @@
+name: drift-detection
+
+# Nightly refresh-only plan. A non-empty plan means someone changed something
+# outside Terraform -- see week 10 Lab 3 for how to decide what to do about it.
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        environment: [dev, prod]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: '1.9.8' }
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_PLAN_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: refresh-only plan
+        id: drift
+        working-directory: environments/${{ matrix.environment }}
+        continue-on-error: true
+        run: |
+          terraform init
+          terraform plan -refresh-only -detailed-exitcode -no-color | tee drift.txt
+        # -detailed-exitcode: 0 = no changes, 1 = error, 2 = drift detected
+
+      - name: open an issue on drift
+        if: steps.drift.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Drift detected in ${{ matrix.environment }}`,
+              labels: ['drift'],
+              body: 'A refresh-only plan found differences between state and reality.\n\n' +
+                    'Before reverting, find out WHY: check CloudTrail for who changed it and when. ' +
+                    'An emergency fix should be codified, not reverted.'
+            });

@@ -1,0 +1,18 @@
+What is an SBOM and why generate one?	A machine-readable inventory of everything in an artifact (SPDX or CycloneDX). It answers "am I affected by this new CVE?" in seconds instead of days.	devsecops supplychain
+cosign signs what - the tag or the digest?	The digest. Signatures are separate OCI artifacts tagged sha256-<digest>.sig. A docker pull/push to a new registry does NOT carry them - use cosign copy or crane copy.	devsecops supplychain
+Why is CVE severity a bad gate on its own?	It ignores reachability. A critical CVE in a code path you never execute is lower risk than a medium one in your request handler.	devsecops
+Right way to handle an unfixable transitive CVE?	A documented, time-boxed, owned exception with a compensating control and an expiry date. Never disable the scanner; never block the release forever.	devsecops
+Three rules for rolling out an admission policy?	1) Audit mode first. 2) Exclude system namespaces. 3) Know your failurePolicy - Fail + unavailable webhook blocks every API write cluster-wide.	devsecops kubernetes
+Distroless image - what problem does it solve?	No shell, no package manager, no OS packages. Drastically smaller attack surface and near-zero CVE count.	devsecops containers
+What are the four golden signals?	Latency, traffic, errors, saturation.	sre observability
+Never graph a counter directly. Why?	It only increases and resets on restart, producing a meaningless sawtooth. Always use rate().	observability promql
+rate() vs irate() vs increase()?	rate = per-second average over the window (use for alerting). irate = instant rate from the last two samples (spiky, debugging only). increase = total over the window.	observability promql
+Correct way to compute p99 across instances?	histogram_quantile(0.99, sum by (le) (rate(x_bucket[5m]))). Aggregate the buckets keeping `le`, THEN take the quantile. Averaging quantiles is meaningless.	observability promql
+What causes a Prometheus cardinality explosion?	High-cardinality labels like user_id or request_id. Every unique label combination is a separate time series. IDs belong in logs and traces, not metric labels.	observability
+Cause-based vs symptom-based alerting?	Page on symptoms users feel (errors, latency). Diagnose with causes (CPU, memory). High CPU with normal latency is not an incident.	sre alerting
+99.9% over 30 days is how much error budget?	43.2 minutes. 30 x 24 x 60 x 0.001.	sre slo
+What is a multi-window burn-rate alert?	Page at 14.4x burn over 1h (budget gone in ~2 days); ticket at 6x over 6h. Catches fast burns without paging on noise.	sre slo
+The four DORA metrics?	Deployment frequency, lead time for changes, change failure rate, mean time to restore.	sre devops
+What makes a postmortem blameless and why?	It describes systems and decisions, never individual competence. Blame teaches people to hide information, which makes the next incident worse.	sre incident
+The "where we got lucky" postmortem section - why?	Luck is a finding. It means the same event could have been much worse, which is itself an action item.	sre incident
+Test for a good dashboard?	Can someone tell whether users are having a bad time within five seconds? If the top row isn't error rate and p99 latency, no.	observability

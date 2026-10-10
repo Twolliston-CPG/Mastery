@@ -1,0 +1,13 @@
+# Copy to terraform.tfvars and fill in.
+distro = "ubuntu" # or "arch" -- see ../DISTRO.md. Choose once: changing it replaces the VM
+
+# Arch path only: the x86_64 "std" AMI for your region, from the listing in README.md
+# arch_ami_id = "ami-xxxxxxxxxxxxxxxxx"
+
+# region              = "us-east-1"
+# time_zone           = "America/New_York"
+# ssh_public_key_path = "~/.ssh/surge-lab.pub"
+
+# open_web          = true                  # Week 3
+# web_source_ranges = ["203.0.113.7/32"]    # your own IP; leave the default for Let's Encrypt
+# flow_logs         = false

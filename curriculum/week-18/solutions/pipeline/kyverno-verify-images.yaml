@@ -1,0 +1,59 @@
+# Admission control: only images signed by OUR CI may run.
+#
+# ROLLOUT ORDER MATTERS (see BF-52):
+#   1. validationFailureAction: Audit  -- observe for a week
+#   2. Check the PolicyReports for what it WOULD have blocked
+#   3. Then Enforce
+# And ALWAYS exclude system namespaces, or you break the CNI and lock yourself out.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-image-signatures
+  annotations:
+    policies.kyverno.io/title: Verify image signatures
+    policies.kyverno.io/category: Supply Chain Security
+    policies.kyverno.io/description: >-
+      Requires every image from our registry to carry a valid cosign signature
+      produced by this organization's GitHub Actions workflows. Mitigates image
+      substitution and registry compromise (STRIDE: Spoofing, Tampering).
+spec:
+  validationFailureAction: Enforce
+  background: false
+  webhookTimeoutSeconds: 30
+  # failurePolicy Ignore: if Kyverno is unavailable, DO NOT block every API
+  # write cluster-wide. A security control that causes a total outage when it
+  # fails is a worse outcome than the risk it mitigates. Revisit for a
+  # high-assurance environment.
+  failurePolicy: Ignore
+
+  rules:
+    - name: verify-registry-images
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+                - kyverno
+                - ingress-nginx
+                - monitoring
+                - argocd
+                - external-secrets
+                - falco
+      verifyImages:
+        - imageReferences:
+            - "*.dkr.ecr.*.amazonaws.com/bravo-*"
+          mutateDigest: true    # rewrites the tag to a digest on admission --
+          verifyDigest: true    # so what runs is exactly what was verified
+          required: true
+          attestors:
+            - count: 1
+              entries:
+                - keyless:
+                    subject: "https://github.com/REPLACE_ORG/bravo-secure-delivery/*"
+                    issuer: "https://token.actions.githubusercontent.com"
+                    rekor:
+                      url: https://rekor.sigstore.dev

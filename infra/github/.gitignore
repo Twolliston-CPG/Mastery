@@ -1,0 +1,10 @@
+# Belt and braces: the repository-root .gitignore already covers these.
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+terraform.tfvars
+*.auto.tfvars
+!*.tfvars.example

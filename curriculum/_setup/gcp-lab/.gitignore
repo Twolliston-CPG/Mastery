@@ -1,0 +1,8 @@
+# State, plans, and variables describe your project and can hold secrets; the provider cache is large. None belong in a repo.
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+crash.log
+backend.hcl
+*.tfplan

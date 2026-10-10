@@ -1,0 +1,2 @@
+03-teardown.sh skips any Terraform directory that contains this file.
+This directory owns the bucket that holds the lab's Terraform state. Destroying it orphans everything the lab built.

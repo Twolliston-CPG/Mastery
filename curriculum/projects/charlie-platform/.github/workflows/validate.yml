@@ -1,0 +1,67 @@
+name: validate
+
+# Runs on every PR touching a service definition. Fails fast, with messages
+# that say how to fix the problem -- see cli/validate.py.
+
+on:
+  pull_request:
+    paths:
+      - 'services/**'
+      - 'platform/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+
+      - run: pip install pyyaml
+
+      - name: find changed service definitions
+        id: changed
+        run: |
+          git fetch origin "${{ github.base_ref }}" --depth=1
+          files=$(git diff --name-only --diff-filter=d \
+            "origin/${{ github.base_ref }}"...HEAD -- 'services/*/service.yaml' | tr '\n' ' ')
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+          echo "changed: ${files:-none}"
+
+      - name: validate
+        if: steps.changed.outputs.files != ''
+        id: validate
+        run: |
+          set +e
+          out=$(python3 cli/validate.py ${{ steps.changed.outputs.files }} 2>&1)
+          rc=$?
+          set -e
+          # strip ANSI so the PR comment renders cleanly
+          clean=$(printf '%s' "$out" | sed 's/\x1b\[[0-9;]*m//g')
+          {
+            echo 'result<<VEOF'
+            echo "$clean"
+            echo 'VEOF'
+          } >> "$GITHUB_OUTPUT"
+          printf '%s\n' "$out"
+          exit $rc
+
+      - name: comment on the PR
+        if: always() && steps.changed.outputs.files != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const ok = '${{ steps.validate.outcome }}' === 'success';
+            const body = ok
+              ? `### Service definition valid\n\nProceeding to plan.`
+              : `### Service definition has problems\n\n\`\`\`\n${{ toJSON(steps.validate.outputs.result) }}\n\`\`\``;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: JSON.parse(JSON.stringify(body)),
+            });

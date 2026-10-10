@@ -1,0 +1,51 @@
+# Example 2: the FULL case. Dependencies, routing, config, and tier=critical.
+apiVersion: platform.internal/v1
+kind: Service
+
+metadata:
+  name: orders-api
+  owner: team-payments
+  description: "Order placement and fulfilment"
+  slack: "#team-payments"
+
+spec:
+  language: go
+  port: 8080
+  tier: critical          # 3 replicas across AZs, PDB, 99.9% SLO, pages 24/7
+
+  resources:
+    cpu: 200m
+    memory: 256Mi
+    replicas: { min: 3, max: 12 }
+
+  dependencies:
+    # Provisions RDS + a Secrets Manager secret + a security group rule from THIS
+    # service only + a NetworkPolicy egress rule. Multi-AZ because tier=critical.
+    - type: postgres
+      version: "16"
+      size: small
+
+    # Provisions a bucket + an IAM policy scoped to exactly this bucket:
+    #   s3:GetObject/PutObject/DeleteObject on  arn:...:bucket/*
+    #   s3:ListBucket                       on  arn:...:bucket      (no /*)
+    # A human writing this at 5pm writes s3:* on *. Generated policies are
+    # least-privilege by construction.
+    - type: s3
+      access: readwrite
+
+    - type: sqs
+      name: order-events
+
+  routing:
+    public: true
+    path: /api/orders
+    rateLimitPerMinute: 1000
+
+  env:
+    - name: LOG_LEVEL
+      value: info
+    - name: FEATURE_ASYNC_FULFILMENT
+      value: "true"
+    # NEVER a literal. Resolved at runtime via External Secrets; never in Git.
+    - name: STRIPE_API_KEY
+      fromSecret: payments/stripe/api-key

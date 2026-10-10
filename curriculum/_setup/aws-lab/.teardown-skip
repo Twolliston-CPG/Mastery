@@ -1,0 +1,2 @@
+03-teardown.sh skips any Terraform directory that contains this file.
+The lab VM holds your work between sessions; it stops itself nightly instead of being destroyed.

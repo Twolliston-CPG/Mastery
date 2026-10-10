@@ -1,0 +1,28 @@
+# gitleaks configuration for this repository.
+#
+# The curriculum is full of *teaching* credentials: `admin:admin` in curl examples, base64 of
+# "password123" in Kubernetes Secret manifests, `sk-1234567890abcdef` in Dockerfiles that
+# demonstrate what NOT to do. Every entry below was reviewed by hand (2026-10-10) and decodes to
+# an obvious placeholder. Add to this list only after decoding the value yourself.
+
+title = "mastery"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Hand-reviewed teaching placeholders"
+regexTarget = "secret"
+regexes = [
+  # curl -u examples
+  '''^"?admin:(admin|Harbor12345|prom-operator)"?$''',
+  # Fake API keys used in Dockerfile / env anti-pattern demos
+  '''^sk-(prod-)?[0-9a-z]{10,16}$''',
+  '''^secret-api-key-12345$''',
+  # A file name, not a key (KMS lab)
+  '''^boto3-encrypted\.txt$''',
+  # Truncated Sealed Secrets ciphertext shown as "AgC...": not a usable value
+  '''^Ag[A-Za-z0-9+/]{3,12}\.\.\.''',
+  # base64 of: password123, mypassword, my-api-key, my-api-secret, apikey12345, secret-api-key-12345
+  '''^(cGFzc3dvcmQxMjM=|bXlwYXNzd29yZA==|bXktYXBpLWtleQ==|bXktYXBpLXNlY3JldA==|YXBpa2V5MTIzNDU=|c2VjcmV0LWFwaS1rZXktMTIzNDU=)$''',
+]

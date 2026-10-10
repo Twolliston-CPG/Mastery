@@ -1,0 +1,13 @@
+# Downloads and the converted tarball are large and reproducible; build.auto.tfvars is
+# written by fetch.sh; the rest is standard Terraform noise.
+# (gitignore has no trailing comments: a "#" after a pattern becomes part of the pattern.)
+
+# downloads, disk.raw, tarball, dearmored key
+_build/
+build.auto.tfvars
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfplan
+gnupg/

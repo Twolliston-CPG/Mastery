@@ -1,0 +1,21 @@
+# The authoritative list of teams. A service.yaml naming an owner that is not
+# here is REJECTED at validation -- because an unowned service is nobody's
+# problem at 3am and cannot be cost-attributed.
+teams:
+  - name: team-payments
+    slack: "#team-payments"
+    cost_center: "CC-1001"
+    pagerduty_service: "payments"
+    budget_monthly_usd: 2400
+
+  - name: team-catalog
+    slack: "#team-catalog"
+    cost_center: "CC-1002"
+    pagerduty_service: "catalog"
+    budget_monthly_usd: 1200
+
+  - name: team-platform
+    slack: "#platform"
+    cost_center: "CC-9001"
+    pagerduty_service: "platform"
+    budget_monthly_usd: 5000

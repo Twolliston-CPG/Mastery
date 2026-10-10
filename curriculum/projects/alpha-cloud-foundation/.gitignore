@@ -1,0 +1,24 @@
+# Terraform
+**/.terraform/*
+.terraform.lock.hcl.bak
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+.terraformrc
+terraform.rc
+tf.plan
+plan.txt
+
+# tfvars may contain secrets. The .example files ARE committed.
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+
+# local
+.DS_Store
+.env
+*.pem

@@ -1,0 +1,89 @@
+# Default-deny plus the allowances, shipped AS ONE CHANGE.
+#
+# Applying default-deny alone breaks DNS, which breaks everything, and presents
+# as "the network is down" rather than "I wrote a policy" (BF-54).
+#
+# REQUIRES a CNI that enforces NetworkPolicies. Calico and Cilium do.
+# Flannel and kind's default kindnet DO NOT -- the policy applies successfully
+# and does absolutely nothing, silently.
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: shop
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+# Without this, every name lookup fails and therefore every connection fails.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns-egress
+  namespace: shop
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - { protocol: UDP, port: 53 }
+        - { protocol: TCP, port: 53 }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress-controller-to-app
+  namespace: shop
+spec:
+  podSelector:
+    matchLabels: { app: app }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+      ports:
+        - { protocol: TCP, port: 8080 }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-app-to-database
+  namespace: shop
+spec:
+  podSelector:
+    matchLabels: { app: app }
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector:
+            matchLabels: { app: db }
+      ports:
+        - { protocol: TCP, port: 5432 }
+---
+# The database accepts ONLY from the app, and initiates nothing outbound.
+# Note there is no egress rule at all -- the default-deny covers it.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: database-ingress-from-app-only
+  namespace: shop
+spec:
+  podSelector:
+    matchLabels: { app: db }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: { app: app }
+      ports:
+        - { protocol: TCP, port: 5432 }

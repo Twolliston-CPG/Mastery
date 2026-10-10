@@ -1,0 +1,31 @@
+#!/bin/bash
+set -euxo pipefail
+
+# Send all output to a log file, syslog, AND the serial console, so
+# `aws ec2 get-console-output` shows it even when you cannot SSH in.
+exec > >(tee /var/log/user-data.log | logger -t user-data -s 2>/dev/console) 2>&1
+
+dnf install -y nginx jq awscli amazon-cloudwatch-agent
+
+cat > /usr/share/nginx/html/index.html <<HTML
+<!doctype html>
+<html><body>
+<h1>alpha-cloud-foundation</h1>
+<p>environment: ${environment}</p>
+<p>instance: $(curl -s -H "X-aws-ec2-metadata-token: $(curl -sX PUT http://169.254.169.254/latest/api/token -H 'X-aws-ec2-metadata-token-ttl-seconds: 60')" http://169.254.169.254/latest/meta-data/instance-id)</p>
+</body></html>
+HTML
+
+mkdir -p /usr/share/nginx/html$(dirname ${health_path})
+echo "ok" > "/usr/share/nginx/html${health_path}"
+
+sed -i "s/listen       80;/listen       ${app_port};/" /etc/nginx/nginx.conf
+systemctl enable --now nginx
+
+# Demonstrate least-privilege secret access without writing the value to disk.
+if [ -n "${db_secret_arn}" ]; then
+  aws secretsmanager get-secret-value --secret-id "${db_secret_arn}" \
+    --query SecretString --output text > /dev/null && echo "db secret reachable"
+fi
+
+echo "user-data finished at $(date -u +%FT%TZ)"

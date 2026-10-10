@@ -1,0 +1,17 @@
+count vs for_each - the real difference?	count uses positional indexes so removing a middle element shifts everything after it (destroy+recreate). for_each uses stable string keys so removal affects exactly one resource.	terraform
+What is in Terraform state?	A JSON mapping of config to real resource IDs, plus metadata and dependency order. Stored in PLAINTEXT including secrets.	terraform state
+Does `sensitive = true` encrypt state?	No. It only hides the value from CLI output. State remains plaintext - encrypt the backend instead.	terraform state
+A secret leaked into state. First step?	Rotate the credential. It is compromised. Encryption and access control come after.	terraform security
+Two engineers apply at once - what happens?	State locking makes one fail rather than corrupting state. In CI use a concurrency group with cancel-in-progress: false.	terraform state
+Why cancel-in-progress: false on terraform CI?	Cancelling a running apply leaves a stuck lock and possibly half-created infrastructure. Queue, never cancel.	terraform cicd
+Workspaces vs directories for environments?	Workspaces share one backend and one config - good for ephemeral identical copies. Directories give separate state and allow prod to genuinely differ. For real environments, use directories.	terraform
+What does `terraform plan -refresh-only` show?	Drift only - differences between state and the real world, without proposing config changes.	terraform
+How do you bring existing infrastructure under Terraform?	An import block (plannable, TF >= 1.5) or `terraform import`, then write matching config and plan until empty.	terraform
+cidrsubnet("10.0.0.0/16", 4, 2) returns?	10.0.32.0/20. Adds 4 bits to the /16 giving /20, then takes the zero-indexed 2nd block.	terraform functions
+Three lifecycle meta-arguments?	prevent_destroy, create_before_destroy, ignore_changes	terraform
+When do you use prevent_destroy?	Production databases and state buckets. It blocks accidental destruction at plan time.	terraform
+What does a `moved` block do?	Refactors a resource address in state without destroy/recreate - the declarative replacement for `terraform state mv`.	terraform
+Why commit .terraform.lock.hcl?	It pins provider versions and hashes so CI and laptops resolve identically. Add all needed platforms with `terraform providers lock -platform=...`.	terraform cicd
+GitHub OIDC to AWS - what claim does the trust policy check?	The `sub` claim, e.g. repo:org/repo:ref:refs/heads/main. PR runs have a different sub (repo:org/repo:pull_request).	terraform cicd aws
+Risk of `sub: repo:org/repo:*` in a trust policy?	Any branch in that repo can assume the role - so anyone who can open a PR reaches your AWS account. Pin production to environment:production.	cicd aws security
+Terraform state lock stuck - correct order of action?	1) Confirm no apply is actually running. 2) terraform force-unlock <ID>. 3) Last resort: delete the DynamoDB lock item. Never force-unlock reflexively.	terraform
