@@ -36,7 +36,7 @@ terraform output next_steps
 Then push (from the repository root):
 
 ```bash
-git remote add origin git@github.com:<you>/mastery.git
+git remote add origin git@github.com:<you>/TheWayOfTheSurge.git
 git push -u origin main
 ```
 
@@ -69,7 +69,7 @@ Put the two flags in `terraform.tfvars` (gitignored) once they are permanent.
 If the repository already exists (created in the UI), adopt it instead of recreating it:
 
 ```bash
-terraform import 'github_repository.this["mastery"]' mastery
+terraform import 'github_repository.this["TheWayOfTheSurge"]' TheWayOfTheSurge
 terraform plan   # should show only in-place settings changes
 ```
 
