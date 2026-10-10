@@ -1,46 +1,157 @@
-# ---- macOS ---------------------------------------------------------------
-.DS_Store
+# .gitignore for mastery/
+#
+# Principles
+#   1. Ignore by *category* (state, credentials, caches, downloads), not by guessing filenames.
+#      Broad name patterns such as "*secret*" or "*.json" would hide teaching content that lives
+#      in this curriculum (Kubernetes Secret manifests, IAM policy JSON) and are not used.
+#   2. A gitignore is hygiene, not a security control. `git add -f` bypasses it and it never
+#      removes something already committed. The controls are the gitleaks pre-commit hook and
+#      the `secrets-scan` CI job; this file just keeps the common mistakes out of their way.
+#   3. Lockfiles are committed: .terraform.lock.hcl, pre-commit revs, Actions SHAs. Never ignore
+#      them; they are what makes a build reproducible.
+#   4. Keep per-directory .gitignore files where a lab has its own rules (curriculum/_setup/*).
+#      This root file is the backstop that applies even if one of those is wrong.
 
-# ---- Local-only artifacts ------------------------------------------------
+# ---- Operating system ----------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---- Editors and agents ---------------------------------------------------------------------
+.idea/
+.vscode/
+*.code-workspace
+.history/
+*.swp
+*.swo
+*~
+.#*
+\#*#
+.claude/settings.local.json
+
+# ---- Local-only artifacts of this repository -------------------------------------------------
 _backups/
 /curriculum/_setup/gcp-lab/state.zip
-
-# ---- Toolchain installs and render output (curriculum/_shared/diagrams) --
-.tools/
-_out/
-__pycache__/
-*.pyc
-
-# ---- Image build downloads: 1 GB+, reproducible with fetch.sh -----------
+curriculum/_shared/diagrams/.tools/
+curriculum/_shared/diagrams/_out/
 _build/
 gnupg/
 
-# ---- Terraform: state, plans, provider cache, real variable values -------
+# ---- Python (toolchain under curriculum/_shared) --------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+*.egg-info/
+.coverage
+.coverage.*
+htmlcov/
+
+# ---- Node (mermaid-cli, if ever installed outside .tools) ------------------------------------
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# ---- Terraform / OpenTofu --------------------------------------------------------------------
+# State and plans contain every attribute of every resource, often including secrets in clear.
 .terraform/
+.terragrunt-cache/
 *.tfstate
 *.tfstate.*
+*.tfstate.lock.info
 *.tfplan
 tfplan
+plan.out
 crash.log
 crash.*.log
+# Real variable values stay local; the committed contract is the *.example file.
 *.tfvars
 *.tfvars.json
 !*.tfvars.example
+!*.tfvars.json.example
 backend.hcl
+*.backend.hcl
 override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
 .terraformrc
 terraform.rc
+# NOT ignored on purpose: .terraform.lock.hcl
 
-# ---- Secrets and local environment --------------------------------------
+# ---- Credentials, keys, tokens --------------------------------------------------------------
+# Environment files. The committed form is *.example.
 .env
 .env.*
 !.env.example
+!.env.*.example
+.envrc
+.direnv/
+# Private keys and keystores, any format.
 *.pem
 *.key
 *.p12
 *.pfx
+*.jks
+*.keystore
+*.ppk
+id_rsa
+id_rsa.*
+id_ecdsa
+id_ecdsa.*
+id_ed25519
+id_ed25519.*
+*.gpg
+*.asc.sec
+# Cloud, cluster, and package-registry credentials.
+.aws/
+.gcloud/
+.azure/
+*-service-account*.json
+*-sa-key*.json
+application_default_credentials.json
 kubeconfig
 kubeconfig.*
+*.kubeconfig
+.kube/
+.docker/config.json
+.npmrc
+.pypirc
+.netrc
+.vault-token
+.sops/
+*.dec.yaml
+*.dec.yml
+*.decrypted.*
+# Ansible
+*.retry
+vault-password*
+.vault-pass*
+
+# ---- Build and runtime output ---------------------------------------------------------------
+dist/
+build/
+out/
+*.log
+logs/
+tmp/
+*.tmp
+*.bak
+*.orig
+*.rej
+# Disk images and archives are downloads, never sources (see curriculum/_setup/gcp-lab/image).
+*.qcow2
+*.raw
+*.iso
+*.vmdk
+*.ova
