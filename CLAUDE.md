@@ -45,6 +45,9 @@ for how a learner moves through it.
 - **Next:** decide the collaborator/plan question above → apply the saved plan → on Pro,
   `terraform apply -var enable_rulesets=true` enforces PR-only, squash-only, one owner approval, seven required
   checks on `main` → merge PR #10.
+- **Dependabot (2026-10-17):** 7 alerts appeared with the hash locks. flask fixed (3.1.3). asteval x4: checkov 3.3.29
+  pins 1.0.6, fix impossible until upstream bumps (checkov#7504); ignored in `dependabot.yml`, alerts dismissed with
+  comments. ecdsa x2: no patched version exists; dismissed with comments. Re-check both at every checkov bump.
 - **Workflow lockfile (public preview since 2026-10-14):** extension installed; `gh actions-lock --no-fix` on
   2026-10-17 **skips `ci.yml` and `security.yml`** ("local path actions are not yet supported") because both use
   `./.github/actions/fetch-tool`, and would re-pin `links.yml` to tags, breaking the SHA convention. Blocked on
@@ -148,6 +151,10 @@ Rules:
 - A new gitleaks hit: decode it and confirm it is a placeholder **before** adding it to `.gitleaks.toml`.
 - The gitleaks version is pinned in two places (`ci.yml` env and `.pre-commit-config.yaml` rev). Bump both.
 - Tokens are shell env only (`GITHUB_TOKEN`); never in `.tf`, `.tfvars`, or this file.
+- **Dependabot alerts:** fix what has a fix (bump the pin, recompile the lock). An alert with no installable fix
+  (upstream pins the vulnerable version, or no patch exists) is dismissed as `tolerable_risk` with a comment naming
+  the blocker and the re-check trigger, and the dependency is `ignore`d in `dependabot.yml` so the security job
+  stops failing. The scanners run on an ephemeral runner with a read-only token; nothing they parse is trusted.
 - **GitHub Actions never applies Terraform.** No cloud credentials, OIDC trust, environments or secrets in the repo;
   applies happen from a laptop. The teaching projects' workflows under `curriculum/projects/*/.github/` are content
   GitHub does not execute; never copy one into the root `.github/workflows/`.

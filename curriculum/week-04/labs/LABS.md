@@ -435,7 +435,7 @@ if __name__ == "__main__":
 PY
 
 cat > requirements.txt <<'REQ'
-flask==3.0.3
+flask==3.1.3
 psycopg2-binary==2.9.9
 gunicorn==22.0.0
 REQ

@@ -55,3 +55,10 @@ updates:
       day: monday
     commit-message:
       prefix: "ci"
+    ignore:
+      # checkov (3.3.29, the newest release) hard-pins asteval==1.0.6; the patched 1.0.9 cannot be
+      # installed next to it, so every Dependabot security run for asteval fails with
+      # "security_update_not_possible". The fix arrives as a checkov release that lifts the pin
+      # (upstream: bridgecrewio/checkov#7504, PR #7517); that bump regenerates this lock and is NOT
+      # ignored here. Remove this entry when checkov's asteval requirement is >= 1.0.9.
+      - dependency-name: asteval
