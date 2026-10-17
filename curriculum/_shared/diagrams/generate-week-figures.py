@@ -16,15 +16,22 @@ The specs live in week_figures/ in a small Mermaid-shaped DSL so they stay reada
 
 ICONS maps each node id to an icon class, per week.
 
-    pip install diagrams          # also needs graphviz on PATH
+    pip install -r requirements.txt   # pinned diagrams + graphviz bindings; needs graphviz (dot) on PATH
     ./generate-week-figures.py                 # all 26
     ./generate-week-figures.py --only 14       # one week
     ./generate-week-figures.py --no-docs       # images only, leave FIGURE.md and the README alone
     ./generate-week-figures.py --no-pdf        # skip the two-page numbered-spoken PDF (needs Chrome)
+    ./generate-week-figures.py --docs-only     # FIGURE.md + README sections only (no graphviz, no Chrome)
 
 The PDF is the client-style deliverable: page one is the figure, page two is "What to
 say, badge by badge" in two columns. It is printed with headless Chrome (set CHROME to
 the binary if it is not found).
+
+Every output is reproducible: the date printed on the PDF (and its CreationDate/ModDate
+metadata) is the date of the last commit that touched the week's spec file, not today,
+so re-running the generator on an unchanged spec yields byte-identical files and no git
+churn. An uncommitted spec edit is dated today until it is committed. CI runs
+--docs-only and fails if the committed FIGURE.md or README sections differ from the specs.
 """
 from __future__ import annotations
 
@@ -189,7 +196,7 @@ def build(week, spec, out_dir, slug):
                 badge, title, detail = split_label(label)
                 nodes[nid] = icon(ICONS[week][nid])(caption(badge, title, detail, cls))
     path = os.path.join(out_dir, f"figure-{week}.1-{slug}")
-    with Diagram("", filename=path, show=False, direction=DIRECTION.get(week, "LR"), outformat=["png", "svg"],
+    with Diagram("", filename=path, show=False, direction=DIRECTION.get(week, "LR"), outformat="png",
                  graph_attr={**gf.GRAPH, "nodesep": "0.85", "ranksep": RANKSEP.get(week, "0.9")},
                  node_attr=NODE, edge_attr=gf.EDGE):
         emit(tree, 0)
@@ -270,10 +277,33 @@ def md_inline(text):
     text = html.escape(text, quote=False)
     return re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
 
+def spec_date(spec):
+    """ISO date of the last commit to the spec's module; today if the file is dirty or untracked."""
+    src = spec["_src"]
+    try:
+        dirty = subprocess.run(["git", "status", "--porcelain", "--", src], cwd=_HERE, capture_output=True,
+                               text=True, check=True).stdout.strip()
+        last = subprocess.run(["git", "log", "-1", "--format=%cs", "--", src], cwd=_HERE, capture_output=True,
+                              text=True, check=True).stdout.strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        dirty, last = "", ""
+    return datetime.date.today().isoformat() if dirty or not last else last
+
+_PDF_DATE = re.compile(rb"/(CreationDate|ModDate) \(D:\d{14}")
+
+def pin_pdf_dates(path, iso_date):
+    """Chrome stamps the print time into the PDF metadata; rewrite it in place (same byte length,
+    so the xref table stays valid) to the spec's commit date, making the file reproducible."""
+    stamp = iso_date.replace("-", "").encode() + b"000000"
+    data = open(path, "rb").read()
+    data = _PDF_DATE.sub(lambda m: b"/" + m.group(1) + b" (D:" + stamp, data)
+    with open(path, "wb") as f:
+        f.write(data)
+
 def write_pdf(week, spec, slug, content_dir, chrome):
     png = os.path.join(content_dir, f"figure-{week}.1-{slug}.png")
     out = os.path.join(content_dir, f"figure-{week}.1-numbered-spoken.pdf")
-    today = datetime.date.today().isoformat()
+    today = spec_date(spec)
     n = len(spec["badges"])
     words = len(re.findall(r"\S+", spec["open"] + " " + " ".join(q for _, q in spec["badges"]) + " " + spec["close"]))
     items = [('<span class="badge k">&#9654;</span>', "Open", spec["open"])]
@@ -299,6 +329,7 @@ def write_pdf(week, spec, slug, content_dir, chrome):
         subprocess.run([chrome, "--headless=new", "--disable-gpu", "--no-sandbox", "--no-pdf-header-footer",
                         f"--print-to-pdf={out}", f"file://{src}"], check=True,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
+    pin_pdf_dates(out, today)
     return out
 
 
@@ -308,7 +339,9 @@ def load_specs():
     for fn in sorted(os.listdir(pkg)):
         if fn.startswith("weeks_") and fn.endswith(".py"):
             s = importlib.util.spec_from_file_location(fn[:-3], os.path.join(pkg, fn))
-            m = importlib.util.module_from_spec(s); s.loader.exec_module(m); specs.update(m.F)
+            m = importlib.util.module_from_spec(s); s.loader.exec_module(m)
+            for week, spec in m.F.items():
+                specs[week] = {**spec, "_src": os.path.join(pkg, fn)}
     return specs
 
 def main():
@@ -316,9 +349,12 @@ def main():
     ap.add_argument("--only", type=int)
     ap.add_argument("--no-docs", action="store_true", help="render images only")
     ap.add_argument("--no-pdf", action="store_true", help="skip the two-page PDF")
+    ap.add_argument("--docs-only", action="store_true", help="write FIGURE.md and README sections only")
     args = ap.parse_args()
+    if args.docs_only and args.no_docs:
+        ap.error("--docs-only and --no-docs exclude each other")
     root = os.path.abspath(os.path.join(_HERE, "..", ".."))
-    chrome = None if args.no_pdf else find_chrome()
+    chrome = None if (args.no_pdf or args.docs_only) else find_chrome()
     if not args.no_pdf and not chrome:
         print("  (no Chrome found; skipping PDFs -- set CHROME=/path/to/chrome)")
     for week, spec in sorted(load_specs().items()):
@@ -327,15 +363,18 @@ def main():
         wdir = os.path.join(root, f"week-{week:02d}")
         content = os.path.join(wdir, "content"); os.makedirs(content, exist_ok=True)
         slug = slugify(spec["title"])
-        for old in os.listdir(content):                 # one figure per week: drop stale renders
-            if old.startswith(f"figure-{week}.1-") and not old.startswith(f"figure-{week}.1-{slug}."):
-                os.remove(os.path.join(content, old))
-        build(week, spec, content, slug)
+        keep = (f"figure-{week}.1-{slug}.png", f"figure-{week}.1-numbered-spoken.pdf")
+        if not args.docs_only:
+            for old in os.listdir(content):             # one figure per week: drop stale renders
+                if old.startswith(f"figure-{week}.1-") and old not in keep:
+                    os.remove(os.path.join(content, old))
+            build(week, spec, content, slug)
         if not args.no_docs:
             write_docs(week, spec, slug, content, os.path.join(wdir, "README.md"))
         if chrome:
             write_pdf(week, spec, slug, content, chrome)
-        print(f"  week {week:2d} -> week-{week:02d}/content/figure-{week}.1-{slug}.png")
+        print(f"  week {week:2d} -> week-{week:02d}/content/figure-{week}.1-{slug}.png"
+              + (" (docs only)" if args.docs_only else ""))
     return 0
 
 if __name__ == "__main__":

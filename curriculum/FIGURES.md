@@ -67,10 +67,15 @@ to follow first**, orange-red is where something refuses or fails, washed boxes 
 
 - Weekly figures are rendered by `_shared/diagrams/generate-week-figures.py` from the specs in
   `_shared/diagrams/week_figures/`, in the same icon style as the project and platform figures.
-  Each week's `content/` folder holds `figure-W.1-<slug>.png` and `.svg`, `FIGURE.md` (the spoken
+  Each week's `content/` folder holds `figure-W.1-<slug>.png`, `FIGURE.md` (the spoken
   script), and `figure-W.1-numbered-spoken.pdf`: the printable two-page version, figure on page one,
   the script badge by badge on page two, printed with headless Chrome. **Edit the spec, not the generated files**, then re-run the generator; it
-  rewrites the images, `FIGURE.md`, and the README section.
+  rewrites the image, `FIGURE.md`, and the README section.
+- The outputs are reproducible. The PNG is a pure function of the spec and the pinned toolchain
+  (`_shared/diagrams/requirements.txt` plus the Graphviz version noted there); the PDF is dated from
+  the last commit to the spec file, so an unchanged spec re-renders byte for byte and leaves no diff.
+  CI's `figures-fresh` job runs the generator in `--docs-only` mode and fails if the committed
+  `FIGURE.md` or README section has drifted from its spec, which is what a hand edit looks like.
 - A spec is the figure's nodes, boundaries, and edges in a small Mermaid-shaped DSL (documented
   in the generator), an icon per node, and the script: an Open line, one spoken line per badge in
   badge order with the numbers that matter, and a Close line.

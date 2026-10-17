@@ -66,6 +66,8 @@ python3 curriculum/_shared/diagrams/generate-setup-figures.py
 
 # Re-render the 26 weekly figures + their content/FIGURE.md scripts + README sections (same toolchain)
 python3 curriculum/_shared/diagrams/generate-week-figures.py            # --only 14 for one week
+python3 curriculum/_shared/diagrams/generate-week-figures.py --docs-only # what CI runs: FIGURE.md + README only
+pip install -r curriculum/_shared/diagrams/requirements.txt             # pinned diagrams/graphviz for both generators
 
 # Re-render + re-embed Mermaid diagrams as PNGs into the .md files
 python3 curriculum/_shared/diagrams/embed-figures.py --apply
@@ -89,7 +91,7 @@ between a small edit and 600 quietly-broken files.
 | Piece | What it does |
 |---|---|
 | `infra/github/` | Terraform (`integrations/github`) that creates and hardens the private repo: squash-only, Dependabot, GitHub-authored actions only, archive-on-destroy, opt-in `main` ruleset. State is local and gitignored. Bootstrap pattern: the config lives inside the repo it creates |
-| `.github/workflows/ci.yml` | `secrets-scan` (gitleaks, pinned + sha256-checked, full history), `content-checks` (`check-diagrams.py` on the authored layers, then on `_reference/`), `terraform-validate` (`fmt -check` repo-wide, `init -backend=false` + `validate` on all nine root modules, in one job so the check name is stable). These three job names are the required checks in `rulesets.tf` — rename in both places or never |
+| `.github/workflows/ci.yml` | `secrets-scan` (gitleaks, pinned + sha256-checked, full history), `content-checks` (`check-diagrams.py` on the authored layers, then on `_reference/`), `terraform-validate` (`fmt -check` repo-wide, `init -backend=false` + `validate` on all nine root modules, in one job so the check name is stable), `figures-fresh` (weekly-figure docs regenerated from the specs must match what is committed). The first three job names are the required checks in `rulesets.tf` — rename in both places or never; `figures-fresh` is deliberately not required until it has been seen green on the runner |
 | `.github/workflows/links.yml` | Weekly external link check |
 | `.pre-commit-config.yaml` | gitleaks, private-key, large-file (5 MB), yaml/json, `terraform fmt` on every root, `check-diagrams.py` on changed `.md`. **No formatters on purpose** — a fixer would rewrite ~1,000 files |
 | `.gitleaks.toml` | Allowlist for documented placeholder secrets in the reference library |
@@ -128,9 +130,11 @@ Three things in `_reference/` are machine-written and will be overwritten:
   hash in the filename so unchanged diagrams are never re-rendered.
 - **`_reference/SOURCES.md` links** are duplicated into all 623 Feynman blocks via `domains.py`.
   Change the source there, not in the files.
-- **Weekly figures** — `week-WW/content/figure-W.1-*.png|svg|pdf`, `content/FIGURE.md`, and the
+- **Weekly figures** — `week-WW/content/figure-W.1-*.png|pdf`, `content/FIGURE.md`, and the
   `## The week in one figure` README section are written by `_shared/diagrams/generate-week-figures.py`
-  from the specs in `_shared/diagrams/week_figures/`. Edit the spec and re-run; hand edits are overwritten.
+  from the specs in `_shared/diagrams/week_figures/`. Edit the spec and re-run; hand edits are overwritten,
+  and CI's `figures-fresh` job fails on any that slipped through. Outputs are reproducible (PDF dates
+  come from the spec's last commit), so a re-run on an unchanged spec produces no diff.
 
 ## Invariants that break silently
 

@@ -17,7 +17,7 @@ The visual language matches _shared/diagrams/STYLE.md exactly:
 Boundaries nest outermost-first and carry a fact, not just a name. Captions are
 two lines: what it is, then the design decision that makes it non-generic.
 
-    pip install diagrams          # also needs graphviz on PATH
+    pip install -r requirements.txt   # pinned diagrams + graphviz bindings; needs graphviz (dot) on PATH
     ./generate-figures.py --out ../../projects
 """
 from __future__ import annotations

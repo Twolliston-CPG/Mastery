@@ -7,7 +7,7 @@ captions, crimson for the one path the reader should follow first, dashed gray
 for context. The style helpers are imported from that script so there is one
 definition of the look.
 
-    pip install diagrams          # also needs graphviz on PATH
+    pip install -r requirements.txt   # pinned diagrams + graphviz bindings; needs graphviz (dot) on PATH
     ./generate-setup-figures.py                 # all ten figures
     ./generate-setup-figures.py --only 4        # one figure
 """
