@@ -54,22 +54,51 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Mermaid + Markdown structure (whole repo, no browser)
+      - name: Mermaid, Markdown structure, relative links (authored layers)
         run: python3 curriculum/_shared/diagrams/check-diagrams.py
+
+      - name: Same checks on the reference library (skipped by a default run)
+        run: python3 curriculum/_shared/diagrams/check-diagrams.py curriculum/_reference
 
   terraform-validate:
     name: terraform-validate
     runs-on: ubuntu-24.04 # Terraform is preinstalled on GitHub-hosted Ubuntu runners
-    timeout-minutes: 10
-    defaults:
-      run:
-        working-directory: infra/github
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
       - run: terraform version
-      - run: terraform fmt -check -recursive -diff
-      - run: terraform init -backend=false -input=false
-      - run: terraform validate -no-color
+
+      # One job, not a matrix: the job name is a required status check in
+      # infra/github/rulesets.tf, and a matrix would rename it per root.
+      - name: fmt -check (every .tf in the repository)
+        run: terraform fmt -check -recursive -diff
+
+      - name: init + validate every root module
+        run: |
+          set -euo pipefail
+          roots=(
+            infra/github
+            curriculum/_setup/aws-lab
+            curriculum/_setup/aws-lab/state
+            curriculum/_setup/gcp-lab
+            curriculum/_setup/gcp-lab/state
+            curriculum/_setup/gcp-lab/image
+            curriculum/projects/alpha-cloud-foundation/bootstrap
+            curriculum/projects/alpha-cloud-foundation/environments/dev
+            curriculum/projects/alpha-cloud-foundation/environments/prod
+          )
+          rc=0
+          for d in "${roots[@]}"; do
+            echo "::group::$d"
+            if terraform -chdir="$d" init -backend=false -input=false -no-color >/dev/null \
+               && terraform -chdir="$d" validate -no-color; then
+              echo "ok"
+            else
+              echo "::error::terraform validate failed in $d"; rc=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $rc

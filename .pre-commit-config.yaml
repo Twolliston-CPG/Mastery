@@ -35,10 +35,10 @@ repos:
   - repo: local
     hooks:
       - id: terraform-fmt
-        name: terraform fmt -check (infra/)
-        entry: terraform fmt -check -recursive infra
+        name: terraform fmt -check (every root)
+        entry: terraform fmt -check -recursive .
         language: system
-        files: ^infra/.*\.tf$
+        files: \.tf$
         pass_filenames: false
       - id: mermaid-structure
         name: check-diagrams.py on changed Markdown

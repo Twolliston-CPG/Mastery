@@ -1,4 +1,5 @@
 resource "github_repository" "this" {
+  # checkov:skip=CKV_GIT_3: False positive. Vulnerability alerts are enabled by the github_repository_vulnerability_alerts resource below; the deprecated inline argument is not used.
   for_each = var.repositories
 
   name         = each.key

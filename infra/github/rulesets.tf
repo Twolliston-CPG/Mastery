@@ -17,12 +17,14 @@ resource "github_repository_ruleset" "default_branch" {
     }
   }
 
-  # Repository admins (you) may bypass. On a solo repo this is the escape hatch for emergency
-  # fixes; every bypass is recorded in the audit log. Remove the block for zero exceptions.
+  # Repository admins (you) may bypass, but only by merging a pull request whose checks are
+  # not green -- never by pushing straight to main. "always" would let a hijacked session on
+  # this account skip CI silently; "pull_request" leaves a PR and an audit-log entry behind.
+  # Remove the block for zero exceptions.
   bypass_actors {
     actor_id    = 5 # RepositoryRole: admin
     actor_type  = "RepositoryRole"
-    bypass_mode = "always"
+    bypass_mode = "pull_request"
   }
 
   rules {

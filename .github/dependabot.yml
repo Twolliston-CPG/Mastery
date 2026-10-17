@@ -12,7 +12,16 @@ updates:
       prefix: "ci"
 
   - package-ecosystem: terraform
-    directory: /infra/github
+    directories:
+      - /infra/github
+      - /curriculum/_setup/aws-lab
+      - /curriculum/_setup/aws-lab/state
+      - /curriculum/_setup/gcp-lab
+      - /curriculum/_setup/gcp-lab/state
+      - /curriculum/_setup/gcp-lab/image
+      - /curriculum/projects/alpha-cloud-foundation/bootstrap
+      - /curriculum/projects/alpha-cloud-foundation/environments/dev
+      - /curriculum/projects/alpha-cloud-foundation/environments/prod
     schedule:
       interval: weekly
       day: monday
