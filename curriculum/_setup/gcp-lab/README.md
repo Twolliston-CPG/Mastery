@@ -398,12 +398,16 @@ the VM be destroyed nightly and rebuilt each session.
 ## Tearing it all down
 
 ```bash
-terraform destroy                        # the lab; the state bucket is separate, stays, and refuses `destroy`
-(cd image && terraform destroy)          # Arch only: the custom image and its staging bucket
+terraform destroy                        # the lab FIRST; the state bucket is separate, stays, and refuses `destroy`
+(cd image && terraform destroy)          # Arch only, AFTER the lab: the custom image and its staging bucket
 gcloud compute snapshots list            # snapshots are not managed by Terraform
 gcloud compute snapshots delete clean pre-bf1
 gcloud projects delete $PROJECT_ID       # removes anything left, and stops all billing for it
 ```
+
+Order matters on Arch: the lab looks up the `arch` image family to report its build, and a
+data source that cannot be read blocks every plan, destroy included. If `image/` went first,
+destroy the lab with `terraform destroy -var lookup_image=false`.
 
 ---
 
@@ -422,7 +426,7 @@ gcloud projects delete $PROJECT_ID       # removes anything left, and stops all 
 | `fetch.sh` / `fetch.ps1`: `qemu-img not found` or `gpgv not found` | `brew install qemu gnupg`, or on Windows `choco install qemu gnupg -y` and then a new terminal. Both scripts check before downloading, so nothing was fetched yet |
 | `fetch.sh`: `image is NOT signed by the pinned arch-boxes key` | Either the mirror served a file that is not Arch's, or the project rotated its key. Do not use the image. Pull the current key with the command in `image/arch-boxes.asc` and compare the primary fingerprint; if it changed, read the project's announcements before trusting it |
 | `fetch.sh`: signature check fails with `EXPKEYSIG` | The signing subkey expired (May 2027). Refresh `image/arch-boxes.asc` per its header, then re-run |
-| Arch: `error retrieving image information` or `family … not found` | The image has not been imported into this project yet. Step 8 |
+| Arch: `error retrieving image information` or `family … not found` | The image is not in this project: not imported yet (step 8), or `image/` was destroyed before the lab. To destroy the lab anyway, `terraform destroy -var lookup_image=false` |
 | Arch: VM never answers on SSH after a rebuild | Boot or cloud-init failed. `gcloud compute instances get-serial-port-output lab --zone=$ZONE` shows the console. If it hangs before the kernel, remove `UEFI_COMPATIBLE` from `guest_os_features` in `image/`, re-apply, and `-replace` the VM |
 | Arch: `Permission denied (publickey)` as `arch@` | The key in metadata is not the one you are offering, or was added after first boot. Check `ssh_public_key_file` matches `~/.ssh/google_compute_engine`, then `terraform apply -replace=google_compute_instance.lab` |
 | `Required 'compute.images.get' permission for 'projects/arch-linux-gce/global/images/arch'` | Not your IAM. The `project/family` shorthand makes the provider probe for an image *named* `arch` first, and that project answers 403 rather than 404. `main.tf` uses the full `projects/…/global/images/family/…` path for this reason; check it was not shortened |

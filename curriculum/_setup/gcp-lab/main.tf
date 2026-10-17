@@ -20,7 +20,12 @@ data "google_project" "this" {}
 
 # Looked up only to report which build the family currently points at (see outputs).
 # The VM itself references the family, so a newer image never forces a rebuild.
+#
+# Behind a count because a data source that fails blocks every plan, `destroy`
+# included: if image/ is destroyed before the lab, the `arch` family is gone and this
+# lookup 404s. `terraform destroy -var lookup_image=false` skips it.
 data "google_compute_image" "lab" {
+  count   = var.lookup_image ? 1 : 0
   project = local.image.project
   family  = local.image.family
 }

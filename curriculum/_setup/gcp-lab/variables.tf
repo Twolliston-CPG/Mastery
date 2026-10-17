@@ -31,6 +31,12 @@ variable "distro" {
   }
 }
 
+variable "lookup_image" {
+  description = "Resolve the image family to report its current build in the `image` output. Set false when the family no longer exists -- for example to destroy the lab after `image/` was already destroyed -- because a failing data source blocks every plan, destroy included"
+  type        = bool
+  default     = true
+}
+
 variable "machine_type" {
   description = "e2-medium matches the Week 1 lab VM: 2 vCPU, 4 GB"
   type        = string

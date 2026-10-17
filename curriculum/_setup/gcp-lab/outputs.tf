@@ -10,7 +10,7 @@ output "external_ip" {
 
 output "image" {
   description = "The build the image family pointed at when last refreshed, and when it was made. An Arch build many months old means a large first upgrade"
-  value       = "${data.google_compute_image.lab.name} (built ${data.google_compute_image.lab.creation_timestamp})"
+  value       = var.lookup_image ? "${one(data.google_compute_image.lab).name} (built ${one(data.google_compute_image.lab).creation_timestamp})" : "not looked up (lookup_image = false)"
 }
 
 output "bootstrap_command" {
