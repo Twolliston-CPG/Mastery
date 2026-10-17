@@ -1,7 +1,6 @@
 variable "project_id" {
-  description = "The lab's GCP project"
+  description = "The lab's GCP project. No default on purpose: pass -var project_id=... or put it in terraform.tfvars (gitignored)"
   type        = string
-  default = "thesurge"
 }
 
 variable "location" {

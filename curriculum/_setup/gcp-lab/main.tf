@@ -146,6 +146,7 @@ resource "google_compute_instance" "lab" {
   # checkov:skip=CKV_GCP_40: The external IP is deliberate - outbound package installs without paying for Cloud NAT, and Week 3 serves 80/443. Inbound is default-deny; SSH is IAP-only.
   # checkov:skip=CKV_GCP_38: Disks are encrypted at rest with Google-managed keys. Customer-supplied keys add key-loss risk and nothing a lab needs.
   # checkov:skip=CKV_GCP_39: Shielded VM is enabled for Ubuntu below. The community Arch image is not known to boot with Secure Boot.
+  # checkov:skip=CKV_GCP_32: False positive. block-project-ssh-keys is set to "true" inside the merge() below; the check only reads a literal map.
   name         = "lab"
   machine_type = var.machine_type
   zone         = var.zone
@@ -184,6 +185,10 @@ resource "google_compute_instance" "lab" {
       # Only keys added to THIS instance can log in; a key added project-wide cannot.
       block-project-ssh-keys = "true"
       serial-port-enable     = var.enable_serial_console ? "TRUE" : "FALSE"
+      # OS Login: SSH access becomes an IAM grant (roles/compute.osAdminLogin, which the
+      # project owner already holds) and the Linux username is derived from your Google
+      # account. Needs the guest agent, so Ubuntu only; on Arch this stays FALSE.
+      enable-oslogin = var.distro == "ubuntu" && var.os_login ? "TRUE" : "FALSE"
     },
     # Arch only. The imported image has cloud-init but not Google's guest agent, so
     # keys are read from metadata once, at first boot, and only for cloud-init's

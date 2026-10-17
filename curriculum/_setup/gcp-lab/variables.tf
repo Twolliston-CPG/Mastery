@@ -67,6 +67,12 @@ variable "flow_logs" {
   default     = true
 }
 
+variable "os_login" {
+  description = "Ubuntu only: govern SSH through OS Login (IAM roles, your Google identity as the Linux user) instead of keys in metadata. Ignored on Arch, whose image lacks the guest agent that implements it"
+  type        = bool
+  default     = true
+}
+
 variable "enable_serial_console" {
   description = "Allow interactive serial-console login: the way back in after an SSH lockout. Turn on before the Week 2 hardening lab, off afterwards"
   type        = bool

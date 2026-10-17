@@ -14,7 +14,7 @@ not been run end-to-end; anything marked *untested* is exactly that.
 |---|---|
 | VM | `lab`, e2-medium (2 vCPU, 4 GB), 20 GB disk — the same shape as the Multipass VM in Week 1 |
 | Network | Its own VPC and subnet. All inbound traffic is denied unless a rule below allows it |
-| SSH | Only through Identity-Aware Proxy. Port 22 is never open to the internet. Project-wide SSH keys are blocked; only keys added to this VM work |
+| SSH | Only through Identity-Aware Proxy. Port 22 is never open to the internet. Ubuntu: OS Login, so access is an IAM grant and your Linux user is derived from your Google account. Arch: keys in instance metadata; project-wide keys are blocked |
 | Web | Ports 80/443 closed until you set `open_web = true` (Week 3); `web_source_ranges` narrows who can reach them |
 | Identity | No service account on the VM — nothing running on it can call GCP APIs |
 | Image | Ubuntu 24.04 LTS from Google's image family. Arch: the official Arch cloud image, imported into your project by `image/` and kept current by re-running it |
@@ -31,10 +31,11 @@ Scanners (checkov, trivy) flag three things that are left as they are, on purpos
   web traffic. The alternative, Cloud NAT, costs more than the VM. Inbound is default-deny.
 - **Disks use Google-managed encryption keys**, not customer-managed ones. They are still
   encrypted at rest; managing your own key adds a way to lose the disk and nothing a lab needs.
-- **OS Login is off.** It is the better practice — SSH access governed by IAM instead of keys in
-  metadata — but it is implemented by Google's guest agent, which the Arch image does not have,
-  and it changes your username on the VM. Worth turning on for the Ubuntu path once it has been
-  run end-to-end; not available on Arch.
+- **OS Login is off on Arch.** It is the better practice — SSH access governed by IAM instead
+  of keys in metadata — and the Ubuntu path has it on (`os_login`, default `true`). It is
+  implemented by Google's guest agent, which the Arch image does not have, so the Arch VM is
+  still flagged. OS Login derives your Linux username from your Google account
+  (`jane_example_com`, not `jane`); `whoami` after the first login tells you which.
 
 Rough cost: about $25/month if it ran continuously, a few dollars a month if it only runs while
 you study. These are estimates, not quotes — check the pricing calculator for your region.
@@ -67,8 +68,7 @@ PROJECT_ID=surge-lab-CHANGEME
 
 gcloud projects create $PROJECT_ID --name="Surge Lab"
 
-# if project_id was created in the console before the lab
-PROJECT_ID=thesurge
+# or, if the project already exists:  PROJECT_ID=your-existing-project-id
 gcloud config set project $PROJECT_ID
 gcloud auth application-default set-quota-project $PROJECT_ID
 
@@ -267,7 +267,7 @@ first upgrade on a VM built from a one-month-old image takes a minute.
 |---|---|---|
 | Log in as yourself; `gcloud compute ssh lab` creates your user on the fly | Log in as `arch`: `gcloud compute ssh arch@lab` | Google's guest agent creates users from metadata. Arch has only cloud-init, which created one user, `arch` |
 | Add an SSH key at any time | The key must be in metadata **before first boot**. Terraform puts it there from `ssh_public_key_file` | cloud-init reads metadata keys once, at first boot, for its default user only. A key added later is ignored until the VM is rebuilt |
-| OS Login possible | Not possible | OS Login is implemented by the guest agent |
+| OS Login on: SSH is an IAM grant, username from your Google account | Not possible: a key in metadata | OS Login is implemented by the guest agent |
 | Secure Boot on | Off | Arch's kernel is not signed for Secure Boot |
 | Serial console login works after `sudo passwd $USER` | Same, but the user is `arch` and starts with no password | cloud-init images ship the default user with key-only access |
 
