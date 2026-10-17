@@ -10,12 +10,28 @@
 1. **Read the figure first**, before the day plan. Follow the blue path, then the dashed context.
 2. **Say the walkthrough out loud**, pointing at each badge. The target is the stated time at a
    normal pace; if a badge takes longer, that is the badge you do not own yet.
-3. **Close the file and redraw it** on Friday. The exit criteria of most weeks are the badges.
+3. **Close the file and redraw it** on Friday, then again two weeks later and at the next gate.
+   The exit criteria of most weeks are the badges; the schedule is below.
 4. **Reuse it in interviews.** Each walkthrough is a three-minute answer to "explain X to me."
 
 The visual language is one system across the curriculum: gray is structure, **blue is the path
 to follow first**, orange-red is where something refuses or fails, washed boxes are stores. See
 [`_shared/diagrams/STYLE.md`](_shared/diagrams/STYLE.md).
+
+## The redraw schedule
+
+A figure is retrieval practice, and retrieval only works spaced. Each figure is redrawn from memory
+three times, with the file closed, and checked against its `content/FIGURE.md` afterwards:
+
+| When | Which | Takes |
+|---|---|---|
+| Friday of week N, after break/fix | figure N.1 | 5 minutes |
+| Sunday of week N+2, before planning the next week | figure N.1 again | 5 minutes |
+| Sunday of the next gate week (4, 9, 13, 17, 21, 26) | every figure since the previous gate, cold | about 20 minutes |
+
+Record each in the **Figures redrawn** column of `progress.md` with the badge where the order
+slipped. The order is the argument; the badge that slipped is the mechanism you still hold as a word
+rather than a cause, and it is the reading to reopen.
 
 ## The 26 weekly figures
 

@@ -107,11 +107,13 @@ Tick every box before moving to week 2.
 bash ../_setup/macos-setup.sh      # install everything (linux-setup.sh on Linux/WSL)
 bash ../_setup/verify.sh           # confirm
 
-mkdir -p ~/mastery/progress
-cd ~/mastery
-git init
-cp ../_shared/templates/PROJECT-README-template.md README.md
+T="$(pwd)/../_shared/templates"      # run from curriculum/week-01/
+mkdir -p ~/mastery/progress && cd ~/mastery && git init
+cp "$T/PROJECT-README-template.md"   README.md
+cp "$T/progress-template.md"         progress/progress.md
+cp "$T/incident-journal-template.md" progress/incident-journal.md
+cp "$T/decisions-template.md"        progress/decisions.md
 ```
 
-Create `progress/progress.md` and `progress/incident-journal.md` now. You will fill them every week
-for 26 weeks, and they become your interview story bank.
+The three `progress/` files are the program's instrumentation. You will write in them every week
+for 26 weeks, and they become your interview story bank; the templates carry the format and the rules.

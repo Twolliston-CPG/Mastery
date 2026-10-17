@@ -57,11 +57,15 @@ reminder: "check AWS bill."** For 26 weeks. A surprise $400 bill in week 6 ends 
 ## 4. Create the three tracking artifacts
 
 ```bash
+T="$(pwd)/_shared/templates"          # run from the curriculum/ folder
 mkdir -p ~/mastery/progress && cd ~/mastery && git init
-touch progress/progress.md progress/incident-journal.md progress/decisions.md
+cp "$T/progress-template.md"         progress/progress.md
+cp "$T/incident-journal-template.md" progress/incident-journal.md
+cp "$T/decisions-template.md"        progress/decisions.md
 ```
 
-These are the program's instrumentation, and they double as interview material.
+These are the program's instrumentation, and they double as interview material. Each template
+carries its format and the rules for filling it in; the first row is a worked example to overwrite.
 
 **`progress.md`** — one row per week: week, focus, deliverable shipped (y/n), gate status, hours
 logged, and **"what surprised me."** That last column is the highest-value field in the whole system.

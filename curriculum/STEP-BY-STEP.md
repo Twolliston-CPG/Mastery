@@ -18,7 +18,7 @@ Do all of [`START-HERE.md`](START-HERE.md). Summarised, so you can check it off:
       cloud track now. Decide once; re-litigating in month 3 costs a month
 - [ ] Pick a cert track (A/B/C) from [`../CERTIFICATIONS.md`](../CERTIFICATIONS.md) §4
 - [ ] `cd _setup && bash macos-setup.sh && bash verify.sh` (`linux-setup.sh` on Linux/WSL, `windows-setup.ps1` on Windows)
-- [ ] Create `~/mastery/progress/` with the three tracking files
+- [ ] Create `~/mastery/progress/` from the three templates in [`_shared/templates/`](_shared/templates/) (`progress`, `incident-journal`, `decisions`)
 - [ ] Buy a domain (~$12). Best $12 in the program
 - [ ] Import the Anki decks from [`_shared/anki/`](_shared/anki/)
 - [ ] **Recurring Monday reminder: "check AWS bill."** For 26 weeks
@@ -101,6 +101,8 @@ The highest-value four hours of the week.
 - Run the week's scenarios from [`_shared/breakfix/`](_shared/breakfix/) (58 across seven domains)
 - **Timed. Narrated out loud, as if an interviewer is listening.** Diagnose before you fix
 - Log every one: symptom → hypothesis → confirmation → root cause → fix → prevention → surprised
+- **Redraw this week's figure from memory**, close the file first, then check the badge order against
+  `content/FIGURE.md`. The badge where the order slipped goes in `progress.md`
 - **Then ship the week's deliverable.** Pushed, with a real README
 
 By week 26 you'll have ~50 journal entries. That is your STAR story bank, and it is why *"how would
@@ -114,14 +116,16 @@ cheapest credibility multiplier there is and it doubles as retrieval practice.
 ### Sunday — rest, or review
 
 **One full rest day per week is part of the plan, not a deviation from it.** If you review instead:
-re-explain *last* week's blank page **without looking at it**. What survives is yours. Then skim next
-week's README and plan.
+re-explain *last* week's blank page **without looking at it**, and redraw the figure from **two weeks
+ago** the same way. What survives is yours. Then skim next week's README and plan. The redraw schedule
+is in [`FIGURES.md`](FIGURES.md#the-redraw-schedule).
 
 ### Weekly close-out
 
 - [ ] Deliverable shipped and pushed
 - [ ] Exit criteria met — each one *demonstrated*, not felt
 - [ ] Break/fix logged
+- [ ] This week's figure redrawn from memory, and the one from two weeks ago
 - [ ] `progress.md` row complete, including "what surprised me"
 - [ ] Anki current
 - [ ] Post written
@@ -147,6 +151,10 @@ you didn't.
 
 **Take the gate timed and cold.** An untimed gate you looked things up for tells you nothing, and the
 only person it fools is you.
+
+**The gate's Sunday also redraws every figure since the last gate**, cold, in badge order: four or five
+figures, about twenty minutes. A figure you cannot redraw at the gate names the criterion you will
+fail next, one level below where you are looking.
 
 ### If you fail a gate — the important part
 
@@ -199,7 +207,8 @@ that feeling is what ends programs that were working.
 | `decisions.md` | non-obvious choice | **Alternatives rejected, and why.** This is the staff-level signal |
 
 These are the program's instrumentation *and* your interview material. Week 20 you will not remember
-week 3 without them.
+week 3 without them. Templates, with the format and the rules, are in
+[`_shared/templates/`](_shared/templates/).
 
 ---
 
@@ -241,8 +250,9 @@ Print this. Everything above compresses to it.
 
 ```text
 DAILY     Anki 10' · blank page 20' · lab 2-5h · drills 45' · log 10'
-WEEKLY    Mon orient · Tue-Thu build · Fri break/fix + ship · Sat post · Sun rest
-MONTHLY   Gate, timed and cold. Fail = repeat the criterion, not the month.
+WEEKLY    Mon orient · Tue-Thu build · Fri break/fix + redraw + ship · Sat post · Sun rest (or redraw N-2)
+MONTHLY   Gate, timed and cold, then redraw every figure since the last gate.
+          Fail = repeat the criterion, not the month.
 
 RULES     70% keyboard, 30% input
           Solutions only after a genuine attempt
