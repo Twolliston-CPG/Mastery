@@ -12,52 +12,11 @@
 
 ## The week in one figure
 
-**Figure 9.1 — The consolidation loop that produces an 80 percent.** One week of exam prep, capped by design. The figure is the loop: take an exam cold, find the two weakest domains, rebuild them by hand, and test again. The gate is the number at the end. Badges are numbered in the order to walk them; the blue path is the one to follow first.
+**Figure 9.1 — The consolidation loop that produces an 80 percent.** One week of exam prep, capped by design. The figure is the loop: take an exam cold, find the two weakest domains, rebuild them by hand, and test again. The gate is the number at the end.
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
-flowchart LR
-  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
-  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
-  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
-  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
-  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
-  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+![Figure 9.1 — The consolidation loop that produces an 80 percent](content/figure-9.1-the-consolidation-loop-that-produces-an.png)
 
-  E1["① practice exam 1, cold<br/><small>Monday · 4 h · score it honestly</small>"]:::crit
-  CAT["② categorize every miss<br/><small>by SAA domain · a miss you guessed right is still a miss</small>"]:::crit
-  WK["③ the two weakest domains<br/><small>only two · remediation, not re-reading</small>"]:::crit
-  RB["④ rebuild by hand<br/><small>the services from weeks 5 to 8, from blank</small>"]:::crit
-  AN["⑤ Anki cards<br/><small>one card per miss · reviewed daily</small>"]:::data
-  E2["⑥ practice exam 2<br/><small>Thursday · review every question, including the ones you got right</small>"]:::crit
-  E3["⑦ practice exam 3 + sweep<br/><small>comparison pairs · service limits · the commonly-confused list, twice</small>"]:::n
-  WB["⑧ whiteboard from memory<br/><small>the 3-tier architecture · out loud · justify every choice</small>"]:::crit
-  GATE["⑨ ★ Gate 2<br/><small>80 %+ on two different full-length exams</small>"]:::warn
-  SUN["⑩ Sunday: rest<br/><small>no cramming · the rule, not a suggestion</small>"]:::mut
-  BK["⑪ book the exam<br/><small>week 10, Tuesday · a date makes it real</small>"]:::n
-  E1 ==> CAT ==> WK ==> RB ==> E2 ==> WB ==> GATE
-  CAT --> AN
-  E2 --> E3 --> WB
-  GATE -.-> BK
-  GATE -.-> SUN
-  linkStyle 0,1,2,3,4,5 stroke:#2f6fb8,stroke-width:2px
-```
-
-**What to say, badge by badge** · about three minutes at a normal pace. Point at each badge as you say its line.
-
-- **Open.** “This is the only week where exam prep is allowed to dominate, and it is one week on purpose. The picture is a loop, not a reading list: measure, find the two weak spots, rebuild them with your hands, measure again.”
-- **① practice exam 1, cold.** “Monday morning, no review first. The point is a true baseline. Score it, and write the score down before you rationalize it.”
-- **② categorize every miss.** “Every wrong answer goes into a domain bucket. So does every right answer you were not sure of. A guess that landed is a gap you have not seen yet.”
-- **③ the two weakest domains.** “Two, not five. Remediation spread across everything is re-reading, and re-reading feels like progress without being any.”
-- **④ rebuild by hand.** “For those two domains, build the services again from a blank console or CLI, the way you did in weeks 5 to 8. The exam asks what a thing is for; building it is how you remember.”
-- **⑤ Anki cards.** “One card per miss, in your own words, reviewed every day for the rest of the program. The exam is in nine days; the cards outlast it.”
-- **⑥ practice exam 2.** “Thursday. Different provider from Monday if you can. Review every question, including the ones you got right, because the explanation is where the comparisons live.”
-- **⑦ practice exam 3 and the sweep.** “Friday: a third exam plus the comparison pairs and the service limits. The commonly-confused-services guide is read twice this week because the exam is built from it.”
-- **⑧ whiteboard from memory.** “Saturday: draw the month-2 three-tier architecture with nothing open, out loud, and say why each choice is there. This is what the exam measures underneath the multiple choice.”
-- **⑨ Gate 2.** “Eighty percent or better on two different full-length exams. Not one. If you are under, move the exam; a two-week slip costs less than a failed attempt.”
-- **⑩ Sunday rest.** “No cramming. Fatigue costs more points than one more practice exam gains. The rule is written down because everyone breaks it.”
-- **⑪ book the exam.** “A booked date is what turns prep into a deadline. Week 10, Tuesday.”
-- **Close.** “Measure, narrow, rebuild, measure again. Then one more week and back to building, because certification that displaces building is how this whole program fails.”
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three minutes. Read the figure before the day plan; say the script on Friday.
 
 ---
 

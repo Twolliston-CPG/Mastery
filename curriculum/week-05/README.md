@@ -21,58 +21,11 @@
 
 ## The week in one figure
 
-**Figure 5.1 — How AWS decides, and how an instance gets credentials with no keys on disk.** Two blue paths. The top one is the IAM evaluation every request goes through. The bottom one is the mechanism that gives an EC2 instance credentials it never stores: the instance profile and IMDSv2. Badges are numbered in the order to walk them; the blue path is the one to follow first.
+**Figure 5.1 — How AWS decides, and how an instance gets credentials with no keys on disk.** Two blue paths. The top one is the IAM evaluation every request goes through. The bottom one is the mechanism that gives an EC2 instance credentials it never stores: the instance profile and IMDSv2.
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
-flowchart LR
-  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
-  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
-  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
-  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
-  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
-  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+![Figure 5.1 — How AWS decides, and how an instance gets credentials with no keys on disk](content/figure-5.1-how-aws-decides-and-how-an.png)
 
-  subgraph EVAL["IAM evaluation · every request, in this order"]
-    direction LR
-    E1["① principal + request<br/><small>who · action · resource · conditions</small>"]:::crit
-    E2["② explicit Deny?<br/><small>anywhere wins</small>"]:::warn
-    E3["③ SCP · permission boundary<br/><small>ceilings, not grants</small>"]:::n
-    E4["④ identity or resource policy Allow?<br/><small>no Allow = implicit deny</small>"]:::crit
-    E5["⑤ allowed<br/><small>or AccessDenied, with the reason in CloudTrail</small>"]:::crit
-  end
-  subgraph INST["EC2 · credentials without a credential"]
-    direction LR
-    I1["⑥ instance profile<br/><small>wraps a role · attached at launch</small>"]:::n
-    I2["⑦ IMDSv2<br/><small>PUT token, TTL ≤ 6 h · hop limit 1 · 169.254.169.254</small>"]:::crit
-    I3["⑧ temporary credentials<br/><small>rotated about every 6 h · never on disk</small>"]:::data
-    I4["⑨ SDK credential chain<br/><small>env → profile → container → IMDS</small>"]:::n
-  end
-  X["⑩ cross-account AssumeRole<br/><small>trust policy + ExternalId · STS</small>"]:::n
-  G["⑪ guardrails first<br/><small>budgets $25 · $50 · $100 · root MFA · no root keys</small>"]:::warn
-  E1 ==> E2 ==> E3 ==> E4 ==> E5
-  I1 ==> I2 ==> I3 ==> I4
-  I4 --> E1
-  X -.-> E1
-  G -.-> I1
-  linkStyle 0,1,2,3,4,5,6 stroke:#2f6fb8,stroke-width:2px
-```
-
-**What to say, badge by badge** · about three and a half minutes at a normal pace. Point at each badge as you say its line.
-
-- **Open.** “IAM breaks in production more than anything else in AWS. The top row is the decision AWS makes on every call. The bottom row is how a machine gets to make calls at all, without a key on disk. Both are exam material and both are interview material.”
-- **① principal and request.** “A principal, an action, a resource, and conditions. Every AccessDenied is one of those four being different from what you assumed. The policy simulator lets you test the four without making the call.”
-- **② explicit Deny.** “An explicit Deny anywhere wins, over any Allow, from any policy. This is the first thing evaluated and the first thing to look for when a user with AdministratorAccess still gets denied.”
-- **③ SCP and permission boundary.** “These are ceilings. An SCP from Organizations and a permission boundary on the identity can only take permissions away. A boundary that does not mention S3 means no S3, however generous the identity policy is.”
-- **④ identity or resource policy Allow.** “Within the same account, an Allow from either the identity's policy or the resource's policy is enough. Across accounts, you need both. No Allow at all is an implicit deny, and it is the common case.”
-- **⑤ allowed.** “Or denied, and the reason is in CloudTrail. Four AccessDenied stories become blog post 3.”
-- **⑥ instance profile.** “A role needs a vehicle to ride on an instance. The instance profile is that vehicle, attached at launch. The role has the permissions; the profile is just the attachment.”
-- **⑦ IMDSv2.** “The instance asks the metadata service at 169.254.169.254. Version 2 requires a PUT to get a session token first, with a TTL up to six hours, and a hop limit of one so a container on the instance cannot reach it. Version 1 is a plain GET, and that is the SSRF story.”
-- **⑧ temporary credentials.** “The answer is an access key, a secret, and a session token, rotated roughly every six hours. Nothing is written to disk. Lose the instance, lose the credentials.”
-- **⑨ SDK credential chain.** “The SDK looks in order: environment variables, a profile file, the container endpoint, then IMDS. Knowing the order explains why a stray key in a profile file silently overrides the role.”
-- **⑩ cross-account AssumeRole.** “A role in account B trusts a principal in account A. STS issues temporary credentials. ExternalId stops the confused-deputy problem when a third party does the assuming.”
-- **⑪ guardrails first.** “Before any of this exists: three budgets, alerts tested, MFA on root, root access keys deleted. The script does the budgets. The rest is a five-minute console task you do once.”
-- **Close.** “Deny first, ceilings next, then an Allow or nothing. And a machine earns credentials by being who it is, not by holding a key. Week 12 and week 16 are the same idea for a GitHub workflow and for a pod.”
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
 
 ---
 

@@ -64,6 +64,9 @@ python3 curriculum/_shared/feynman/inject.py --apply
 # Re-render the ten lab-platform figures for curriculum/_setup/ARCHITECTURE.md (diagrams lib + graphviz)
 python3 curriculum/_shared/diagrams/generate-setup-figures.py
 
+# Re-render the 26 weekly figures + their content/FIGURE.md scripts + README sections (same toolchain)
+python3 curriculum/_shared/diagrams/generate-week-figures.py            # --only 14 for one week
+
 # Re-render + re-embed Mermaid diagrams as PNGs into the .md files
 python3 curriculum/_shared/diagrams/embed-figures.py --apply
 python3 curriculum/_shared/diagrams/embed-figures.py --revert   # strip images, keep Mermaid
@@ -106,7 +109,7 @@ Four layers, each with a different audience:
 | Layer | Purpose |
 |---|---|
 | Root `*.md` | Strategy — roadmap, certs, projects, job search. Read by a human deciding whether to commit |
-| `curriculum/week-01…26/` | Execution. Every week is `README.md` (thesis · **one numbered figure with a spoken walkthrough**, always the first H2 · day plan · reading map · exit criteria) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates**. `curriculum/FIGURES.md` indexes the figures and states the convention |
+| `curriculum/week-01…26/` | Execution. Every week is `README.md` (thesis · **Figure W.1**, always the first H2 · day plan · reading map · exit criteria) + `content/` (the figure as PNG/SVG and `FIGURE.md`, its numbered spoken script) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates**. `curriculum/FIGURES.md` indexes the figures and states the convention |
 | `curriculum/_shared/` | Cross-cutting: 58 break/fix scenarios (`BF-01`–`BF-58`), drills, Anki, interview bank, templates, and the `diagrams/` + `feynman/` toolchains |
 | `curriculum/_reference/` | 623 files of anonymized long-form material, ten domains. A **lookup, not a course** — each week's reading map names the exact files |
 
@@ -125,6 +128,9 @@ Three things in `_reference/` are machine-written and will be overwritten:
   hash in the filename so unchanged diagrams are never re-rendered.
 - **`_reference/SOURCES.md` links** are duplicated into all 623 Feynman blocks via `domains.py`.
   Change the source there, not in the files.
+- **Weekly figures** — `week-WW/content/figure-W.1-*.png|svg`, `content/FIGURE.md`, and the
+  `## The week in one figure` README section are written by `_shared/diagrams/generate-week-figures.py`
+  from the specs in `_shared/diagrams/week_figures/`. Edit the spec and re-run; hand edits are overwritten.
 
 ## Invariants that break silently
 
