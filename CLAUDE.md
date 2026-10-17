@@ -14,14 +14,17 @@ for how a learner moves through it.
 
 ## Status
 
-<!-- Keep this current. Overwrite it, don't append — history is in `git log`. Updated 2026-10-10. -->
+<!-- Keep this current. Overwrite it, don't append — history is in `git log`. Updated 2026-10-17. -->
 - **Git:** repo initialised 2026-10-10 on `main`, **no remote yet**. Last full review 2026-10-17 (setup scripts, guardrails, link integrity, anonymization residue; all commits on `main`). Repo-local identity
   "Sergino Delia" with the GitHub email (not the personal one).
 - **GitHub repo:** `thewayofthesurge` (private, name set in `infra/github/variables.tf`), not created yet. Blocked on a fine-grained PAT; then `terraform apply` in `infra/github/`,
   then `git remote add origin` + first push (steps in `infra/github/README.md`).
 - **Flags still off:** `enable_rulesets` (needs GitHub Pro), `require_signed_commits` (needs SSH signing).
 - **Unknown:** GitHub username and plan (Free vs Pro).
-- **Next:** first push → confirm CI green → second-pass `terraform apply -var enable_rulesets=true`.
+- **Unverified on a live system (2026-10-17):** Contour on kind (`02-kind-cluster.sh`), OS Login on the
+  Ubuntu GCP lab image, `windows-setup.ps1`, and the `figures-fresh` CI job (passes locally; add it to
+  `required_status_checks` in `infra/github/variables.tf` only after it has run green on the runner).
+- **Next:** first push → confirm all four CI jobs green → second-pass `terraform apply -var enable_rulesets=true`.
 
 ## Where state lives
 
