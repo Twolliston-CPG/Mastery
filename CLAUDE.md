@@ -61,6 +61,9 @@ python3 curriculum/_shared/diagrams/check-diagrams.py --links curriculum/_refere
 python3 curriculum/_shared/feynman/inject.py           # dry run FIRST
 python3 curriculum/_shared/feynman/inject.py --apply
 
+# Re-render the ten lab-platform figures for curriculum/_setup/ARCHITECTURE.md (diagrams lib + graphviz)
+python3 curriculum/_shared/diagrams/generate-setup-figures.py
+
 # Re-render + re-embed Mermaid diagrams as PNGs into the .md files
 python3 curriculum/_shared/diagrams/embed-figures.py --apply
 python3 curriculum/_shared/diagrams/embed-figures.py --revert   # strip images, keep Mermaid
