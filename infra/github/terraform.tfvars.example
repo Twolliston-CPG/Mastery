@@ -8,10 +8,7 @@ enable_rulesets = false
 # Flip to true only after SSH/GPG commit signing works locally.
 require_signed_commits = false
 
-# Jobs a pull request must pass. The default is the three ci.yml jobs already proven on the
-# runner. Once figures-fresh (ci.yml) and the security.yml jobs have each run green, require all
-# of them:
-# required_status_checks = [
-#   "secrets-scan", "content-checks", "terraform-validate", "figures-fresh",
-#   "actions-lint", "shell-lint", "iac-scan",
-# ]
+# Jobs a pull request must pass. The default (variables.tf) is all seven jobs in ci.yml and
+# security.yml, every one seen green on the runner. Override here only to drop a job that has
+# started failing for an environmental reason while it is fixed:
+# required_status_checks = ["secrets-scan", "content-checks", "terraform-validate"]

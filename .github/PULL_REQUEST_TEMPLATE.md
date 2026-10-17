@@ -1,10 +1,16 @@
 ## What and why
 
-<!-- One paragraph. The squash commit uses this body, so write it as the commit message. -->
+<!-- This PR is squash-merged and this body becomes the single commit's message. Write it as one:
+     what changed and why, in prose. Before merging, delete these HTML comments and the checklist
+     below so they do not land in `git log`. -->
 
 ## Review requirements
 
 CI enforces the first block; the author confirms the rest, because no scanner can.
+
+**Merge method: "Squash and merge" only.** Check the dropdown before clicking; GitHub remembers the last
+method used. The repository setting and the ruleset both allow squash alone once applied
+(`infra/github/main.tf`, `rulesets.tf`).
 
 **Enforced by CI (must be green before merge)**
 - `secrets-scan` · `content-checks` · `terraform-validate` · `figures-fresh` (ci.yml)

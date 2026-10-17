@@ -34,6 +34,9 @@ resource "github_repository_ruleset" "default_branch" {
     required_signatures     = var.require_signed_commits
 
     pull_request {
+      # Squash is the only merge method. main.tf already disables the other two on the repository
+      # settings page; this repeats it as a rule so flipping the setting back cannot bypass it.
+      allowed_merge_methods = ["squash"]
       # 0 approvals: a solo author cannot approve their own PR. The gate is CI, not review.
       required_approving_review_count   = 0
       dismiss_stale_reviews_on_push     = true

@@ -17,25 +17,32 @@ for how a learner moves through it.
 <!-- Keep this current. Overwrite it, don't append — history is in `git log`. Updated 2026-10-17. -->
 - **Git:** repo initialised 2026-10-10 on `main`; remote `origin` added and pushed (see next bullet). Last full review 2026-10-17 (setup scripts, guardrails, link integrity, anonymization residue; all commits on `main`). Repo-local identity
   "Sergino Delia" with the GitHub email (not the personal one).
-- **GitHub repo:** live and private at `github.com/SerginoDelia/twots` (remote `origin`, `main` tracks it,
-  pushes work as of 2026-10-17). `infra/github/` now names the same repo (`twots`) and `imports.tf` adopts it
-  and its four settings resources on the first apply. **That apply has not run** (needs the fine-grained PAT);
-  the plan must show 5 to import, 0 to add, 0 to destroy before applying.
+- **GitHub repo:** live and private at `github.com/SerginoDelia/twots` (remote `origin`). `gh` is authenticated
+  as `SerginoDelia`. PR #9 (review requirements, security workflow, curriculum scan fixes) merged 2026-10-17
+  17:45 UTC **as a merge commit** `107efd2`: squash-only was not yet set on the live repo. Since then the live
+  settings are squash-only, delete-branch-on-merge, PR title + body as the squash message (set with `gh repo
+  edit`). Both workflows ran green on `ubuntu-24.04-arm` at `08e3c3f`, so all seven jobs are now the default
+  `required_status_checks`.
+- **Terraform adoption:** `terraform plan` with the `gh` token shows **5 to import, 0 to add, 3 to change,
+  0 to destroy** (the plan is saved as `infra/github/tfplan`, gitignored). The 3 changes are the repo settings,
+  the Actions policy (live is `allowed_actions: all`; Terraform sets GitHub-owned only) and the workflow access
+  level. **Apply is pending a human:** `cd infra/github && GITHUB_TOKEN=$(gh auth token) terraform apply tfplan`.
 - **Flags still off:** `enable_rulesets` (needs GitHub Pro), `require_signed_commits` (needs SSH signing).
-- **Unknown:** GitHub plan (Free vs Pro). Username is `SerginoDelia`.
+- **Unknown:** GitHub plan (Free vs Pro); the API returns `plan: null` for this token. The first
+  `terraform apply -var enable_rulesets=true` answers it (403 means Free).
 - **Unverified on a live system (2026-10-17):** Contour on kind (`02-kind-cluster.sh`), OS Login on the
   Ubuntu GCP lab image, `windows-setup.ps1`, the `figures-fresh` CI job, and all four `security.yml` jobs
   (every one passes locally; `gh` is not authenticated here, so runner results have not been seen). A job
   joins `required_status_checks` only after it has run green on the runner; the full target list is in
   `infra/github/terraform.tfvars.example`.
-- **Next:** merge the open PR once `ci` + `security` are green on the runner (first run on `ubuntu-24.04-arm`) →
-  export `GITHUB_TOKEN`, `terraform plan` in `infra/github/` (5 imports, nothing to add) and apply → put the full
-  `required_status_checks` list in `terraform.tfvars` → `terraform apply -var enable_rulesets=true` (needs Pro).
-- **Workflow lockfile (public preview since 2026-10-14, available on Free):** `gh extension install
-  github/gh-actions-lock && gh actions-lock` writes `.github/workflows/actions.lock`; GitHub then runs the locked
-  commits even if a tag moves, and Dependabot updates the lock with the action. Needs an authenticated `gh`, so
-  not done yet. After adoption, add `gh actions-lock --verify` to `actions-lint` and turn on the repo's
-  "Require lockfile" setting.
+- **Next:** apply the saved plan (above) → `terraform apply -var enable_rulesets=true` to learn the plan and, on
+  Pro, enforce PR-only, squash-only, seven required checks on `main` → merge the follow-up PR (squash ruleset,
+  template, required-checks default).
+- **Workflow lockfile (public preview since 2026-10-14):** extension installed; `gh actions-lock --no-fix` on
+  2026-10-17 **skips `ci.yml` and `security.yml`** ("local path actions are not yet supported") because both use
+  `./.github/actions/fetch-tool`, and would re-pin `links.yml` to tags, breaking the SHA convention. Blocked on
+  the extension, not on us. Re-run `gh actions-lock --no-fix` after each extension update; adopt when it
+  handles local actions, then add `--verify` to `actions-lint` and turn on "Require lockfile".
 
 ## Where state lives
 
