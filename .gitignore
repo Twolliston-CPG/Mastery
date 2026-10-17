@@ -36,7 +36,6 @@ $RECYCLE.BIN/
 
 # ---- Local-only artifacts of this repository -------------------------------------------------
 _backups/
-/curriculum/_setup/gcp-lab/state.zip
 curriculum/_shared/diagrams/.tools/
 curriculum/_shared/diagrams/_out/
 _build/
@@ -48,6 +47,7 @@ __pycache__/
 *$py.class
 .venv/
 venv/
+.python-version
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -71,7 +71,11 @@ yarn-error.log*
 *.tfstate.lock.info
 *.tfplan
 tfplan
+tf.plan
 plan.out
+# `terraform show -json tf.plan > plan.json` (week 10/19 labs): the JSON plan carries every
+# planned attribute value, sensitive ones included.
+plan.json
 crash.log
 crash.*.log
 # Real variable values stay local; the committed contract is the *.example file.
@@ -88,6 +92,9 @@ override.tf.json
 .terraformrc
 terraform.rc
 # NOT ignored on purpose: .terraform.lock.hcl
+# Scanner caches: checkov downloads external modules next to the scanned root; tflint plugins.
+.external_modules/
+.tflint.d/
 
 # ---- Credentials, keys, tokens --------------------------------------------------------------
 # Environment files. The committed form is *.example.
@@ -138,6 +145,17 @@ kubeconfig.*
 vault-password*
 .vault-pass*
 
+# ---- Scanner and supply-chain output --------------------------------------------------------
+# trivy/checkov SARIF, syft SBOMs, cosign signatures and attestations are produced per build and
+# belong in the pipeline's artifact store, not in the source tree (week 17-19 labs).
+*.sarif
+sbom.*
+*.spdx.json
+*.cdx.json
+*.sig
+*.att
+.trivycache/
+
 # ---- Build and runtime output ---------------------------------------------------------------
 dist/
 build/
@@ -150,8 +168,13 @@ tmp/
 *.orig
 *.rej
 # Disk images and archives are downloads, never sources (see curriculum/_setup/gcp-lab/image).
+# Covers the fetched image tarballs, `docker save` exports, and the old gcp-lab/state.zip snapshot.
 *.qcow2
 *.raw
 *.iso
 *.vmdk
 *.ova
+*.tar
+*.tar.gz
+*.tgz
+*.zip

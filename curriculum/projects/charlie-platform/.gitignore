@@ -1,0 +1,23 @@
+# Standalone project template: these rules travel with a copy of this folder.
+
+# Python (cli/validate.py)
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Terraform (platform/modules, run by .github/workflows/provision.yml)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tf.plan
+plan.json
+crash.log
+crash.*.log
+*.tfvars
+!*.tfvars.example
+
+# Local
+.env
+.DS_Store

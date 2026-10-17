@@ -1,0 +1,14 @@
+# This folder is meant to be copied out and used as a standalone project, so it carries its own
+# rules even though the repository root already covers most of them.
+
+# Real values live in .env; the committed contract is .env.example.
+.env
+
+# `make tls` writes a self-signed cert AND its private key here.
+tls/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/

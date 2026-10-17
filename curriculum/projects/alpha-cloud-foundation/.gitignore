@@ -12,6 +12,8 @@ override.tf.json
 terraform.rc
 tf.plan
 plan.txt
+plan.json
+.external_modules/
 
 # tfvars may contain secrets. The .example files ARE committed.
 *.tfvars
