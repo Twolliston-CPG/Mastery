@@ -15,7 +15,7 @@ for how a learner moves through it.
 ## Status
 
 <!-- Keep this current. Overwrite it, don't append — history is in `git log`. Updated 2026-10-10. -->
-- **Git:** repo initialised 2026-10-10 on `main`, 2 commits, **no remote yet**. Repo-local identity
+- **Git:** repo initialised 2026-10-10 on `main`, **no remote yet**. Last full review 2026-10-17 (setup scripts, guardrails, link integrity, anonymization residue; all commits on `main`). Repo-local identity
   "Sergino Delia" with the GitHub email (not the personal one).
 - **GitHub repo:** `thewayofthesurge` (private, name set in `infra/github/variables.tf`), not created yet. Blocked on a fine-grained PAT; then `terraform apply` in `infra/github/`,
   then `git remote add origin` + first push (steps in `infra/github/README.md`).
