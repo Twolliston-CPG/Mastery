@@ -68,12 +68,13 @@ PROJECT_ID=surge-lab-CHANGEME
 
 gcloud projects create $PROJECT_ID --name="Surge Lab"
 
-# or, if the project already exists:  PROJECT_ID=your-existing-project-id
+# or, if the project already exists:  
+PROJECT_ID=twollist-twots-lab
 gcloud config set project $PROJECT_ID
 gcloud auth application-default set-quota-project $PROJECT_ID
 
 gcloud billing accounts list
-gcloud billing projects link $PROJECT_ID --billing-account=YOUR_BILLING_ACCOUNT_ID
+gcloud billing projects link $PROJECT_ID --billing-account=013DEC-0090A9-543BAF
 ```
 
 ### 4. A budget alert — before anything is created
