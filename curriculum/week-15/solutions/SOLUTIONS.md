@@ -230,7 +230,7 @@ This enumerates everything a principal can do — much faster than reading polic
 | Templating language | Yes — powerful, and unreadable at scale | **None** — output is always valid YAML |
 | Built into kubectl | No | **Yes** (`kubectl apply -k`) |
 
-**The answer:** Helm for third-party software you *consume* (ingress-nginx, Prometheus, ArgoCD) —
+**The answer:** Helm for third-party software you *consume* (Contour, Prometheus, ArgoCD) —
 you want versioning and a registry. Kustomize for your **own** manifests, where the base is yours and
 overlays are small. ArgoCD supports both natively, so it isn't an exclusive choice.
 

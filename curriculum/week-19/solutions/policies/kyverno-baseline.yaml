@@ -31,7 +31,7 @@ spec:
                 - kube-public
                 - kube-node-lease
                 - kyverno
-                - ingress-nginx
+                - projectcontour
                 - monitoring
                 - argocd
                 - external-secrets
@@ -70,7 +70,7 @@ spec:
                 - kube-public
                 - kube-node-lease
                 - kyverno
-                - ingress-nginx
+                - projectcontour
                 - monitoring
                 - argocd
                 - external-secrets
@@ -111,7 +111,7 @@ spec:
                 - kube-public
                 - kube-node-lease
                 - kyverno
-                - ingress-nginx
+                - projectcontour
                 - monitoring
                 - argocd
                 - external-secrets
@@ -150,7 +150,7 @@ spec:
                 - kube-public
                 - kube-node-lease
                 - kyverno
-                - ingress-nginx
+                - projectcontour
                 - monitoring
                 - argocd
                 - external-secrets
@@ -187,7 +187,7 @@ spec:
                 - kube-public
                 - kube-node-lease
                 - kyverno
-                - ingress-nginx
+                - projectcontour
                 - monitoring
                 - argocd
                 - external-secrets

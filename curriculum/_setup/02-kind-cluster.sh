@@ -35,15 +35,37 @@ YAML
 kind create cluster --name "$NAME" --config "$CONFIG"
 kubectl cluster-info --context "kind-${NAME}"
 
-echo "==> Installing ingress-nginx"
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-kubectl wait --namespace ingress-nginx \
+# Pinned versions. A manifest fetched from a branch or "latest" is a different
+# cluster every week, and ingress-nginx -- the controller this script used to install
+# -- was retired upstream in 2026; its repository no longer exists. Contour is CNCF
+# graduated, and its Envoy DaemonSet binds hostPorts 80/443, which is what the
+# extraPortMappings above expose on localhost.
+CONTOUR_VERSION="v1.33.7"
+METRICS_SERVER_VERSION="v0.9.0"
+
+echo "==> Installing Contour ${CONTOUR_VERSION} (ingress controller)"
+kubectl apply -f "https://raw.githubusercontent.com/projectcontour/contour/${CONTOUR_VERSION}/examples/render/contour.yaml"
+# Envoy must run on the node that owns the port mappings (the control-plane, labelled
+# ingress-ready=true in the config above), and that node is tainted.
+kubectl patch daemonset -n projectcontour envoy --type=merge -p '{"spec":{"template":{"spec":{
+  "nodeSelector":{"ingress-ready":"true"},
+  "tolerations":[{"key":"node-role.kubernetes.io/control-plane","operator":"Equal","effect":"NoSchedule"}]}}}}'
+# The class name the labs use. Contour also serves Ingresses with no class set.
+kubectl apply -f - <<'YAML'
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: contour
+spec:
+  controller: projectcontour.io/ingress-controller
+YAML
+kubectl wait --namespace projectcontour \
   --for=condition=ready pod \
-  --selector=app.kubernetes.io/component=controller \
+  --selector=app=envoy \
   --timeout=180s
 
-echo "==> Installing metrics-server (needed for HPA labs)"
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+echo "==> Installing metrics-server ${METRICS_SERVER_VERSION} (needed for HPA labs)"
+kubectl apply -f "https://github.com/kubernetes-sigs/metrics-server/releases/download/${METRICS_SERVER_VERSION}/components.yaml"
 kubectl patch -n kube-system deployment metrics-server --type=json \
   -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
 

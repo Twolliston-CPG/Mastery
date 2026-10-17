@@ -238,7 +238,7 @@ flowchart TB
 
   subgraph PLAT["Platform services · run once, consumed by all 20 teams"]
     direction LR
-    P1["ingress-nginx · cert-manager"]:::mut
+    P1["Contour · cert-manager"]:::mut
     P2["ArgoCD · Kyverno"]:::mut
     P3["kube-prometheus-stack · Loki"]:::mut
     P4["external-secrets · Falco"]:::mut

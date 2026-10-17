@@ -173,7 +173,7 @@ kind: Ingress
 metadata:
   name: web
 spec:
-  ingressClassName: nginx        # WITHOUT this the controller ignores it entirely
+  ingressClassName: contour      # WITHOUT this the controller ignores it entirely
   rules:
     - host: web.local
       http:

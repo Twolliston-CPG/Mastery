@@ -38,7 +38,7 @@ spec:
               namespaces:
                 - kube-system
                 - kyverno
-                - ingress-nginx
+                - projectcontour
                 - monitoring
                 - argocd
                 - external-secrets

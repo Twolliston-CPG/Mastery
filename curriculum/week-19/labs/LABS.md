@@ -141,7 +141,7 @@ spec:
       exclude:
         any:
           - resources:
-              namespaces: [kube-system, kyverno, ingress-nginx, monitoring, argocd]
+              namespaces: [kube-system, kyverno, projectcontour, monitoring, argocd]
       validate:
         message: "CPU and memory limits are required. See docs/runbooks/resource-limits.md"
         pattern:

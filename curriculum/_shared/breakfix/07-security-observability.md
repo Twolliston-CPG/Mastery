@@ -89,7 +89,7 @@ spec:
       exclude:
         any:
           - resources:
-              namespaces: ["kube-system", "kyverno", "ingress-nginx", "monitoring"]
+              namespaces: ["kube-system", "kyverno", "projectcontour", "monitoring"]
 ```
 
 **THE THREE RULES OF ADMISSION CONTROL — this is the transferable lesson:**

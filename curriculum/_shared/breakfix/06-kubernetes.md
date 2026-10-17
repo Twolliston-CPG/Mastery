@@ -300,7 +300,7 @@ The bottom-left cell is the one people get wrong, and it's the one interviewers 
 ```bash
 kubectl describe ingress <ing>
 kubectl get ingressclass
-kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller --tail=50
+kubectl logs -n projectcontour -l app=contour --tail=50     # the controller; -l app=envoy for the proxy
 kubectl get endpoints <backend-service>
 ```
 
@@ -315,7 +315,7 @@ kubectl get endpoints <backend-service>
 **FIX:**
 ```yaml
 spec:
-  ingressClassName: nginx
+  ingressClassName: contour
   rules:
     - host: app.local
       http:

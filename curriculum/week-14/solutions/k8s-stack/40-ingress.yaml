@@ -4,11 +4,11 @@ metadata:
   name: app
   namespace: shop
   annotations:
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "30"
+    projectcontour.io/response-timeout: "30s"
 spec:
   # Without ingressClassName the controller IGNORES this resource entirely,
   # which presents as a 404 and sends people hunting in the wrong place.
-  ingressClassName: nginx
+  ingressClassName: contour
   rules:
     - host: shop.local
       http:

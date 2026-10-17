@@ -86,7 +86,7 @@ Set a 10-minute timer. No reference. Produce a single YAML file containing:
    - readiness probe on `/ready`, liveness on `/health` with a startup probe
    - non-root, read-only root filesystem, all capabilities dropped
 3. A `Service` selecting it on port 80 → 8080
-4. An `Ingress` for `shop.local` with `ingressClassName: nginx`
+4. An `Ingress` for `shop.local` with `ingressClassName: contour`
 5. A `ConfigMap` mounted as a volume at `/etc/app`
 6. A `ServiceAccount`, `Role` (get/list pods), and `RoleBinding`
 7. A `NetworkPolicy` that default-denies and then allows DNS + ingress from the ingress controller
