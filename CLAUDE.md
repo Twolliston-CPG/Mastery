@@ -106,7 +106,7 @@ Four layers, each with a different audience:
 | Layer | Purpose |
 |---|---|
 | Root `*.md` | Strategy — roadmap, certs, projects, job search. Read by a human deciding whether to commit |
-| `curriculum/week-01…26/` | Execution. Every week is `README.md` (thesis · day plan · reading map · exit criteria) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates** |
+| `curriculum/week-01…26/` | Execution. Every week is `README.md` (thesis · **one numbered figure with a spoken walkthrough**, always the first H2 · day plan · reading map · exit criteria) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates**. `curriculum/FIGURES.md` indexes the figures and states the convention |
 | `curriculum/_shared/` | Cross-cutting: 58 break/fix scenarios (`BF-01`–`BF-58`), drills, Anki, interview bank, templates, and the `diagrams/` + `feynman/` toolchains |
 | `curriculum/_reference/` | 623 files of anonymized long-form material, ten domains. A **lookup, not a course** — each week's reading map names the exact files |
 

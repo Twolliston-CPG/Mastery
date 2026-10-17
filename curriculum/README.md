@@ -14,6 +14,7 @@ make the rest work. Then [**STEP-BY-STEP.md**](STEP-BY-STEP.md) — the operatin
 | Directory | What it is |
 |---|---|
 | **[`week-01/`](week-01/) … [`week-26/`](week-26/)** | One directory per week: `README.md` (objectives, day plan, reading map, exit criteria), `labs/` (the work), `solutions/` (worked answers **and running code**), `assessment.md` (self-test with an answer key) |
+| **[`FIGURES.md`](FIGURES.md)** | Index of the 26 weekly figures and the 10 platform figures, each with a numbered spoken walkthrough. Read a week's figure before its day plan |
 | **[`_setup/`](_setup/)** | Runnable environment scripts — toolchain, AWS cost guardrails, local Kubernetes, nightly teardown, verification. [`ARCHITECTURE.md`](_setup/ARCHITECTURE.md) explains the lab platform and its guardrails in ten figures |
 | **[`_shared/`](_shared/)** | Cross-cutting assets used every week: break/fix library, drills, Anki decks, interview bank, templates |
 | **[`_reference/`](_reference/)** | 623 files of curated, **anonymized** long-form reference material, organized by topic |

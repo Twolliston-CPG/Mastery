@@ -12,6 +12,7 @@ compounds into 26 weeks.** Four loops, nested. Learn the daily one and the rest 
 
 Do all of [`START-HERE.md`](START-HERE.md). Summarised, so you can check it off:
 
+- [ ] Every week README opens with **one figure and a spoken walkthrough** — read it before the day plan, say it out loud on Friday. Index: [`FIGURES.md`](FIGURES.md)
 - [ ] Read [`../ROADMAP.md`](../ROADMAP.md) §1–2 — twenty minutes that decide the next six months
 - [ ] **The market check** — 30 real job postings in *your* market. Azure-dominant? Swap the whole
       cloud track now. Decide once; re-litigating in month 3 costs a month
