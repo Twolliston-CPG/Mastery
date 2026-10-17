@@ -20,7 +20,7 @@
 
 ![Figure 19.1 — Where each control sits: before the plan, at the door, on the wire, at runtime](content/figure-19.1-where-each-control-sits-before-the.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about four minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about four minutes; [`content/figure-19.1-numbered-spoken.pdf`](content/figure-19.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

@@ -13,9 +13,9 @@
 <polygon fill="#eef4fb" stroke="#aeb6be" points="302,-266.4 302,-634.4 718,-634.4 718,-266.4 302,-266.4"/>
 <text xml:space="preserve" text-anchor="middle" x="338.5" y="-621.85" font-family="Helvetica,sans-Serif" font-size="9.00" fill="#2d3436">What appears</text>
 </g>
-<!-- 5bd03aab04e14d6f835aa21ae2a55a59 -->
+<!-- cae8ae93e88844809a147d5ffdc58a07 -->
 <g id="node1" class="node">
-<title>5bd03aab04e14d6f835aa21ae2a55a59</title>
+<title>cae8ae93e88844809a147d5ffdc58a07</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/management/organizations.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="0" y="-532.8"/>
 <text xml:space="preserve" text-anchor="start" x="-10.88" y="-419.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">①</text>
 <text xml:space="preserve" text-anchor="start" x="0.38" y="-419.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -23,9 +23,9 @@
 <text xml:space="preserve" text-anchor="start" x="-5.62" y="-409.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">nothing in it · the only honest</text>
 <text xml:space="preserve" text-anchor="start" x="38.62" y="-398.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">test</text>
 </g>
-<!-- c43fa99493a24a3f97cd9f19f336c3aa -->
+<!-- ebfa69a8625647cb9491537939e330b5 -->
 <g id="node2" class="node">
-<title>c43fa99493a24a3f97cd9f19f336c3aa</title>
+<title>ebfa69a8625647cb9491537939e330b5</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/iac/terraform.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="155" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="159.5" y="-221.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">②</text>
 <text xml:space="preserve" text-anchor="start" x="170.75" y="-221.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -33,60 +33,60 @@
 <text xml:space="preserve" text-anchor="start" x="134.75" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">terraform apply · from the README,</text>
 <text xml:space="preserve" text-anchor="start" x="165.5" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">no tribal knowledge</text>
 </g>
-<!-- 5bd03aab04e14d6f835aa21ae2a55a59&#45;&gt;c43fa99493a24a3f97cd9f19f336c3aa -->
+<!-- cae8ae93e88844809a147d5ffdc58a07&#45;&gt;ebfa69a8625647cb9491537939e330b5 -->
 <g id="edge1" class="edge">
-<title>5bd03aab04e14d6f835aa21ae2a55a59&#45;&gt;c43fa99493a24a3f97cd9f19f336c3aa</title>
+<title>cae8ae93e88844809a147d5ffdc58a07&#45;&gt;ebfa69a8625647cb9491537939e330b5</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M89.84,-407.66C107.85,-384.36 128.83,-357.21 147.55,-332.98"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="150.14,-335.36 153.48,-325.3 144.6,-331.08 150.14,-335.36"/>
 </g>
-<!-- 796dcc20f0734d309ea16297c60912b7 -->
+<!-- 9c6bf3273ff64d61bbcfe9c463e09a08 -->
 <g id="node3" class="node">
-<title>796dcc20f0734d309ea16297c60912b7</title>
+<title>9c6bf3273ff64d61bbcfe9c463e09a08</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/network/vpc.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="310" y="-433.8"/>
 <text xml:space="preserve" text-anchor="start" x="329.5" y="-309.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">③</text>
 <text xml:space="preserve" text-anchor="start" x="340.75" y="-309.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="343.75" y="-309.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">network</text>
 <text xml:space="preserve" text-anchor="start" x="318.62" y="-299.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">VPC · 2 AZs · 3 tiers</text>
 </g>
-<!-- c43fa99493a24a3f97cd9f19f336c3aa&#45;&gt;796dcc20f0734d309ea16297c60912b7 -->
+<!-- ebfa69a8625647cb9491537939e330b5&#45;&gt;9c6bf3273ff64d61bbcfe9c463e09a08 -->
 <g id="edge2" class="edge">
-<title>c43fa99493a24a3f97cd9f19f336c3aa&#45;&gt;796dcc20f0734d309ea16297c60912b7</title>
+<title>ebfa69a8625647cb9491537939e330b5&#45;&gt;9c6bf3273ff64d61bbcfe9c463e09a08</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M244.84,-294.77C261.89,-305.8 281.6,-318.55 299.54,-330.16"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="297.57,-333.05 307.86,-335.55 301.37,-327.18 297.57,-333.05"/>
 </g>
-<!-- 1eee155e54504fbbaa55613251034366 -->
+<!-- 833ab4c236ea41cd8d2626a7f3c05a1c -->
 <g id="node12" class="node">
-<title>1eee155e54504fbbaa55613251034366</title>
+<title>833ab4c236ea41cd8d2626a7f3c05a1c</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="310" y="-235.8"/>
 <text xml:space="preserve" text-anchor="start" x="310.75" y="-111.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑫</text>
 <text xml:space="preserve" text-anchor="start" x="322" y="-111.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="325" y="-111.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#8a3a1e">teardown verified</text>
 <text xml:space="preserve" text-anchor="start" x="304.75" y="-101.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">destroy to zero · bill checked</text>
 </g>
-<!-- c43fa99493a24a3f97cd9f19f336c3aa&#45;&gt;1eee155e54504fbbaa55613251034366 -->
+<!-- ebfa69a8625647cb9491537939e330b5&#45;&gt;833ab4c236ea41cd8d2626a7f3c05a1c -->
 <g id="edge11" class="edge">
-<title>c43fa99493a24a3f97cd9f19f336c3aa&#45;&gt;1eee155e54504fbbaa55613251034366</title>
+<title>ebfa69a8625647cb9491537939e330b5&#45;&gt;833ab4c236ea41cd8d2626a7f3c05a1c</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M244.84,-238.03C262.21,-226.79 282.34,-213.77 300.55,-201.99"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="302.38,-204.97 308.88,-196.6 298.58,-199.09 302.38,-204.97"/>
 </g>
-<!-- dde7b2eb98754db3a8d48484c8b033ff -->
+<!-- 2a735400016d47d8a70dd380d56a27ca -->
 <g id="node4" class="node">
-<title>dde7b2eb98754db3a8d48484c8b033ff</title>
+<title>2a735400016d47d8a70dd380d56a27ca</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/compute/application-auto-scaling.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="465" y="-433.8"/>
 <text xml:space="preserve" text-anchor="start" x="482.62" y="-311.3" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">④</text>
 <text xml:space="preserve" text-anchor="start" x="493.88" y="-311.3" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="496.88" y="-311.3" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">compute</text>
 <text xml:space="preserve" text-anchor="start" x="470.25" y="-299.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">ALB → ASG · IMDSv2</text>
 </g>
-<!-- 796dcc20f0734d309ea16297c60912b7&#45;&gt;dde7b2eb98754db3a8d48484c8b033ff -->
+<!-- 9c6bf3273ff64d61bbcfe9c463e09a08&#45;&gt;2a735400016d47d8a70dd380d56a27ca -->
 <g id="edge3" class="edge">
-<title>796dcc20f0734d309ea16297c60912b7&#45;&gt;dde7b2eb98754db3a8d48484c8b033ff</title>
+<title>9c6bf3273ff64d61bbcfe9c463e09a08&#45;&gt;2a735400016d47d8a70dd380d56a27ca</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M399.84,-365.4C416.25,-365.4 435.12,-365.4 452.51,-365.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="452.43,-368.9 462.43,-365.4 452.43,-361.9 452.43,-368.9"/>
 </g>
-<!-- 39914d5db488414ba0776fe394f9aa30 -->
+<!-- a6091bf3f6104800aab5f881f76acb82 -->
 <g id="node5" class="node">
-<title>39914d5db488414ba0776fe394f9aa30</title>
+<title>a6091bf3f6104800aab5f881f76acb82</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/database/rds.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="620" y="-410.8"/>
 <text xml:space="preserve" text-anchor="start" x="638" y="-297.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑤</text>
 <text xml:space="preserve" text-anchor="start" x="649.25" y="-297.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -94,30 +94,30 @@
 <text xml:space="preserve" text-anchor="start" x="610.62" y="-287.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">RDS Multi&#45;AZ · secret never in</text>
 <text xml:space="preserve" text-anchor="start" x="647.38" y="-276.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">Terraform</text>
 </g>
-<!-- dde7b2eb98754db3a8d48484c8b033ff&#45;&gt;39914d5db488414ba0776fe394f9aa30 -->
+<!-- 2a735400016d47d8a70dd380d56a27ca&#45;&gt;a6091bf3f6104800aab5f881f76acb82 -->
 <g id="edge4" class="edge">
-<title>dde7b2eb98754db3a8d48484c8b033ff&#45;&gt;39914d5db488414ba0776fe394f9aa30</title>
+<title>2a735400016d47d8a70dd380d56a27ca&#45;&gt;a6091bf3f6104800aab5f881f76acb82</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M554.84,-358.81C571.33,-356.33 590.3,-353.48 607.76,-350.85"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="608.09,-354.34 617.46,-349.4 607.05,-347.42 608.09,-354.34"/>
 </g>
-<!-- 5041a2ac95db460f8bc8bb341fac7db3 -->
+<!-- fc52ae73d9654c58b1b25fa252f1526f -->
 <g id="node6" class="node">
-<title>5041a2ac95db460f8bc8bb341fac7db3</title>
+<title>fc52ae73d9654c58b1b25fa252f1526f</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/management/cloudwatch.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="620" y="-608.8"/>
 <text xml:space="preserve" text-anchor="start" x="630.5" y="-484.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑥</text>
 <text xml:space="preserve" text-anchor="start" x="641.75" y="-484.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="644.75" y="-484.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">observability</text>
 <text xml:space="preserve" text-anchor="start" x="613.25" y="-474.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">symptom alarms · dashboard</text>
 </g>
-<!-- dde7b2eb98754db3a8d48484c8b033ff&#45;&gt;5041a2ac95db460f8bc8bb341fac7db3 -->
+<!-- 2a735400016d47d8a70dd380d56a27ca&#45;&gt;fc52ae73d9654c58b1b25fa252f1526f -->
 <g id="edge5" class="edge">
-<title>dde7b2eb98754db3a8d48484c8b033ff&#45;&gt;5041a2ac95db460f8bc8bb341fac7db3</title>
+<title>2a735400016d47d8a70dd380d56a27ca&#45;&gt;fc52ae73d9654c58b1b25fa252f1526f</title>
 <path fill="none" stroke="#7a7a7a" d="M554.84,-415.55C572.93,-436.23 594.01,-460.35 612.8,-481.84"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="609.94,-483.88 619.15,-489.11 615.21,-479.27 609.94,-483.88"/>
 </g>
-<!-- 210fdaa6149c409f962db73c8faa0383 -->
+<!-- b8301613371f4fc1b38dc4088ed75a07 -->
 <g id="node10" class="node">
-<title>210fdaa6149c409f962db73c8faa0383</title>
+<title>b8301613371f4fc1b38dc4088ed75a07</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="775" y="-311.8"/>
 <text xml:space="preserve" text-anchor="start" x="778" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑩</text>
 <text xml:space="preserve" text-anchor="start" x="789.25" y="-198.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -125,15 +125,15 @@
 <text xml:space="preserve" text-anchor="start" x="760.38" y="-188.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">README · diagram · ADRs · cost</text>
 <text xml:space="preserve" text-anchor="start" x="788.12" y="-177.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">table · what broke</text>
 </g>
-<!-- 39914d5db488414ba0776fe394f9aa30&#45;&gt;210fdaa6149c409f962db73c8faa0383 -->
+<!-- a6091bf3f6104800aab5f881f76acb82&#45;&gt;b8301613371f4fc1b38dc4088ed75a07 -->
 <g id="edge9" class="edge">
-<title>39914d5db488414ba0776fe394f9aa30&#45;&gt;210fdaa6149c409f962db73c8faa0383</title>
+<title>a6091bf3f6104800aab5f881f76acb82&#45;&gt;b8301613371f4fc1b38dc4088ed75a07</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M709.84,-314.03C726.89,-303 746.6,-290.25 764.54,-278.64"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="766.37,-281.62 772.86,-273.25 762.57,-275.75 766.37,-281.62"/>
 </g>
-<!-- 79743fe5994f4bef82421513e82f8425 -->
+<!-- b441793295d840848f7b8bbce34c649f -->
 <g id="node7" class="node">
-<title>79743fe5994f4bef82421513e82f8425</title>
+<title>b441793295d840848f7b8bbce34c649f</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/ci/github-actions.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="0" y="-136.8"/>
 <text xml:space="preserve" text-anchor="start" x="19.5" y="-23.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑦</text>
 <text xml:space="preserve" text-anchor="start" x="30.75" y="-23.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -141,45 +141,45 @@
 <text xml:space="preserve" text-anchor="start" x="-19.5" y="-13.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">plan on PR · apply on merge · OIDC</text>
 <text xml:space="preserve" text-anchor="start" x="4.5" y="-2.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">· zero static credentials</text>
 </g>
-<!-- 79743fe5994f4bef82421513e82f8425&#45;&gt;c43fa99493a24a3f97cd9f19f336c3aa -->
+<!-- b441793295d840848f7b8bbce34c649f&#45;&gt;ebfa69a8625647cb9491537939e330b5 -->
 <g id="edge6" class="edge">
-<title>79743fe5994f4bef82421513e82f8425&#45;&gt;c43fa99493a24a3f97cd9f19f336c3aa</title>
+<title>b441793295d840848f7b8bbce34c649f&#45;&gt;ebfa69a8625647cb9491537939e330b5</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M89.84,-125.14C107.85,-148.44 128.83,-175.59 147.55,-199.82"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="144.6,-201.72 153.48,-207.5 150.14,-197.44 144.6,-201.72"/>
 </g>
-<!-- a26e7bfa9c374224a896c2c5b9e9bfef -->
+<!-- 348b0c499a72455eabc120e25f96e2e3 -->
 <g id="node8" class="node">
-<title>a26e7bfa9c374224a896c2c5b9e9bfef</title>
+<title>348b0c499a72455eabc120e25f96e2e3</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/storage/simple-storage-service-s3.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="155" y="-136.8"/>
 <text xml:space="preserve" text-anchor="start" x="182" y="-12.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑧</text>
 <text xml:space="preserve" text-anchor="start" x="193.25" y="-12.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="196.25" y="-12.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">state</text>
 <text xml:space="preserve" text-anchor="start" x="152" y="-2.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">remote · versioned · locked</text>
 </g>
-<!-- 79743fe5994f4bef82421513e82f8425&#45;&gt;a26e7bfa9c374224a896c2c5b9e9bfef -->
+<!-- b441793295d840848f7b8bbce34c649f&#45;&gt;348b0c499a72455eabc120e25f96e2e3 -->
 <g id="edge7" class="edge">
-<title>79743fe5994f4bef82421513e82f8425&#45;&gt;a26e7bfa9c374224a896c2c5b9e9bfef</title>
+<title>b441793295d840848f7b8bbce34c649f&#45;&gt;348b0c499a72455eabc120e25f96e2e3</title>
 <path fill="none" stroke="#7a7a7a" d="M89.84,-68.4C106.65,-68.4 126.04,-68.4 143.78,-68.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="143.64,-71.9 153.64,-68.4 143.64,-64.9 143.64,-71.9"/>
 </g>
-<!-- 4266e741740646e19e201d37480b28a7 -->
+<!-- 91e168ca0938408ba9b8a5f9ff44f5cf -->
 <g id="node9" class="node">
-<title>4266e741740646e19e201d37480b28a7</title>
+<title>91e168ca0938408ba9b8a5f9ff44f5cf</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/iac/terraform.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="0" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="9.75" y="-210.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑨</text>
 <text xml:space="preserve" text-anchor="start" x="21" y="-210.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="24" y="-210.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">dev and prod</text>
 <text xml:space="preserve" text-anchor="start" x="-10.5" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">same modules · different inputs</text>
 </g>
-<!-- 4266e741740646e19e201d37480b28a7&#45;&gt;c43fa99493a24a3f97cd9f19f336c3aa -->
+<!-- 91e168ca0938408ba9b8a5f9ff44f5cf&#45;&gt;ebfa69a8625647cb9491537939e330b5 -->
 <g id="edge8" class="edge">
-<title>4266e741740646e19e201d37480b28a7&#45;&gt;c43fa99493a24a3f97cd9f19f336c3aa</title>
+<title>91e168ca0938408ba9b8a5f9ff44f5cf&#45;&gt;ebfa69a8625647cb9491537939e330b5</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M89.84,-266.4C106.65,-266.4 126.04,-266.4 143.78,-266.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="143.64,-269.9 153.64,-266.4 143.64,-262.9 143.64,-269.9"/>
 </g>
-<!-- 41ff1ba07cb24b8c945da7de4025a282 -->
+<!-- 6bb4ef781360447cbd3d289dc3e1b82a -->
 <g id="node13" class="node">
-<title>41ff1ba07cb24b8c945da7de4025a282</title>
+<title>6bb4ef781360447cbd3d289dc3e1b82a</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="930" y="-311.8"/>
 <text xml:space="preserve" text-anchor="start" x="913.5" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑬</text>
 <text xml:space="preserve" text-anchor="start" x="924.75" y="-198.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -187,15 +187,15 @@
 <text xml:space="preserve" text-anchor="start" x="918" y="-188.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">15 h · HCP Terraform objectives</text>
 <text xml:space="preserve" text-anchor="start" x="954.38" y="-177.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">are the gap</text>
 </g>
-<!-- 210fdaa6149c409f962db73c8faa0383&#45;&gt;41ff1ba07cb24b8c945da7de4025a282 -->
+<!-- b8301613371f4fc1b38dc4088ed75a07&#45;&gt;6bb4ef781360447cbd3d289dc3e1b82a -->
 <g id="edge12" class="edge">
-<title>210fdaa6149c409f962db73c8faa0383&#45;&gt;41ff1ba07cb24b8c945da7de4025a282</title>
+<title>b8301613371f4fc1b38dc4088ed75a07&#45;&gt;6bb4ef781360447cbd3d289dc3e1b82a</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M864.84,-243.4C881.65,-243.4 901.04,-243.4 918.78,-243.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="918.64,-246.9 928.64,-243.4 918.64,-239.9 918.64,-246.9"/>
 </g>
-<!-- 6a5e3c9abae649d9abdab571946f87ae -->
+<!-- 3b0fccffe8f54a6985aceac5aeccad62 -->
 <g id="node11" class="node">
-<title>6a5e3c9abae649d9abdab571946f87ae</title>
+<title>3b0fccffe8f54a6985aceac5aeccad62</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="620" y="-212.8"/>
 <text xml:space="preserve" text-anchor="start" x="616.25" y="-99.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑪</text>
 <text xml:space="preserve" text-anchor="start" x="627.5" y="-99.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -203,9 +203,9 @@
 <text xml:space="preserve" text-anchor="start" x="612.12" y="-89.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">ASG recovery · RDS failover ·</text>
 <text xml:space="preserve" text-anchor="start" x="621.5" y="-78.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">apply time · monthly cost</text>
 </g>
-<!-- 6a5e3c9abae649d9abdab571946f87ae&#45;&gt;210fdaa6149c409f962db73c8faa0383 -->
+<!-- 3b0fccffe8f54a6985aceac5aeccad62&#45;&gt;b8301613371f4fc1b38dc4088ed75a07 -->
 <g id="edge10" class="edge">
-<title>6a5e3c9abae649d9abdab571946f87ae&#45;&gt;210fdaa6149c409f962db73c8faa0383</title>
+<title>3b0fccffe8f54a6985aceac5aeccad62&#45;&gt;b8301613371f4fc1b38dc4088ed75a07</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M709.84,-172.77C727.21,-184.01 747.34,-197.03 765.55,-208.81"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="763.58,-211.71 773.88,-214.2 767.38,-205.83 763.58,-211.71"/>
 </g>

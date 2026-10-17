@@ -23,18 +23,18 @@
 <polygon fill="#eef4fb" stroke="#aeb6be" points="473,-8 473,-178 1044,-178 1044,-8 473,-8"/>
 <text xml:space="preserve" text-anchor="middle" x="536.88" y="-165.45" font-family="Helvetica,sans-Serif" font-size="9.00" fill="#2d3436">Compose · the Gate 1 stack</text>
 </g>
-<!-- dd3a1b871c2b4792aa1bfdc3d8d2a6ec -->
+<!-- ea51b6849d724f99b6fe83f8770b71e2 -->
 <g id="node1" class="node">
-<title>dd3a1b871c2b4792aa1bfdc3d8d2a6ec</title>
+<title>ea51b6849d724f99b6fe83f8770b71e2</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/container/docker.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="16" y="-449.4"/>
 <text xml:space="preserve" text-anchor="start" x="30.25" y="-325.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">①</text>
 <text xml:space="preserve" text-anchor="start" x="41.5" y="-325.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="44.5" y="-325.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">build stage</text>
 <text xml:space="preserve" text-anchor="start" x="7.38" y="-314.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">compiler, dev deps · discarded</text>
 </g>
-<!-- a1366a784ff348bd97069f82f7ef420c -->
+<!-- d9775f4e3eb7499aa0c1c54110c71ede -->
 <g id="node2" class="node">
-<title>a1366a784ff348bd97069f82f7ef420c</title>
+<title>d9775f4e3eb7499aa0c1c54110c71ede</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/container/docker.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="171" y="-449.4"/>
 <text xml:space="preserve" text-anchor="start" x="177" y="-336.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">②</text>
 <text xml:space="preserve" text-anchor="start" x="188.25" y="-336.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -42,15 +42,15 @@
 <text xml:space="preserve" text-anchor="start" x="159.38" y="-325.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">slim base · non&#45;root · measured</text>
 <text xml:space="preserve" text-anchor="start" x="209.25" y="-314.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">size</text>
 </g>
-<!-- dd3a1b871c2b4792aa1bfdc3d8d2a6ec&#45;&gt;a1366a784ff348bd97069f82f7ef420c -->
+<!-- ea51b6849d724f99b6fe83f8770b71e2&#45;&gt;d9775f4e3eb7499aa0c1c54110c71ede -->
 <g id="edge5" class="edge">
-<title>dd3a1b871c2b4792aa1bfdc3d8d2a6ec&#45;&gt;a1366a784ff348bd97069f82f7ef420c</title>
+<title>ea51b6849d724f99b6fe83f8770b71e2&#45;&gt;d9775f4e3eb7499aa0c1c54110c71ede</title>
 <path fill="none" stroke="#7a7a7a" d="M105.84,-381C122.65,-381 142.04,-381 159.78,-381"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="159.64,-384.5 169.64,-381 159.64,-377.5 159.64,-384.5"/>
 </g>
-<!-- 7da04e0768b34765badc4140b47720b8 -->
+<!-- d8d45cf1060e440b961a379f79639cac -->
 <g id="node3" class="node">
-<title>7da04e0768b34765badc4140b47720b8</title>
+<title>d8d45cf1060e440b961a379f79639cac</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/storage/storage.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="326" y="-449.4"/>
 <text xml:space="preserve" text-anchor="start" x="336.12" y="-336.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">③</text>
 <text xml:space="preserve" text-anchor="start" x="347.38" y="-336.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -58,30 +58,30 @@
 <text xml:space="preserve" text-anchor="start" x="319.25" y="-325.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">content&#45;addressed · cached ·</text>
 <text xml:space="preserve" text-anchor="start" x="350.75" y="-314.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">pulled once</text>
 </g>
-<!-- a1366a784ff348bd97069f82f7ef420c&#45;&gt;7da04e0768b34765badc4140b47720b8 -->
+<!-- d9775f4e3eb7499aa0c1c54110c71ede&#45;&gt;d8d45cf1060e440b961a379f79639cac -->
 <g id="edge1" class="edge">
-<title>a1366a784ff348bd97069f82f7ef420c&#45;&gt;7da04e0768b34765badc4140b47720b8</title>
+<title>d9775f4e3eb7499aa0c1c54110c71ede&#45;&gt;d8d45cf1060e440b961a379f79639cac</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M260.84,-381C277.25,-381 296.12,-381 313.51,-381"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="313.43,-384.5 323.43,-381 313.43,-377.5 313.43,-384.5"/>
 </g>
-<!-- 13011731f1874abb8a1e48ab9d08bd1c -->
+<!-- 10c13b240e2e4e8284958384825b0722 -->
 <g id="node4" class="node">
-<title>13011731f1874abb8a1e48ab9d08bd1c</title>
+<title>10c13b240e2e4e8284958384825b0722</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/generic/os/linux-general.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="481" y="-449.4"/>
 <text xml:space="preserve" text-anchor="start" x="491.88" y="-325.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">④</text>
 <text xml:space="preserve" text-anchor="start" x="503.12" y="-325.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="506.12" y="-325.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">the process</text>
 <text xml:space="preserve" text-anchor="start" x="489.25" y="-314.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">PID 1 in its own view</text>
 </g>
-<!-- 7da04e0768b34765badc4140b47720b8&#45;&gt;13011731f1874abb8a1e48ab9d08bd1c -->
+<!-- d8d45cf1060e440b961a379f79639cac&#45;&gt;10c13b240e2e4e8284958384825b0722 -->
 <g id="edge2" class="edge">
-<title>7da04e0768b34765badc4140b47720b8&#45;&gt;13011731f1874abb8a1e48ab9d08bd1c</title>
+<title>d8d45cf1060e440b961a379f79639cac&#45;&gt;10c13b240e2e4e8284958384825b0722</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M415.84,-381C432.25,-381 451.12,-381 468.51,-381"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="468.43,-384.5 478.43,-381 468.43,-377.5 468.43,-384.5"/>
 </g>
-<!-- d1e5a429d42a4c8ab36c9b0bb6099d7b -->
+<!-- 31121bab695b4bb8a78b41936679ab8c -->
 <g id="node5" class="node">
-<title>d1e5a429d42a4c8ab36c9b0bb6099d7b</title>
+<title>31121bab695b4bb8a78b41936679ab8c</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/predefined-process.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="636" y="-350.4"/>
 <text xml:space="preserve" text-anchor="start" x="645" y="-237.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑤</text>
 <text xml:space="preserve" text-anchor="start" x="656.25" y="-237.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -89,15 +89,15 @@
 <text xml:space="preserve" text-anchor="start" x="628.5" y="-226.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">pid · net · mnt · uts · ipc · user</text>
 <text xml:space="preserve" text-anchor="start" x="650.62" y="-215.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">· what it can SEE</text>
 </g>
-<!-- 13011731f1874abb8a1e48ab9d08bd1c&#45;&gt;d1e5a429d42a4c8ab36c9b0bb6099d7b -->
+<!-- 10c13b240e2e4e8284958384825b0722&#45;&gt;31121bab695b4bb8a78b41936679ab8c -->
 <g id="edge3" class="edge">
-<title>13011731f1874abb8a1e48ab9d08bd1c&#45;&gt;d1e5a429d42a4c8ab36c9b0bb6099d7b</title>
+<title>10c13b240e2e4e8284958384825b0722&#45;&gt;31121bab695b4bb8a78b41936679ab8c</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M570.84,-352.63C587.89,-341.6 607.6,-328.85 625.54,-317.24"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="627.37,-320.22 633.86,-311.85 623.57,-314.35 627.37,-320.22"/>
 </g>
-<!-- fe4fb4e9089942afbf1cb4566b508a9d -->
+<!-- 2cbe90b24883415a954c5f71cf58ec13 -->
 <g id="node6" class="node">
-<title>fe4fb4e9089942afbf1cb4566b508a9d</title>
+<title>2cbe90b24883415a954c5f71cf58ec13</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/k8s/clusterconfig/limits.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="636" y="-548.4"/>
 <text xml:space="preserve" text-anchor="start" x="656.62" y="-435.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑥</text>
 <text xml:space="preserve" text-anchor="start" x="667.88" y="-435.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -105,15 +105,15 @@
 <text xml:space="preserve" text-anchor="start" x="622.5" y="-424.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">cpu · memory · what it can USE ·</text>
 <text xml:space="preserve" text-anchor="start" x="653.25" y="-413.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">OOM = exit 137</text>
 </g>
-<!-- 13011731f1874abb8a1e48ab9d08bd1c&#45;&gt;fe4fb4e9089942afbf1cb4566b508a9d -->
+<!-- 10c13b240e2e4e8284958384825b0722&#45;&gt;2cbe90b24883415a954c5f71cf58ec13 -->
 <g id="edge4" class="edge">
-<title>13011731f1874abb8a1e48ab9d08bd1c&#45;&gt;fe4fb4e9089942afbf1cb4566b508a9d</title>
+<title>10c13b240e2e4e8284958384825b0722&#45;&gt;2cbe90b24883415a954c5f71cf58ec13</title>
 <path fill="none" stroke="#7a7a7a" d="M570.84,-409.37C588.21,-420.61 608.34,-433.63 626.55,-445.41"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="624.58,-448.31 634.88,-450.8 628.38,-442.43 624.58,-448.31"/>
 </g>
-<!-- a10141f3c5454b26837bda6e0fa67e25 -->
+<!-- 366be5f7558d40adacb506487d163a8c -->
 <g id="node7" class="node">
-<title>a10141f3c5454b26837bda6e0fa67e25</title>
+<title>366be5f7558d40adacb506487d163a8c</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/language/python.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="791" y="-152.4"/>
 <text xml:space="preserve" text-anchor="start" x="802.25" y="-39.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑦</text>
 <text xml:space="preserve" text-anchor="start" x="813.5" y="-39.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -121,15 +121,15 @@
 <text xml:space="preserve" text-anchor="start" x="776" y="-28.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">argparse · logging · pytest · JSON</text>
 <text xml:space="preserve" text-anchor="start" x="830.38" y="-17.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">out</text>
 </g>
-<!-- d1e5a429d42a4c8ab36c9b0bb6099d7b&#45;&gt;a10141f3c5454b26837bda6e0fa67e25 -->
+<!-- 31121bab695b4bb8a78b41936679ab8c&#45;&gt;366be5f7558d40adacb506487d163a8c -->
 <g id="edge6" class="edge">
-<title>d1e5a429d42a4c8ab36c9b0bb6099d7b&#45;&gt;a10141f3c5454b26837bda6e0fa67e25</title>
+<title>31121bab695b4bb8a78b41936679ab8c&#45;&gt;366be5f7558d40adacb506487d163a8c</title>
 <path fill="none" stroke="#7a7a7a" d="M725.84,-225.26C744.09,-201.65 765.39,-174.09 784.3,-149.61"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="786.88,-152 790.22,-141.94 781.34,-147.72 786.88,-152"/>
 </g>
-<!-- 5d661de49f5b402f98fe5502a68fc162 -->
+<!-- e693bd2efe7c40ecb18eb5d895afe40f -->
 <g id="node11" class="node">
-<title>5d661de49f5b402f98fe5502a68fc162</title>
+<title>e693bd2efe7c40ecb18eb5d895afe40f</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/decision.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="791" y="-548.4"/>
 <text xml:space="preserve" text-anchor="start" x="806.38" y="-435.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑪</text>
 <text xml:space="preserve" text-anchor="start" x="817.62" y="-435.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -137,30 +137,30 @@
 <text xml:space="preserve" text-anchor="start" x="783.12" y="-424.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">0 · 1 · 137 killed · 139 segfault</text>
 <text xml:space="preserve" text-anchor="start" x="807.5" y="-413.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">· 143 SIGTERM</text>
 </g>
-<!-- fe4fb4e9089942afbf1cb4566b508a9d&#45;&gt;5d661de49f5b402f98fe5502a68fc162 -->
+<!-- 2cbe90b24883415a954c5f71cf58ec13&#45;&gt;e693bd2efe7c40ecb18eb5d895afe40f -->
 <g id="edge10" class="edge">
-<title>fe4fb4e9089942afbf1cb4566b508a9d&#45;&gt;5d661de49f5b402f98fe5502a68fc162</title>
+<title>2cbe90b24883415a954c5f71cf58ec13&#45;&gt;e693bd2efe7c40ecb18eb5d895afe40f</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M725.84,-480C742.65,-480 762.04,-480 779.78,-480"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="779.64,-483.5 789.64,-480 779.64,-476.5 779.64,-483.5"/>
 </g>
-<!-- 37d81ebb12f74d7095e86676be2af11d -->
+<!-- 498274657481408e87856be53172ce8f -->
 <g id="node8" class="node">
-<title>37d81ebb12f74d7095e86676be2af11d</title>
+<title>498274657481408e87856be53172ce8f</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/database/postgresql.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="946" y="-152.4"/>
 <text xml:space="preserve" text-anchor="start" x="964.38" y="-28.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑧</text>
 <text xml:space="preserve" text-anchor="start" x="975.62" y="-28.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="978.62" y="-28.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">Postgres</text>
 <text xml:space="preserve" text-anchor="start" x="940.38" y="-17.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">named volume · healthcheck</text>
 </g>
-<!-- a10141f3c5454b26837bda6e0fa67e25&#45;&gt;37d81ebb12f74d7095e86676be2af11d -->
+<!-- 366be5f7558d40adacb506487d163a8c&#45;&gt;498274657481408e87856be53172ce8f -->
 <g id="edge8" class="edge">
-<title>a10141f3c5454b26837bda6e0fa67e25&#45;&gt;37d81ebb12f74d7095e86676be2af11d</title>
+<title>366be5f7558d40adacb506487d163a8c&#45;&gt;498274657481408e87856be53172ce8f</title>
 <path fill="none" stroke="#7a7a7a" d="M880.84,-84C897.65,-84 917.04,-84 934.78,-84"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="934.64,-87.5 944.64,-84 934.64,-80.5 934.64,-87.5"/>
 </g>
-<!-- 024b0608ca944e708aacd145fcc376ed -->
+<!-- a2b9057bb8de45798c9781e7b2d3b313 -->
 <g id="node9" class="node">
-<title>024b0608ca944e708aacd145fcc376ed</title>
+<title>a2b9057bb8de45798c9781e7b2d3b313</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/network/nginx.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="636" y="-152.4"/>
 <text xml:space="preserve" text-anchor="start" x="660" y="-39.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑨</text>
 <text xml:space="preserve" text-anchor="start" x="671.25" y="-39.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -168,24 +168,24 @@
 <text xml:space="preserve" text-anchor="start" x="621.75" y="-28.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">TLS from week 3 · the only public</text>
 <text xml:space="preserve" text-anchor="start" x="673.88" y="-17.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">port</text>
 </g>
-<!-- 024b0608ca944e708aacd145fcc376ed&#45;&gt;a10141f3c5454b26837bda6e0fa67e25 -->
+<!-- a2b9057bb8de45798c9781e7b2d3b313&#45;&gt;366be5f7558d40adacb506487d163a8c -->
 <g id="edge7" class="edge">
-<title>024b0608ca944e708aacd145fcc376ed&#45;&gt;a10141f3c5454b26837bda6e0fa67e25</title>
+<title>a2b9057bb8de45798c9781e7b2d3b313&#45;&gt;366be5f7558d40adacb506487d163a8c</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M725.84,-84C742.25,-84 761.12,-84 778.51,-84"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="778.43,-87.5 788.43,-84 778.43,-80.5 778.43,-87.5"/>
 </g>
-<!-- 9830250efca948dca499900c8677ef03 -->
+<!-- 8b6ed360e1ad4b8f8e3616c41f0baf60 -->
 <g id="node10" class="node">
-<title>9830250efca948dca499900c8677ef03</title>
+<title>8b6ed360e1ad4b8f8e3616c41f0baf60</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/generic/os/linux-general.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="481" y="-152.4"/>
 <text xml:space="preserve" text-anchor="start" x="478.75" y="-28.4" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑩</text>
 <text xml:space="preserve" text-anchor="start" x="490" y="-28.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="493" y="-28.4" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">systemd + firewall</text>
 <text xml:space="preserve" text-anchor="start" x="465.62" y="-17.85" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">compose up on boot · 80/443 only</text>
 </g>
-<!-- 9830250efca948dca499900c8677ef03&#45;&gt;024b0608ca944e708aacd145fcc376ed -->
+<!-- 8b6ed360e1ad4b8f8e3616c41f0baf60&#45;&gt;a2b9057bb8de45798c9781e7b2d3b313 -->
 <g id="edge9" class="edge">
-<title>9830250efca948dca499900c8677ef03&#45;&gt;024b0608ca944e708aacd145fcc376ed</title>
+<title>8b6ed360e1ad4b8f8e3616c41f0baf60&#45;&gt;a2b9057bb8de45798c9781e7b2d3b313</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M570.84,-84C587.65,-84 607.04,-84 624.78,-84"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="624.64,-87.5 634.64,-84 624.64,-80.5 624.64,-87.5"/>
 </g>

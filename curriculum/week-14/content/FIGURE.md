@@ -22,6 +22,8 @@ The control plane is a loop of controllers watching one database. Follow the blu
 - **⑪ the three failures.** “ImagePullBackOff is the registry, the tag, or credentials. CrashLoopBackOff is the process exiting; read the previous container's logs. No endpoints is the selector or readiness. Diagnose all three from events and logs, before week 15 adds six more.”
 - **Close.** “Write to one database, let controllers converge, and route in through a Service and an Ingress. By Saturday the week-4 Compose stack runs here. And Tuesday the applications go out, because the pipeline has a ten-week lag.”
 
+**Print it:** [`figure-14.1-numbered-spoken.pdf`](figure-14.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

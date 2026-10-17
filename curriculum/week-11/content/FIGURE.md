@@ -21,6 +21,8 @@ The skill that gets paid is module design: a contract another engineer can consu
 - **⑩ validation and testing.** “tflint for mistakes the provider would reject, checkov for security findings, `terraform test` for behaviour. Clean, or every exception written down in an ADR with a reason.”
 - **Close.** “Contract, composition, stable keys, and refactors that destroy nothing. By Saturday dev and prod both deploy from the same modules, and Alpha is a real project.”
 
+**Print it:** [`figure-11.1-numbered-spoken.pdf`](figure-11.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

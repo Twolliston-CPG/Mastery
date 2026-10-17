@@ -17,7 +17,7 @@
 
 ![Figure 6.1 — A two-AZ VPC, and what makes a subnet public](content/figure-6.1-a-two-az-vpc-and-what.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes; [`content/figure-6.1-numbered-spoken.pdf`](content/figure-6.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

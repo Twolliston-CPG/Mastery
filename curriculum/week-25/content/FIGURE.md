@@ -22,6 +22,8 @@ The mix inverts: interviewing is the primary activity at twenty hours a week. No
 - **⑪ applications.** “Twenty or more this week, with follow-ups on every open thread. The kit is useless if the pipeline empties.”
 - **Close.** “Stories from the journal, designs from the projects, talking points from the posts, all tested six times on camera. Every piece is traceable to something you built, which is why it will sound true.”
 
+**Print it:** [`figure-25.1-numbered-spoken.pdf`](figure-25.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

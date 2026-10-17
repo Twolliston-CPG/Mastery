@@ -22,6 +22,8 @@ The week-2 subnetting and the week-3 router, NAT, and firewall, now as AWS resou
 - **⑪ S3.** “A bucket policy that denies any upload without server-side encryption. A presigned URL that grants one object for fifteen minutes. A lifecycle rule to Infrequent Access at 30 days and Glacier at 90. Numbers an exam asks for.”
 - **Close.** “Route table decides public. NAT per AZ. Data tier with no way out. Endpoints instead of NAT where you can. And the diagram goes into the Alpha repo this Sunday.”
 
+**Print it:** [`figure-6.1-numbered-spoken.pdf`](figure-6.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

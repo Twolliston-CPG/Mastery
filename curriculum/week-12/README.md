@@ -16,7 +16,7 @@
 
 ![Figure 12.1 — OIDC: how a workflow gets AWS credentials with no secret anywhere](content/figure-12.1-oidc-how-a-workflow-gets-aws.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes; [`content/figure-12.1-numbered-spoken.pdf`](content/figure-12.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

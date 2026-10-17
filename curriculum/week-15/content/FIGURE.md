@@ -22,6 +22,8 @@ This is the decision tree from the week's blog post. Each branch is a phase you 
 - **⑪ QoS.** “Guaranteed when every container's requests equal its limits. Burstable when requests are lower. BestEffort when there are none, and those die first under pressure.”
 - **Close.** “Read the status, pick the branch, run the one command that proves the leaf, say it out loud. Friday you build five of these on demand; they are Gate 4, two weeks from now.”
 
+**Print it:** [`figure-15.1-numbered-spoken.pdf`](figure-15.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

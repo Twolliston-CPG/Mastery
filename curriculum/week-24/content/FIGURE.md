@@ -23,6 +23,8 @@ A platform nobody can use without asking you is a set of scripts with a good sto
 - **⑫ KCSA decision.** “Take it only if the applications you are sending are genuinely security-weighted. Otherwise the thirty hours buy more as interview preparation, which is next week.”
 - **Close.** “Docs feed one page, one stranger tests it, the video proves it in five minutes, and the README carries the numbers. Then pin all three projects, because week 25 is interviews.”
 
+**Print it:** [`figure-24.1-numbered-spoken.pdf`](figure-24.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

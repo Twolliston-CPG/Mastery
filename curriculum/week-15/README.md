@@ -15,7 +15,7 @@
 
 ![Figure 15.1 — Nine ways a pod fails to start, and where each one lives](content/figure-15.1-nine-ways-a-pod-fails-to.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes; [`content/figure-15.1-numbered-spoken.pdf`](content/figure-15.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

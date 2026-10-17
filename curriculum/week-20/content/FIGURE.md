@@ -23,6 +23,8 @@ Most dashboards are decoration. This path runs from instrumentation to a burn-ra
 - **⑫ cardinality explosion.** “Put a user ID in a label and every user becomes a new series. Ten thousand users, ten thousand times the memory. Reproduce it, watch Prometheus suffer, then fix it by moving the ID to the trace or the log where it belongs.”
 - **Close.** “Instrument, scrape, query, define good, set a budget, alert on the burn. The page means users are hurting; everything else is on the dashboard for the person who answers it.”
 
+**Print it:** [`figure-20.1-numbered-spoken.pdf`](figure-20.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

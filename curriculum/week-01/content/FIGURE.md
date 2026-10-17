@@ -21,6 +21,8 @@ Everything the week teaches is one of four mechanisms: how a command becomes a p
 - **⑩ Break/Fix.** “Four scenarios, forty minutes, narrated out loud: disk full, wrong permissions, a zombie, a broken PATH. Each one is logged in the incident journal. That journal is the interview story bank.”
 - **Close.** “So: shell to process to permission check to filesystem, text through pipes, a script that fails loudly, and Git recording it. Nothing in the next 25 weeks is not one of these in a costume.”
 
+**Print it:** [`figure-1.1-numbered-spoken.pdf`](figure-1.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

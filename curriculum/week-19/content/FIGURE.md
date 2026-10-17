@@ -21,6 +21,8 @@ Scanning finds problems; policy prevents them. The figure places every control o
 - **⑩ control narrative.** “A table: the threat from the STRIDE model, the control that addresses it, and the evidence that proves the control works. Accepted risks get an owner and an expiry. This is the document a security reviewer actually reads, and it is a Bravo deliverable.”
 - **Close.** “Deny in the plan, refuse at the door, drop on the wire, alert at runtime, and a table that maps each one to a threat. Prevent where you can; detect where you cannot; write both down.”
 
+**Print it:** [`figure-19.1-numbered-spoken.pdf`](figure-19.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

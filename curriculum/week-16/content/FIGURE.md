@@ -23,6 +23,8 @@ The week-5 question again, how does a workload get cloud credentials without hol
 - **⑫ cost rule.** “The control plane alone is about ten cents an hour, seventy-three dollars a month, before nodes and the load balancer. Two deliberate weeks with nightly teardown cost about fifteen dollars total. Run the teardown script every night this week.”
 - **Close.** “Annotation, injection, token, exchange, credentials. The pod is who it is, and AWS believes it because of a signature, not a secret. Sunday: destroy everything and check the bill.”
 
+**Print it:** [`figure-16.1-numbered-spoken.pdf`](figure-16.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

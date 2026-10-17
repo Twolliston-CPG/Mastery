@@ -22,6 +22,8 @@ One week of exam prep, capped by design. The figure is the loop: take an exam co
 - **⑪ book the exam.** “A booked date is what turns prep into a deadline. Week 10, Tuesday.”
 - **Close.** “Measure, narrow, rebuild, measure again. Then one more week and back to building, because certification that displaces building is how this whole program fails.”
 
+**Print it:** [`figure-9.1-numbered-spoken.pdf`](figure-9.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

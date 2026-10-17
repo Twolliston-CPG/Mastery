@@ -22,6 +22,8 @@ Consolidation is not rest. The figure is the method you say out loud for five br
 - **⑪ Bravo design first.** “Friday: draw the Bravo architecture and write the STRIDE threat model before a line of code exists. Weeks 18 to 21 build controls against named threats, not against a vague sense of security.”
 - **Close.** “Seven words, in order, out loud. That is the skill the gate measures and the skill the interview measures. Everything else this week is deciding what to spend the next month on.”
 
+**Print it:** [`figure-17.1-numbered-spoken.pdf`](figure-17.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

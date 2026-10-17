@@ -21,6 +21,8 @@ The blue path is the request: name resolution, the three-way handshake, HTTP. Ar
 - **⑩ blog post.** “Saturday you write all of this down for a stranger. If a step is hard to explain, that is the step you do not yet own.”
 - **Close.** “Name, route, handshake, request. Then a unit that keeps the service alive and logs you can read. Every VPC and every Kubernetes Service later is this picture with different names on the boxes.”
 
+**Print it:** [`figure-2.1-numbered-spoken.pdf`](figure-2.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

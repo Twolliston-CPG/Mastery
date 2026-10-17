@@ -67,8 +67,9 @@ to follow first**, orange-red is where something refuses or fails, washed boxes 
 
 - Weekly figures are rendered by `_shared/diagrams/generate-week-figures.py` from the specs in
   `_shared/diagrams/week_figures/`, in the same icon style as the project and platform figures.
-  Each week's `content/` folder holds `figure-W.1-<slug>.png` and `.svg` plus `FIGURE.md`, the
-  spoken script. **Edit the spec, not the generated files**, then re-run the generator; it
+  Each week's `content/` folder holds `figure-W.1-<slug>.png` and `.svg`, `FIGURE.md` (the spoken
+  script), and `figure-W.1-numbered-spoken.pdf`: the printable two-page version, figure on page one,
+  the script badge by badge on page two, printed with headless Chrome. **Edit the spec, not the generated files**, then re-run the generator; it
   rewrites the images, `FIGURE.md`, and the README section.
 - A spec is the figure's nodes, boundaries, and edges in a small Mermaid-shaped DSL (documented
   in the generator), an icon per node, and the script: an Open line, one spoken line per badge in

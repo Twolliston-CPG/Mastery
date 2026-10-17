@@ -17,7 +17,7 @@
 
 ![Figure 18.1 — The pipeline that refuses](content/figure-18.1-the-pipeline-that-refuses.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 12 badges, about four minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 12 badges, about four minutes; [`content/figure-18.1-numbered-spoken.pdf`](content/figure-18.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

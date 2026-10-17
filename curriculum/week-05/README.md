@@ -25,7 +25,7 @@
 
 ![Figure 5.1 — How AWS decides, and how an instance gets credentials with no keys on disk](content/figure-5.1-how-aws-decides-and-how-an.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes; [`content/figure-5.1-numbered-spoken.pdf`](content/figure-5.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

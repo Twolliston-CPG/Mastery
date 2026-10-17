@@ -20,15 +20,24 @@ ICONS maps each node id to an icon class, per week.
     ./generate-week-figures.py                 # all 26
     ./generate-week-figures.py --only 14       # one week
     ./generate-week-figures.py --no-docs       # images only, leave FIGURE.md and the README alone
+    ./generate-week-figures.py --no-pdf        # skip the two-page numbered-spoken PDF (needs Chrome)
+
+The PDF is the client-style deliverable: page one is the figure, page two is "What to
+say, badge by badge" in two columns. It is printed with headless Chrome (set CHROME to
+the binary if it is not found).
 """
 from __future__ import annotations
 
 import argparse
+import datetime
 import html
 import importlib.util
 import os
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import textwrap
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
@@ -209,6 +218,8 @@ def write_docs(week, spec, slug, content_dir, readme):
            f"Point at each badge as you say its line. Blue is the path to follow first; orange-red is where something refuses or fails.\n\n"
            f"![Figure {week}.1 — {spec['title']}]({png})\n\n{spec['intro']}\n\n"
            f"## What to say, badge by badge\n\n" + "\n".join(walk) + "\n\n"
+           f"**Print it:** [`figure-{week}.1-numbered-spoken.pdf`](figure-{week}.1-numbered-spoken.pdf) is the two-page version, "
+           f"the figure on page one and this script on page two.\n\n"
            f"## Use it\n\n- Read the figure before the day plan. Say the script out loud on Friday with the file closed.\n"
            f"- Each badge line is a thirty-second interview answer; the whole script is the three-minute version.\n"
            f"- Regenerate after editing the spec in `_shared/diagrams/week_figures/`:\n\n"
@@ -219,12 +230,77 @@ def write_docs(week, spec, slug, content_dir, readme):
                f"**Figure {week}.1 — {spec['title']}.** {spec['intro']}\n\n"
                f"![Figure {week}.1 — {spec['title']}](content/{png})\n\n"
                f"**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each "
-               f"of the {n} badges, about {spec['minutes']} minutes. Read the figure before the day plan; say the script on Friday.\n\n---\n\n")
+               f"of the {n} badges, about {spec['minutes']} minutes; [`content/figure-{week}.1-numbered-spoken.pdf`](content/figure-{week}.1-numbered-spoken.pdf) "
+               f"is the printable two-page version. Read the figure before the day plan; say the script on Friday.\n\n---\n\n")
     text = open(readme, encoding="utf-8").read()
     m = re.search(r"## The week in one figure\n.*?\n---\n\n", text, re.S)
     text = text[:m.start()] + section + text[m.end():] if m else re.sub(r"^## ", section + "## ", text, count=1, flags=re.M)
     with open(readme, "w", encoding="utf-8") as f:
         f.write(text)
+
+PDF_CSS = """
+@page { size: Letter landscape; margin: 0.55in 0.6in 0.5in 0.6in; }
+* { box-sizing: border-box; }
+body { font-family: Helvetica, Arial, sans-serif; color: #2d3436; margin: 0; font-size: 10.5pt; }
+.page { position: relative; height: 7.35in; page-break-after: always; }
+.page:last-child { page-break-after: auto; }
+h1 { font-size: 17pt; margin: 0 0 4px 0; }
+.sub { color: #5f6b73; font-size: 10.5pt; margin: 0 0 14px 0; }
+.fig { text-align: center; }
+.fig img { max-width: 9.5in; max-height: 5.4in; }
+.foot { position: absolute; bottom: 0; left: 0; right: 0; font-size: 8.5pt; color: #5f6b73; display: flex; justify-content: space-between; }
+h2 { font-size: 15pt; margin: 0 0 4px 0; }
+.cols { column-count: 2; column-gap: 0.45in; }
+.item { break-inside: avoid; display: flex; gap: 8px; margin: 0 0 9px 0; }
+.badge { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; background: #c7254e; color: #fff; font-size: 9pt; font-weight: bold; text-align: center; line-height: 18px; margin-top: 1px; }
+.badge.k { background: #2d3436; font-size: 7pt; }
+.t { font-weight: bold; font-size: 10pt; margin-bottom: 2px; }
+.q { font-size: 9.6pt; line-height: 1.32; color: #3d4549; }
+code { font-family: Menlo, monospace; font-size: 8.8pt; }
+"""
+
+def find_chrome():
+    cands = [os.environ.get("CHROME"), "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+             "/Applications/Chromium.app/Contents/MacOS/Chromium", shutil.which("google-chrome"),
+             shutil.which("chromium"), shutil.which("chromium-browser")]
+    return next((c for c in cands if c and os.path.exists(c)), None)
+
+def md_inline(text):
+    """The scripts use backticks for commands; everything else is plain prose."""
+    text = html.escape(text, quote=False)
+    return re.sub(r"`([^`]+)`", r"<code>\1</code>", text)
+
+def write_pdf(week, spec, slug, content_dir, chrome):
+    png = os.path.join(content_dir, f"figure-{week}.1-{slug}.png")
+    out = os.path.join(content_dir, f"figure-{week}.1-numbered-spoken.pdf")
+    today = datetime.date.today().isoformat()
+    n = len(spec["badges"])
+    words = len(re.findall(r"\S+", spec["open"] + " " + " ".join(q for _, q in spec["badges"]) + " " + spec["close"]))
+    items = [('<span class="badge k">&#9654;</span>', "Open", spec["open"])]
+    items += [(f'<span class="badge">{i + 1}</span>', t, q) for i, (t, q) in enumerate(spec["badges"])]
+    items += [('<span class="badge k">&#9632;</span>', "Close", spec["close"])]
+    body = "".join(f'<div class="item">{b}<div><div class="t">{html.escape(t)}</div>'
+                   f'<div class="q">&#8220;{md_inline(q)}&#8221;</div></div></div>' for b, t, q in items)
+    foot = f'Figure {week}.1 &middot; spoken walkthrough &middot; {today}'
+    doc = f"""<!doctype html><html><head><meta charset="utf-8"><title>Figure {week}.1</title><style>{PDF_CSS}</style></head><body>
+<div class="page"><h1>{html.escape(spec["title"])}, numbered</h1>
+<p class="sub">Week {week} &middot; Figure {week}.1 &middot; figure with badges 1&ndash;{n} &middot; {today}</p>
+<div class="fig"><img src="file://{png}" alt="Figure {week}.1"></div>
+<div class="foot"><span>{foot}</span><span>Page 1 of 2</span></div></div>
+<div class="page"><h2>What to say, badge by badge</h2>
+<p class="sub">About {spec["minutes"]} minutes at a normal pace ({words} words). Point at each badge as you say its line.</p>
+<div class="cols">{body}</div>
+<div class="foot"><span>{foot}</span><span>Page 2 of 2</span></div></div>
+</body></html>"""
+    with tempfile.TemporaryDirectory() as tmp:
+        src = os.path.join(tmp, "page.html")
+        with open(src, "w", encoding="utf-8") as f:
+            f.write(doc)
+        subprocess.run([chrome, "--headless=new", "--disable-gpu", "--no-sandbox", "--no-pdf-header-footer",
+                        f"--print-to-pdf={out}", f"file://{src}"], check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
+    return out
+
 
 def load_specs():
     specs = {}
@@ -239,8 +315,12 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", type=int)
     ap.add_argument("--no-docs", action="store_true", help="render images only")
+    ap.add_argument("--no-pdf", action="store_true", help="skip the two-page PDF")
     args = ap.parse_args()
     root = os.path.abspath(os.path.join(_HERE, "..", ".."))
+    chrome = None if args.no_pdf else find_chrome()
+    if not args.no_pdf and not chrome:
+        print("  (no Chrome found; skipping PDFs -- set CHROME=/path/to/chrome)")
     for week, spec in sorted(load_specs().items()):
         if args.only and args.only != week:
             continue
@@ -253,6 +333,8 @@ def main():
         build(week, spec, content, slug)
         if not args.no_docs:
             write_docs(week, spec, slug, content, os.path.join(wdir, "README.md"))
+        if chrome:
+            write_pdf(week, spec, slug, content, chrome)
         print(f"  week {week:2d} -> week-{week:02d}/content/figure-{week}.1-{slug}.png")
     return 0
 

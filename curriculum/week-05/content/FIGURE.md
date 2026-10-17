@@ -22,6 +22,8 @@ Two blue paths. The top one is the IAM evaluation every request goes through. Th
 - **⑪ guardrails first.** “Before any of this exists: three budgets, alerts tested, MFA on root, root access keys deleted. The script does the budgets. The rest is a five-minute console task you do once.”
 - **Close.** “Deny first, ceilings next, then an Allow or nothing. And a machine earns credentials by being who it is, not by holding a key. Week 12 and week 16 are the same idea for a GitHub workflow and for a pod.”
 
+**Print it:** [`figure-5.1-numbered-spoken.pdf`](figure-5.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

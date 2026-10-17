@@ -17,7 +17,7 @@
 
 ![Figure 2.1 — From a URL to a packet, and the service that answers](content/figure-2.1-from-a-url-to-a-packet.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three and a half minutes; [`content/figure-2.1-numbered-spoken.pdf`](content/figure-2.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

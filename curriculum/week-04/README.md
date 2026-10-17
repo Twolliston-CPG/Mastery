@@ -17,7 +17,7 @@
 
 ![Figure 4.1 — What a container actually is, and the stack Gate 1 asks you to deploy](content/figure-4.1-what-a-container-actually-is-and.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes; [`content/figure-4.1-numbered-spoken.pdf`](content/figure-4.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

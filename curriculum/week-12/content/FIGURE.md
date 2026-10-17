@@ -22,6 +22,8 @@ Static keys in GitHub secrets are the most common amateur tell. The blue path re
 - **⑪ the dangerous trust policy.** “`repo:org/repo:*` matches every branch and every PR. On the plan role it is fine. On the apply role it means anyone who can push a branch can deploy to production. Say this in the interview; it is the question they ask.”
 - **Close.** “So: no key exists, identity is a signed claim, and the claim decides the role. The exit criterion is a grep for AKIA that returns nothing, in the tree and in the history.”
 
+**Print it:** [`figure-12.1-numbered-spoken.pdf`](figure-12.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

@@ -16,7 +16,7 @@
 
 ![Figure 21.1 — An incident, from the first alert to the postmortem that changes something](content/figure-21.1-an-incident-from-the-first-alert.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three and a half minutes; [`content/figure-21.1-numbered-spoken.pdf`](content/figure-21.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

@@ -17,7 +17,7 @@
 
 ![Figure 7.1 — ALB to ASG to RDS, with the two numbers you measure](content/figure-7.1-alb-to-asg-to-rds-with.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three and a half minutes; [`content/figure-7.1-numbered-spoken.pdf`](content/figure-7.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

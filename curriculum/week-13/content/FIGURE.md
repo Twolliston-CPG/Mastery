@@ -24,6 +24,8 @@ Shipping is a skill. The figure is the gate: one command in a clean account prod
 - **⑬ Terraform Associate prep.** “Fifteen hours is enough, and most of it goes to the one domain a self-taught project never touches: HCP Terraform workspaces, VCS-driven runs, remote execution. Book the exam for Monday.”
 - **Close.** “One command, a clean account, no credentials, numbers you measured, and a document a stranger can follow. Ship it with three known rough edges rather than polish it into week 16.”
 
+**Print it:** [`figure-13.1-numbered-spoken.pdf`](figure-13.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

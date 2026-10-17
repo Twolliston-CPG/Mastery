@@ -22,6 +22,8 @@ Terraform is a syntax-and-lifecycle problem once you know what the resources are
 - **⑪ Alpha kickoff.** “Saturday: the repository, a modules directory, a dev environment, and the first module. Nothing fancy; the structure is what matters, because weeks 11 to 13 fill it in.”
 - **Close.** “Declare, init, plan, apply, record. Everything else, drift and import and moved, is the state map disagreeing with the world and you deciding which one is right.”
 
+**Print it:** [`figure-10.1-numbered-spoken.pdf`](figure-10.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

@@ -21,6 +21,8 @@ Follow the blue path from a client on the internet to the Python process behind 
 - **⑩ Git collaboration.** “Friday afternoon: resolve a real three-way conflict, squash twelve commits into three with an interactive rebase, and find a breaking commit with bisect in log-two-n steps.”
 - **Close.** “Name, route, rewrite, filter, terminate, balance, serve. Weeks 6 and 7 are this diagram with AWS names: Route 53, NAT gateway, security group, ALB, target group.”
 
+**Print it:** [`figure-3.1-numbered-spoken.pdf`](figure-3.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

@@ -128,7 +128,7 @@ Three things in `_reference/` are machine-written and will be overwritten:
   hash in the filename so unchanged diagrams are never re-rendered.
 - **`_reference/SOURCES.md` links** are duplicated into all 623 Feynman blocks via `domains.py`.
   Change the source there, not in the files.
-- **Weekly figures** — `week-WW/content/figure-W.1-*.png|svg`, `content/FIGURE.md`, and the
+- **Weekly figures** — `week-WW/content/figure-W.1-*.png|svg|pdf`, `content/FIGURE.md`, and the
   `## The week in one figure` README section are written by `_shared/diagrams/generate-week-figures.py`
   from the specs in `_shared/diagrams/week_figures/`. Edit the spec and re-run; hand edits are overwritten.
 

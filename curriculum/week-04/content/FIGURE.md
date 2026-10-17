@@ -22,6 +22,8 @@ Top row: an image is built and becomes a process the kernel isolates. Bottom row
 - **⑪ exit codes.** “0 is success, 1 is the app's own failure, 137 is the kernel killing it, 139 is a segfault, 143 is a clean SIGTERM. Reading the code is the first diagnostic step in BF-19.”
 - **Close.** “Build small, run isolated, budget enforced, three containers behind one proxy, managed by systemd. Then the Gate 1 question: narrate the packet from the browser to the Python process, box by box.”
 
+**Print it:** [`figure-4.1-numbered-spoken.pdf`](figure-4.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

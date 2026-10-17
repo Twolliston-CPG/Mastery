@@ -16,7 +16,7 @@
 
 ![Figure 26.1 — The weekly cadence that carries months 6 to 10](content/figure-26.1-the-weekly-cadence-that-carries-months.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three minutes; [`content/figure-26.1-numbered-spoken.pdf`](content/figure-26.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

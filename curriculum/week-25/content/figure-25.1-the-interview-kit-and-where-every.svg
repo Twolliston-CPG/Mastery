@@ -18,18 +18,18 @@
 <polygon fill="#ffffff" stroke="#aeb6be" stroke-width="1.6" points="167.38,-190.4 167.38,-1154.4 273.38,-1154.4 273.38,-190.4 167.38,-190.4"/>
 <text xml:space="preserve" text-anchor="middle" x="191.5" y="-1139.95" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#2d3436">The kit</text>
 </g>
-<!-- c7585a9f705040d0ab4c7f0a12784e5f -->
+<!-- 73fc388065e74787b8a69eb749155582 -->
 <g id="node1" class="node">
-<title>c7585a9f705040d0ab4c7f0a12784e5f</title>
+<title>73fc388065e74787b8a69eb749155582</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/multiple-documents.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="16" y="-1126.8"/>
 <text xml:space="preserve" text-anchor="start" x="21.25" y="-1002.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">①</text>
 <text xml:space="preserve" text-anchor="start" x="32.5" y="-1002.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="35.5" y="-1002.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">incident journal</text>
 <text xml:space="preserve" text-anchor="start" x="9.25" y="-992.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">~50 entries · the story source</text>
 </g>
-<!-- 61d4eca7f2a44e3cbb35e3a179d81428 -->
+<!-- ba84e353538445fca176e25cbd297407 -->
 <g id="node4" class="node">
-<title>61d4eca7f2a44e3cbb35e3a179d81428</title>
+<title>ba84e353538445fca176e25cbd297407</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="175.375" y="-1126.8"/>
 <text xml:space="preserve" text-anchor="start" x="178.38" y="-1024.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">④</text>
 <text xml:space="preserve" text-anchor="start" x="189.62" y="-1024.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -38,24 +38,24 @@
 <text xml:space="preserve" text-anchor="start" x="161.88" y="-1003.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">timed at 90 s · a number in every</text>
 <text xml:space="preserve" text-anchor="start" x="210.62" y="-992.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">result</text>
 </g>
-<!-- c7585a9f705040d0ab4c7f0a12784e5f&#45;&gt;61d4eca7f2a44e3cbb35e3a179d81428 -->
+<!-- 73fc388065e74787b8a69eb749155582&#45;&gt;ba84e353538445fca176e25cbd297407 -->
 <g id="edge1" class="edge">
-<title>c7585a9f705040d0ab4c7f0a12784e5f&#45;&gt;61d4eca7f2a44e3cbb35e3a179d81428</title>
+<title>73fc388065e74787b8a69eb749155582&#45;&gt;ba84e353538445fca176e25cbd297407</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M105.84,-1058.4C123.5,-1058.4 144.1,-1058.4 162.86,-1058.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="162.78,-1061.9 172.78,-1058.4 162.78,-1054.9 162.78,-1061.9"/>
 </g>
-<!-- 1f4e2fd16be84a2cb04909218f626c21 -->
+<!-- d45ccc9ee4b64ceaadc331151dced8eb -->
 <g id="node2" class="node">
-<title>1f4e2fd16be84a2cb04909218f626c21</title>
+<title>d45ccc9ee4b64ceaadc331151dced8eb</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/github.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="16" y="-928.8"/>
 <text xml:space="preserve" text-anchor="start" x="24.25" y="-804.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">②</text>
 <text xml:space="preserve" text-anchor="start" x="35.5" y="-804.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="38.5" y="-804.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">three projects</text>
 <text xml:space="preserve" text-anchor="start" x="5.5" y="-794.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">Alpha · Bravo · Charlie · pinned</text>
 </g>
-<!-- 988148ef525a4fac88b2529be5c28cd3 -->
+<!-- 0918c6f047f0414e928ff176206f9d9d -->
 <g id="node5" class="node">
-<title>988148ef525a4fac88b2529be5c28cd3</title>
+<title>0918c6f047f0414e928ff176206f9d9d</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="175.375" y="-928.8"/>
 <text xml:space="preserve" text-anchor="start" x="166" y="-815.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑤</text>
 <text xml:space="preserve" text-anchor="start" x="177.25" y="-815.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -63,15 +63,15 @@
 <text xml:space="preserve" text-anchor="start" x="172.38" y="-805.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">30 s · 3 min · 15 min · each</text>
 <text xml:space="preserve" text-anchor="start" x="185.5" y="-794.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">project, each length</text>
 </g>
-<!-- 1f4e2fd16be84a2cb04909218f626c21&#45;&gt;988148ef525a4fac88b2529be5c28cd3 -->
+<!-- d45ccc9ee4b64ceaadc331151dced8eb&#45;&gt;0918c6f047f0414e928ff176206f9d9d -->
 <g id="edge4" class="edge">
-<title>1f4e2fd16be84a2cb04909218f626c21&#45;&gt;988148ef525a4fac88b2529be5c28cd3</title>
+<title>d45ccc9ee4b64ceaadc331151dced8eb&#45;&gt;0918c6f047f0414e928ff176206f9d9d</title>
 <path fill="none" stroke="#7a7a7a" d="M105.84,-860.4C123.92,-860.4 145.09,-860.4 164.21,-860.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="163.99,-863.9 173.99,-860.4 163.99,-856.9 163.99,-863.9"/>
 </g>
-<!-- a9a72c52967845909709e194c2b72ed4 -->
+<!-- e7d83cb2bff94eac9f67fc693f796d5a -->
 <g id="node6" class="node">
-<title>a9a72c52967845909709e194c2b72ed4</title>
+<title>e7d83cb2bff94eac9f67fc693f796d5a</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="175.375" y="-730.8"/>
 <text xml:space="preserve" text-anchor="start" x="172.75" y="-617.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑥</text>
 <text xml:space="preserve" text-anchor="start" x="184" y="-617.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -79,30 +79,30 @@
 <text xml:space="preserve" text-anchor="start" x="157.75" y="-607.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">whiteboarded aloud · 45 min each ·</text>
 <text xml:space="preserve" text-anchor="start" x="204.25" y="-596.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">recorded</text>
 </g>
-<!-- 1f4e2fd16be84a2cb04909218f626c21&#45;&gt;a9a72c52967845909709e194c2b72ed4 -->
+<!-- d45ccc9ee4b64ceaadc331151dced8eb&#45;&gt;e7d83cb2bff94eac9f67fc693f796d5a -->
 <g id="edge6" class="edge">
-<title>1f4e2fd16be84a2cb04909218f626c21&#45;&gt;a9a72c52967845909709e194c2b72ed4</title>
+<title>d45ccc9ee4b64ceaadc331151dced8eb&#45;&gt;e7d83cb2bff94eac9f67fc693f796d5a</title>
 <path fill="none" stroke="#7a7a7a" d="M105.84,-805.25C125.28,-780.78 148.28,-751.84 168.48,-726.43"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="171.08,-728.79 174.56,-718.79 165.6,-724.44 171.08,-728.79"/>
 </g>
-<!-- 1db3efc37bab43588c8096cb416ce84d -->
+<!-- d28b2b07e5f8454d91dbfe2efd8d5260 -->
 <g id="node3" class="node">
-<title>1db3efc37bab43588c8096cb416ce84d</title>
+<title>d28b2b07e5f8454d91dbfe2efd8d5260</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="16" y="-730.8"/>
 <text xml:space="preserve" text-anchor="start" x="15.62" y="-606.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">③</text>
 <text xml:space="preserve" text-anchor="start" x="26.88" y="-606.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="29.88" y="-606.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">twelve blog posts</text>
 <text xml:space="preserve" text-anchor="start" x="14.12" y="-596.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">every one is a talking point</text>
 </g>
-<!-- 1db3efc37bab43588c8096cb416ce84d&#45;&gt;61d4eca7f2a44e3cbb35e3a179d81428 -->
+<!-- d28b2b07e5f8454d91dbfe2efd8d5260&#45;&gt;ba84e353538445fca176e25cbd297407 -->
 <g id="edge8" class="edge">
-<title>1db3efc37bab43588c8096cb416ce84d&#45;&gt;61d4eca7f2a44e3cbb35e3a179d81428</title>
+<title>d28b2b07e5f8454d91dbfe2efd8d5260&#45;&gt;ba84e353538445fca176e25cbd297407</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M102.3,-730.57C107.45,-740.71 112.33,-751.19 116.38,-761.4 149.84,-845.88 134.69,-874.61 167.38,-959.4 170,-966.22 172.98,-973.17 176.15,-980.07"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="172.82,-981.21 180.26,-988.75 179.14,-978.21 172.82,-981.21"/>
 </g>
-<!-- 85eb1458a98042dd89fc80d3556ba1cd -->
+<!-- 88307732c3d3452a800b075f67fd12b1 -->
 <g id="node9" class="node">
-<title>85eb1458a98042dd89fc80d3556ba1cd</title>
+<title>88307732c3d3452a800b075f67fd12b1</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/general/users.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="332.375" y="-730.8"/>
 <text xml:space="preserve" text-anchor="start" x="330.5" y="-617.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑨</text>
 <text xml:space="preserve" text-anchor="start" x="341.75" y="-617.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -110,27 +110,27 @@
 <text xml:space="preserve" text-anchor="start" x="324.12" y="-607.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">at least 3 with real engineers ·</text>
 <text xml:space="preserve" text-anchor="start" x="361.25" y="-596.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">recorded</text>
 </g>
-<!-- 61d4eca7f2a44e3cbb35e3a179d81428&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd -->
+<!-- ba84e353538445fca176e25cbd297407&#45;&gt;88307732c3d3452a800b075f67fd12b1 -->
 <g id="edge2" class="edge">
-<title>61d4eca7f2a44e3cbb35e3a179d81428&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd</title>
+<title>ba84e353538445fca176e25cbd297407&#45;&gt;88307732c3d3452a800b075f67fd12b1</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M258.95,-990.08C264.05,-979.91 269.02,-969.47 273.38,-959.4 304.49,-887.57 333.07,-802.99 352.19,-742.5"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="355.41,-743.93 355.07,-733.34 348.74,-741.83 355.41,-743.93"/>
 </g>
-<!-- 988148ef525a4fac88b2529be5c28cd3&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd -->
+<!-- 0918c6f047f0414e928ff176206f9d9d&#45;&gt;88307732c3d3452a800b075f67fd12b1 -->
 <g id="edge5" class="edge">
-<title>988148ef525a4fac88b2529be5c28cd3&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd</title>
+<title>0918c6f047f0414e928ff176206f9d9d&#45;&gt;88307732c3d3452a800b075f67fd12b1</title>
 <path fill="none" stroke="#7a7a7a" d="M265.17,-804.46C283.91,-780.52 305.91,-752.42 325.37,-727.55"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="328.08,-729.77 331.49,-719.74 322.57,-725.46 328.08,-729.77"/>
 </g>
-<!-- a9a72c52967845909709e194c2b72ed4&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd -->
+<!-- e7d83cb2bff94eac9f67fc693f796d5a&#45;&gt;88307732c3d3452a800b075f67fd12b1 -->
 <g id="edge7" class="edge">
-<title>a9a72c52967845909709e194c2b72ed4&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd</title>
+<title>e7d83cb2bff94eac9f67fc693f796d5a&#45;&gt;88307732c3d3452a800b075f67fd12b1</title>
 <path fill="none" stroke="#7a7a7a" d="M264.96,-662.4C282.38,-662.4 302.64,-662.4 321.08,-662.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="321.06,-665.9 331.06,-662.4 321.06,-658.9 321.06,-665.9"/>
 </g>
-<!-- 464ea5a473d44ad79b4d04575a5602eb -->
+<!-- ba85fda4871643a5871b4c79092c412d -->
 <g id="node7" class="node">
-<title>464ea5a473d44ad79b4d04575a5602eb</title>
+<title>ba85fda4871643a5871b4c79092c412d</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/language/bash.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="175.375" y="-532.8"/>
 <text xml:space="preserve" text-anchor="start" x="181.75" y="-419.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑦</text>
 <text xml:space="preserve" text-anchor="start" x="193" y="-419.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -138,15 +138,15 @@
 <text xml:space="preserve" text-anchor="start" x="169.38" y="-409.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">bash · Python · Terraform · a</text>
 <text xml:space="preserve" text-anchor="start" x="167.88" y="-398.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">broken cluster · under a timer</text>
 </g>
-<!-- 464ea5a473d44ad79b4d04575a5602eb&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd -->
+<!-- ba85fda4871643a5871b4c79092c412d&#45;&gt;88307732c3d3452a800b075f67fd12b1 -->
 <g id="edge9" class="edge">
-<title>464ea5a473d44ad79b4d04575a5602eb&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd</title>
+<title>ba85fda4871643a5871b4c79092c412d&#45;&gt;88307732c3d3452a800b075f67fd12b1</title>
 <path fill="none" stroke="#7a7a7a" d="M265.17,-520.34C283.91,-544.28 305.91,-572.38 325.37,-597.25"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="322.57,-599.34 331.49,-605.06 328.08,-595.03 322.57,-599.34"/>
 </g>
-<!-- 358bee98055646fd9e4b33755ecd337f -->
+<!-- 5a20b8380ce543068eb90f52de36dbae -->
 <g id="node8" class="node">
-<title>358bee98055646fd9e4b33755ecd337f</title>
+<title>5a20b8380ce543068eb90f52de36dbae</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="175.375" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="161.88" y="-221.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑧</text>
 <text xml:space="preserve" text-anchor="start" x="173.12" y="-221.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -154,15 +154,15 @@
 <text xml:space="preserve" text-anchor="start" x="159.62" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">written down · about the work, not</text>
 <text xml:space="preserve" text-anchor="start" x="203.88" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">the perks</text>
 </g>
-<!-- 358bee98055646fd9e4b33755ecd337f&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd -->
+<!-- 5a20b8380ce543068eb90f52de36dbae&#45;&gt;88307732c3d3452a800b075f67fd12b1 -->
 <g id="edge10" class="edge">
-<title>358bee98055646fd9e4b33755ecd337f&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd</title>
+<title>5a20b8380ce543068eb90f52de36dbae&#45;&gt;88307732c3d3452a800b075f67fd12b1</title>
 <path fill="none" stroke="#7a7a7a" d="M258.95,-334.72C264.05,-344.89 269.02,-355.33 273.38,-365.4 304.68,-437.68 333.43,-522.87 352.55,-583.43"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="349.1,-584.13 355.43,-592.62 355.78,-582.03 349.1,-584.13"/>
 </g>
-<!-- a0e32bcbdc0f4680b8a1d12fe57543dd -->
+<!-- a5c34daa82104e399f26d50109b5948a -->
 <g id="node10" class="node">
-<title>a0e32bcbdc0f4680b8a1d12fe57543dd</title>
+<title>a5c34daa82104e399f26d50109b5948a</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="489.375" y="-992.8"/>
 <text xml:space="preserve" text-anchor="start" x="480.75" y="-879.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑩</text>
 <text xml:space="preserve" text-anchor="start" x="492" y="-879.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -170,22 +170,22 @@
 <text xml:space="preserve" text-anchor="start" x="483" y="-869.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">the weak spots · fix them, re&#45;</text>
 <text xml:space="preserve" text-anchor="start" x="522.75" y="-858.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">record</text>
 </g>
-<!-- 85eb1458a98042dd89fc80d3556ba1cd&#45;&gt;a0e32bcbdc0f4680b8a1d12fe57543dd -->
+<!-- 88307732c3d3452a800b075f67fd12b1&#45;&gt;a5c34daa82104e399f26d50109b5948a -->
 <g id="edge3" class="edge">
-<title>85eb1458a98042dd89fc80d3556ba1cd&#45;&gt;a0e32bcbdc0f4680b8a1d12fe57543dd</title>
+<title>88307732c3d3452a800b075f67fd12b1&#45;&gt;a5c34daa82104e399f26d50109b5948a</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M418.69,-730.55C439.51,-765.74 465.02,-808.86 486.69,-845.49"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="483.5,-846.96 491.6,-853.79 489.52,-843.4 483.5,-846.96"/>
 </g>
-<!-- a0e32bcbdc0f4680b8a1d12fe57543dd&#45;&gt;61d4eca7f2a44e3cbb35e3a179d81428 -->
+<!-- a5c34daa82104e399f26d50109b5948a&#45;&gt;ba84e353538445fca176e25cbd297407 -->
 <g id="edge11" class="edge">
-<title>a0e32bcbdc0f4680b8a1d12fe57543dd&#45;&gt;61d4eca7f2a44e3cbb35e3a179d81428</title>
+<title>a5c34daa82104e399f26d50109b5948a&#45;&gt;ba84e353538445fca176e25cbd297407</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M489.46,-943.26C433.35,-967.36 336.26,-1009.06 275.6,-1035.11"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="274.28,-1031.87 266.48,-1039.03 277.05,-1038.3 274.28,-1031.87"/>
 <text xml:space="preserve" text-anchor="middle" x="377.38" y="-1011.85" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">re&#45;run</text>
 </g>
-<!-- 1a1e3fc0052141ce9aaaee2b9fdb85ee -->
+<!-- a44646af124c4756be8f078813c7dfce -->
 <g id="node11" class="node">
-<title>1a1e3fc0052141ce9aaaee2b9fdb85ee</title>
+<title>a44646af124c4756be8f078813c7dfce</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/general/client.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="175.375" y="-136.8"/>
 <text xml:space="preserve" text-anchor="start" x="177.62" y="-23.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑪</text>
 <text xml:space="preserve" text-anchor="start" x="188.88" y="-23.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -193,9 +193,9 @@
 <text xml:space="preserve" text-anchor="start" x="168.62" y="-13.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">this week · the pipeline keeps</text>
 <text xml:space="preserve" text-anchor="start" x="211.75" y="-2.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">filling</text>
 </g>
-<!-- 1a1e3fc0052141ce9aaaee2b9fdb85ee&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd -->
+<!-- a44646af124c4756be8f078813c7dfce&#45;&gt;88307732c3d3452a800b075f67fd12b1 -->
 <g id="edge12" class="edge">
-<title>1a1e3fc0052141ce9aaaee2b9fdb85ee&#45;&gt;85eb1458a98042dd89fc80d3556ba1cd</title>
+<title>a44646af124c4756be8f078813c7dfce&#45;&gt;88307732c3d3452a800b075f67fd12b1</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M257.61,-136.71C263.44,-149.35 268.99,-162.6 273.38,-175.4 321.24,-314.97 351.08,-485 365.64,-582.77"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="362.16,-583.16 367.08,-592.54 369.08,-582.14 362.16,-583.16"/>
 </g>

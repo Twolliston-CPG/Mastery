@@ -16,7 +16,7 @@
 
 ![Figure 17.1 — The diagnostic ladder you narrate at Gate 4](content/figure-17.1-the-diagnostic-ladder-you-narrate-at.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three minutes; [`content/figure-17.1-numbered-spoken.pdf`](content/figure-17.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

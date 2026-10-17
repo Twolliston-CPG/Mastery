@@ -23,6 +23,8 @@ Supply chain security is what makes you beat other juniors. The blue path is the
 - **⑫ SLSA.** “The provenance levels give you vocabulary: who built it, from what, on what builder, with what guarantees. Thursday's case studies ask one question of each real attack: which of these boxes would have caught it.”
 - **Close.** “Scan the source, harden the build, scan the image, describe it, sign the digest, verify at the door. Then prove it twice with a screenshot. That is the month that beats other juniors.”
 
+**Print it:** [`figure-18.1-numbered-spoken.pdf`](figure-18.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

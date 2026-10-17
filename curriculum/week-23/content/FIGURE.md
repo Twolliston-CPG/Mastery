@@ -21,6 +21,8 @@ Nothing here is new technology. It is Terraform, CI, GitOps, the security gates,
 - **⑩ two example services.** “hello-api with nothing declared, and orders-api with Postgres, an S3 bucket, and tier critical. Both provisioned through the platform. They are the stranger test's starting point next week.”
 - **Close.** “Validate, plan with a price, merge, generate everything, run, and remove cleanly. Zero manual steps between merge and a running service is the exit criterion, and Gate 6 times it.”
 
+**Print it:** [`figure-23.1-numbered-spoken.pdf`](figure-23.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

@@ -16,7 +16,7 @@
 
 ![Figure 9.1 — The consolidation loop that produces an 80 percent](content/figure-9.1-the-consolidation-loop-that-produces-an.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three minutes; [`content/figure-9.1-numbered-spoken.pdf`](content/figure-9.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

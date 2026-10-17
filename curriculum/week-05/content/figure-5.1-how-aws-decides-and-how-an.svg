@@ -18,9 +18,9 @@
 <polygon fill="#eef4fb" stroke="#aeb6be" points="147,-190.4 147,-360.4 718,-360.4 718,-190.4 147,-190.4"/>
 <text xml:space="preserve" text-anchor="middle" x="230.75" y="-347.85" font-family="Helvetica,sans-Serif" font-size="9.00" fill="#2d3436">EC2 · credentials without a credential</text>
 </g>
-<!-- 52c1c501a2e447dbaf4784f5650706e3 -->
+<!-- f87c6a4ad1ef40188964b768bbdd7fa5 -->
 <g id="node1" class="node">
-<title>52c1c501a2e447dbaf4784f5650706e3</title>
+<title>f87c6a4ad1ef40188964b768bbdd7fa5</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/general/user.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="775" y="-333.8"/>
 <text xml:space="preserve" text-anchor="start" x="769" y="-220.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">①</text>
 <text xml:space="preserve" text-anchor="start" x="780.25" y="-220.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -28,54 +28,54 @@
 <text xml:space="preserve" text-anchor="start" x="777.25" y="-210.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">who · action · resource ·</text>
 <text xml:space="preserve" text-anchor="start" x="802.38" y="-199.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">conditions</text>
 </g>
-<!-- 1503864f2cfc4ba0804d6fc8031f5b7a -->
+<!-- 7caad784392845fb967aa39d9f63bb56 -->
 <g id="node2" class="node">
-<title>1503864f2cfc4ba0804d6fc8031f5b7a</title>
+<title>7caad784392845fb967aa39d9f63bb56</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/security/identity-and-access-management-iam-permissions.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="930" y="-333.8"/>
 <text xml:space="preserve" text-anchor="start" x="936.75" y="-209.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">②</text>
 <text xml:space="preserve" text-anchor="start" x="948" y="-209.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="951" y="-209.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#8a3a1e">explicit Deny?</text>
 <text xml:space="preserve" text-anchor="start" x="948.38" y="-199.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">anywhere wins</text>
 </g>
-<!-- 52c1c501a2e447dbaf4784f5650706e3&#45;&gt;1503864f2cfc4ba0804d6fc8031f5b7a -->
+<!-- f87c6a4ad1ef40188964b768bbdd7fa5&#45;&gt;7caad784392845fb967aa39d9f63bb56 -->
 <g id="edge1" class="edge">
-<title>52c1c501a2e447dbaf4784f5650706e3&#45;&gt;1503864f2cfc4ba0804d6fc8031f5b7a</title>
+<title>f87c6a4ad1ef40188964b768bbdd7fa5&#45;&gt;7caad784392845fb967aa39d9f63bb56</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M864.84,-265.4C881.25,-265.4 900.12,-265.4 917.51,-265.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="917.43,-268.9 927.43,-265.4 917.43,-261.9 917.43,-268.9"/>
 </g>
-<!-- bb2ec57f61fb4f4aa99bbbe72341b0f1 -->
+<!-- 7ab493e3ea6a4c39aed06382e461e1cf -->
 <g id="node3" class="node">
-<title>bb2ec57f61fb4f4aa99bbbe72341b0f1</title>
+<title>7ab493e3ea6a4c39aed06382e461e1cf</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/management/organizations.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="1085" y="-333.8"/>
 <text xml:space="preserve" text-anchor="start" x="1062.88" y="-209.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">③</text>
 <text xml:space="preserve" text-anchor="start" x="1074.12" y="-209.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="1077.12" y="-209.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">SCP · permission boundary</text>
 <text xml:space="preserve" text-anchor="start" x="1097" y="-199.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">ceilings, not grants</text>
 </g>
-<!-- 1503864f2cfc4ba0804d6fc8031f5b7a&#45;&gt;bb2ec57f61fb4f4aa99bbbe72341b0f1 -->
+<!-- 7caad784392845fb967aa39d9f63bb56&#45;&gt;7ab493e3ea6a4c39aed06382e461e1cf -->
 <g id="edge2" class="edge">
-<title>1503864f2cfc4ba0804d6fc8031f5b7a&#45;&gt;bb2ec57f61fb4f4aa99bbbe72341b0f1</title>
+<title>7caad784392845fb967aa39d9f63bb56&#45;&gt;7ab493e3ea6a4c39aed06382e461e1cf</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M1019.84,-265.4C1036.25,-265.4 1055.12,-265.4 1072.51,-265.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="1072.43,-268.9 1082.43,-265.4 1072.43,-261.9 1072.43,-268.9"/>
 </g>
-<!-- 446e2a0948ab489683d3fc12217cbf63 -->
+<!-- 3057a9d3c454435a86a6ad517cc60c0e -->
 <g id="node4" class="node">
-<title>446e2a0948ab489683d3fc12217cbf63</title>
+<title>3057a9d3c454435a86a6ad517cc60c0e</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/security/identity-and-access-management-iam.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="1240" y="-333.8"/>
 <text xml:space="preserve" text-anchor="start" x="1199.5" y="-209.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">④</text>
 <text xml:space="preserve" text-anchor="start" x="1210.75" y="-209.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="1213.75" y="-209.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">identity or resource policy Allow?</text>
 <text xml:space="preserve" text-anchor="start" x="1244.12" y="-199.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">no Allow = implicit deny</text>
 </g>
-<!-- bb2ec57f61fb4f4aa99bbbe72341b0f1&#45;&gt;446e2a0948ab489683d3fc12217cbf63 -->
+<!-- 7ab493e3ea6a4c39aed06382e461e1cf&#45;&gt;3057a9d3c454435a86a6ad517cc60c0e -->
 <g id="edge3" class="edge">
-<title>bb2ec57f61fb4f4aa99bbbe72341b0f1&#45;&gt;446e2a0948ab489683d3fc12217cbf63</title>
+<title>7ab493e3ea6a4c39aed06382e461e1cf&#45;&gt;3057a9d3c454435a86a6ad517cc60c0e</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M1174.84,-265.4C1191.25,-265.4 1210.12,-265.4 1227.51,-265.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="1227.43,-268.9 1237.43,-265.4 1227.43,-261.9 1227.43,-268.9"/>
 </g>
-<!-- b8f086dcb23746029d3768553317678e -->
+<!-- bae5986f02ec42a28b36f8942d5b441b -->
 <g id="node5" class="node">
-<title>b8f086dcb23746029d3768553317678e</title>
+<title>bae5986f02ec42a28b36f8942d5b441b</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="1395" y="-333.8"/>
 <text xml:space="preserve" text-anchor="start" x="1414.88" y="-220.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑤</text>
 <text xml:space="preserve" text-anchor="start" x="1426.12" y="-220.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -83,24 +83,24 @@
 <text xml:space="preserve" text-anchor="start" x="1380.38" y="-210.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">or AccessDenied, with the reason</text>
 <text xml:space="preserve" text-anchor="start" x="1418.25" y="-199.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">in CloudTrail</text>
 </g>
-<!-- 446e2a0948ab489683d3fc12217cbf63&#45;&gt;b8f086dcb23746029d3768553317678e -->
+<!-- 3057a9d3c454435a86a6ad517cc60c0e&#45;&gt;bae5986f02ec42a28b36f8942d5b441b -->
 <g id="edge4" class="edge">
-<title>446e2a0948ab489683d3fc12217cbf63&#45;&gt;b8f086dcb23746029d3768553317678e</title>
+<title>3057a9d3c454435a86a6ad517cc60c0e&#45;&gt;bae5986f02ec42a28b36f8942d5b441b</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M1329.84,-265.4C1346.25,-265.4 1365.12,-265.4 1382.51,-265.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="1382.43,-268.9 1392.43,-265.4 1382.43,-261.9 1382.43,-268.9"/>
 </g>
-<!-- ffa97d7556a9446fb1062b88672368bc -->
+<!-- 05b859b1c06c4abaa2a3d14d5b94546f -->
 <g id="node6" class="node">
-<title>ffa97d7556a9446fb1062b88672368bc</title>
+<title>05b859b1c06c4abaa2a3d14d5b94546f</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/security/identity-and-access-management-iam-role.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="155" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="159.88" y="-210.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑥</text>
 <text xml:space="preserve" text-anchor="start" x="171.12" y="-210.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="174.12" y="-210.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">instance profile</text>
 <text xml:space="preserve" text-anchor="start" x="141.88" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">wraps a role · attached at launch</text>
 </g>
-<!-- 991f69d5b9af4c7a822e89a33c468614 -->
+<!-- c6a74bb4581b4449aa4887f6e525fc84 -->
 <g id="node7" class="node">
-<title>991f69d5b9af4c7a822e89a33c468614</title>
+<title>c6a74bb4581b4449aa4887f6e525fc84</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/compute/ec2.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="310" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="329.88" y="-221.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑦</text>
 <text xml:space="preserve" text-anchor="start" x="341.12" y="-221.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -108,15 +108,15 @@
 <text xml:space="preserve" text-anchor="start" x="295.38" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">PUT token, TTL ≤ 6 h · hop limit 1</text>
 <text xml:space="preserve" text-anchor="start" x="322.38" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">· 169.254.169.254</text>
 </g>
-<!-- ffa97d7556a9446fb1062b88672368bc&#45;&gt;991f69d5b9af4c7a822e89a33c468614 -->
+<!-- 05b859b1c06c4abaa2a3d14d5b94546f&#45;&gt;c6a74bb4581b4449aa4887f6e525fc84 -->
 <g id="edge5" class="edge">
-<title>ffa97d7556a9446fb1062b88672368bc&#45;&gt;991f69d5b9af4c7a822e89a33c468614</title>
+<title>05b859b1c06c4abaa2a3d14d5b94546f&#45;&gt;c6a74bb4581b4449aa4887f6e525fc84</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M244.84,-266.4C261.25,-266.4 280.12,-266.4 297.51,-266.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="297.43,-269.9 307.43,-266.4 297.43,-262.9 297.43,-269.9"/>
 </g>
-<!-- 7cf41e9d97f94b3cb380f5ce92f04e6b -->
+<!-- 4359cf7ed16c479091cd462ec55cd5c3 -->
 <g id="node8" class="node">
-<title>7cf41e9d97f94b3cb380f5ce92f04e6b</title>
+<title>4359cf7ed16c479091cd462ec55cd5c3</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/security/vault.png" width="90px" height="91.0651px" preserveAspectRatio="xMinYMin meet" x="465" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="456" y="-221.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑧</text>
 <text xml:space="preserve" text-anchor="start" x="467.25" y="-221.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -124,51 +124,51 @@
 <text xml:space="preserve" text-anchor="start" x="449.25" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">rotated about every 6 h · never on</text>
 <text xml:space="preserve" text-anchor="start" x="503.25" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">disk</text>
 </g>
-<!-- 991f69d5b9af4c7a822e89a33c468614&#45;&gt;7cf41e9d97f94b3cb380f5ce92f04e6b -->
+<!-- c6a74bb4581b4449aa4887f6e525fc84&#45;&gt;4359cf7ed16c479091cd462ec55cd5c3 -->
 <g id="edge6" class="edge">
-<title>991f69d5b9af4c7a822e89a33c468614&#45;&gt;7cf41e9d97f94b3cb380f5ce92f04e6b</title>
+<title>c6a74bb4581b4449aa4887f6e525fc84&#45;&gt;4359cf7ed16c479091cd462ec55cd5c3</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M399.84,-266.4C416.25,-266.4 435.12,-266.4 452.51,-266.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="452.43,-269.9 462.43,-266.4 452.43,-262.9 452.43,-269.9"/>
 </g>
-<!-- a977420bfe084fdda3778a701900c8a9 -->
+<!-- fbc22621096d4ce88f3937d390e11242 -->
 <g id="node9" class="node">
-<title>a977420bfe084fdda3778a701900c8a9</title>
+<title>fbc22621096d4ce88f3937d390e11242</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/language/python.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="620" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="611.75" y="-212.3" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑨</text>
 <text xml:space="preserve" text-anchor="start" x="623" y="-212.3" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="626" y="-212.3" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">SDK credential chain</text>
 <text xml:space="preserve" text-anchor="start" x="602" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">env → profile → container → IMDS</text>
 </g>
-<!-- 7cf41e9d97f94b3cb380f5ce92f04e6b&#45;&gt;a977420bfe084fdda3778a701900c8a9 -->
+<!-- 4359cf7ed16c479091cd462ec55cd5c3&#45;&gt;fbc22621096d4ce88f3937d390e11242 -->
 <g id="edge7" class="edge">
-<title>7cf41e9d97f94b3cb380f5ce92f04e6b&#45;&gt;a977420bfe084fdda3778a701900c8a9</title>
+<title>4359cf7ed16c479091cd462ec55cd5c3&#45;&gt;fbc22621096d4ce88f3937d390e11242</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M554.84,-266.4C571.25,-266.4 590.12,-266.4 607.51,-266.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="607.43,-269.9 617.43,-266.4 607.43,-262.9 607.43,-269.9"/>
 </g>
-<!-- a977420bfe084fdda3778a701900c8a9&#45;&gt;52c1c501a2e447dbaf4784f5650706e3 -->
+<!-- fbc22621096d4ce88f3937d390e11242&#45;&gt;f87c6a4ad1ef40188964b768bbdd7fa5 -->
 <g id="edge8" class="edge">
-<title>a977420bfe084fdda3778a701900c8a9&#45;&gt;52c1c501a2e447dbaf4784f5650706e3</title>
+<title>fbc22621096d4ce88f3937d390e11242&#45;&gt;f87c6a4ad1ef40188964b768bbdd7fa5</title>
 <path fill="none" stroke="#7a7a7a" d="M709.84,-266.11C726.65,-266 746.04,-265.88 763.78,-265.76"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="763.66,-269.26 773.64,-265.7 763.61,-262.26 763.66,-269.26"/>
 </g>
-<!-- 9df362e435b845cba062e0a3e358150d -->
+<!-- 7ec47ee4a1e04e2cae956904708630ae -->
 <g id="node10" class="node">
-<title>9df362e435b845cba062e0a3e358150d</title>
+<title>7ec47ee4a1e04e2cae956904708630ae</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/security/identity-and-access-management-iam-role.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="620" y="-136.8"/>
 <text xml:space="preserve" text-anchor="start" x="597.88" y="-12.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑩</text>
 <text xml:space="preserve" text-anchor="start" x="609.12" y="-12.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="612.12" y="-12.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">cross&#45;account AssumeRole</text>
 <text xml:space="preserve" text-anchor="start" x="612.5" y="-2.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">trust policy + ExternalId · STS</text>
 </g>
-<!-- 9df362e435b845cba062e0a3e358150d&#45;&gt;52c1c501a2e447dbaf4784f5650706e3 -->
+<!-- 7ec47ee4a1e04e2cae956904708630ae&#45;&gt;f87c6a4ad1ef40188964b768bbdd7fa5 -->
 <g id="edge9" class="edge">
-<title>9df362e435b845cba062e0a3e358150d&#45;&gt;52c1c501a2e447dbaf4784f5650706e3</title>
+<title>7ec47ee4a1e04e2cae956904708630ae&#45;&gt;f87c6a4ad1ef40188964b768bbdd7fa5</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M709.84,-124.85C728.09,-148.35 749.39,-175.77 768.3,-200.12"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="765.32,-201.99 774.22,-207.74 770.85,-197.7 765.32,-201.99"/>
 </g>
-<!-- a28ef1c3203c4756a4e88c204ff8cd99 -->
+<!-- 1c23252dd289476a9114bb1a62aa42a9 -->
 <g id="node11" class="node">
-<title>a28ef1c3203c4756a4e88c204ff8cd99</title>
+<title>1c23252dd289476a9114bb1a62aa42a9</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/cost/budgets.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="0" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="7.12" y="-221.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑪</text>
 <text xml:space="preserve" text-anchor="start" x="18.38" y="-221.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -176,9 +176,9 @@
 <text xml:space="preserve" text-anchor="start" x="-10.12" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">budgets $25 · $50 · $100 · root</text>
 <text xml:space="preserve" text-anchor="start" x="11.62" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">MFA · no root keys</text>
 </g>
-<!-- a28ef1c3203c4756a4e88c204ff8cd99&#45;&gt;ffa97d7556a9446fb1062b88672368bc -->
+<!-- 1c23252dd289476a9114bb1a62aa42a9&#45;&gt;05b859b1c06c4abaa2a3d14d5b94546f -->
 <g id="edge10" class="edge">
-<title>a28ef1c3203c4756a4e88c204ff8cd99&#45;&gt;ffa97d7556a9446fb1062b88672368bc</title>
+<title>1c23252dd289476a9114bb1a62aa42a9&#45;&gt;05b859b1c06c4abaa2a3d14d5b94546f</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M89.84,-266.4C106.65,-266.4 126.04,-266.4 143.78,-266.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="143.64,-269.9 153.64,-266.4 143.64,-262.9 143.64,-269.9"/>
 </g>

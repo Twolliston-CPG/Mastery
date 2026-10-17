@@ -17,7 +17,7 @@
 
 ![Figure 14.1 — What happens when you kubectl apply a Deployment](content/figure-14.1-what-happens-when-you-kubectl-apply.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about four minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about four minutes; [`content/figure-14.1-numbered-spoken.pdf`](content/figure-14.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

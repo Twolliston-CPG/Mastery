@@ -16,7 +16,7 @@
 
 ![Figure 25.1 — The interview kit, and where every piece of it comes from](content/figure-25.1-the-interview-kit-and-where-every.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 11 badges, about three minutes; [`content/figure-25.1-numbered-spoken.pdf`](content/figure-25.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

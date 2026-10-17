@@ -22,6 +22,8 @@ Three short paths rather than one: a queue that absorbs load, a key that can say
 - **⑪ Organizations SCP.** “A service control policy is a ceiling applied to every account under an OU. It grants nothing; it only removes. Deny leaving the organization, deny disabling CloudTrail, deny regions you do not use.”
 - **Close.** “Four disaster-recovery strategies finish the week, and the one-line version is this: backup and restore is hours and cheap, pilot light is tens of minutes, warm standby is minutes, multi-site is seconds and costs double. RTO and RPO are what you are buying.”
 
+**Print it:** [`figure-8.1-numbered-spoken.pdf`](figure-8.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

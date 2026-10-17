@@ -20,7 +20,7 @@
 
 ![Figure 1.1 — A process on a Linux system, from the shell to the commit](content/figure-1.1-a-process-on-a-linux-system.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three minutes; [`content/figure-1.1-numbered-spoken.pdf`](content/figure-1.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

@@ -21,6 +21,8 @@ The first real architecture: traffic in at the top, compute that replaces itself
 - **⑩ Lambda in a VPC.** “A Lambda attached to a public subnet still has no internet, because its interface has no public IP. It needs a NAT, like any private instance. This is a favourite exam trap and the week-6 route-table lesson again.”
 - **Close.** “Traffic in, fleet that heals, database that fails over. Two measured numbers in your own words beat any diagram you copied, and both go into Project Alpha's README.”
 
+**Print it:** [`figure-7.1-numbered-spoken.pdf`](figure-7.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

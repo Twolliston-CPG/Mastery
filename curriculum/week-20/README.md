@@ -16,7 +16,7 @@
 
 ![Figure 20.1 — From a request to an alert that means users are hurting](content/figure-20.1-from-a-request-to-an-alert.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 12 badges, about four minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 12 badges, about four minutes; [`content/figure-20.1-numbered-spoken.pdf`](content/figure-20.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

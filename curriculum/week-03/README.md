@@ -16,7 +16,7 @@
 
 ![Figure 3.1 — Browser to backend: routing, NAT, firewall, TLS, and the reverse proxy](content/figure-3.1-browser-to-backend-routing-nat-firewall.png)
 
-**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three and a half minutes. Read the figure before the day plan; say the script on Friday.
+**Say it, badge by badge:** [`content/FIGURE.md`](content/FIGURE.md) — the spoken script for each of the 10 badges, about three and a half minutes; [`content/figure-3.1-numbered-spoken.pdf`](content/figure-3.1-numbered-spoken.pdf) is the printable two-page version. Read the figure before the day plan; say the script on Friday.
 
 ---
 

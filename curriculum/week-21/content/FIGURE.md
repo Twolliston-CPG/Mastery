@@ -22,6 +22,8 @@ Three real incidents you ran and three blameless postmortems you wrote are worth
 - **⑪ Gate 5.** “Friday: the pipeline blocks a critical CVE live, refuses an unsigned image live, you write a PromQL query and a valid SLO from scratch, and Bravo meets its acceptance criteria. Then the demo video Saturday.”
 - **Close.** “Detect, declare, mitigate before you diagnose, fix, write it down without blame, and leave an action item someone can verify. Three of those, written by you, are an interview story bank.”
 
+**Print it:** [`figure-21.1-numbered-spoken.pdf`](figure-21.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

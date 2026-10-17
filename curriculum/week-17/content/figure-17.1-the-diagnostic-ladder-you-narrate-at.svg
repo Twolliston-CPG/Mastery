@@ -8,9 +8,9 @@
  viewBox="0.00 0.00 2804.00 814.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(2 2) rotate(0) translate(36 370.8)">
 <polygon fill="white" stroke="none" points="-36,36 -36,-370.8 1366,-370.8 1366,36 -36,36"/>
-<!-- 9f4c8c605eb3432bbf197e0f2eed8840 -->
+<!-- 2ad361dd45f24c1cbeb7ac94e450a602 -->
 <g id="node1" class="node">
-<title>9f4c8c605eb3432bbf197e0f2eed8840</title>
+<title>2ad361dd45f24c1cbeb7ac94e450a602</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/decision.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="0" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="12.75" y="-221.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">①</text>
 <text xml:space="preserve" text-anchor="start" x="24" y="-221.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -18,9 +18,9 @@
 <text xml:space="preserve" text-anchor="start" x="-9" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">what exactly · who is affected ·</text>
 <text xml:space="preserve" text-anchor="start" x="25.12" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">since when</text>
 </g>
-<!-- a86acbd2c1334ff6972b4b7b4b453458 -->
+<!-- 54ab7b5f9b3045599c318fe5325b0e0d -->
 <g id="node2" class="node">
-<title>a86acbd2c1334ff6972b4b7b4b453458</title>
+<title>54ab7b5f9b3045599c318fe5325b0e0d</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="155" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="170.75" y="-221.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">②</text>
 <text xml:space="preserve" text-anchor="start" x="182" y="-221.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -28,15 +28,15 @@
 <text xml:space="preserve" text-anchor="start" x="139.25" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">what changed · resolves most real</text>
 <text xml:space="preserve" text-anchor="start" x="184.62" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">incidents</text>
 </g>
-<!-- 9f4c8c605eb3432bbf197e0f2eed8840&#45;&gt;a86acbd2c1334ff6972b4b7b4b453458 -->
+<!-- 2ad361dd45f24c1cbeb7ac94e450a602&#45;&gt;54ab7b5f9b3045599c318fe5325b0e0d -->
 <g id="edge1" class="edge">
-<title>9f4c8c605eb3432bbf197e0f2eed8840&#45;&gt;a86acbd2c1334ff6972b4b7b4b453458</title>
+<title>2ad361dd45f24c1cbeb7ac94e450a602&#45;&gt;54ab7b5f9b3045599c318fe5325b0e0d</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M89.84,-266.4C106.25,-266.4 125.12,-266.4 142.51,-266.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="142.43,-269.9 152.43,-266.4 142.43,-262.9 142.43,-269.9"/>
 </g>
-<!-- 9d1e43d6b1ae40469bf06012e695feba -->
+<!-- 794a69ca7de44b8095ee198ed3346a26 -->
 <g id="node3" class="node">
-<title>9d1e43d6b1ae40469bf06012e695feba</title>
+<title>794a69ca7de44b8095ee198ed3346a26</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/decision.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="310" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="315.25" y="-221.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">③</text>
 <text xml:space="preserve" text-anchor="start" x="326.5" y="-221.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -44,15 +44,15 @@
 <text xml:space="preserve" text-anchor="start" x="302.88" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">the cheapest test that kills the</text>
 <text xml:space="preserve" text-anchor="start" x="347.5" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">idea</text>
 </g>
-<!-- a86acbd2c1334ff6972b4b7b4b453458&#45;&gt;9d1e43d6b1ae40469bf06012e695feba -->
+<!-- 54ab7b5f9b3045599c318fe5325b0e0d&#45;&gt;794a69ca7de44b8095ee198ed3346a26 -->
 <g id="edge2" class="edge">
-<title>a86acbd2c1334ff6972b4b7b4b453458&#45;&gt;9d1e43d6b1ae40469bf06012e695feba</title>
+<title>54ab7b5f9b3045599c318fe5325b0e0d&#45;&gt;794a69ca7de44b8095ee198ed3346a26</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M244.84,-266.4C261.25,-266.4 280.12,-266.4 297.51,-266.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="297.43,-269.9 307.43,-266.4 297.43,-262.9 297.43,-269.9"/>
 </g>
-<!-- 4cff12aa24da4cd1976724945d80ca69 -->
+<!-- 6c4f16c04f7144d2ae2afa237f975b7b -->
 <g id="node4" class="node">
-<title>4cff12aa24da4cd1976724945d80ca69</title>
+<title>6c4f16c04f7144d2ae2afa237f975b7b</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/predefined-process.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="465" y="-235.8"/>
 <text xml:space="preserve" text-anchor="start" x="483" y="-125.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">④</text>
 <text xml:space="preserve" text-anchor="start" x="494.25" y="-125.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -60,15 +60,15 @@
 <text xml:space="preserve" text-anchor="start" x="446.62" y="-113.75" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">app → container → pod → node →</text>
 <text xml:space="preserve" text-anchor="start" x="447.75" y="-101.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">network → cloud → DNS · in order</text>
 </g>
-<!-- 9d1e43d6b1ae40469bf06012e695feba&#45;&gt;4cff12aa24da4cd1976724945d80ca69 -->
+<!-- 794a69ca7de44b8095ee198ed3346a26&#45;&gt;6c4f16c04f7144d2ae2afa237f975b7b -->
 <g id="edge3" class="edge">
-<title>9d1e43d6b1ae40469bf06012e695feba&#45;&gt;4cff12aa24da4cd1976724945d80ca69</title>
+<title>794a69ca7de44b8095ee198ed3346a26&#45;&gt;6c4f16c04f7144d2ae2afa237f975b7b</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M399.84,-238.03C416.89,-227 436.6,-214.25 454.54,-202.64"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="456.37,-205.62 462.86,-197.25 452.57,-199.75 456.37,-205.62"/>
 </g>
-<!-- daa6b26e5e084407a32d1645f3f0bb3e -->
+<!-- b3ba1a901e5c4ba4bd7815ff587ec072 -->
 <g id="node5" class="node">
-<title>daa6b26e5e084407a32d1645f3f0bb3e</title>
+<title>b3ba1a901e5c4ba4bd7815ff587ec072</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="620" y="-235.8"/>
 <text xml:space="preserve" text-anchor="start" x="634.25" y="-122.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑤</text>
 <text xml:space="preserve" text-anchor="start" x="645.5" y="-122.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -76,45 +76,45 @@
 <text xml:space="preserve" text-anchor="start" x="615.88" y="-112.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">prove the root cause · not a</text>
 <text xml:space="preserve" text-anchor="start" x="646.25" y="-101.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">correlation</text>
 </g>
-<!-- 4cff12aa24da4cd1976724945d80ca69&#45;&gt;daa6b26e5e084407a32d1645f3f0bb3e -->
+<!-- 6c4f16c04f7144d2ae2afa237f975b7b&#45;&gt;b3ba1a901e5c4ba4bd7815ff587ec072 -->
 <g id="edge4" class="edge">
-<title>4cff12aa24da4cd1976724945d80ca69&#45;&gt;daa6b26e5e084407a32d1645f3f0bb3e</title>
+<title>6c4f16c04f7144d2ae2afa237f975b7b&#45;&gt;b3ba1a901e5c4ba4bd7815ff587ec072</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M554.84,-167.4C571.25,-167.4 590.12,-167.4 607.51,-167.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="607.43,-170.9 617.43,-167.4 607.43,-163.9 607.43,-170.9"/>
 </g>
-<!-- 9bc13656a54d46c0bfacfd25aa55eae8 -->
+<!-- d3a226783d47478782baba5fb70e2d15 -->
 <g id="node6" class="node">
-<title>9bc13656a54d46c0bfacfd25aa55eae8</title>
+<title>d3a226783d47478782baba5fb70e2d15</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="775" y="-235.8"/>
 <text xml:space="preserve" text-anchor="start" x="805" y="-111.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑥</text>
 <text xml:space="preserve" text-anchor="start" x="816.25" y="-111.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="819.25" y="-111.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">FIX</text>
 <text xml:space="preserve" text-anchor="start" x="784.75" y="-101.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">the smallest change</text>
 </g>
-<!-- daa6b26e5e084407a32d1645f3f0bb3e&#45;&gt;9bc13656a54d46c0bfacfd25aa55eae8 -->
+<!-- b3ba1a901e5c4ba4bd7815ff587ec072&#45;&gt;d3a226783d47478782baba5fb70e2d15 -->
 <g id="edge5" class="edge">
-<title>daa6b26e5e084407a32d1645f3f0bb3e&#45;&gt;9bc13656a54d46c0bfacfd25aa55eae8</title>
+<title>b3ba1a901e5c4ba4bd7815ff587ec072&#45;&gt;d3a226783d47478782baba5fb70e2d15</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M709.84,-167.4C726.25,-167.4 745.12,-167.4 762.51,-167.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="762.43,-170.9 772.43,-167.4 762.43,-163.9 762.43,-170.9"/>
 </g>
-<!-- 86640934a3884744be0de5d7cc187872 -->
+<!-- 85a5fe90574544a88d0bb1266161838c -->
 <g id="node7" class="node">
-<title>86640934a3884744be0de5d7cc187872</title>
+<title>85a5fe90574544a88d0bb1266161838c</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/start-end.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="930" y="-235.8"/>
 <text xml:space="preserve" text-anchor="start" x="943.88" y="-111.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑦</text>
 <text xml:space="preserve" text-anchor="start" x="955.12" y="-111.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="958.12" y="-111.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">PREVENT</text>
 <text xml:space="preserve" text-anchor="start" x="928.12" y="-101.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">impossible, or at least loud</text>
 </g>
-<!-- 9bc13656a54d46c0bfacfd25aa55eae8&#45;&gt;86640934a3884744be0de5d7cc187872 -->
+<!-- d3a226783d47478782baba5fb70e2d15&#45;&gt;85a5fe90574544a88d0bb1266161838c -->
 <g id="edge6" class="edge">
-<title>9bc13656a54d46c0bfacfd25aa55eae8&#45;&gt;86640934a3884744be0de5d7cc187872</title>
+<title>d3a226783d47478782baba5fb70e2d15&#45;&gt;85a5fe90574544a88d0bb1266161838c</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M864.84,-167.4C881.25,-167.4 900.12,-167.4 917.51,-167.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="917.43,-170.9 927.43,-167.4 917.43,-163.9 917.43,-170.9"/>
 </g>
-<!-- cd59c845d4024a948ae79bab4de7a7fb -->
+<!-- 88ab25bd8de946d7987b823c1867c178 -->
 <g id="node9" class="node">
-<title>cd59c845d4024a948ae79bab4de7a7fb</title>
+<title>88ab25bd8de946d7987b823c1867c178</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="1085" y="-235.8"/>
 <text xml:space="preserve" text-anchor="start" x="1101.88" y="-134.55" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑨</text>
 <text xml:space="preserve" text-anchor="start" x="1113.12" y="-134.55" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -123,15 +123,15 @@
 <text xml:space="preserve" text-anchor="start" x="1080.5" y="-112.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">narrated · plus Deployment,</text>
 <text xml:space="preserve" text-anchor="start" x="1062.88" y="-101.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">Service, Ingress, RBAC from memory</text>
 </g>
-<!-- 86640934a3884744be0de5d7cc187872&#45;&gt;cd59c845d4024a948ae79bab4de7a7fb -->
+<!-- 85a5fe90574544a88d0bb1266161838c&#45;&gt;88ab25bd8de946d7987b823c1867c178 -->
 <g id="edge8" class="edge">
-<title>86640934a3884744be0de5d7cc187872&#45;&gt;cd59c845d4024a948ae79bab4de7a7fb</title>
+<title>85a5fe90574544a88d0bb1266161838c&#45;&gt;88ab25bd8de946d7987b823c1867c178</title>
 <path fill="none" stroke="#7a7a7a" d="M1019.84,-167.4C1036.65,-167.4 1056.04,-167.4 1073.78,-167.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="1073.64,-170.9 1083.64,-167.4 1073.64,-163.9 1073.64,-170.9"/>
 </g>
-<!-- 2cfc514fd7dc42fb8efb34f0735a1fc0 -->
+<!-- b4820064807a420e8068b6c79b2e6fac -->
 <g id="node8" class="node">
-<title>2cfc514fd7dc42fb8efb34f0735a1fc0</title>
+<title>b4820064807a420e8068b6c79b2e6fac</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/multiple-documents.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="310" y="-136.8"/>
 <text xml:space="preserve" text-anchor="start" x="290.12" y="-34.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑧</text>
 <text xml:space="preserve" text-anchor="start" x="301.38" y="-34.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -140,15 +140,15 @@
 <text xml:space="preserve" text-anchor="start" x="304.75" y="-13.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">events · get endpoints · auth</text>
 <text xml:space="preserve" text-anchor="start" x="337.38" y="-2.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">can&#45;i · top</text>
 </g>
-<!-- 2cfc514fd7dc42fb8efb34f0735a1fc0&#45;&gt;4cff12aa24da4cd1976724945d80ca69 -->
+<!-- b4820064807a420e8068b6c79b2e6fac&#45;&gt;6c4f16c04f7144d2ae2afa237f975b7b -->
 <g id="edge7" class="edge">
-<title>2cfc514fd7dc42fb8efb34f0735a1fc0&#45;&gt;4cff12aa24da4cd1976724945d80ca69</title>
+<title>b4820064807a420e8068b6c79b2e6fac&#45;&gt;6c4f16c04f7144d2ae2afa237f975b7b</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M399.84,-96.77C417.21,-108.01 437.34,-121.03 455.55,-132.81"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="453.58,-135.71 463.88,-138.2 457.38,-129.83 453.58,-135.71"/>
 </g>
-<!-- 9804c75cb84c462392159be41b79fa67 -->
+<!-- d5ba350cec2c4d419f684bde3ae68106 -->
 <g id="node10" class="node">
-<title>9804c75cb84c462392159be41b79fa67</title>
+<title>d5ba350cec2c4d419f684bde3ae68106</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/decision.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="1240" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="1244.5" y="-223.3" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑩</text>
 <text xml:space="preserve" text-anchor="start" x="1255.75" y="-223.3" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -156,15 +156,15 @@
 <text xml:space="preserve" text-anchor="start" x="1226.5" y="-211.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">passed comfortably → skip, bank</text>
 <text xml:space="preserve" text-anchor="start" x="1236.25" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">$250 and 25 h toward CKA</text>
 </g>
-<!-- cd59c845d4024a948ae79bab4de7a7fb&#45;&gt;9804c75cb84c462392159be41b79fa67 -->
+<!-- 88ab25bd8de946d7987b823c1867c178&#45;&gt;d5ba350cec2c4d419f684bde3ae68106 -->
 <g id="edge9" class="edge">
-<title>cd59c845d4024a948ae79bab4de7a7fb&#45;&gt;9804c75cb84c462392159be41b79fa67</title>
+<title>88ab25bd8de946d7987b823c1867c178&#45;&gt;d5ba350cec2c4d419f684bde3ae68106</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M1174.84,-195.77C1192.21,-207.01 1212.34,-220.03 1230.55,-231.81"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="1228.58,-234.71 1238.88,-237.2 1232.38,-228.83 1228.58,-234.71"/>
 </g>
-<!-- eccd0d00b38041d5b0db68f830c4b8d7 -->
+<!-- ef563fe383eb4bf997b2c5c2fd75cf07 -->
 <g id="node11" class="node">
-<title>eccd0d00b38041d5b0db68f830c4b8d7</title>
+<title>ef563fe383eb4bf997b2c5c2fd75cf07</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="1240" y="-136.8"/>
 <text xml:space="preserve" text-anchor="start" x="1235.12" y="-25.3" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑪</text>
 <text xml:space="preserve" text-anchor="start" x="1246.38" y="-25.3" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -172,9 +172,9 @@
 <text xml:space="preserve" text-anchor="start" x="1220.88" y="-13.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">architecture + STRIDE threat model</text>
 <text xml:space="preserve" text-anchor="start" x="1256.12" y="-2.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">before any code</text>
 </g>
-<!-- cd59c845d4024a948ae79bab4de7a7fb&#45;&gt;eccd0d00b38041d5b0db68f830c4b8d7 -->
+<!-- 88ab25bd8de946d7987b823c1867c178&#45;&gt;ef563fe383eb4bf997b2c5c2fd75cf07 -->
 <g id="edge10" class="edge">
-<title>cd59c845d4024a948ae79bab4de7a7fb&#45;&gt;eccd0d00b38041d5b0db68f830c4b8d7</title>
+<title>88ab25bd8de946d7987b823c1867c178&#45;&gt;ef563fe383eb4bf997b2c5c2fd75cf07</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M1174.84,-139.03C1192.21,-127.79 1212.34,-114.77 1230.55,-102.99"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="1232.38,-105.97 1238.88,-97.6 1228.58,-100.09 1232.38,-105.97"/>
 </g>

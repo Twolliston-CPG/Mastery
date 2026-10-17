@@ -28,30 +28,30 @@
 <polygon fill="#eef4fb" stroke="#aeb6be" points="669,-152.4 669,-323.4 862,-323.4 862,-152.4 669,-152.4"/>
 <text xml:space="preserve" text-anchor="middle" x="765.5" y="-310.85" font-family="Helvetica,sans-Serif" font-size="9.00" fill="#2d3436">⑦ data /24 per AZ · rtb has NO default route</text>
 </g>
-<!-- b737e2ba7dd248ed9d73be91f72b7115 -->
+<!-- 4f0fa241564a46b2895e97fb0ce2f284 -->
 <g id="node1" class="node">
-<title>b737e2ba7dd248ed9d73be91f72b7115</title>
+<title>4f0fa241564a46b2895e97fb0ce2f284</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/general/internet-alt1.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="0" y="-510.8"/>
 <text xml:space="preserve" text-anchor="start" x="28.88" y="-377" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#7a8288">internet</text>
 </g>
-<!-- ac64bf79c9164d949e16b8395392b36a -->
+<!-- 5b7757366de94956b4435db00275ee86 -->
 <g id="node2" class="node">
-<title>ac64bf79c9164d949e16b8395392b36a</title>
+<title>5b7757366de94956b4435db00275ee86</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/general/internet-gateway.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="140" y="-609.8"/>
 <text xml:space="preserve" text-anchor="start" x="140" y="-485.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">②</text>
 <text xml:space="preserve" text-anchor="start" x="151.25" y="-485.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="154.25" y="-485.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">internet gateway</text>
 <text xml:space="preserve" text-anchor="start" x="126.5" y="-475.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">one per VPC · no bandwidth limit</text>
 </g>
-<!-- b737e2ba7dd248ed9d73be91f72b7115&#45;&gt;ac64bf79c9164d949e16b8395392b36a -->
+<!-- 4f0fa241564a46b2895e97fb0ce2f284&#45;&gt;5b7757366de94956b4435db00275ee86 -->
 <g id="edge1" class="edge">
-<title>b737e2ba7dd248ed9d73be91f72b7115&#45;&gt;ac64bf79c9164d949e16b8395392b36a</title>
+<title>4f0fa241564a46b2895e97fb0ce2f284&#45;&gt;5b7757366de94956b4435db00275ee86</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M89.66,-473.72C102.5,-482.93 116.7,-493.12 130.09,-502.73"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="127.77,-505.37 137.93,-508.35 131.85,-499.68 127.77,-505.37"/>
 </g>
-<!-- ab7cd7d74a3c44139b0f48b58fd0b874 -->
+<!-- cf81699be4ea4cfc91c64d5082a8ddd3 -->
 <g id="node4" class="node">
-<title>ab7cd7d74a3c44139b0f48b58fd0b874</title>
+<title>cf81699be4ea4cfc91c64d5082a8ddd3</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/compute/ec2.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="140" y="-411.8"/>
 <text xml:space="preserve" text-anchor="start" x="162.12" y="-298.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑤</text>
 <text xml:space="preserve" text-anchor="start" x="173.38" y="-298.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -59,15 +59,15 @@
 <text xml:space="preserve" text-anchor="start" x="130.25" y="-288.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">ssh &#45;J · ProxyJump · SG allows</text>
 <text xml:space="preserve" text-anchor="start" x="164" y="-277.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">your IP only</text>
 </g>
-<!-- b737e2ba7dd248ed9d73be91f72b7115&#45;&gt;ab7cd7d74a3c44139b0f48b58fd0b874 -->
+<!-- 4f0fa241564a46b2895e97fb0ce2f284&#45;&gt;cf81699be4ea4cfc91c64d5082a8ddd3 -->
 <g id="edge7" class="edge">
-<title>b737e2ba7dd248ed9d73be91f72b7115&#45;&gt;ab7cd7d74a3c44139b0f48b58fd0b874</title>
+<title>4f0fa241564a46b2895e97fb0ce2f284&#45;&gt;cf81699be4ea4cfc91c64d5082a8ddd3</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M89.66,-411.08C102.75,-401.69 117.25,-391.28 130.88,-381.51"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="132.83,-384.42 138.92,-375.74 128.75,-378.73 132.83,-384.42"/>
 </g>
-<!-- dec646f02a424deea8d147101210ab90 -->
+<!-- cd3d8c8378944aea8ecba87fd020943c -->
 <g id="node3" class="node">
-<title>dec646f02a424deea8d147101210ab90</title>
+<title>cd3d8c8378944aea8ecba87fd020943c</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/network/nat-gateway.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="280" y="-411.8"/>
 <text xml:space="preserve" text-anchor="start" x="287.5" y="-298.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">④</text>
 <text xml:space="preserve" text-anchor="start" x="298.75" y="-298.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -75,47 +75,47 @@
 <text xml:space="preserve" text-anchor="start" x="271.75" y="-288.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">one per AZ in prod · billed per</text>
 <text xml:space="preserve" text-anchor="start" x="299.5" y="-277.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">hour + per GB</text>
 </g>
-<!-- ac64bf79c9164d949e16b8395392b36a&#45;&gt;dec646f02a424deea8d147101210ab90 -->
+<!-- 5b7757366de94956b4435db00275ee86&#45;&gt;cd3d8c8378944aea8ecba87fd020943c -->
 <g id="edge2" class="edge">
-<title>ac64bf79c9164d949e16b8395392b36a&#45;&gt;dec646f02a424deea8d147101210ab90</title>
+<title>5b7757366de94956b4435db00275ee86&#45;&gt;cd3d8c8378944aea8ecba87fd020943c</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M229.85,-478.48C243.5,-458.9 258.66,-437.15 272.76,-416.92"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="275.62,-418.94 278.47,-408.73 269.88,-414.93 275.62,-418.94"/>
 </g>
-<!-- 0178d8a1aae247ba8248d2e45d3c88fc -->
+<!-- 284242968f44418280bbf4dede2d51c8 -->
 <g id="node5" class="node">
-<title>0178d8a1aae247ba8248d2e45d3c88fc</title>
+<title>284242968f44418280bbf4dede2d51c8</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/compute/ec2.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="474" y="-353.8"/>
 <text xml:space="preserve" text-anchor="start" x="498" y="-231" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#1b3a5c">instances</text>
 <text xml:space="preserve" text-anchor="start" x="492" y="-219.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">private IPs only</text>
 </g>
-<!-- dec646f02a424deea8d147101210ab90&#45;&gt;0178d8a1aae247ba8248d2e45d3c88fc -->
+<!-- cd3d8c8378944aea8ecba87fd020943c&#45;&gt;284242968f44418280bbf4dede2d51c8 -->
 <g id="edge3" class="edge">
-<title>dec646f02a424deea8d147101210ab90&#45;&gt;0178d8a1aae247ba8248d2e45d3c88fc</title>
+<title>cd3d8c8378944aea8ecba87fd020943c&#45;&gt;284242968f44418280bbf4dede2d51c8</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M369.57,-330.24C397.09,-321.93 432.9,-311.11 462.45,-302.18"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="463.1,-305.64 471.66,-299.4 461.08,-298.94 463.1,-305.64"/>
 </g>
-<!-- ab7cd7d74a3c44139b0f48b58fd0b874&#45;&gt;0178d8a1aae247ba8248d2e45d3c88fc -->
+<!-- cf81699be4ea4cfc91c64d5082a8ddd3&#45;&gt;284242968f44418280bbf4dede2d51c8 -->
 <g id="edge8" class="edge">
-<title>ab7cd7d74a3c44139b0f48b58fd0b874&#45;&gt;0178d8a1aae247ba8248d2e45d3c88fc</title>
+<title>cf81699be4ea4cfc91c64d5082a8ddd3&#45;&gt;284242968f44418280bbf4dede2d51c8</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M229.8,-281.83C243.93,-266.74 260.94,-252.58 280,-244.4 339.58,-218.81 414.03,-239.1 463.64,-259.18"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="462.18,-262.36 472.75,-262.99 464.88,-255.9 462.18,-262.36"/>
 </g>
-<!-- 314ce90b8a9b4e4d8d17dc6ef8daff0e -->
+<!-- ec6645c2ff864fc89b74ad6a1feca58c -->
 <g id="node6" class="node">
-<title>314ce90b8a9b4e4d8d17dc6ef8daff0e</title>
+<title>ec6645c2ff864fc89b74ad6a1feca58c</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/database/rds.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="720" y="-296.8"/>
 <text xml:space="preserve" text-anchor="start" x="754.12" y="-174" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">RDS</text>
 <text xml:space="preserve" text-anchor="start" x="715.12" y="-162.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">reachable from app SG only</text>
 </g>
-<!-- 0178d8a1aae247ba8248d2e45d3c88fc&#45;&gt;314ce90b8a9b4e4d8d17dc6ef8daff0e -->
+<!-- 284242968f44418280bbf4dede2d51c8&#45;&gt;ec6645c2ff864fc89b74ad6a1feca58c -->
 <g id="edge6" class="edge">
-<title>0178d8a1aae247ba8248d2e45d3c88fc&#45;&gt;314ce90b8a9b4e4d8d17dc6ef8daff0e</title>
+<title>284242968f44418280bbf4dede2d51c8&#45;&gt;ec6645c2ff864fc89b74ad6a1feca58c</title>
 <path fill="none" stroke="#7a7a7a" d="M563.9,-275.14C604.55,-265.65 665.14,-251.5 708.99,-241.25"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="709.62,-244.7 718.56,-239.01 708.03,-237.88 709.62,-244.7"/>
 </g>
-<!-- 6f1b7f7e0aca4d5dbe1db515740bae53 -->
+<!-- 51dee77e7a8648e4980c2beb4ce70bc4 -->
 <g id="node7" class="node">
-<title>6f1b7f7e0aca4d5dbe1db515740bae53</title>
+<title>51dee77e7a8648e4980c2beb4ce70bc4</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/network/endpoint.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="720" y="-494.8"/>
 <text xml:space="preserve" text-anchor="start" x="709.5" y="-381.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑧</text>
 <text xml:space="preserve" text-anchor="start" x="720.75" y="-381.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -123,15 +123,15 @@
 <text xml:space="preserve" text-anchor="start" x="719.25" y="-371.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">free · a route&#45;table entry ·</text>
 <text xml:space="preserve" text-anchor="start" x="713.25" y="-360.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">replaces the NAT path for S3</text>
 </g>
-<!-- 0178d8a1aae247ba8248d2e45d3c88fc&#45;&gt;6f1b7f7e0aca4d5dbe1db515740bae53 -->
+<!-- 284242968f44418280bbf4dede2d51c8&#45;&gt;51dee77e7a8648e4980c2beb4ce70bc4 -->
 <g id="edge4" class="edge">
-<title>0178d8a1aae247ba8248d2e45d3c88fc&#45;&gt;6f1b7f7e0aca4d5dbe1db515740bae53</title>
+<title>284242968f44418280bbf4dede2d51c8&#45;&gt;51dee77e7a8648e4980c2beb4ce70bc4</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M563.9,-310.77C604.63,-334.31 665.39,-369.42 709.27,-394.77"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="707.27,-397.66 717.68,-399.63 710.77,-391.6 707.27,-397.66"/>
 </g>
-<!-- 625a5d903bc44894b08381ffe5481856 -->
+<!-- c8f27fdecbcc47d9bd1f12597f100262 -->
 <g id="node8" class="node">
-<title>625a5d903bc44894b08381ffe5481856</title>
+<title>c8f27fdecbcc47d9bd1f12597f100262</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/network/vpc-flow-logs.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="720" y="-692.8"/>
 <text xml:space="preserve" text-anchor="start" x="735.38" y="-579.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑨</text>
 <text xml:space="preserve" text-anchor="start" x="746.62" y="-579.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -139,15 +139,15 @@
 <text xml:space="preserve" text-anchor="start" x="708" y="-569.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">ACCEPT and REJECT · find the</text>
 <text xml:space="preserve" text-anchor="start" x="730.5" y="-558.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">rejected connection</text>
 </g>
-<!-- 0178d8a1aae247ba8248d2e45d3c88fc&#45;&gt;625a5d903bc44894b08381ffe5481856 -->
+<!-- 284242968f44418280bbf4dede2d51c8&#45;&gt;c8f27fdecbcc47d9bd1f12597f100262 -->
 <g id="edge10" class="edge">
-<title>0178d8a1aae247ba8248d2e45d3c88fc&#45;&gt;625a5d903bc44894b08381ffe5481856</title>
+<title>284242968f44418280bbf4dede2d51c8&#45;&gt;c8f27fdecbcc47d9bd1f12597f100262</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M557.22,-353.59C585.41,-403.04 626.44,-470.59 669,-525.4 682.07,-542.23 697.6,-559.38 712.28,-574.58"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="709.77,-577.02 719.27,-581.72 714.78,-572.13 709.77,-577.02"/>
 </g>
-<!-- 6bdbefcc31274345bd7316eeee827ca5 -->
+<!-- 1e31b3322ceb4e038eee5a9040ec57fe -->
 <g id="node10" class="node">
-<title>6bdbefcc31274345bd7316eeee827ca5</title>
+<title>1e31b3322ceb4e038eee5a9040ec57fe</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/storage/simple-storage-service-s3.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="904" y="-494.8"/>
 <text xml:space="preserve" text-anchor="start" x="935.88" y="-392.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑪</text>
 <text xml:space="preserve" text-anchor="start" x="947.12" y="-392.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -156,15 +156,15 @@
 <text xml:space="preserve" text-anchor="start" x="902.5" y="-371.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">uploads · presigned URL ·</text>
 <text xml:space="preserve" text-anchor="start" x="904.75" y="-360.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">lifecycle to IA and Glacier</text>
 </g>
-<!-- 6f1b7f7e0aca4d5dbe1db515740bae53&#45;&gt;6bdbefcc31274345bd7316eeee827ca5 -->
+<!-- 51dee77e7a8648e4980c2beb4ce70bc4&#45;&gt;1e31b3322ceb4e038eee5a9040ec57fe -->
 <g id="edge5" class="edge">
-<title>6f1b7f7e0aca4d5dbe1db515740bae53&#45;&gt;6bdbefcc31274345bd7316eeee827ca5</title>
+<title>51dee77e7a8648e4980c2beb4ce70bc4&#45;&gt;1e31b3322ceb4e038eee5a9040ec57fe</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M809.59,-426.4C834.18,-426.4 865.16,-426.4 891.58,-426.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="891.41,-429.9 901.41,-426.4 891.41,-422.9 891.41,-429.9"/>
 </g>
-<!-- 9812bc0c2d9945678b765429337fec24 -->
+<!-- d98ff11578124dd19ca23eb206007573 -->
 <g id="node9" class="node">
-<title>9812bc0c2d9945678b765429337fec24</title>
+<title>d98ff11578124dd19ca23eb206007573</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/generic/network/firewall.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="280" y="-136.8"/>
 <text xml:space="preserve" text-anchor="start" x="289" y="-23.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑩</text>
 <text xml:space="preserve" text-anchor="start" x="300.25" y="-23.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -172,9 +172,9 @@
 <text xml:space="preserve" text-anchor="start" x="268.75" y="-13.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">stateful, allow&#45;only, on the ENI ·</text>
 <text xml:space="preserve" text-anchor="start" x="266.5" y="-2.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">stateless, ordered, on the subnet</text>
 </g>
-<!-- 9812bc0c2d9945678b765429337fec24&#45;&gt;0178d8a1aae247ba8248d2e45d3c88fc -->
+<!-- d98ff11578124dd19ca23eb206007573&#45;&gt;284242968f44418280bbf4dede2d51c8 -->
 <g id="edge9" class="edge">
-<title>9812bc0c2d9945678b765429337fec24&#45;&gt;0178d8a1aae247ba8248d2e45d3c88fc</title>
+<title>d98ff11578124dd19ca23eb206007573&#45;&gt;284242968f44418280bbf4dede2d51c8</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M369.81,-117.91C398.58,-150.43 436.34,-193.11 466.54,-227.24"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="463.8,-229.42 473.05,-234.59 469.04,-224.78 463.8,-229.42"/>
 </g>

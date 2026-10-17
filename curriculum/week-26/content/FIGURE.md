@@ -21,6 +21,8 @@ Not the finish line: the point where the pipeline is full and converting. The fi
 - **⑩ all six gates.** “A stack from a fresh VM, the SAA at eighty percent, Alpha in one command, five clusters narrated, Bravo refusing a CVE and an unsigned image, Charlie in ten minutes. Six proofs, each one a story.”
 - **Close.** “Apply, interview, build what they exposed, write down what you learned, repeat. The program ends; the cadence does not, and the cadence is what converts.”
 
+**Print it:** [`figure-26.1-numbered-spoken.pdf`](figure-26.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.

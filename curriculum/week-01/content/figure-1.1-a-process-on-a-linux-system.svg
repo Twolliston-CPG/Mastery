@@ -18,48 +18,48 @@
 <path fill="#ffffff" stroke="#aeb6be" stroke-width="1.2" d="M950,-167.4C950,-167.4 1187,-167.4 1187,-167.4 1193,-167.4 1199,-173.4 1199,-179.4 1199,-179.4 1199,-327.4 1199,-327.4 1199,-333.4 1193,-339.4 1187,-339.4 1187,-339.4 950,-339.4 950,-339.4 944,-339.4 938,-333.4 938,-327.4 938,-327.4 938,-179.4 938,-179.4 938,-173.4 944,-167.4 950,-167.4"/>
 <text xml:space="preserve" text-anchor="middle" x="981.62" y="-324.95" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#2d3436">Git · the record</text>
 </g>
-<!-- a269e410c6934c99a6d66c6f5162c9ec -->
+<!-- 0c69902b1b964a2ca52bdbe87fba64a2 -->
 <g id="node1" class="node">
-<title>a269e410c6934c99a6d66c6f5162c9ec</title>
+<title>0c69902b1b964a2ca52bdbe87fba64a2</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/language/bash.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="16" y="-322.8"/>
 <text xml:space="preserve" text-anchor="start" x="42.62" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">①</text>
 <text xml:space="preserve" text-anchor="start" x="53.88" y="-198.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="56.88" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">bash</text>
 <text xml:space="preserve" text-anchor="start" x="9.62" y="-188.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">PATH lookup · fork then exec</text>
 </g>
-<!-- 46e3374622274623943f5259f8165726 -->
+<!-- 62b9569ab7f74e90af41c6ed1982f0af -->
 <g id="node2" class="node">
-<title>46e3374622274623943f5259f8165726</title>
+<title>62b9569ab7f74e90af41c6ed1982f0af</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/generic/os/linux-general.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="171" y="-322.8"/>
 <text xml:space="preserve" text-anchor="start" x="181.88" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">②</text>
 <text xml:space="preserve" text-anchor="start" x="193.12" y="-198.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="196.12" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">the process</text>
 <text xml:space="preserve" text-anchor="start" x="166.88" y="-188.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">PID · /proc/PID · ps and top</text>
 </g>
-<!-- a269e410c6934c99a6d66c6f5162c9ec&#45;&gt;46e3374622274623943f5259f8165726 -->
+<!-- 0c69902b1b964a2ca52bdbe87fba64a2&#45;&gt;62b9569ab7f74e90af41c6ed1982f0af -->
 <g id="edge1" class="edge">
-<title>a269e410c6934c99a6d66c6f5162c9ec&#45;&gt;46e3374622274623943f5259f8165726</title>
+<title>0c69902b1b964a2ca52bdbe87fba64a2&#45;&gt;62b9569ab7f74e90af41c6ed1982f0af</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M105.84,-254.4C122.25,-254.4 141.12,-254.4 158.51,-254.4"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="158.43,-257.9 168.43,-254.4 158.43,-250.9 158.43,-257.9"/>
 </g>
-<!-- 946e2d5508914c30b1075e3635a6c066 -->
+<!-- 1f5ef52d20bf40cab0f98a1fbb2ef60a -->
 <g id="node3" class="node">
-<title>946e2d5508914c30b1075e3635a6c066</title>
+<title>1f5ef52d20bf40cab0f98a1fbb2ef60a</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/decision.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="326" y="-334.8"/>
 <text xml:space="preserve" text-anchor="start" x="322.62" y="-210.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">③</text>
 <text xml:space="preserve" text-anchor="start" x="333.88" y="-210.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="336.88" y="-210.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="10.00" fill="#1b3a5c">permission check</text>
 <text xml:space="preserve" text-anchor="start" x="318.5" y="-200.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">uid, gid · rwx bits · 644 vs 755</text>
 </g>
-<!-- 46e3374622274623943f5259f8165726&#45;&gt;946e2d5508914c30b1075e3635a6c066 -->
+<!-- 62b9569ab7f74e90af41c6ed1982f0af&#45;&gt;1f5ef52d20bf40cab0f98a1fbb2ef60a -->
 <g id="edge2" class="edge">
-<title>46e3374622274623943f5259f8165726&#45;&gt;946e2d5508914c30b1075e3635a6c066</title>
+<title>62b9569ab7f74e90af41c6ed1982f0af&#45;&gt;1f5ef52d20bf40cab0f98a1fbb2ef60a</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M260.84,-257.84C277.25,-259.13 296.12,-260.61 313.51,-261.97"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="313.19,-265.46 323.43,-262.75 313.74,-258.48 313.19,-265.46"/>
 </g>
-<!-- 7d2c7ae401be4af199b589c8383a09b0 -->
+<!-- 59826cd3a7bc48d0aac642bf13d08be4 -->
 <g id="node10" class="node">
-<title>7d2c7ae401be4af199b589c8383a09b0</title>
+<title>59826cd3a7bc48d0aac642bf13d08be4</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/action.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="326" y="-136.8"/>
 <text xml:space="preserve" text-anchor="start" x="308" y="-23.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑩</text>
 <text xml:space="preserve" text-anchor="start" x="319.25" y="-23.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -67,15 +67,15 @@
 <text xml:space="preserve" text-anchor="start" x="312.88" y="-13.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">disk full · wrong perms · zombie ·</text>
 <text xml:space="preserve" text-anchor="start" x="360.88" y="-2.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">PATH</text>
 </g>
-<!-- 46e3374622274623943f5259f8165726&#45;&gt;7d2c7ae401be4af199b589c8383a09b0 -->
+<!-- 62b9569ab7f74e90af41c6ed1982f0af&#45;&gt;59826cd3a7bc48d0aac642bf13d08be4 -->
 <g id="edge9" class="edge">
-<title>46e3374622274623943f5259f8165726&#45;&gt;7d2c7ae401be4af199b589c8383a09b0</title>
+<title>62b9569ab7f74e90af41c6ed1982f0af&#45;&gt;59826cd3a7bc48d0aac642bf13d08be4</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M260.84,-201.1C279.01,-179.02 300.2,-153.26 319.05,-130.34"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="321.54,-132.82 325.19,-122.88 316.13,-128.38 321.54,-132.82"/>
 </g>
-<!-- 10f2b4064e3e4f72aaa924947b830350 -->
+<!-- 93eafe462f094dd0ba1bdce1858f0c75 -->
 <g id="node4" class="node">
-<title>10f2b4064e3e4f72aaa924947b830350</title>
+<title>93eafe462f094dd0ba1bdce1858f0c75</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/aws/storage/storage.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="481" y="-311.8"/>
 <text xml:space="preserve" text-anchor="start" x="488.12" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">④</text>
 <text xml:space="preserve" text-anchor="start" x="499.38" y="-198.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -83,15 +83,15 @@
 <text xml:space="preserve" text-anchor="start" x="475.75" y="-188.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">/etc config · /var state · /proc</text>
 <text xml:space="preserve" text-anchor="start" x="496" y="-177.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">the kernel talking</text>
 </g>
-<!-- 946e2d5508914c30b1075e3635a6c066&#45;&gt;10f2b4064e3e4f72aaa924947b830350 -->
+<!-- 1f5ef52d20bf40cab0f98a1fbb2ef60a&#45;&gt;93eafe462f094dd0ba1bdce1858f0c75 -->
 <g id="edge3" class="edge">
-<title>946e2d5508914c30b1075e3635a6c066&#45;&gt;10f2b4064e3e4f72aaa924947b830350</title>
+<title>1f5ef52d20bf40cab0f98a1fbb2ef60a&#45;&gt;93eafe462f094dd0ba1bdce1858f0c75</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M415.84,-259.81C432.33,-257.33 451.3,-254.48 468.76,-251.85"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="469.09,-255.34 478.46,-250.4 468.05,-248.42 469.09,-255.34"/>
 </g>
-<!-- d4dc47fb2e5b494580c3c6a2b11fbd5a -->
+<!-- 05038be2b98546d3bcf27beeecc0cb74 -->
 <g id="node7" class="node">
-<title>d4dc47fb2e5b494580c3c6a2b11fbd5a</title>
+<title>05038be2b98546d3bcf27beeecc0cb74</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/security/vault.png" width="90px" height="91.0651px" preserveAspectRatio="xMinYMin meet" x="481" y="-509.8"/>
 <text xml:space="preserve" text-anchor="start" x="494.12" y="-396.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑦</text>
 <text xml:space="preserve" text-anchor="start" x="505.38" y="-396.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -99,15 +99,15 @@
 <text xml:space="preserve" text-anchor="start" x="476.88" y="-386.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">setuid passwd · sticky /tmp ·</text>
 <text xml:space="preserve" text-anchor="start" x="506.5" y="-375.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">umask 022</text>
 </g>
-<!-- 946e2d5508914c30b1075e3635a6c066&#45;&gt;d4dc47fb2e5b494580c3c6a2b11fbd5a -->
+<!-- 1f5ef52d20bf40cab0f98a1fbb2ef60a&#45;&gt;05038be2b98546d3bcf27beeecc0cb74 -->
 <g id="edge6" class="edge">
-<title>946e2d5508914c30b1075e3635a6c066&#45;&gt;d4dc47fb2e5b494580c3c6a2b11fbd5a</title>
+<title>1f5ef52d20bf40cab0f98a1fbb2ef60a&#45;&gt;05038be2b98546d3bcf27beeecc0cb74</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M415.84,-316.55C433.93,-337.23 455.01,-361.35 473.8,-382.84"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="470.94,-384.88 480.15,-390.11 476.21,-380.27 470.94,-384.88"/>
 </g>
-<!-- d61932d955f04da48ac7e54a103e4e5b -->
+<!-- 5a122cd5cc7e46d6a1d73c5266699fc1 -->
 <g id="node5" class="node">
-<title>d61932d955f04da48ac7e54a103e4e5b</title>
+<title>5a122cd5cc7e46d6a1d73c5266699fc1</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/predefined-process.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="636" y="-311.8"/>
 <text xml:space="preserve" text-anchor="start" x="649.12" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑤</text>
 <text xml:space="preserve" text-anchor="start" x="660.38" y="-198.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -115,15 +115,15 @@
 <text xml:space="preserve" text-anchor="start" x="621" y="-188.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">grep then awk then sort then uniq</text>
 <text xml:space="preserve" text-anchor="start" x="677.62" y="-177.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">&#45;c</text>
 </g>
-<!-- 10f2b4064e3e4f72aaa924947b830350&#45;&gt;d61932d955f04da48ac7e54a103e4e5b -->
+<!-- 93eafe462f094dd0ba1bdce1858f0c75&#45;&gt;5a122cd5cc7e46d6a1d73c5266699fc1 -->
 <g id="edge4" class="edge">
-<title>10f2b4064e3e4f72aaa924947b830350&#45;&gt;d61932d955f04da48ac7e54a103e4e5b</title>
+<title>93eafe462f094dd0ba1bdce1858f0c75&#45;&gt;5a122cd5cc7e46d6a1d73c5266699fc1</title>
 <path fill="none" stroke="#7a7a7a" d="M570.84,-243.4C587.65,-243.4 607.04,-243.4 624.78,-243.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="624.64,-246.9 634.64,-243.4 624.64,-239.9 624.64,-246.9"/>
 </g>
-<!-- 7d77ce80c1b043b1ae0bc4bced51141e -->
+<!-- dbbd667d4b334407afa7b1c5ac4f2fa4 -->
 <g id="node6" class="node">
-<title>7d77ce80c1b043b1ae0bc4bced51141e</title>
+<title>dbbd667d4b334407afa7b1c5ac4f2fa4</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="791" y="-311.8"/>
 <text xml:space="preserve" text-anchor="start" x="808.62" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑥</text>
 <text xml:space="preserve" text-anchor="start" x="819.88" y="-198.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -131,15 +131,15 @@
 <text xml:space="preserve" text-anchor="start" x="793.25" y="-188.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">set &#45;euo pipefail · traps ·</text>
 <text xml:space="preserve" text-anchor="start" x="804.5" y="-177.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">argparse by hand</text>
 </g>
-<!-- d61932d955f04da48ac7e54a103e4e5b&#45;&gt;7d77ce80c1b043b1ae0bc4bced51141e -->
+<!-- 5a122cd5cc7e46d6a1d73c5266699fc1&#45;&gt;dbbd667d4b334407afa7b1c5ac4f2fa4 -->
 <g id="edge5" class="edge">
-<title>d61932d955f04da48ac7e54a103e4e5b&#45;&gt;7d77ce80c1b043b1ae0bc4bced51141e</title>
+<title>5a122cd5cc7e46d6a1d73c5266699fc1&#45;&gt;dbbd667d4b334407afa7b1c5ac4f2fa4</title>
 <path fill="none" stroke="#7a7a7a" d="M725.84,-243.4C742.65,-243.4 762.04,-243.4 779.78,-243.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="779.64,-246.9 789.64,-243.4 779.64,-239.9 779.64,-246.9"/>
 </g>
-<!-- 00df459a55a04fad8a05de5252adbf8f -->
+<!-- adc8824ff73f4b21b2da0b6d410e359a -->
 <g id="node8" class="node">
-<title>00df459a55a04fad8a05de5252adbf8f</title>
+<title>adc8824ff73f4b21b2da0b6d410e359a</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/git.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="946" y="-311.8"/>
 <text xml:space="preserve" text-anchor="start" x="915.25" y="-198.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑧</text>
 <text xml:space="preserve" text-anchor="start" x="926.5" y="-198.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
@@ -147,24 +147,24 @@
 <text xml:space="preserve" text-anchor="start" x="938.88" y="-188.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">a commit is a snapshot plus a</text>
 <text xml:space="preserve" text-anchor="start" x="970" y="-177.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">parent SHA</text>
 </g>
-<!-- 7d77ce80c1b043b1ae0bc4bced51141e&#45;&gt;00df459a55a04fad8a05de5252adbf8f -->
+<!-- dbbd667d4b334407afa7b1c5ac4f2fa4&#45;&gt;adc8824ff73f4b21b2da0b6d410e359a -->
 <g id="edge7" class="edge">
-<title>7d77ce80c1b043b1ae0bc4bced51141e&#45;&gt;00df459a55a04fad8a05de5252adbf8f</title>
+<title>dbbd667d4b334407afa7b1c5ac4f2fa4&#45;&gt;adc8824ff73f4b21b2da0b6d410e359a</title>
 <path fill="none" stroke="#7a7a7a" d="M880.84,-243.4C897.65,-243.4 917.04,-243.4 934.78,-243.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="934.64,-246.9 944.64,-243.4 934.64,-239.9 934.64,-246.9"/>
 </g>
-<!-- da987c5c8ec44c36829552426331124e -->
+<!-- 1f84f9d478324a0c9bafbb3c103a9d50 -->
 <g id="node9" class="node">
-<title>da987c5c8ec44c36829552426331124e</title>
+<title>1f84f9d478324a0c9bafbb3c103a9d50</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/github.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="1101" y="-311.8"/>
 <text xml:space="preserve" text-anchor="start" x="1123.88" y="-187.8" font-family="Helvetica,sans-Serif" font-weight="bold" font-size="11.00" fill="#c7254e">⑨</text>
 <text xml:space="preserve" text-anchor="start" x="1135.12" y="-187.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436"> </text>
 <text xml:space="preserve" text-anchor="start" x="1138.12" y="-187.8" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">remote</text>
 <text xml:space="preserve" text-anchor="start" x="1089.75" y="-177.25" font-family="Helvetica,sans-Serif" font-size="8.00" fill="#7a8288">push · branch · PR · public repo</text>
 </g>
-<!-- 00df459a55a04fad8a05de5252adbf8f&#45;&gt;da987c5c8ec44c36829552426331124e -->
+<!-- adc8824ff73f4b21b2da0b6d410e359a&#45;&gt;1f84f9d478324a0c9bafbb3c103a9d50 -->
 <g id="edge8" class="edge">
-<title>00df459a55a04fad8a05de5252adbf8f&#45;&gt;da987c5c8ec44c36829552426331124e</title>
+<title>adc8824ff73f4b21b2da0b6d410e359a&#45;&gt;1f84f9d478324a0c9bafbb3c103a9d50</title>
 <path fill="none" stroke="#7a7a7a" d="M1035.84,-243.4C1052.65,-243.4 1072.04,-243.4 1089.78,-243.4"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="1089.64,-246.9 1099.64,-243.4 1089.64,-239.9 1089.64,-246.9"/>
 </g>

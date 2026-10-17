@@ -22,6 +22,8 @@ Platform engineering is product management applied to infrastructure. The figure
 - **⑪ the product brief.** “Tuesday's deliverable: user, pain, paved road, non-goals, how you will know it worked, and the riskiest assumption. Everything in weeks 23 and 24 is checked against this page.”
 - **Close.** “A person, a pain, one file, a road that makes the right thing the easy thing, and a number that says it worked. That is a golden path, and most candidates cannot explain it.”
 
+**Print it:** [`figure-22.1-numbered-spoken.pdf`](figure-22.1-numbered-spoken.pdf) is the two-page version, the figure on page one and this script on page two.
+
 ## Use it
 
 - Read the figure before the day plan. Say the script out loud on Friday with the file closed.
