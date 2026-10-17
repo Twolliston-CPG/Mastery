@@ -20,7 +20,8 @@ output "next_steps" {
     2. Set the account-level Actions token default to read-only (no Terraform resource for this):
          gh api -X PUT repos/{owner}/thewayofthesurge/actions/permissions/workflow \
            -f default_workflow_permissions=read -F can_approve_pull_request_reviews=false
-    3. After the first CI run succeeds, if the account is on GitHub Pro:
+    3. After the ci and security workflows have each run green, if the account is on GitHub Pro:
+         set required_status_checks in terraform.tfvars to the full list in terraform.tfvars.example, then
          terraform apply -var enable_rulesets=true
     4. Configure SSH commit signing, upload the key as a *signing* key, then:
          terraform apply -var enable_rulesets=true -var require_signed_commits=true

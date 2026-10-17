@@ -42,7 +42,13 @@ variable "require_signed_commits" {
 }
 
 variable "required_status_checks" {
-  description = "CI job names that must pass before a PR can merge into the default branch. Must match the `name:` of jobs in .github/workflows/ci.yml."
+  description = <<-EOT
+    Job names that must pass before a PR can merge into the default branch. Each must match the
+    `name:` of a job in .github/workflows/ci.yml or security.yml. The default is the set already
+    proven green on the runner; a job is added here only after it has been seen green there,
+    because a required check that fails for an environmental reason blocks every merge. The full
+    set is listed in terraform.tfvars.example.
+  EOT
   type        = list(string)
   default     = ["secrets-scan", "content-checks", "terraform-validate"]
 }

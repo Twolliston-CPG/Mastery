@@ -1,3 +1,6 @@
+# trivy: same false positive as the CKV_GIT_3 skip inside (AVD-GIT-0003 only reads the inline argument).
+# The ignore must sit directly above the block; trivy does not read it from inside.
+#trivy:ignore:AVD-GIT-0003
 resource "github_repository" "this" {
   # checkov:skip=CKV_GIT_3: False positive. Vulnerability alerts are enabled by the github_repository_vulnerability_alerts resource below; the deprecated inline argument is not used.
   for_each = var.repositories

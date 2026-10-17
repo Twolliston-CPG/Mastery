@@ -1,0 +1,19 @@
+# Review ownership for the default branch.
+#
+# Today there is one maintainer, so this routes nothing and the ruleset in infra/github/
+# rulesets.tf requires 0 approvals (an author cannot approve their own pull request). Its job
+# is to name the paths where a second pair of eyes matters most, so that when a collaborator
+# joins, `require_code_owner_review = true` is a one-line change and these paths are covered.
+
+*                           @SerginoDelia
+
+# Anything that changes what runs with a repository token or what counts as a secret.
+/.github/                   @SerginoDelia
+/infra/                     @SerginoDelia
+/.gitleaks.toml             @SerginoDelia
+/.pre-commit-config.yaml    @SerginoDelia
+/.checkov.yaml              @SerginoDelia
+
+# The toolchains that rewrite hundreds of content files.
+/curriculum/_shared/diagrams/   @SerginoDelia
+/curriculum/_shared/feynman/    @SerginoDelia

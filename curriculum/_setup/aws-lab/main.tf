@@ -138,6 +138,9 @@ resource "aws_vpc_security_group_ingress_rule" "lab_web" {
   to_port           = each.value.port
 }
 
+# trivy: unrestricted egress is the point of this rule. The VM installs packages and pulls
+# images from the internet; there is no NAT or proxy to pin it to, and inbound stays default-deny.
+#trivy:ignore:AVD-AWS-0104
 resource "aws_vpc_security_group_egress_rule" "lab_out" {
   security_group_id = aws_security_group.lab.id
   description       = "Outbound for package installs"

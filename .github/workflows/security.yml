@@ -1,0 +1,203 @@
+name: security
+
+# Security checks that complement ci.yml:
+#   secrets        -> ci.yml `secrets-scan` (gitleaks, full history)
+#   workflows      -> actions-lint  (actionlint + zizmor)
+#   shell          -> shell-lint    (shellcheck on every tracked .sh)
+#   IaC, real      -> iac-scan      (checkov + trivy on infra/, curriculum/_setup/, .github/) BLOCKING
+#   IaC, teaching  -> iac-scan-content (same scanners on projects and solutions)        ADVISORY
+#
+# Tools are pinned by version and, for binaries, by sha256. Only GitHub-authored actions are
+# used because infra/github/actions.tf allows nothing else to run with the repository token.
+# Nothing is uploaded to code scanning: SARIF upload on a private repository needs GitHub
+# Advanced Security, so reports are kept as workflow artifacts instead.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 14 * * 1" # Mondays: scanners gain rules weekly, so re-scan main without a commit
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CHECKOV_VERSION: 3.3.29
+  ZIZMOR_VERSION: 1.31.1
+  ACTIONLINT_VERSION: 1.7.12
+  ACTIONLINT_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8 # actionlint_<ver>_linux_amd64.tar.gz
+  TRIVY_VERSION: 0.76.0
+  TRIVY_SHA256: e24b1c51293c1b15e4ba8d45bbc7891ba053f90278ec2698f3562c993e145fe7 # trivy_<ver>_Linux-64bit.tar.gz
+
+jobs:
+  actions-lint:
+    name: actions-lint
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install actionlint (pinned release, checksum verified)
+        run: |
+          set -euo pipefail
+          curl -fsSLo actionlint.tgz \
+            "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          echo "${ACTIONLINT_SHA256}  actionlint.tgz" | sha256sum -c -
+          tar -xzf actionlint.tgz actionlint
+          ./actionlint -version
+
+      # Syntax, expression types, runner labels, and (through the preinstalled shellcheck)
+      # every `run:` script in every workflow.
+      - name: actionlint
+        run: ./actionlint -no-color -shellcheck shellcheck .github/workflows/*.yml
+
+      # Supply-chain posture of the workflows themselves: unpinned actions, template injection,
+      # credential persistence, cache poisoning, known-vulnerable action versions.
+      - name: zizmor
+        env:
+          GH_TOKEN: ${{ github.token }} # read-only; lets zizmor resolve tags for the online audits
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet "zizmor==${ZIZMOR_VERSION}"
+          zizmor --version
+          zizmor --persona regular .github/workflows
+
+  shell-lint:
+    name: shell-lint
+    runs-on: ubuntu-24.04 # shellcheck is preinstalled on GitHub-hosted Ubuntu runners
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: shellcheck every tracked shell script (warning and above)
+        run: |
+          set -euo pipefail
+          shellcheck --version | head -2
+          git ls-files -z -- '*.sh' | xargs -0 shellcheck -S warning
+
+  iac-scan:
+    name: iac-scan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install checkov (pinned)
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet "checkov==${CHECKOV_VERSION}"
+          checkov --version
+
+      - name: Install trivy (pinned release, checksum verified)
+        run: |
+          set -euo pipefail
+          curl -fsSLo trivy.tgz \
+            "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          echo "${TRIVY_SHA256}  trivy.tgz" | sha256sum -c -
+          tar -xzf trivy.tgz trivy
+          ./trivy --version
+
+      # The Terraform that touches real accounts, plus the workflows. Every suppression is an
+      # inline `checkov:skip` / `trivy:ignore` comment next to the resource, with its reason.
+      - name: checkov on infra/, curriculum/_setup/, .github/
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          checkov --config-file .checkov.yaml \
+            --directory infra --directory curriculum/_setup --directory .github \
+            --output cli --output sarif --output-file-path console,reports/checkov-platform.sarif
+
+      - name: trivy misconfiguration scan on infra/ and curriculum/_setup/ (HIGH, CRITICAL)
+        run: |
+          set -euo pipefail
+          for d in infra curriculum/_setup; do
+            echo "::group::$d"
+            ./trivy config --exit-code 1 --severity HIGH,CRITICAL --skip-version-check "$d"
+            echo "::endgroup::"
+          done
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: iac-scan-reports
+          path: reports/
+          retention-days: 14
+
+  # Teaching material (projects/, week-*/solutions/). Findings here are curriculum feedback,
+  # not a merge blocker, so the job never fails; read the summary and the artifact.
+  iac-scan-content:
+    name: iac-scan-content
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install checkov and trivy (same pins as iac-scan)
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet "checkov==${CHECKOV_VERSION}"
+          curl -fsSLo trivy.tgz \
+            "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
+          echo "${TRIVY_SHA256}  trivy.tgz" | sha256sum -c -
+          tar -xzf trivy.tgz trivy
+
+      - name: checkov on curriculum/ (advisory)
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          checkov --config-file .checkov.yaml --soft-fail \
+            --directory curriculum --skip-path curriculum/_setup \
+            --output cli --output sarif --output-file-path console,reports/checkov-content.sarif \
+            | tee reports/checkov-content.txt
+
+      - name: trivy on curriculum/ (advisory)
+        run: |
+          set -euo pipefail
+          ./trivy config --exit-code 0 --severity HIGH,CRITICAL --skip-version-check \
+            --skip-dirs curriculum/_setup --skip-dirs curriculum/_reference \
+            curriculum | tee reports/trivy-content.txt
+
+      - name: Summary
+        run: |
+          set -euo pipefail
+          {
+            echo "## IaC scan of teaching content (advisory)"
+            echo
+            grep -E 'Passed checks' reports/checkov-content.txt | sed 's/^/- checkov: /' || true
+            echo "- trivy HIGH/CRITICAL findings: $(grep -cE '^\S+ \((HIGH|CRITICAL)\):' reports/trivy-content.txt || true)"
+            echo
+            echo "Full reports are in the \`iac-scan-content-reports\` artifact."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: iac-scan-content-reports
+          path: reports/
+          retention-days: 14

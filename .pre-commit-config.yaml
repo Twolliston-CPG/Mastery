@@ -1,9 +1,16 @@
 # Local guardrails that run before anything reaches GitHub.
-#   pre-commit install            # once per clone
+#   pre-commit install            # once per clone; installs BOTH the pre-commit and pre-push hooks
 #   pre-commit run --all-files    # whole tree
 #
 # Deliberately NO formatters/fixers (trailing-whitespace, end-of-file-fixer): a first run would
 # rewrite ~1,000 content files. Only checks that block bad commits.
+#
+# Stages: every hook runs at commit time unless it says otherwise. The one pre-push hook refuses
+# a direct push to main; that is the review requirement (PR + green CI) enforced on the client
+# while the server-side ruleset in infra/github/rulesets.tf is unavailable on the Free plan.
+default_install_hook_types: [pre-commit, pre-push]
+default_stages: [pre-commit]
+
 repos:
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.30.1 # keep in step with GITLEAKS_VERSION in .github/workflows/ci.yml
@@ -34,6 +41,21 @@ repos:
 
   - repo: local
     hooks:
+      - id: no-direct-push-to-main
+        name: refuse a direct push to main (open a pull request instead)
+        entry: >-
+          bash -c 'case "${PRE_COMMIT_REMOTE_BRANCH:-}" in refs/heads/main)
+          echo "main is protected by review: push a branch and open a pull request. (--no-verify bypasses; the ruleset will not.)" >&2;
+          exit 1;; esac'
+        language: system
+        always_run: true
+        pass_filenames: false
+        stages: [pre-push]
+      - id: shellcheck
+        name: shellcheck -S warning
+        entry: shellcheck -S warning
+        language: system
+        files: \.sh$
       - id: terraform-fmt
         name: terraform fmt -check (every root)
         entry: terraform fmt -check -recursive .

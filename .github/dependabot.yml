@@ -27,3 +27,12 @@ updates:
       day: monday
     commit-message:
       prefix: "infra"
+
+  # The pinned figure toolchain that the figures-fresh job installs.
+  - package-ecosystem: pip
+    directory: /curriculum/_shared/diagrams
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: "ci"

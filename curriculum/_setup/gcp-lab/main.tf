@@ -142,6 +142,8 @@ resource "google_compute_resource_policy" "auto_stop" {
 
 # --- VM ------------------------------------------------------------------------
 
+# trivy: same decision as the CKV_GCP_40 skip inside (the external IP is deliberate).
+#trivy:ignore:AVD-GCP-0031
 resource "google_compute_instance" "lab" {
   # checkov:skip=CKV_GCP_40: The external IP is deliberate - outbound package installs without paying for Cloud NAT, and Week 3 serves 80/443. Inbound is default-deny; SSH is IAP-only.
   # checkov:skip=CKV_GCP_38: Disks are encrypted at rest with Google-managed keys. Customer-supplied keys add key-loss risk and nothing a lab needs.
