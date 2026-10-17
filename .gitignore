@@ -37,6 +37,7 @@ $RECYCLE.BIN/
 # ---- Local-only artifacts of this repository -------------------------------------------------
 _backups/
 curriculum/_shared/diagrams/.tools/
+/.tools/
 curriculum/_shared/diagrams/_out/
 _build/
 gnupg/

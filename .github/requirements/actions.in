@@ -1,0 +1,3 @@
+# Linter installed by the actions-lint job. Edit the pin here, then regenerate the hash lock:
+#   uv pip compile --generate-hashes --python-version 3.12 --universal -o .github/requirements/actions.txt .github/requirements/actions.in
+zizmor==1.31.1

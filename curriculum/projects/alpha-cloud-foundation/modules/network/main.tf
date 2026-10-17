@@ -22,6 +22,7 @@ locals {
 }
 
 data "aws_availability_zones" "available" {
+  # checkov:skip=CKV_AWS_394: The check wants an allowlist filter on zone-name or zone-id so a new AZ can never enter the set. This module is region-agnostic by design (var.region, var.az_count), so pinning zone names would need a per-region map. The slice() in locals caps the set at az_count, and AWS appends new zones after the existing ones, so the first N stay stable. Pin zone-name in a real deployment.
   state = "available"
 }
 
@@ -31,6 +32,14 @@ resource "aws_vpc" "this" {
   enable_dns_support   = true
 
   tags = { Name = local.name }
+}
+
+# Every VPC gets a default security group that allows its members to talk to each other.
+# Nothing here uses it; adopting it with no rules strips those and makes "forgot to set a
+# security group" fail closed instead of open.
+resource "aws_default_security_group" "this" {
+  vpc_id = aws_vpc.this.id
+  tags   = { Name = "${local.name}-default-DO-NOT-USE" }
 }
 
 resource "aws_internet_gateway" "this" {

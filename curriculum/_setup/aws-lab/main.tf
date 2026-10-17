@@ -19,6 +19,7 @@ locals {
 data "aws_caller_identity" "this" {}
 
 data "aws_availability_zones" "available" {
+  # checkov:skip=CKV_AWS_394: One lab VM in the first available zone. Allowlisting zone names would hard-code a region into a configuration that takes var.region.
   state = "available"
 }
 

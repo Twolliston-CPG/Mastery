@@ -31,6 +31,10 @@ locals {
 }
 
 resource "aws_s3_bucket" "state" {
+  # checkov:skip=CKV_AWS_18: Access logging needs a second bucket to log into. For one person's project state, CloudTrail already records who touched the bucket.
+  # checkov:skip=CKV_AWS_144: Cross-region replication is disaster recovery for production state. Versioning is the recovery path here.
+  # checkov:skip=CKV_AWS_145: Encrypted with S3-managed keys (below). A customer-managed KMS key costs money monthly and adds a way to lock yourself out of your own state.
+  # checkov:skip=CKV2_AWS_62: Nothing needs to react to state changes in a single-person project.
   bucket = local.bucket_name
 
   # Losing the state bucket means losing the mapping from config to real

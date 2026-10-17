@@ -11,22 +11,28 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # Superseded PR pushes cancel the previous run; a run on main always completes.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+# Runners: ubuntu-24.04-arm, pinned (ubuntu-latest moves to 26.04 in November 2026). Every tool
+# is installed through ./.github/actions/fetch-tool with a per-architecture checksum, or from a
+# hash-locked requirements file, so nothing depends on what the image happens to ship.
 env:
-  # Keep in step with .pre-commit-config.yaml. Checksum is for gitleaks_<ver>_linux_x64.tar.gz.
+  # Keep in step with .pre-commit-config.yaml. Checksums from gitleaks_<ver>_checksums.txt.
   GITLEAKS_VERSION: 8.30.1
-  GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
-  # The ubuntu-24.04 runner image does not ship Terraform, and hashicorp/setup-terraform is not a
-  # GitHub-authored action (infra/github/actions.tf allows nothing else), so it is installed the
-  # same way as gitleaks. Checksum is for terraform_<ver>_linux_amd64.zip from the SHA256SUMS file.
+  GITLEAKS_SHA256_AMD64: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+  GITLEAKS_SHA256_ARM64: e4a487ee7ccd7d3a7f7ec08657610aa3606637dab924210b3aee62570fb4b080
+  # The Ubuntu 24.04 runner images do not ship Terraform, and hashicorp/setup-terraform is not a
+  # GitHub-authored action (infra/github/actions.tf allows nothing else). Checksums from the
+  # release's SHA256SUMS file.
   TERRAFORM_VERSION: 1.15.8
-  TERRAFORM_SHA256: d25ce7b6902013ad905db3d2eab0be4cd905887fe88b81a6171b8d5503c31f3d
+  TERRAFORM_SHA256_AMD64: d25ce7b6902013ad905db3d2eab0be4cd905887fe88b81a6171b8d5503c31f3d
+  TERRAFORM_SHA256_ARM64: 8891e9dcedc9e3b8950bc6af9d4d8af1f4cfade3062f53b9dc403a89f6ce8c9c
 
 jobs:
   secrets-scan:
     name: secrets-scan
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -34,21 +40,21 @@ jobs:
           fetch-depth: 0 # full history: a secret deleted in a later commit is still a leak
           persist-credentials: false
 
-      - name: Install gitleaks (pinned release, checksum verified)
-        run: |
-          set -euo pipefail
-          curl -fsSLo gitleaks.tgz \
-            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
-          echo "${GITLEAKS_SHA256}  gitleaks.tgz" | sha256sum -c -
-          tar -xzf gitleaks.tgz gitleaks
-          ./gitleaks version
+      - uses: ./.github/actions/fetch-tool
+        with:
+          name: gitleaks
+          url-amd64: https://github.com/gitleaks/gitleaks/releases/download/v${{ env.GITLEAKS_VERSION }}/gitleaks_${{ env.GITLEAKS_VERSION }}_linux_x64.tar.gz
+          url-arm64: https://github.com/gitleaks/gitleaks/releases/download/v${{ env.GITLEAKS_VERSION }}/gitleaks_${{ env.GITLEAKS_VERSION }}_linux_arm64.tar.gz
+          sha256-amd64: ${{ env.GITLEAKS_SHA256_AMD64 }}
+          sha256-arm64: ${{ env.GITLEAKS_SHA256_ARM64 }}
+          version-flag: version
 
       - name: Scan full git history
-        run: ./gitleaks git . --config .gitleaks.toml --redact --no-banner --verbose
+        run: gitleaks git . --config .gitleaks.toml --redact --no-banner --verbose
 
   content-checks:
     name: content-checks
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -67,23 +73,21 @@ jobs:
 
   terraform-validate:
     name: terraform-validate
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Install Terraform (pinned release, checksum verified)
-        run: |
-          set -euo pipefail
-          curl -fsSLo terraform.zip \
-            "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-          echo "${TERRAFORM_SHA256}  terraform.zip" | sha256sum -c -
-          mkdir -p "$HOME/.local/bin"
-          unzip -oq terraform.zip terraform -d "$HOME/.local/bin"
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-          "$HOME/.local/bin/terraform" version
+      - uses: ./.github/actions/fetch-tool
+        with:
+          name: terraform
+          url-amd64: https://releases.hashicorp.com/terraform/${{ env.TERRAFORM_VERSION }}/terraform_${{ env.TERRAFORM_VERSION }}_linux_amd64.zip
+          url-arm64: https://releases.hashicorp.com/terraform/${{ env.TERRAFORM_VERSION }}/terraform_${{ env.TERRAFORM_VERSION }}_linux_arm64.zip
+          sha256-amd64: ${{ env.TERRAFORM_SHA256_AMD64 }}
+          sha256-arm64: ${{ env.TERRAFORM_SHA256_ARM64 }}
+          version-flag: version
 
       # One job, not a matrix: the job name is a required status check in
       # infra/github/rulesets.tf, and a matrix would rename it per root.
@@ -119,7 +123,7 @@ jobs:
 
   figures-fresh:
     name: figures-fresh
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -130,8 +134,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install the pinned figure toolchain
-        run: python3 -m pip install -r curriculum/_shared/diagrams/requirements.txt
+      - name: Install the pinned figure toolchain (hash-locked)
+        run: python3 -m pip install --quiet --require-hashes -r curriculum/_shared/diagrams/requirements.txt
 
       # The week specs are the source; FIGURE.md and the README sections are generated from them.
       # --docs-only needs neither Graphviz nor Chrome, so this proves "nobody hand-edited a

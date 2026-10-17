@@ -150,6 +150,8 @@ resource "aws_iam_instance_profile" "instance" {
 # trivy: internet-facing is the point of this load balancer (AVD-AWS-0053).
 #trivy:ignore:AVD-AWS-0053
 resource "aws_lb" "this" {
+  # checkov:skip=CKV2_AWS_20: Same decision as CKV_AWS_2 on the listener below: with certificate_arn the :80 listener is a 301 to HTTPS; without one (lab) it forwards. checkov does not evaluate the dynamic blocks.
+  # checkov:skip=CKV2_AWS_28: A WAF web ACL is a separate project (rules, logging, tuning, ~$5+/month). The foundation project stops at the load balancer; the app security group admits only the ALB.
   # checkov:skip=CKV_AWS_150: False positive. enable_deletion_protection is `var.environment == "prod"` below; checkov does not evaluate the comparison. Dev stays unprotected so `make destroy` works.
   # checkov:skip=CKV_AWS_91: Access logs need a log bucket with the regional ELB service-principal policy and a lifecycle rule. Deliberately outside the foundation project; the 5xx and p99 alarms are the request-level signal here.
   name_prefix        = substr(var.project, 0, 6)
@@ -164,6 +166,7 @@ resource "aws_lb" "this" {
 }
 
 resource "aws_lb_target_group" "this" {
+  # checkov:skip=CKV_AWS_378: TLS terminates at the load balancer. ALB-to-instance traffic is plain HTTP on the app port, inside the VPC, admitted only from the ALB security group. End-to-end TLS would need a certificate on every instance for no exposure gain here.
   name_prefix = substr(var.project, 0, 6)
   port        = var.app_port
   protocol    = "HTTP"
@@ -190,6 +193,7 @@ resource "aws_lb_target_group" "this" {
 # (no domain, so no certificate). Same decision as the CKV_AWS_2 skip inside.
 #trivy:ignore:AVD-AWS-0054
 resource "aws_lb_listener" "http" {
+  # checkov:skip=CKV_AWS_103: Not applicable. This is the HTTP listener; there is no TLS policy to set. The HTTPS listener below uses ELBSecurityPolicy-TLS13-1-2-2021-06.
   # checkov:skip=CKV_AWS_2: With certificate_arn set this listener only redirects to the HTTPS listener below. Without one (lab, no domain) HTTP is the only option. checkov does not evaluate the dynamic blocks.
   load_balancer_arn = aws_lb.this.arn
   port              = 80

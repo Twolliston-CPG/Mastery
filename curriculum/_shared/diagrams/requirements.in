@@ -1,0 +1,12 @@
+# Python side of the figure toolchain (generate-figures.py, generate-setup-figures.py,
+# generate-week-figures.py). Pinned because a layout change in either library would silently
+# reshuffle every rendered figure; bump deliberately and re-render everything in one commit.
+#
+# Also needs the Graphviz binaries (dot) on PATH. Rendered with Graphviz 16.1.0; CI installs
+# the Ubuntu 24.04 package. If a bump moves nodes, that is the version to suspect first.
+#
+# This is the human-edited input. requirements.txt is the hash-locked output that CI installs with
+# --require-hashes; regenerate it after any change here:
+#   uv pip compile --generate-hashes --python-version 3.12 --universal -o curriculum/_shared/diagrams/requirements.txt curriculum/_shared/diagrams/requirements.in
+diagrams==0.25.1
+graphviz==0.20.3

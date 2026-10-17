@@ -1,7 +1,11 @@
 version: 2
+# cooldown: a release must be at least 7 days old before Dependabot proposes it. Most hijacked
+# packages and actions are caught within days; this keeps the first wave out of the PR queue.
 updates:
   - package-ecosystem: github-actions
     directory: /
+    cooldown:
+      default-days: 7
     schedule:
       interval: weekly
       day: monday
@@ -22,6 +26,8 @@ updates:
       - /curriculum/projects/alpha-cloud-foundation/bootstrap
       - /curriculum/projects/alpha-cloud-foundation/environments/dev
       - /curriculum/projects/alpha-cloud-foundation/environments/prod
+    cooldown:
+      default-days: 7
     schedule:
       interval: weekly
       day: monday
@@ -31,6 +37,19 @@ updates:
   # The pinned figure toolchain that the figures-fresh job installs.
   - package-ecosystem: pip
     directory: /curriculum/_shared/diagrams
+    cooldown:
+      default-days: 7
+    schedule:
+      interval: weekly
+      day: monday
+    commit-message:
+      prefix: "ci"
+
+  # Hash-locked scanner pins installed by security.yml. Dependabot regenerates the hashes.
+  - package-ecosystem: pip
+    directory: /.github/requirements
+    cooldown:
+      default-days: 7
     schedule:
       interval: weekly
       day: monday

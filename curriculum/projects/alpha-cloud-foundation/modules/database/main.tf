@@ -42,11 +42,29 @@ resource "aws_vpc_security_group_ingress_rule" "from_app" {
 # Deliberately no egress rule: the database has no reason to initiate outbound
 # connections, and the data subnets have no default route anyway.
 
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+
 resource "aws_kms_key" "db" {
   description             = "${local.name} RDS encryption"
   enable_key_rotation     = true
   deletion_window_in_days = 30
   tags                    = { Name = local.name }
+
+  # An explicit key policy, even though it reproduces the default. The default is implicit and
+  # invisible in review; writing it down is what lets a later "and this service may use it" be a
+  # diff rather than a console change. RDS and Secrets Manager use the key through grants created
+  # by the caller's IAM permissions, so no service principal needs listing here.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid       = "AccountAdministration"
+      Effect    = "Allow"
+      Principal = { AWS = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root" }
+      Action    = "kms:*"
+      Resource  = "*"
+    }]
+  })
 }
 
 resource "aws_kms_alias" "db" {
@@ -61,6 +79,13 @@ resource "aws_db_parameter_group" "this" {
   parameter {
     name  = "log_min_duration_statement"
     value = "1000" # log anything slower than 1s
+  }
+
+  # Encryption at rest is storage_encrypted below; this is encryption in transit. Without it a
+  # client that forgets sslmode=require talks to the database in clear text inside the VPC.
+  parameter {
+    name  = "rds.force_ssl"
+    value = "1"
   }
 
   lifecycle { create_before_destroy = true }

@@ -67,6 +67,8 @@ Put the two flags in `terraform.tfvars` (gitignored) once they are permanent.
 | Direct push to `main` refused on the client (compensates for the ruleset on Free) | `.pre-commit-config.yaml` pre-push hook |
 | Secret scanning (gitleaks) pre-commit and in CI, pinned + checksummed | repo root, `.github/workflows/ci.yml` |
 | Workflow lint and supply-chain audit (actionlint, zizmor); shellcheck on every script | `.github/workflows/security.yml` |
+| Every CI tool pinned: binaries by per-architecture sha256 (`fetch-tool`), Python by hash-locked requirements | `.github/actions/fetch-tool/`, `.github/requirements/` |
+| Workflow dependency lockfile (`actions.lock`), public preview; not yet generated (needs `gh` auth) | `gh actions-lock`; see CLAUDE.md Status |
 | IaC misconfiguration scan (checkov + trivy) on the whole repository, teaching content included, blocking | `.github/workflows/security.yml`, `.checkov.yaml`, `.trivyignore.yaml` |
 | Author checklist (anonymization, PII, pinned actions, decoded gitleaks allowlist) on every PR | `.github/PULL_REQUEST_TEMPLATE.md` |
 | Ownership of the token-bearing paths, ready for `require_code_owner_review` | `.github/CODEOWNERS` |
