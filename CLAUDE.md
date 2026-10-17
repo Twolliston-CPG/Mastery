@@ -18,10 +18,9 @@ for how a learner moves through it.
 - **Git:** repo initialised 2026-10-10 on `main`; remote `origin` added and pushed (see next bullet). Last full review 2026-10-17 (setup scripts, guardrails, link integrity, anonymization residue; all commits on `main`). Repo-local identity
   "Sergino Delia" with the GitHub email (not the personal one).
 - **GitHub repo:** live and private at `github.com/SerginoDelia/twots` (remote `origin`, `main` tracks it,
-  pushes work as of 2026-10-17). **Name mismatch:** `infra/github/variables.tf` still says `thewayofthesurge`
-  and has never been applied against the real repo. Reconcile (rename the GitHub repo, or change the
-  Terraform key) and `terraform import` before any `apply` in `infra/github/`, or Terraform will try to
-  create a second repository.
+  pushes work as of 2026-10-17). `infra/github/` now names the same repo (`twots`) and `imports.tf` adopts it
+  and its four settings resources on the first apply. **That apply has not run** (needs the fine-grained PAT);
+  the plan must show 5 to import, 0 to add, 0 to destroy before applying.
 - **Flags still off:** `enable_rulesets` (needs GitHub Pro), `require_signed_commits` (needs SSH signing).
 - **Unknown:** GitHub plan (Free vs Pro). Username is `SerginoDelia`.
 - **Unverified on a live system (2026-10-17):** Contour on kind (`02-kind-cluster.sh`), OS Login on the
@@ -29,8 +28,9 @@ for how a learner moves through it.
   (every one passes locally; `gh` is not authenticated here, so runner results have not been seen). A job
   joins `required_status_checks` only after it has run green on the runner; the full target list is in
   `infra/github/terraform.tfvars.example`.
-- **Next:** open a PR to see `ci` + `security` run on the runner → fix the repo-name mismatch → put the full
-  `required_status_checks` list in `terraform.tfvars` → `terraform apply -var enable_rulesets=true` (needs Pro).
+- **Next:** merge the open PR once `ci` + `security` are green on the runner → export `GITHUB_TOKEN`, `terraform
+  plan` in `infra/github/` (5 imports, nothing to add) and apply → put the full `required_status_checks` list in
+  `terraform.tfvars` → `terraform apply -var enable_rulesets=true` (needs Pro; Free returns 403).
 
 ## Where state lives
 
@@ -53,7 +53,7 @@ Don't put dates, versions, or blockers anywhere but `## Status` — they go stal
 2. **Never read or touch personal directories** outside this repo (e.g. `~/projects/taxes`).
 3. **`real-projects/` figures are style references only.** Their visual language was copied; their
    content never is.
-4. **Only `mastery/` goes to GitHub** (as the repo `thewayofthesurge`). The parent `serge/` workspace holds résumés with PII and is not a
+4. **Only `mastery/` goes to GitHub** (as the repo `SerginoDelia/twots`). The parent `serge/` workspace holds résumés with PII and is not a
    git repo; never `git init` it, never add it as a remote, never copy files from it into here.
 
 ## Commands
@@ -101,9 +101,9 @@ between a small edit and 600 quietly-broken files.
 |---|---|
 | `infra/github/` | Terraform (`integrations/github`) that creates and hardens the private repo: squash-only, Dependabot, GitHub-authored actions only, archive-on-destroy, opt-in `main` ruleset. State is local and gitignored. Bootstrap pattern: the config lives inside the repo it creates |
 | `.github/workflows/ci.yml` | `secrets-scan` (gitleaks, pinned + sha256-checked, full history), `content-checks` (`check-diagrams.py` on the authored layers, then on `_reference/`), `terraform-validate` (`fmt -check` repo-wide, `init -backend=false` + `validate` on all nine root modules, in one job so the check name is stable), `figures-fresh` (weekly-figure docs regenerated from the specs must match what is committed). The first three job names are the required checks in `rulesets.tf` — rename in both places or never; `figures-fresh` is deliberately not required until it has been seen green on the runner |
-| `.github/workflows/security.yml` | `actions-lint` (actionlint + zizmor on the workflows), `shell-lint` (shellcheck on every tracked `.sh`), `iac-scan` (checkov + trivy on `infra/`, `curriculum/_setup/`, `.github/`; **blocking**), `iac-scan-content` (same scanners on projects and solutions; **advisory**, never required). Tools pinned by version and sha256; only GitHub-authored actions, as `actions.tf` demands. Also runs weekly against `main` |
+| `.github/workflows/security.yml` | `actions-lint` (actionlint + zizmor on the workflows), `shell-lint` (shellcheck on every tracked `.sh`), `iac-scan` (checkov + trivy on the **whole repository**, teaching projects and solutions included, all blocking). Tools pinned by version and sha256; only GitHub-authored actions, as `actions.tf` demands. Also runs weekly against `main` |
 | `.github/workflows/links.yml` | Weekly external link check |
-| `.checkov.yaml` | Shared checkov config: frameworks and skip-paths only. Suppressions live inline (`# checkov:skip=...: reason`, `#trivy:ignore:AVD-...` with a reason comment above) on the resource they excuse, never in the config |
+| `.checkov.yaml`, `.trivyignore.yaml` | Scanner config. Suppressions live on the resource they excuse, with the reason: Terraform uses `# checkov:skip=...: reason` inside the block and `#trivy:ignore:AVD-...` directly above it; Kubernetes uses `checkov.io/skipN: ID=reason` annotations. trivy has no inline form for YAML, so those few go in `.trivyignore.yaml` scoped to one file. `.checkov.yaml` holds frameworks and skip-paths only; skip-path patterns are relative to the scanned directory |
 | `.github/PULL_REQUEST_TEMPLATE.md`, `.github/CODEOWNERS` | The human half of the review requirements: author checklist (anonymization, PII, decoded allowlist entries, pinned actions) and ownership of the token-bearing paths. Policy summary: `infra/github/README.md` → "Review requirements" |
 | `.pre-commit-config.yaml` | gitleaks, private-key, large-file (5 MB), yaml/json, shellcheck, `terraform fmt` on every root, `check-diagrams.py` on changed `.md`; a **pre-push** hook refuses a direct push to `main`. **No formatters on purpose** — a fixer would rewrite ~1,000 files |
 | `.gitleaks.toml` | Allowlist for documented placeholder secrets in the reference library |
@@ -112,8 +112,9 @@ Rules:
 
 - `pre-commit install` once per clone (installs the commit and push hooks). If a hook fails, fix the cause;
   don't `--no-verify`. Changes reach `main` through a pull request, never a direct push.
-- A new `checkov:skip` or `trivy:ignore` goes on the resource it excuses, with the reason. Never add a
-  `skip-check` to `.checkov.yaml`.
+- A new scanner exception goes on the resource it excuses, with the reason (see the table above for the
+  form per tool). Never add a `skip-check` to `.checkov.yaml`. Teaching solutions are scanned to the same
+  bar as the real infrastructure: a finding there is either fixed in the solution or explained on it.
 - A new gitleaks hit: decode it and confirm it is a placeholder **before** adding it to `.gitleaks.toml`.
 - The gitleaks version is pinned in two places (`ci.yml` env and `.pre-commit-config.yaml` rev). Bump both.
 - Tokens are shell env only (`GITHUB_TOKEN`); never in `.tf`, `.tfvars`, or this file.

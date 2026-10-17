@@ -48,6 +48,9 @@ resource "aws_s3_bucket_versioning" "state" {
   }
 }
 
+# trivy: S3-managed keys, not a customer-managed KMS key. A CMK costs money monthly and adds a way
+# to lock yourself out of your own state; versioning is the recovery path here.
+#trivy:ignore:AVD-AWS-0132
 resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
   bucket = aws_s3_bucket.state.id
   rule {

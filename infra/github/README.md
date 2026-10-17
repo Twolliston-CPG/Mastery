@@ -36,7 +36,7 @@ terraform output next_steps
 Then push (from the repository root):
 
 ```bash
-git remote add origin git@github.com:<you>/thewayofthesurge.git
+git remote add origin git@github.com:<you>/twots.git
 git push -u origin main
 ```
 
@@ -67,7 +67,7 @@ Put the two flags in `terraform.tfvars` (gitignored) once they are permanent.
 | Direct push to `main` refused on the client (compensates for the ruleset on Free) | `.pre-commit-config.yaml` pre-push hook |
 | Secret scanning (gitleaks) pre-commit and in CI, pinned + checksummed | repo root, `.github/workflows/ci.yml` |
 | Workflow lint and supply-chain audit (actionlint, zizmor); shellcheck on every script | `.github/workflows/security.yml` |
-| IaC misconfiguration scan (checkov + trivy) on `infra/` and `curriculum/_setup/`, blocking; teaching content advisory | `.github/workflows/security.yml`, `.checkov.yaml` |
+| IaC misconfiguration scan (checkov + trivy) on the whole repository, teaching content included, blocking | `.github/workflows/security.yml`, `.checkov.yaml`, `.trivyignore.yaml` |
 | Author checklist (anonymization, PII, pinned actions, decoded gitleaks allowlist) on every PR | `.github/PULL_REQUEST_TEMPLATE.md` |
 | Ownership of the token-bearing paths, ready for `require_code_owner_review` | `.github/CODEOWNERS` |
 
@@ -86,14 +86,21 @@ Put the two flags in `terraform.tfvars` (gitignored) once they are permanent.
 6. An admin may bypass only by merging a PR (`bypass_mode = "pull_request"`), which leaves an
    audit-log entry; never by pushing to `main`.
 
-## Importing an existing repository
+## Adopting the existing repository (first apply)
 
-If the repository already exists (created in the UI), adopt it instead of recreating it:
+`twots` was created in the GitHub UI before this configuration was ever applied, so the first
+apply must **adopt** it rather than create it. `imports.tf` does that declaratively with `import`
+blocks for the repository and the four per-repository settings resources:
 
 ```bash
-terraform import 'github_repository.this["thewayofthesurge"]' thewayofthesurge
-terraform plan   # should show only in-place settings changes
+terraform init
+terraform plan -out tfplan   # expect: 5 to import, 0 to add, N to change (settings drift), 0 to destroy
+terraform apply tfplan
 ```
+
+If the plan shows anything **to add** or **to destroy**, stop: the name in `var.repositories` and
+the ids in `imports.tf` disagree with what is on GitHub. The import blocks are idempotent and can
+stay in place after the first apply.
 
 ## Adding another repository
 

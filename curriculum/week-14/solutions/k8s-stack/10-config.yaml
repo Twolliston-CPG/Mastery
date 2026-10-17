@@ -22,5 +22,5 @@ stringData:
   # External Secrets Operator, and this manifest disappears entirely.
   # Never commit a real value: base64 in etcd is ENCODING, not encryption.
   POSTGRES_USER: app
-  POSTGRES_PASSWORD: change-me-locally
+  POSTGRES_PASSWORD: change-me-locally # checkov:skip=CKV_SECRET_6: placeholder, see the note above
   POSTGRES_DB: appdb

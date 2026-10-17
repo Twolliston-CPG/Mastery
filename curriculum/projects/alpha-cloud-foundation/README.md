@@ -154,7 +154,8 @@ service in response to an ELB system health check failure."
 | ALB | ~$16 | ~$16 |
 | EC2 | ~$8 (1× t3.micro) | ~$30 (2× t3.small) |
 | RDS | ~$12 (t4g.micro) | ~$50 (Multi-AZ) |
-| **Total** | **~$70/mo** | **~$195/mo** |
+| KMS keys (RDS, alerts topic) | ~$2 | ~$2 |
+| **Total** | **~$72/mo** | **~$197/mo** |
 
 **Destroy it when you're not demoing it.** `make destroy ENV=dev`. The S3 gateway endpoint is free
 and already removes S3 traffic from the NAT bill.

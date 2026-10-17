@@ -66,7 +66,7 @@ def fig(out: str, n: int, slug: str, direction: str, **graph_extra):
 # ------------------------------------------------------------ 1 · the repo ----
 def f1_repository(out):
     with fig(out, 1, "repository-as-a-system", "LR", ranksep="1.0"):
-        with Cluster(**boundary("Repository · thewayofthesurge · private · ~800 Markdown files · 390k lines")):
+        with Cluster(**boundary("Repository · twots · private · ~800 Markdown files · 390k lines")):
             with Cluster(**rounded("Strategy · read by a human deciding whether to commit")):
                 strat = Document("Root *.md\nROADMAP · CERTIFICATIONS · PROJECTS · JOB-SEARCH")
 
@@ -147,7 +147,7 @@ def f3_repo_as_code(out):
 
         with Cluster(**boundary("GitHub · account")):
             with Cluster(**zone("pass 1 · works on the Free plan")):
-                repo = Github("thewayofthesurge\nissues on · wiki, projects, discussions off")
+                repo = Github("twots\nissues on · wiki, projects, discussions off")
                 act = GithubActions("Actions policy\nGitHub-owned actions only · no cross-repo access")
                 dep = Github("Dependabot\nalerts + security updates")
             with Cluster(**zone("pass 2 · after the first CI run is green")):

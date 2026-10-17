@@ -5,14 +5,14 @@ variable "github_owner" {
 }
 
 variable "repositories" {
-  description = "Repositories to manage. Keyed by repository name. All are created private."
+  description = "Repositories to manage. Keyed by repository name (`twots` is the repo that exists on GitHub; imports.tf adopts it). All are created private."
   type = map(object({
     description  = string
     topics       = optional(list(string), [])
     homepage_url = optional(string)
   }))
   default = {
-    thewayofthesurge = {
+    twots = {
       description = "26-week DevOps / DevSecOps / Platform Engineering curriculum: weekly labs, break/fix library, anonymized reference corpus, and the Python toolchain that validates it."
       topics      = ["devops", "devsecops", "platform-engineering", "kubernetes", "terraform", "curriculum"]
     }

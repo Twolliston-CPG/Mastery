@@ -1,6 +1,5 @@
 # checkov configuration shared by .github/workflows/security.yml and local runs:
-#   checkov --config-file .checkov.yaml -d infra -d curriculum/_setup -d .github   # what blocks a merge
-#   checkov --config-file .checkov.yaml -d curriculum --skip-path curriculum/_setup  # teaching content
+#   checkov --config-file .checkov.yaml -d .        # the whole repository; what blocks a merge
 #
 # No `skip-check` here on purpose. A check that is wrong for one resource is suppressed on that
 # resource with an inline `# checkov:skip=CKV_...: reason` comment, so the reason lives next to
@@ -11,14 +10,16 @@ framework:
   - kubernetes
   - github_actions
   - secrets
-# Paths are regular expressions matched against the path, relative to the working directory.
+# Paths are regular expressions matched against each file's path. Checkov matches them against
+# the path relative to the scanned directory, not the working directory, so patterns here never
+# start with a parent such as `curriculum/`.
 skip-path:
-  - curriculum/_reference # 623 anonymized Markdown files; nothing to scan, slow to walk
+  - _reference # 623 anonymized Markdown files; nothing to scan, slow to walk
   - _figures # generated PNGs
   - _backups # gitignored pre-git snapshots
   # Platform service definitions (`kind: Service` in the charlie-platform schema) and the
   # template they come from are not Kubernetes manifests; checkov misreads them as one.
-  - curriculum/projects/charlie-platform/services
-  - curriculum/_shared/templates
+  - charlie-platform/services
+  - _shared/templates
 quiet: true
 compact: true

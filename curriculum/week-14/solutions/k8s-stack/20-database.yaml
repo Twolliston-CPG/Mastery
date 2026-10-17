@@ -19,6 +19,11 @@ kind: StatefulSet
 metadata:
   name: db
   namespace: shop
+  annotations:
+    # Scanner exceptions live on the resource they excuse, with the reason.
+    checkov.io/skip1: CKV_K8S_22=postgres writes to its data directory; the root filesystem cannot be read-only (see securityContext below)
+    checkov.io/skip2: CKV_K8S_40=the official image runs as uid 999 and the data directory is owned by it; a high UID means rebuilding the image
+    checkov.io/skip3: CKV_K8S_35=the official postgres image reads its credentials from POSTGRES_* env vars only; week 16 replaces this Secret with External Secrets
 spec:
   serviceName: db
   replicas: 1
@@ -28,6 +33,7 @@ spec:
     metadata:
       labels: { app: db }
     spec:
+      automountServiceAccountToken: false   # the database never calls the Kubernetes API
       securityContext:
         runAsNonRoot: true
         runAsUser: 999          # the postgres user in the official image
@@ -36,7 +42,10 @@ spec:
         seccompProfile: { type: RuntimeDefault }
       containers:
         - name: postgres
-          image: postgres:16-alpine
+          # Tag for humans, digest for the kubelet: the tag can be moved, the digest cannot.
+          # Refresh with `crane digest postgres:16-alpine` (week 18 makes this a pipeline step).
+          image: postgres:16-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+          imagePullPolicy: Always   # with a digest this is a cheap registry check, not a re-download
           ports:
             - { name: postgres, containerPort: 5432 }
           envFrom:

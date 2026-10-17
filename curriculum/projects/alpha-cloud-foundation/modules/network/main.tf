@@ -44,10 +44,12 @@ resource "aws_internet_gateway" "this" {
 resource "aws_subnet" "public" {
   for_each = local.public_subnets
 
-  vpc_id                  = aws_vpc.this.id
-  cidr_block              = each.value
-  availability_zone       = each.key
-  map_public_ip_on_launch = true
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = each.value
+  availability_zone = each.key
+  # Nothing is *launched* here. NAT gateways use an EIP and the ALB's ENIs get addresses from
+  # the ELB service, so auto-assigning public IPs would only matter to a stray instance.
+  map_public_ip_on_launch = false
 
   tags = {
     Name                     = "${local.name}-public-${each.key}"
@@ -185,6 +187,8 @@ resource "aws_flow_log" "this" {
 }
 
 resource "aws_cloudwatch_log_group" "flow_logs" {
+  # checkov:skip=CKV_AWS_158: Encrypted at rest with the CloudWatch Logs service key. A customer-managed KMS key costs money monthly and protects nothing extra for REJECT-only flow logs.
+  # checkov:skip=CKV_AWS_338: 14 (dev) / 30 (prod) days is enough to investigate an incident. A year of retention is a compliance requirement this project does not have.
   count             = var.enable_flow_logs ? 1 : 0
   name              = "/vpc/${local.name}/flowlogs"
   retention_in_days = var.log_retention_days

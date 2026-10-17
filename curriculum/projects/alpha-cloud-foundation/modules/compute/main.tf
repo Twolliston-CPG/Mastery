@@ -32,6 +32,7 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_vpc_security_group_ingress_rule" "alb_http" {
+  # checkov:skip=CKV_AWS_260: A public load balancer accepts port 80 from the internet by definition. With a certificate the listener answers 301 to HTTPS; without one (lab, no domain) it forwards.
   security_group_id = aws_security_group.alb.id
   description       = "HTTP from the internet (redirects to HTTPS)"
   cidr_ipv4         = "0.0.0.0/0"
@@ -51,10 +52,22 @@ resource "aws_vpc_security_group_ingress_rule" "alb_https" {
   ip_protocol       = "tcp"
 }
 
-resource "aws_vpc_security_group_egress_rule" "alb_all" {
-  security_group_id = aws_security_group.alb.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "-1"
+# The ALB only ever talks to the instances, so its egress is the app security group on the
+# app port -- the mirror image of app_from_alb below. Nothing else can be reached from the ALB.
+resource "aws_vpc_security_group_egress_rule" "alb_to_app" {
+  security_group_id            = aws_security_group.alb.id
+  description                  = "Forward and health-check traffic to the app instances only"
+  referenced_security_group_id = aws_security_group.app.id
+  from_port                    = var.app_port
+  to_port                      = var.app_port
+  ip_protocol                  = "tcp"
+}
+
+# The rule used to be an allow-all named alb_all. `moved` keeps an existing deployment from
+# destroying and recreating it under the new address.
+moved {
+  from = aws_vpc_security_group_egress_rule.alb_all
+  to   = aws_vpc_security_group_egress_rule.alb_to_app
 }
 
 resource "aws_security_group" "app" {
@@ -76,8 +89,13 @@ resource "aws_vpc_security_group_ingress_rule" "app_from_alb" {
   ip_protocol                  = "tcp"
 }
 
+# trivy: the instances need the internet, through the NAT gateway, for package installs, the SSM
+# agent, and CloudWatch. There is no proxy or private endpoint set to pin them to, and inbound stays
+# "from the ALB only" above.
+#trivy:ignore:AVD-AWS-0104
 resource "aws_vpc_security_group_egress_rule" "app_all" {
   security_group_id = aws_security_group.app.id
+  description       = "Outbound via NAT: packages, SSM agent, CloudWatch agent"
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
@@ -129,7 +147,11 @@ resource "aws_iam_instance_profile" "instance" {
 }
 
 # ------------------------------------------------------------------ ALB -----
+# trivy: internet-facing is the point of this load balancer (AVD-AWS-0053).
+#trivy:ignore:AVD-AWS-0053
 resource "aws_lb" "this" {
+  # checkov:skip=CKV_AWS_150: False positive. enable_deletion_protection is `var.environment == "prod"` below; checkov does not evaluate the comparison. Dev stays unprotected so `make destroy` works.
+  # checkov:skip=CKV_AWS_91: Access logs need a log bucket with the regional ELB service-principal policy and a lifecycle rule. Deliberately outside the foundation project; the 5xx and p99 alarms are the request-level signal here.
   name_prefix        = substr(var.project, 0, 6)
   load_balancer_type = "application"
   subnets            = var.public_subnet_ids
@@ -164,7 +186,11 @@ resource "aws_lb_target_group" "this" {
   lifecycle { create_before_destroy = true }
 }
 
+# trivy: plain HTTP on :80 is either a 301 to HTTPS (certificate set) or the lab's only listener
+# (no domain, so no certificate). Same decision as the CKV_AWS_2 skip inside.
+#trivy:ignore:AVD-AWS-0054
 resource "aws_lb_listener" "http" {
+  # checkov:skip=CKV_AWS_2: With certificate_arn set this listener only redirects to the HTTPS listener below. Without one (lab, no domain) HTTP is the only option. checkov does not evaluate the dynamic blocks.
   load_balancer_arn = aws_lb.this.arn
   port              = 80
   protocol          = "HTTP"

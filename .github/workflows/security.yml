@@ -4,8 +4,9 @@ name: security
 #   secrets        -> ci.yml `secrets-scan` (gitleaks, full history)
 #   workflows      -> actions-lint  (actionlint + zizmor)
 #   shell          -> shell-lint    (shellcheck on every tracked .sh)
-#   IaC, real      -> iac-scan      (checkov + trivy on infra/, curriculum/_setup/, .github/) BLOCKING
-#   IaC, teaching  -> iac-scan-content (same scanners on projects and solutions)        ADVISORY
+#   IaC            -> iac-scan      (checkov + trivy on the whole repository: the Terraform that
+#                                    touches real accounts, the workflows, and the teaching
+#                                    projects and solutions, which are held to the same bar)
 #
 # Tools are pinned by version and, for binaries, by sha256. Only GitHub-authored actions are
 # used because infra/github/actions.tf allows nothing else to run with the repository token.
@@ -117,87 +118,30 @@ jobs:
           tar -xzf trivy.tgz trivy
           ./trivy --version
 
-      # The Terraform that touches real accounts, plus the workflows. Every suppression is an
-      # inline `checkov:skip` / `trivy:ignore` comment next to the resource, with its reason.
-      - name: checkov on infra/, curriculum/_setup/, .github/
+      # Everything checkov understands here: Terraform, Dockerfiles, Kubernetes manifests, the
+      # workflows, and secrets. Every suppression is an inline `checkov:skip` comment (Terraform)
+      # or a `checkov.io/skip` annotation (Kubernetes) on the resource it excuses, with its reason.
+      # .checkov.yaml holds only frameworks and skip-paths.
+      - name: checkov
         run: |
           set -euo pipefail
           mkdir -p reports
-          checkov --config-file .checkov.yaml \
-            --directory infra --directory curriculum/_setup --directory .github \
-            --output cli --output sarif --output-file-path console,reports/checkov-platform.sarif
+          checkov --config-file .checkov.yaml --directory . \
+            --output cli --output sarif --output-file-path console,reports/checkov.sarif
 
-      - name: trivy misconfiguration scan on infra/ and curriculum/_setup/ (HIGH, CRITICAL)
+      # Terraform exceptions are inline `#trivy:ignore` comments; the Kubernetes ones (no inline
+      # form) are in .trivyignore.yaml, which trivy only reads when told to.
+      - name: trivy misconfiguration scan (HIGH, CRITICAL)
         run: |
           set -euo pipefail
-          for d in infra curriculum/_setup; do
-            echo "::group::$d"
-            ./trivy config --exit-code 1 --severity HIGH,CRITICAL --skip-version-check "$d"
-            echo "::endgroup::"
-          done
+          ./trivy config --exit-code 1 --severity HIGH,CRITICAL --skip-version-check \
+            --ignorefile .trivyignore.yaml \
+            --skip-dirs curriculum/_reference --skip-dirs _figures --skip-dirs _backups \
+            .
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: iac-scan-reports
-          path: reports/
-          retention-days: 14
-
-  # Teaching material (projects/, week-*/solutions/). Findings here are curriculum feedback,
-  # not a merge blocker, so the job never fails; read the summary and the artifact.
-  iac-scan-content:
-    name: iac-scan-content
-    runs-on: ubuntu-24.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: "3.12"
-
-      - name: Install checkov and trivy (same pins as iac-scan)
-        run: |
-          set -euo pipefail
-          python3 -m pip install --quiet "checkov==${CHECKOV_VERSION}"
-          curl -fsSLo trivy.tgz \
-            "https://github.com/aquasecurity/trivy/releases/download/v${TRIVY_VERSION}/trivy_${TRIVY_VERSION}_Linux-64bit.tar.gz"
-          echo "${TRIVY_SHA256}  trivy.tgz" | sha256sum -c -
-          tar -xzf trivy.tgz trivy
-
-      - name: checkov on curriculum/ (advisory)
-        run: |
-          set -euo pipefail
-          mkdir -p reports
-          checkov --config-file .checkov.yaml --soft-fail \
-            --directory curriculum --skip-path curriculum/_setup \
-            --output cli --output sarif --output-file-path console,reports/checkov-content.sarif \
-            | tee reports/checkov-content.txt
-
-      - name: trivy on curriculum/ (advisory)
-        run: |
-          set -euo pipefail
-          ./trivy config --exit-code 0 --severity HIGH,CRITICAL --skip-version-check \
-            --skip-dirs curriculum/_setup --skip-dirs curriculum/_reference \
-            curriculum | tee reports/trivy-content.txt
-
-      - name: Summary
-        run: |
-          set -euo pipefail
-          {
-            echo "## IaC scan of teaching content (advisory)"
-            echo
-            grep -E 'Passed checks' reports/checkov-content.txt | sed 's/^/- checkov: /' || true
-            echo "- trivy HIGH/CRITICAL findings: $(grep -cE '^\S+ \((HIGH|CRITICAL)\):' reports/trivy-content.txt || true)"
-            echo
-            echo "Full reports are in the \`iac-scan-content-reports\` artifact."
-          } >> "$GITHUB_STEP_SUMMARY"
-
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        if: always()
-        with:
-          name: iac-scan-content-reports
           path: reports/
           retention-days: 14

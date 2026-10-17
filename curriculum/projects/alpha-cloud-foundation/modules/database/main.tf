@@ -67,6 +67,9 @@ resource "aws_db_parameter_group" "this" {
 }
 
 resource "aws_db_instance" "this" {
+  # checkov:skip=CKV_AWS_293: False positive. deletion_protection is `var.environment == "prod"` below; checkov does not evaluate the comparison. Dev stays unprotected so `make destroy` works.
+  # checkov:skip=CKV_AWS_353: False positive. performance_insights_enabled is `var.environment == "prod"` below; same reason.
+  # checkov:skip=CKV_AWS_118: Enhanced monitoring needs a monitoring IAM role and bills per instance for OS-level metrics the dashboard does not use. The free CloudWatch RDS metrics drive the alarms.
   identifier_prefix = "${local.name}-"
 
   engine         = "postgres"
@@ -90,6 +93,10 @@ resource "aws_db_instance" "this" {
   vpc_security_group_ids = [aws_security_group.db.id]
   parameter_group_name   = aws_db_parameter_group.this.name
   publicly_accessible    = false
+
+  # IAM auth lets the instance role mint 15-minute tokens instead of using the master password
+  # at all. Free, and the password in Secrets Manager then exists only for break-glass.
+  iam_database_authentication_enabled = true
 
   multi_az                = var.multi_az
   backup_retention_period = var.backup_retention_days

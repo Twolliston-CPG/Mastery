@@ -9,9 +9,9 @@
 <g id="graph0" class="graph" transform="scale(2 2) rotate(0) translate(36 1330)">
 <polygon fill="white" stroke="none" points="-36,36 -36,-1330 1513.75,-1330 1513.75,36 -36,36"/>
 <g id="clust1" class="cluster">
-<title>cluster_Repository · thewayofthesurge · private · ~800 Markdown files · 390k lines</title>
+<title>cluster_Repository · twots · private · ~800 Markdown files · 390k lines</title>
 <polygon fill="#ffffff" stroke="#aeb6be" stroke-width="1.6" stroke-dasharray="5,2" points="0,-8 0,-1286 1477.75,-1286 1477.75,-8 0,-8"/>
-<text xml:space="preserve" text-anchor="middle" x="202.62" y="-1270.6" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#2d3436">Repository · thewayofthesurge · private · ~800 Markdown files · 390k lines</text>
+<text xml:space="preserve" text-anchor="middle" x="169.25" y="-1270.6" font-family="Helvetica,sans-Serif" font-size="12.00" fill="#2d3436">Repository · twots · private · ~800 Markdown files · 390k lines</text>
 </g>
 <g id="clust2" class="cluster">
 <title>cluster_Strategy · read by a human deciding whether to commit</title>
@@ -53,121 +53,121 @@
 <path fill="#ffffff" stroke="#aeb6be" stroke-width="1.2" d="M106.88,-911C106.88,-911 990.5,-911 990.5,-911 996.5,-911 1002.5,-917 1002.5,-923 1002.5,-923 1002.5,-1245 1002.5,-1245 1002.5,-1251 996.5,-1257 990.5,-1257 990.5,-1257 106.88,-1257 106.88,-1257 100.87,-1257 94.88,-1251 94.88,-1245 94.88,-1245 94.88,-923 94.88,-923 94.88,-917 100.88,-911 106.88,-911"/>
 <text xml:space="preserve" text-anchor="middle" x="253.62" y="-1242.55" font-family="Helvetica,sans-Serif" font-size="11.00" fill="#2d3436">Guardrails · the only thing between an edit and 600 broken files</text>
 </g>
-<!-- 51f5a87a4e1f4193a2934e410b03dc4d -->
+<!-- 1bc113415a7743caaffde8e7b299bcad -->
 <g id="node1" class="node">
-<title>51f5a87a4e1f4193a2934e410b03dc4d</title>
+<title>1bc113415a7743caaffde8e7b299bcad</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="102.875" y="-152"/>
 <text xml:space="preserve" text-anchor="middle" x="147.88" y="-37.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">Root *.md</text>
 <text xml:space="preserve" text-anchor="middle" x="147.88" y="-25.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">ROADMAP · CERTIFICATIONS · PROJECTS · JOB&#45;SEARCH</text>
 </g>
-<!-- 72b9600409ea460fa240d7df3f206c32 -->
+<!-- d09993a482544092a698d59bdd22110a -->
 <g id="node2" class="node">
-<title>72b9600409ea460fa240d7df3f206c32</title>
+<title>d09993a482544092a698d59bdd22110a</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/document.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="383.875" y="-370"/>
 <text xml:space="preserve" text-anchor="middle" x="428.88" y="-255.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">README.md</text>
 <text xml:space="preserve" text-anchor="middle" x="428.88" y="-243.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">thesis · day plan · reading map · exit criteria</text>
 </g>
-<!-- 51f5a87a4e1f4193a2934e410b03dc4d&#45;&gt;72b9600409ea460fa240d7df3f206c32 -->
-<!-- 7a545bd93cab4cb99b876f4af9e5f648 -->
+<!-- 1bc113415a7743caaffde8e7b299bcad&#45;&gt;d09993a482544092a698d59bdd22110a -->
+<!-- 2583f56f31c140eda1c79605ff451e18 -->
 <g id="node3" class="node">
-<title>7a545bd93cab4cb99b876f4af9e5f648</title>
+<title>2583f56f31c140eda1c79605ff451e18</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/multiple-documents.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="904.5" y="-370"/>
 <text xml:space="preserve" text-anchor="middle" x="949.5" y="-258.35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">labs/ · solutions/ · assessment.md</text>
 </g>
-<!-- 72b9600409ea460fa240d7df3f206c32&#45;&gt;7a545bd93cab4cb99b876f4af9e5f648 -->
+<!-- d09993a482544092a698d59bdd22110a&#45;&gt;2583f56f31c140eda1c79605ff451e18 -->
 <g id="edge2" class="edge">
-<title>72b9600409ea460fa240d7df3f206c32&#45;&gt;7a545bd93cab4cb99b876f4af9e5f648</title>
+<title>d09993a482544092a698d59bdd22110a&#45;&gt;2583f56f31c140eda1c79605ff451e18</title>
 <path fill="none" stroke="#7a7a7a" d="M473.65,-325C567.82,-325 789.52,-325 893.21,-325"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="893.15,-328.5 903.15,-325 893.15,-321.5 893.15,-328.5"/>
 </g>
-<!-- 3b422b5f2b0e45799fa1d979f7402222 -->
+<!-- e98bb91a2c4f4e80866a6638bc739dc1 -->
 <g id="node6" class="node">
-<title>3b422b5f2b0e45799fa1d979f7402222</title>
+<title>e98bb91a2c4f4e80866a6638bc739dc1</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/multiple-documents.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="904.5" y="-586"/>
 <text xml:space="preserve" text-anchor="middle" x="949.5" y="-471.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">long&#45;form material</text>
 <text xml:space="preserve" text-anchor="middle" x="949.5" y="-459.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">Feynman block appended to every file</text>
 </g>
-<!-- 72b9600409ea460fa240d7df3f206c32&#45;&gt;3b422b5f2b0e45799fa1d979f7402222 -->
+<!-- d09993a482544092a698d59bdd22110a&#45;&gt;e98bb91a2c4f4e80866a6638bc739dc1 -->
 <g id="edge1" class="edge">
-<title>72b9600409ea460fa240d7df3f206c32&#45;&gt;3b422b5f2b0e45799fa1d979f7402222</title>
+<title>d09993a482544092a698d59bdd22110a&#45;&gt;e98bb91a2c4f4e80866a6638bc739dc1</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M473.65,-343.23C567.82,-382.45 789.52,-474.79 893.21,-517.97"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="891.57,-521.08 902.15,-521.7 894.26,-514.62 891.57,-521.08"/>
 <text xml:space="preserve" text-anchor="middle" x="640.38" y="-453.5" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">reading map names exact files</text>
 </g>
-<!-- 762fcdf46c7b47d392e9f6f983838c0b -->
+<!-- 05cc66e7b8ba4aafbc79f0fe2e73c633 -->
 <g id="node7" class="node">
-<title>762fcdf46c7b47d392e9f6f983838c0b</title>
+<title>05cc66e7b8ba4aafbc79f0fe2e73c633</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/iac/terraform.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="1353.88" y="-370"/>
 <text xml:space="preserve" text-anchor="middle" x="1398.88" y="-255.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">aws&#45;lab · gcp&#45;lab</text>
 <text xml:space="preserve" text-anchor="middle" x="1398.88" y="-243.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">6 root modules · per&#45;OS setup scripts</text>
 </g>
-<!-- 7a545bd93cab4cb99b876f4af9e5f648&#45;&gt;762fcdf46c7b47d392e9f6f983838c0b -->
+<!-- 2583f56f31c140eda1c79605ff451e18&#45;&gt;05cc66e7b8ba4aafbc79f0fe2e73c633 -->
 <g id="edge3" class="edge">
-<title>7a545bd93cab4cb99b876f4af9e5f648&#45;&gt;762fcdf46c7b47d392e9f6f983838c0b</title>
+<title>2583f56f31c140eda1c79605ff451e18&#45;&gt;05cc66e7b8ba4aafbc79f0fe2e73c633</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M994.21,-325C1076.15,-325 1252.66,-325 1342.67,-325"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="1342.47,-328.5 1352.47,-325 1342.47,-321.5 1342.47,-328.5"/>
 <text xml:space="preserve" text-anchor="middle" x="1222.12" y="-326.15" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">run on the lab VM / kind</text>
 </g>
-<!-- a7236b78e93a45fab15c3def7e7302e7 -->
+<!-- 55c04e445b8548018483af873ec32151 -->
 <g id="node4" class="node">
-<title>a7236b78e93a45fab15c3def7e7302e7</title>
+<title>55c04e445b8548018483af873ec32151</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/flowchart/multiple-documents.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="102.875" y="-579"/>
 <text xml:space="preserve" text-anchor="middle" x="147.88" y="-464.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">58 break/fix scenarios</text>
 <text xml:space="preserve" text-anchor="middle" x="147.88" y="-452.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">drills · Anki · interview bank · templates</text>
 </g>
-<!-- 5990a7048d1a4dd0b42f6647a1659687 -->
+<!-- a4c8c71722414961be8ff0758b7876f6 -->
 <g id="node5" class="node">
-<title>5990a7048d1a4dd0b42f6647a1659687</title>
+<title>a4c8c71722414961be8ff0758b7876f6</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/programming/language/python.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="383.875" y="-601"/>
 <text xml:space="preserve" text-anchor="middle" x="428.88" y="-486.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">diagrams/ + feynman/ toolchain</text>
 <text xml:space="preserve" text-anchor="middle" x="428.88" y="-474.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">check&#45;diagrams.py · 5 checks · ~1 s</text>
 </g>
-<!-- a7236b78e93a45fab15c3def7e7302e7&#45;&gt;5990a7048d1a4dd0b42f6647a1659687 -->
-<!-- 5990a7048d1a4dd0b42f6647a1659687&#45;&gt;3b422b5f2b0e45799fa1d979f7402222 -->
+<!-- 55c04e445b8548018483af873ec32151&#45;&gt;a4c8c71722414961be8ff0758b7876f6 -->
+<!-- a4c8c71722414961be8ff0758b7876f6&#45;&gt;e98bb91a2c4f4e80866a6638bc739dc1 -->
 <g id="edge4" class="edge">
-<title>5990a7048d1a4dd0b42f6647a1659687&#45;&gt;3b422b5f2b0e45799fa1d979f7402222</title>
+<title>a4c8c71722414961be8ff0758b7876f6&#45;&gt;e98bb91a2c4f4e80866a6638bc739dc1</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M473.65,-554.73C567.82,-552.01 789.52,-545.6 893.21,-542.6"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="893.26,-546.1 903.15,-542.31 893.05,-539.1 893.26,-546.1"/>
 <text xml:space="preserve" text-anchor="middle" x="640.38" y="-553.91" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">generates Feynman blocks + figures</text>
 </g>
-<!-- 1926b369ae67409e9588af1b75f91197 -->
+<!-- 77aba3573a034b6a9dd79f4b61b5d0c4 -->
 <g id="node8" class="node">
-<title>1926b369ae67409e9588af1b75f91197</title>
+<title>77aba3573a034b6a9dd79f4b61b5d0c4</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/iac/terraform.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="102.875" y="-810"/>
 <text xml:space="preserve" text-anchor="middle" x="147.88" y="-695.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">alpha · bravo · charlie</text>
 <text xml:space="preserve" text-anchor="middle" x="147.88" y="-683.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">3 roots + 4 modules</text>
 </g>
-<!-- 063336ab5a244f7fa205518a4b4fc1ac -->
+<!-- 108977fe50b04c6f9b0502cfd728f1ad -->
 <g id="node9" class="node">
-<title>063336ab5a244f7fa205518a4b4fc1ac</title>
+<title>108977fe50b04c6f9b0502cfd728f1ad</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/git.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="383.875" y="-1047"/>
 <text xml:space="preserve" text-anchor="middle" x="428.88" y="-932.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">pre&#45;commit</text>
 <text xml:space="preserve" text-anchor="middle" x="428.88" y="-920.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">gitleaks · fmt · diagrams · keys · size</text>
 </g>
-<!-- 1926b369ae67409e9588af1b75f91197&#45;&gt;063336ab5a244f7fa205518a4b4fc1ac -->
-<!-- d188381e1e3547f1a7cf529edaa448d2 -->
+<!-- 77aba3573a034b6a9dd79f4b61b5d0c4&#45;&gt;108977fe50b04c6f9b0502cfd728f1ad -->
+<!-- 4417a4c751264bf0abab078a270b6451 -->
 <g id="node10" class="node">
-<title>d188381e1e3547f1a7cf529edaa448d2</title>
+<title>4417a4c751264bf0abab078a270b6451</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/ci/github-actions.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="904.5" y="-1047"/>
 <text xml:space="preserve" text-anchor="middle" x="949.5" y="-932.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">ci.yml · 3 required checks</text>
 <text xml:space="preserve" text-anchor="middle" x="949.5" y="-920.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">secrets&#45;scan · content&#45;checks · terraform&#45;validate</text>
 </g>
-<!-- 063336ab5a244f7fa205518a4b4fc1ac&#45;&gt;d188381e1e3547f1a7cf529edaa448d2 -->
+<!-- 108977fe50b04c6f9b0502cfd728f1ad&#45;&gt;4417a4c751264bf0abab078a270b6451 -->
 <g id="edge7" class="edge">
-<title>063336ab5a244f7fa205518a4b4fc1ac&#45;&gt;d188381e1e3547f1a7cf529edaa448d2</title>
+<title>108977fe50b04c6f9b0502cfd728f1ad&#45;&gt;4417a4c751264bf0abab078a270b6451</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M473.65,-1002C567.44,-1002 787.72,-1002 891.95,-1002"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="891.94,-1005.5 901.94,-1002 891.94,-998.5 891.94,-1005.5"/>
 </g>
-<!-- 96023b56739e4ede865e191636817005 -->
+<!-- 58eb91cec4e748709b24d82802894040 -->
 <g id="node11" class="node">
-<title>96023b56739e4ede865e191636817005</title>
+<title>58eb91cec4e748709b24d82802894040</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/iac/terraform.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="102.875" y="-1119"/>
 <text xml:space="preserve" text-anchor="middle" x="147.88" y="-1004.2" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">infra/github</text>
 <text xml:space="preserve" text-anchor="middle" x="147.88" y="-992.95" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">the repository itself, as code</text>
 </g>
-<!-- d188381e1e3547f1a7cf529edaa448d2&#45;&gt;96023b56739e4ede865e191636817005 -->
+<!-- 4417a4c751264bf0abab078a270b6451&#45;&gt;58eb91cec4e748709b24d82802894040 -->
 <g id="edge8" class="edge">
-<title>d188381e1e3547f1a7cf529edaa448d2&#45;&gt;96023b56739e4ede865e191636817005</title>
+<title>4417a4c751264bf0abab078a270b6451&#45;&gt;58eb91cec4e748709b24d82802894040</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M904.76,-1019.62C807.83,-1056.66 567.3,-1137.55 361.75,-1117 307.34,-1111.56 246.25,-1098.48 203.52,-1088.17"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="204.53,-1084.81 193.99,-1085.83 202.87,-1091.61 204.53,-1084.81"/>
 <text xml:space="preserve" text-anchor="middle" x="428.88" y="-1121.44" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">required by the ruleset</text>

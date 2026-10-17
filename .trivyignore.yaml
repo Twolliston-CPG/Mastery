@@ -1,0 +1,14 @@
+# trivy misconfiguration exceptions that cannot be written inline.
+#
+# Terraform exceptions are inline (`#trivy:ignore:AVD-...` directly above the block, with the
+# reason in a comment). trivy has no inline form for Kubernetes YAML, so those live here, scoped
+# to one file and one check, with the reason. Passed explicitly in security.yml
+# (`--ignorefile .trivyignore.yaml`); trivy does not pick this file up on its own.
+misconfigurations:
+  - id: KSV-0014
+    paths:
+      - curriculum/week-14/solutions/k8s-stack/20-database.yaml
+    statement: >-
+      postgres writes to its data directory, so the root filesystem cannot be read-only. The
+      container already drops all capabilities, forbids privilege escalation, and runs as the
+      image's non-root user. Same decision as the CKV_K8S_22 annotation on the StatefulSet.

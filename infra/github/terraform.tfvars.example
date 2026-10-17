@@ -10,7 +10,7 @@ require_signed_commits = false
 
 # Jobs a pull request must pass. The default is the three ci.yml jobs already proven on the
 # runner. Once figures-fresh (ci.yml) and the security.yml jobs have each run green, require all
-# of them (iac-scan-content is advisory by design and is never required):
+# of them:
 # required_status_checks = [
 #   "secrets-scan", "content-checks", "terraform-validate", "figures-fresh",
 #   "actions-lint", "shell-lint", "iac-scan",
