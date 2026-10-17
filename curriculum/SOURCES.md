@@ -34,7 +34,7 @@ filenames**.
 | A client project name appearing ~1,350 times | `northwind` / `Northwind` |
 | Real public-company case studies (streaming, audio, retail, banking, marketplace, apparel, CDN, social) | Fictional archetypes: `StreamCo`, `AudioWave`, `NorthStar Retail`, `Meridian Bank`, `CraftMarket`, `StayNest`, `PinBoard`, `ShopStack`, `Apex Athletics`, `EdgeNet`, `SocialGraph` |
 | Named employers and clients from prior engagements | `Regional Financial Group`, `Oceanic Lines`, `Continental Insurance`, `Vantage Consulting`, `MedRx Systems`, `Clinical Research Institute`, `SafeHarbor`, `BrightLead`, `Requisite`, `CargoLink`, `AssistAI` |
-| Named breach/incident case studies | `OrionSoft`, `IdentityCo`, `ThreatGroup-A`, `ThreatGroup-B`, `FileTransferApp` |
+| Named breach/incident case studies | `OrionSoft`, `IdentityCo`, `ThreatGroup-A`, `ThreatGroup-B`, `FileTransferApp`. Supporting detail that identifies the incident on its own — CVE identifiers, malware codenames (`BUILDHOOK`, `DUSKFALL`), the support contractor (`SupportCo`), the discovering vendor, advisory URLs — is generalized or replaced too |
 | Email domains | `@northwind.example` |
 
 Filenames were renamed to match (e.g. `01-netflix-chaos-engineering.md` →

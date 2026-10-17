@@ -4,10 +4,10 @@
 
 | Attribute | Details |
 |-----------|---------|
-| **Date Discovered** | December 8, 2020 (by FireEye) |
+| **Date Discovered** | December 2020 (by a security vendor that was itself a victim) |
 | **Attack Duration** | October 2019 - December 2020 (14+ months) |
 | **Organizations Affected** | ~18,000 organizations installed backdoored updates |
-| **High-Value Targets** | US Treasury, DHS, DOE, Microsoft, FireEye |
+| **High-Value Targets** | Several US federal agencies, a major cloud vendor, a security vendor |
 | **Attribution** | Russian SVR (APT29/Cozy Bear) |
 | **Attack Type** | Software supply chain compromise |
 
@@ -64,8 +64,8 @@ flowchart LR
 
 - Gained access to OrionSoft development environment
 - Compromised build system (not source repository)
-- Implanted SUNSPOT malware on build server
-- SUNSPOT injected SUNBURST into Orion during compilation
+- Implanted BUILDHOOK malware on build server
+- BUILDHOOK injected DUSKFALL into Orion during compilation
 
 **Key Technique: Build Process Manipulation**
 
@@ -80,19 +80,19 @@ flowchart LR
 **Timeline:**
 
 - Oct 2019: Attackers test deployment mechanism
-- Feb 2020: SUNBURST first compiled into Orion updates
+- Feb 2020: DUSKFALL first compiled into Orion updates
 - Mar-Jun 2020: Malicious updates distributed to customers
-- Dec 2020: FireEye discovers breach, alerts OrionSoft
+- Dec 2020: A security vendor discovers the breach, alerts OrionSoft
 
 
 ### Phase 3: Post-Compromise Activities
 
-**SUNBURST Behavior:**
+**DUSKFALL Behavior:**
 
 - 2-week dormancy period after installation
 - DNS beaconing to attacker-controlled domains
 - Victim identification and prioritization
-- High-value targets received TEARDROP/RAINDROP follow-up malware
+- High-value targets received second-stage follow-up malware
 - Lateral movement and data exfiltration
 
 **Evasion Techniques:**
@@ -149,7 +149,7 @@ flowchart TB
 
 ### STRIDE Analysis of Build Pipeline
 
-| Component | S | T | R | I | D | E | SUNBURST Relevance |
+| Component | S | T | R | I | D | E | DUSKFALL Relevance |
 |-----------|---|---|---|---|---|---|--------------------|
 | Dev Workstation | ✓ | ✓ | ✓ | ✓ | | ✓ | Entry point |
 | Source Repo | ✓ | ✓ | ✓ | ✓ | | ✓ | Remained clean |
@@ -327,7 +327,7 @@ flowchart TB
    - Could a malicious package be introduced?
 
 5. **Design Controls:**
-   - How would you detect a SUNBURST-style attack?
+   - How would you detect a DUSKFALL-style attack?
    - What preventive controls would help?
 
 ---
@@ -351,7 +351,7 @@ flowchart TB
 ## References
 
 - CISA Alert AA20-352A
-- FireEye: Highly Evasive Attacker Leverages OrionSoft Supply Chain
+- Security vendor report: Highly Evasive Attacker Leverages OrionSoft Supply Chain
 - Microsoft: Solorigate Investigation
 - MITRE ATT&CK: Supply Chain Compromise (T1195.002)
 - SLSA Framework: slsa.dev

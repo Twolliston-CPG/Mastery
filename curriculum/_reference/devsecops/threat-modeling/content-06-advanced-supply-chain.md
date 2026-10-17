@@ -493,7 +493,7 @@ orionsoft:
   attack_chain:
     1_initial_access: Compromised OrionSoft build server
     2_persistence: Modified build process
-    3_payload: Inserted SUNBURST backdoor
+    3_payload: Inserted the DUSKFALL backdoor
     4_distribution: Legitimate update mechanism
     5_activation: Dormancy period before C2
 
@@ -683,8 +683,8 @@ Runtime Protection:
 
 ## Next Steps
 
-→ [Zero Trust Architecture](zero-trust.md)
-→ [Return to Advanced Topics](../threat-modeling-roadmap.md#advanced-topics)
+→ [Zero Trust Architecture](content-06-advanced-zero-trust.md)
+→ [Return to Advanced Topics](threat-modeling-roadmap.md#advanced-topics)
 
 <!-- feynman-check -->
 

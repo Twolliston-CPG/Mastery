@@ -2,11 +2,11 @@
 
 ## Executive Summary
 
-In May 2023, the Clop ransomware group exploited a zero-day SQL injection vulnerability (CVE-2023-34362) in Progress Software's FileTransferApp Transfer, a managed file transfer (MFT) solution. This attack demonstrates the catastrophic impact of vulnerabilities in file transfer infrastructure and the importance of threat modeling data movement systems.
+In May 2023, the ThreatGroup-B ransomware group exploited a zero-day SQL injection vulnerability in FileTransferApp Transfer, a managed file transfer (MFT) solution. This attack demonstrates the catastrophic impact of vulnerabilities in file transfer infrastructure and the importance of threat modeling data movement systems.
 
 **Key Facts:**
-- Attacker: Clop ransomware group (TA505)
-- Vulnerability: SQL injection (CVE-2023-34362)
+- Attacker: ThreatGroup-B ransomware group
+- Vulnerability: SQL injection, a zero-day; two more SQLi flaws surfaced while patching it
 - Attack Window: May 27-31, 2023 (mass exploitation)
 - Victims: 2,500+ organizations
 - Data Exposed: 66+ million individuals
@@ -49,9 +49,9 @@ flowchart TB
   classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
   classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
   classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
-  A["CVE-2023-34362<br/><i>SQL injection — the original</i>"]
-  B["CVE-2023-35036<br/><i>another SQLi, found while patching the first</i>"]
-  C["CVE-2023-35708<br/><i>a third, requiring a third patch</i>"]
+  A["SQLi-1<br/><i>SQL injection — the original</i>"]
+  B["SQLi-2<br/><i>another SQLi, found while patching the first</i>"]
+  C["SQLi-3<br/><i>a third, requiring a third patch</i>"]
   A ==> B ==> C
   class A,B,C crit
   linkStyle 0,1 stroke:#2f6fb8,stroke-width:2px
@@ -126,13 +126,13 @@ internet-facing application, which makes it worth a zero-day to somebody.
 
 ```http
 # Malicious request (simplified)
-POST /moveitisapi/moveitisapi.dll?action=m2 HTTP/1.1
+POST /fta-api/fta-api.dll?action=m2 HTTP/1.1
 Host: target-filetransferapp.com
 Content-Type: application/x-www-form-urlencoded
 
 # SQL injection payload
 query='; INSERT INTO users (username, password, admin)
-       VALUES ('clop', 'password', 1);--
+       VALUES ('threatgroup', 'password', 1);--
 ```
 
 ```aspx
@@ -272,7 +272,7 @@ flowchart TB
 
 ```yaml
 asset_classification:
-  moveit_transfer:
+  filetransferapp_transfer:
     data_types:
       - Customer PII
       - Financial records
@@ -317,7 +317,7 @@ Threat Model Implications:
 
 | Vulnerability Class | FileTransferApp Relevance | Prevention |
 |---------------------|------------------|------------|
-| SQL Injection | CVE-2023-34362 | Parameterized queries |
+| SQL Injection | SQLi-1, the zero-day | Parameterized queries |
 | Command Injection | Potential via file processing | Input validation |
 | Path Traversal | File download/upload | Path sanitization |
 | Authentication Bypass | Admin creation | Strong auth controls |
@@ -374,7 +374,7 @@ sql_patterns:
 
 network_indicators:
   - Large data exfiltration (unusual upload patterns)
-  - Connections to Clop infrastructure
+  - Connections to ThreatGroup-B infrastructure
   - Tor exit node connections
   - New outbound connections from file server
 ```
@@ -407,7 +407,7 @@ WHERE file_extension = '.aspx'
 | Take offline | P0 | Disconnect FileTransferApp from network |
 | Preserve evidence | P0 | Snapshot servers, logs |
 | Check for IOCs | P0 | Look for web shells, new users |
-| Apply patches | P0 | CVE-2023-34362, 35036, 35708 |
+| Apply patches | P0 | All three SQLi advisories |
 | Reset credentials | P0 | All FileTransferApp users and service accounts |
 
 ### Short-Term (Week 1-2)
@@ -542,16 +542,16 @@ third_party_risk_assessment:
 
 ## References
 
-- [Progress Security Advisory](https://www.progress.com/security/filetransferapp-transfer-and-filetransferapp-cloud-vulnerability)
-- [CISA FileTransferApp Alert](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a)
+- [Vendor Security Advisory](https://www.filetransferapp.example/security/advisory)
+- [CISA FileTransferApp Alert](https://www.cisa.gov/news-events/cybersecurity-advisories/filetransferapp-exploitation)
 - [Mandiant Analysis](https://www.mandiant.com/resources/blog/zero-day-filetransferapp-data-theft)
-- [Clop Ransomware Profile](https://www.cisa.gov/news-events/cybersecurity-advisories/aa23-158a)
+- [ThreatGroup-B Ransomware Profile](https://www.cisa.gov/news-events/cybersecurity-advisories/threatgroup-b-profile)
 
 ---
 
 ## Next Case Study
 
-→ [ThreatGroup-B Microsoft Cloud Breach](threatgroup-b.md)
+→ [ThreatGroup-B Microsoft Cloud Breach](case-studies-threatgroup-b.md)
 
 <!-- feynman-check -->
 

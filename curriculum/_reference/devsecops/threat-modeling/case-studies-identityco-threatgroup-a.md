@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-In January 2022, the ThreatGroup-A threat group compromised IdentityCo through a third-party support contractor (Sitel/Sykes). This breach demonstrates critical supply chain risks in identity infrastructure and the cascading impact of compromising an Identity Provider (IdP).
+In January 2022, the ThreatGroup-A threat group compromised IdentityCo through a third-party support contractor (SupportCo). This breach demonstrates critical supply chain risks in identity infrastructure and the cascading impact of compromising an Identity Provider (IdP).
 
 **Key Facts:**
 - Attacker: ThreatGroup-A (DEV-0537)
@@ -17,10 +17,10 @@ In January 2022, the ThreatGroup-A threat group compromised IdentityCo through a
 
 January 2022 Attack Sequence:
 
-**Jan 16: Initial access to Sitel support engineer workstation**
+**Jan 16: Initial access to SupportCo support engineer workstation**
 
 - ThreatGroup-A gains access via unknown method
-- Targets Sitel employee with IdentityCo Super User access
+- Targets SupportCo employee with IdentityCo Super User access
 - Workstation compromise (likely phishing or RDP)
 
 **Jan 16-21: 5 days of access**
@@ -451,7 +451,7 @@ Contractual & Compliance:
 
 ## Next Case Study
 
-→ [FileTransferApp Transfer Attack](filetransferapp.md)
+→ [FileTransferApp Transfer Attack](case-studies-filetransferapp.md)
 
 <!-- feynman-check -->
 
