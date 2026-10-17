@@ -111,6 +111,11 @@ is correct — a bucket cannot store the state that creates it — and it is a f
 describing one bucket. If the file is ever lost, the import commands at the top of
 `state/main.tf` re-adopt the bucket.
 
+Every later `terraform init` in this directory and in `image/` needs that `backend.hcl`, or
+Terraform stops and asks for the bucket name. To never be asked, copy `.envrc.example` to
+`.envrc` and `direnv allow`: the flag is then passed for you. Both options, and what to do on a
+second machine, are in [`state/README.md`](state/README.md).
+
 What the bucket gives you, and why each setting is there:
 
 | Setting | Why |
@@ -444,7 +449,8 @@ destroy the lab with `terraform destroy -var lookup_image=false`.
 | `.gitignore` | Keeps state, variables, and the provider cache out of any repository |
 | `backend.tf` | Tells Terraform to keep state in the Cloud Storage bucket |
 | `backend.hcl` | Created in step 6: the bucket's name. Not committed |
+| `.envrc.example` | Copy to `.envrc` (not committed) so `terraform init` passes `backend.hcl` itself and never prompts. See `state/README.md` |
 | `image/` | Arch only, step 8. `fetch.sh` downloads and converts the newest Arch cloud image; `main.tf` uploads it and creates the custom image under family `arch`. Applied before the lab, re-applied for newer builds |
 | `image/fetch.ps1` | Windows port of `fetch.sh`: same stages, checks, and outputs, in PowerShell 5.1+. Tools via `choco install qemu gnupg`. Not yet run on Windows |
 | `image/arch-boxes.asc` | The public key Arch's CI signs cloud images with, copied from the arch-boxes project README. `fetch.sh` refuses an image not signed by it. The header says how to refresh it when the signing subkey expires (May 2027) |
-| `state/` | Independent configuration that creates the state bucket. Applied once, before the lab. Its own state is a local file in that folder — keep it, or re-import per the comments in `state/main.tf` |
+| `state/` | Independent configuration that creates the state bucket. Applied once, before the lab. Its own state is a local file in that folder — keep it, or re-import per the comments in `state/main.tf`. `state/README.md` covers the backend handshake: why `init` prompts, how to stop it, second-machine recovery |

@@ -37,11 +37,19 @@ resource "github_repository_ruleset" "default_branch" {
       # Squash is the only merge method. main.tf already disables the other two on the repository
       # settings page; this repeats it as a rule so flipping the setting back cannot bypass it.
       allowed_merge_methods = ["squash"]
-      # 0 approvals: a solo author cannot approve their own PR. The gate is CI, not review.
-      required_approving_review_count   = 0
+
+      # The review gate. The repository has write collaborators, so a PR needs one approval, and
+      # because .github/CODEOWNERS maps every path to the owner, only the owner's approval counts.
+      # A collaborator cannot approve another collaborator's PR into main; a collaborator cannot
+      # push to main at all (the PR requirement covers that). The owner's own PRs cannot be
+      # self-approved: they merge through the admin bypass above, which GitHub records in the
+      # audit log as a bypass, so the exception is visible rather than silent.
+      required_approving_review_count = 1
+      require_code_owner_review       = true
+      # An approval is for the commits that were reviewed. A push after approval resets it, and a
+      # push by someone else than the approver needs the owner to look again.
       dismiss_stale_reviews_on_push     = true
-      require_code_owner_review         = false
-      require_last_push_approval        = false
+      require_last_push_approval        = true
       required_review_thread_resolution = true
     }
 

@@ -31,9 +31,10 @@ scan: tools  ## checkov + trivy over the whole repository, as iac-scan runs them
 	  --ignorefile .trivyignore.yaml \
 	  --skip-dirs curriculum/_reference --skip-dirs _figures --skip-dirs _backups .
 
-lint-workflows: tools  ## actionlint + zizmor on the workflows and the composite action
+lint-workflows: tools  ## actionlint + zizmor + the no-deploy guard on .github/
 	$(TOOLS)/actionlint -no-color -shellcheck $(TOOLS)/shellcheck .github/workflows/*.yml
 	uvx --from "zizmor==$(ZIZMOR_VERSION)" zizmor --persona regular .github
+	bash .github/scripts/no-deploy-from-actions.sh
 
 shellcheck: tools  ## shellcheck -S warning on every tracked shell script
 	git ls-files -z -- '*.sh' | xargs -0 $(TOOLS)/shellcheck -S warning

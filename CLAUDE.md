@@ -28,16 +28,23 @@ for how a learner moves through it.
   the Actions policy (live is `allowed_actions: all`; Terraform sets GitHub-owned only) and the workflow access
   level. **Apply is pending a human:** `cd infra/github && GITHUB_TOKEN=$(gh auth token) terraform apply tfplan`.
 - **Flags still off:** `enable_rulesets` (needs GitHub Pro), `require_signed_commits` (needs SSH signing).
-- **Unknown:** GitHub plan (Free vs Pro); the API returns `plan: null` for this token. The first
-  `terraform apply -var enable_rulesets=true` answers it (403 means Free).
+- **Plan: Free** (confirmed 2026-10-17: rulesets and branch-protection endpoints return 403 "Upgrade to GitHub
+  Pro"). Nothing server-side protects `main` until the account is on Pro or the repo is public.
+- **Collaborators: 16 with write + 3 pending invitations** (2026-10-17). On a personal repo every collaborator
+  has write, which on Free means any of them can push to `main` or merge a PR today. The ruleset now requires
+  one code-owner approval (owner only) and re-approval after pushes, but it is unenforceable until Pro.
+  All 3 invitations were sent on 2026-10-17 (one by email), so the roster is growing. The live list is captured
+  in `infra/github/terraform.tfvars` (gitignored) behind `manage_collaborators = false`; import before flipping.
+  Decision needed: upgrade to Pro (recommended), transfer to an organization for read-only roles, or make the
+  repo public. Removing collaborators is not the intent.
 - **Unverified on a live system (2026-10-17):** Contour on kind (`02-kind-cluster.sh`), OS Login on the
   Ubuntu GCP lab image, `windows-setup.ps1`, the `figures-fresh` CI job, and all four `security.yml` jobs
   (every one passes locally; `gh` is not authenticated here, so runner results have not been seen). A job
   joins `required_status_checks` only after it has run green on the runner; the full target list is in
   `infra/github/terraform.tfvars.example`.
-- **Next:** apply the saved plan (above) → `terraform apply -var enable_rulesets=true` to learn the plan and, on
-  Pro, enforce PR-only, squash-only, seven required checks on `main` → merge the follow-up PR (squash ruleset,
-  template, required-checks default).
+- **Next:** decide the collaborator/plan question above → apply the saved plan → on Pro,
+  `terraform apply -var enable_rulesets=true` enforces PR-only, squash-only, one owner approval, seven required
+  checks on `main` → merge PR #10.
 - **Workflow lockfile (public preview since 2026-10-14):** extension installed; `gh actions-lock --no-fix` on
   2026-10-17 **skips `ci.yml` and `security.yml`** ("local path actions are not yet supported") because both use
   `./.github/actions/fetch-tool`, and would re-pin `links.yml` to tags, breaking the SHA convention. Blocked on
@@ -118,7 +125,7 @@ between a small edit and 600 quietly-broken files.
 |---|---|
 | `infra/github/` | Terraform (`integrations/github`) that creates and hardens the private repo: squash-only, Dependabot, GitHub-authored actions only, archive-on-destroy, opt-in `main` ruleset. State is local and gitignored. Bootstrap pattern: the config lives inside the repo it creates |
 | `.github/workflows/ci.yml` | All jobs on `ubuntu-24.04-arm` (pinned label; `ubuntu-latest` moves to 26.04 in Nov 2026; arm bills lower per minute). `secrets-scan` (gitleaks, pinned + sha256-checked, full history), `content-checks` (`check-diagrams.py` on the authored layers, then on `_reference/`), `terraform-validate` (`fmt -check` repo-wide, `init -backend=false` + `validate` on all nine root modules, in one job so the check name is stable), `figures-fresh` (weekly-figure docs regenerated from the specs must match what is committed). The first three job names are the required checks in `rulesets.tf` — rename in both places or never; `figures-fresh` is deliberately not required until it has been seen green on the runner |
-| `.github/workflows/security.yml` | `actions-lint` (actionlint + zizmor on `.github/`, composite action included), `shell-lint` (shellcheck on every tracked `.sh`), `iac-scan` (checkov + trivy on the **whole repository**, teaching projects and solutions included, all blocking). Also runs weekly against `main` |
+| `.github/workflows/security.yml` | `actions-lint` (actionlint + zizmor on `.github/`, composite action included, plus the **no-deploy guard**: Actions is validate-only, and this step fails on any `terraform apply`, cloud login action, `id-token: write` or credential variable in a workflow GitHub runs), `shell-lint` (shellcheck on every tracked `.sh`), `iac-scan` (checkov + trivy on the **whole repository**, teaching projects and solutions included, all blocking). Also runs weekly against `main` |
 | `.github/actions/fetch-tool/` | Local composite action: download a pinned release, verify the sha256 for the runner's CPU architecture, put the binary on PATH. Used for gitleaks, Terraform, actionlint, shellcheck, trivy. Versions and both checksums live in each workflow's `env` block |
 | `.github/requirements/`, `curriculum/_shared/diagrams/requirements.{in,txt}` | Hash-locked pip pins (`uv pip compile --generate-hashes`). Edit the `.in`, recompile the `.txt` (command in the file), CI installs with `--require-hashes`. Dependabot regenerates hashes on bumps |
 | `Makefile`, `.github/scripts/tools.sh` | `make check` runs the CI checks locally at CI's pinned versions (`uvx` for checkov/zizmor, `.tools/bin` for binaries verified against vendor checksums). Never trust the Homebrew checkov: it ships without the graph policies |
@@ -141,6 +148,9 @@ Rules:
 - A new gitleaks hit: decode it and confirm it is a placeholder **before** adding it to `.gitleaks.toml`.
 - The gitleaks version is pinned in two places (`ci.yml` env and `.pre-commit-config.yaml` rev). Bump both.
 - Tokens are shell env only (`GITHUB_TOKEN`); never in `.tf`, `.tfvars`, or this file.
+- **GitHub Actions never applies Terraform.** No cloud credentials, OIDC trust, environments or secrets in the repo;
+  applies happen from a laptop. The teaching projects' workflows under `curriculum/projects/*/.github/` are content
+  GitHub does not execute; never copy one into the root `.github/workflows/`.
 - Commit messages explain *why*; the Status block above is the only other place state is recorded.
 
 ## Architecture
