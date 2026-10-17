@@ -395,7 +395,7 @@ kubectl delete namespace hpa-lab
 
 ## Next Exercise
 
-Continue to [Exercise 2: Vertical Pod Autoscaler](./02-vertical-pod-autoscaler.md) to learn about automatic resource recommendations.
+Continue to [Exercise 2: Vertical Pod Autoscaler](03-scaling-performance-exercises-02-vertical-pod-autoscaler.md) to learn about automatic resource recommendations.
 
 <!-- feynman-check -->
 

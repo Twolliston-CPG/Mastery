@@ -214,7 +214,7 @@ Approved By: _________________ Date: _________
 
 ## References
 
-- [Compliance Mapping Guide](../content/05-enterprise/compliance-mapping.md)
+- [Compliance Mapping Guide](content-05-enterprise-compliance-mapping.md)
 - [PCI DSS v4.0 Requirements](https://www.pcisecuritystandards.org/)
 - [HIPAA Security Rule](https://www.hhs.gov/hipaa/)
 - [SOC 2 Trust Services Criteria](https://www.aicpa.org/)

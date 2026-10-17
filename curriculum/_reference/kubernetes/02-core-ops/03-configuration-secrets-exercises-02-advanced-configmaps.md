@@ -543,7 +543,7 @@ Build a system to:
 
 ## Next Steps
 
-Continue to [Exercise 3: Secrets Management](03-secrets-management.md)
+Continue to [Exercise 3: Secrets Management](03-configuration-secrets-exercises-03-secrets-management.md)
 
 <!-- feynman-check -->
 

@@ -350,7 +350,7 @@ Prepare 10-slide executive summary:
 
 ## Resources
 
-- [Zero Trust Guide](../content/06-advanced/zero-trust.md)
+- [Zero Trust Guide](content-06-advanced-zero-trust.md)
 - [NIST Zero Trust Architecture](https://www.nist.gov/publications/zero-trust-architecture)
 - [CISA Zero Trust Maturity Model](https://www.cisa.gov/zero-trust-maturity-model)
 - [Google BeyondCorp](https://cloud.google.com/beyondcorp)

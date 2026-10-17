@@ -501,7 +501,7 @@ docker compose down -v
 
 ## Next Steps
 
-Complete the [Module 3 Project](../project/) and [Challenge](../challenge/).
+Complete the [Module 3 Project](project-README.md) and Challenge.
 
 <!-- feynman-check -->
 

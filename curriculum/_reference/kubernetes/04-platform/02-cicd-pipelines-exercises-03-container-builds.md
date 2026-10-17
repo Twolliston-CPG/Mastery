@@ -857,7 +857,7 @@ Implement secure build process:
 
 ## Next Steps
 
-Continue to [Exercise 4: Image Scanning](04-image-scanning.md)
+Continue to [Exercise 4: Image Scanning](02-cicd-pipelines-exercises-04-image-scanning.md)
 
 <!-- feynman-check -->
 

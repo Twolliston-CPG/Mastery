@@ -581,7 +581,7 @@ Build a system to:
 
 ## Next Steps
 
-Continue to [Exercise 4: External Secrets](04-external-secrets.md)
+Continue to [Exercise 4: External Secrets](03-configuration-secrets-exercises-04-external-secrets.md)
 
 <!-- feynman-check -->
 

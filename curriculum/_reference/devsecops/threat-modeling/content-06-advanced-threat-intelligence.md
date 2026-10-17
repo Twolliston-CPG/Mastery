@@ -600,8 +600,8 @@ opencti_integration:
 
 ## Next Steps
 
-→ [Adversarial Thinking](adversarial-thinking.md)
-→ [Supply Chain Security](supply-chain.md)
+→ [Adversarial Thinking](content-06-advanced-adversarial-thinking.md)
+→ [Supply Chain Security](content-06-advanced-supply-chain.md)
 
 <!-- feynman-check -->
 

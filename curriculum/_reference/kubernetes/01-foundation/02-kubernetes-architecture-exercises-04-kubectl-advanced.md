@@ -577,7 +577,7 @@ esac
 ## Module Complete!
 
 You've completed the Kubernetes Architecture module. Continue to:
-- [Core Workloads Module](../../03-core-workloads/README.md)
+- [Core Workloads Module](03-core-workloads-README.md)
 
 <!-- feynman-check -->
 

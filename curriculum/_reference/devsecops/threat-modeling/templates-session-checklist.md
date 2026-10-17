@@ -223,9 +223,9 @@
 
 ## Resources
 
-- [Facilitation Guide](../content/07-mastery/facilitation.md)
-- [STRIDE Worksheet](stride-worksheet.md)
-- [Threat Model Template](threat-model-template.md)
+- [Facilitation Guide](content-07-mastery-facilitation.md)
+- [STRIDE Worksheet](templates-stride-worksheet.md)
+- [Threat Model Template](templates-threat-model-template.md)
 
 <!-- feynman-check -->
 

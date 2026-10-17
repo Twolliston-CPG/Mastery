@@ -788,7 +788,7 @@ Deploy multiple scanners:
 
 ## Next Steps
 
-Continue to [Exercise 5: Artifact Management](05-artifact-management.md)
+Continue to [Exercise 5: Artifact Management](02-cicd-pipelines-exercises-05-artifact-management.md)
 
 <!-- feynman-check -->
 

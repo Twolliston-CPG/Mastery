@@ -321,7 +321,7 @@ kubectl get pods -A -o json | jq -r '
 
 ## Next Steps
 
-Continue to [Exercise 2: Control Plane Deep Dive](02-control-plane-deep-dive.md)
+Continue to [Exercise 2: Control Plane Deep Dive](02-kubernetes-architecture-exercises-02-control-plane-deep-dive.md)
 
 <!-- feynman-check -->
 

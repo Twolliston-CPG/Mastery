@@ -523,7 +523,7 @@ regulator if it were exploited tomorrow; everything else needs a date and an own
 
 ## Next Lab
 
-→ [Lab 08: FinTech Payment Platform (PCI DSS)](../lab-08-fintech-pci/)
+→ [Lab 08: FinTech Payment Platform (PCI DSS)](labs-lab-08-fintech-pci-README.md)
 
 <!-- feynman-check -->
 

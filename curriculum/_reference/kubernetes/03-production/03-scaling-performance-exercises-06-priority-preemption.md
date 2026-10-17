@@ -805,7 +805,7 @@ Implement tenant-based priority:
 ## Module Complete!
 
 You've completed the Scaling & Performance module. Continue to:
-- [Platform Engineering Module](../../phase-4-platform-engineering/README.md)
+- Platform Engineering Module
 
 <!-- feynman-check -->
 

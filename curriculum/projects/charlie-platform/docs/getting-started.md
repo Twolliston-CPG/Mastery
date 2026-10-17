@@ -74,7 +74,7 @@ repository and it deploys.
 ## Next
 
 - **[Choosing a tier](tiers.md)** — the one decision that matters
-- **[Adding a database](contract-reference.md#dependencies)** — two lines of YAML
+- **[Adding a database](../platform/schemas/service.schema.json)** — two lines of YAML; the schema is the field reference
 - **[Going off the paved road](escape-hatches.md)** — if the platform doesn't support what you need
 
 ## Something went wrong?

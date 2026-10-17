@@ -1309,7 +1309,7 @@ rm -rf incident-bot runbook-runner runbooks
 - [Post-Mortem Culture](https://sre.google/sre-book/postmortem-culture/)
 
 ## Next Lab
-Continue to [Lab 09: Chaos Engineering](../lab-09-chaos-engineering/README.md) to implement chaos experiments.
+Continue to [Lab 09: Chaos Engineering](labs-lab-09-chaos-engineering-README.md) to implement chaos experiments.
 
 <!-- feynman-check -->
 

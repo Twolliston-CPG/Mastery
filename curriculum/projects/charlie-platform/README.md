@@ -122,7 +122,7 @@ product manager can join.
 
 ```
 platform/
-  schemas/service.schema.json    the contract, as JSON Schema
+  schemas/service.schema.json    the contract, as JSON Schema -- also the field reference
   teams/teams.yaml               valid owners and their cost centers
   modules/                       versioned Terraform: runtime, pipeline, database,
                                  storage, observability
@@ -138,7 +138,6 @@ cli/platform                     `platform new-service --name X --language pytho
   deprovision.yml                on file deletion, with guardrails
 docs/
   getting-started.md             the five-minute path
-  contract-reference.md          every field
   tiers.md                       readable by a product manager
   escape-hatches.md              going off the path is SUPPORTED
   adr/

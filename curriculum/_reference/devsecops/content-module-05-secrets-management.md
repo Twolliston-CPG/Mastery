@@ -648,7 +648,7 @@ Secrets management requires a comprehensive approach:
 
 ## Next Module
 
-Continue to [Module 06: Security Scanning](module-06-security-scanning.md) to learn about SAST, DAST, and vulnerability scanning.
+Continue to [Module 06: Security Scanning](content-module-06-security-scanning.md) to learn about SAST, DAST, and vulnerability scanning.
 
 <!-- feynman-check -->
 

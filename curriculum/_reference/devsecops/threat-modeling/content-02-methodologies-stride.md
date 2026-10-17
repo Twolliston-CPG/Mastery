@@ -366,7 +366,7 @@ Apply STRIDE systematically by element type:
 ## STRIDE Threat Enumeration Process
 
 ### Step 1: Create DFD
-See [DFD Basics](../01-foundations/dfd-basics.md)
+See [DFD Basics](content-01-foundations-dfd-basics.md)
 
 ### Step 2: Identify Elements
 List all:
@@ -558,8 +558,8 @@ spec:
 
 ## Next Steps
 
-→ [PASTA Framework](pasta.md)
-→ [Lab 02: API Threat Model with STRIDE](../../labs/lab-02-api-threat-model/)
+→ [PASTA Framework](content-02-methodologies-pasta.md)
+→ [Lab 02: API Threat Model with STRIDE](labs-lab-02-api-threat-model-README.md)
 
 <!-- feynman-check -->
 

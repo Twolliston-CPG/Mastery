@@ -739,7 +739,7 @@ kubectl get events --field-selector involvedObject.name=unhealthy-pod
 
 ## Next Steps
 
-Continue to [Exercise 2: Deployments and ReplicaSets](02-deployments-replicasets.md)
+Continue to [Exercise 2: Deployments and ReplicaSets](03-core-workloads-exercises-02-deployments-replicasets.md)
 
 <!-- feynman-check -->
 

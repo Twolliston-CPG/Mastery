@@ -852,8 +852,8 @@ flowchart TB
 
 ## Next Steps
 
-→ [Methodology Selection Guide](methodology-selection.md)
-→ [Lab 02: API Threat Model](../../labs/lab-02-api-threat-model/)
+→ Methodology Selection Guide
+→ [Lab 02: API Threat Model](labs-lab-02-api-threat-model-README.md)
 
 <!-- feynman-check -->
 

@@ -791,7 +791,7 @@ Manage all artifacts as OCI:
 
 ## Next Steps
 
-Continue to [Exercise 6: Deployment Promotion](06-deployment-promotion.md)
+Continue to [Exercise 6: Deployment Promotion](02-cicd-pipelines-exercises-06-deployment-promotion.md)
 
 <!-- feynman-check -->
 

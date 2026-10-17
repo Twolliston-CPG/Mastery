@@ -92,7 +92,7 @@ The compliance repository follows the NIST OSCAL standard structure, managed by 
 | A.9.2 | Access Management | IAM Security Policy (Terraform/GCP) |
 | A.8.2 | Information Classification | Storage Security Policy (GCS) |
 | A.13.1 | Network Security | Network Security Policy (VPC/Firewall) |
-| A.10.1 | Cryptographic Controls | Secrets Management Policy (Secret Manager) — [see cross-cutting/secret-management.md](../cross-cutting/secret-management.md) |
+| A.10.1 | Cryptographic Controls | Secrets Management Policy (Secret Manager) — [see cross-cutting/secret-management.md](cross-cutting-secret-management.md) |
 
 ---
 
@@ -187,7 +187,7 @@ graph LR
 
 ## Compliance Tools Architecture
 
-> For the full DefectDojo + Dependency-Track integration architecture and data flow, see [cross-cutting/vulnerability-sinks.md](../cross-cutting/vulnerability-sinks.md).
+> For the full DefectDojo + Dependency-Track integration architecture and data flow, see [cross-cutting/vulnerability-sinks.md](cross-cutting-vulnerability-sinks.md).
 
 ### DefectDojo (Port 30080)
 

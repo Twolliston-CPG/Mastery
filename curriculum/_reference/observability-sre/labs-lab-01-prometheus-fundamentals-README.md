@@ -1081,7 +1081,7 @@ rm generate_traffic.sh
 - [SLO Alerting](https://sre.google/workbook/alerting-on-slos/)
 
 ## Next Lab
-Continue to [Lab 02: Grafana Dashboards](../lab-02-grafana-dashboards/README.md) to visualize the metrics collected in this lab.
+Continue to [Lab 02: Grafana Dashboards](labs-lab-02-grafana-dashboards-README.md) to visualize the metrics collected in this lab.
 
 <!-- feynman-check -->
 

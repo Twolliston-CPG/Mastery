@@ -895,7 +895,7 @@ docker-compose restart grafana
 - [Dashboard Design Patterns](https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/best-practices/)
 
 ## Next Lab
-Continue to [Lab 03: Alertmanager](../lab-03-alertmanager/README.md) to implement sophisticated alerting.
+Continue to [Lab 03: Alertmanager](labs-lab-03-alertmanager-README.md) to implement sophisticated alerting.
 
 <!-- feynman-check -->
 

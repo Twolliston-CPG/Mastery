@@ -805,7 +805,7 @@ Coordinate multiple services:
 
 ## Next Steps
 
-Continue to [Exercise 6: Secrets Management](06-secrets-management.md)
+Continue to [Exercise 6: Secrets Management](01-gitops-argocd-exercises-06-secrets-management.md)
 
 <!-- feynman-check -->
 

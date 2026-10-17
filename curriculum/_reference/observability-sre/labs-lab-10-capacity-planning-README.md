@@ -992,7 +992,7 @@ rm -f summary.json
 - [Google SRE Book - Capacity Planning](https://sre.google/sre-book/software-engineering-in-sre/)
 
 ## Next Lab
-Continue to [Lab 11: APM Solutions](../lab-11-apm-solutions/README.md) to implement Application Performance Monitoring.
+Continue to [Lab 11: APM Solutions](labs-lab-11-apm-solutions-README.md) to implement Application Performance Monitoring.
 
 <!-- feynman-check -->
 

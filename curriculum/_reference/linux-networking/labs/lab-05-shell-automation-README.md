@@ -650,7 +650,7 @@ Create a complete automation toolkit with:
 
 ## Next Lab
 
-[Lab 06: Log Analysis](../lab-06-log-analysis/)
+[Lab 06: Log Analysis](lab-06-log-analysis-README.md)
 
 <!-- feynman-check -->
 

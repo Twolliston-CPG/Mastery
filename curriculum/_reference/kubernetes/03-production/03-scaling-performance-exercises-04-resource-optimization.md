@@ -745,7 +745,7 @@ Implement cost tracking:
 
 ## Next Steps
 
-Continue to [Exercise 5: Pod Disruption Budgets](05-pod-disruption-budgets.md)
+Continue to [Exercise 5: Pod Disruption Budgets](03-scaling-performance-exercises-05-pod-disruption-budgets.md)
 
 <!-- feynman-check -->
 

@@ -290,7 +290,7 @@ Unique threats for fraud detection ML:
 
 ## Resources
 
-- [AI/ML Threats Guide](../content/06-advanced/ai-ml-threats.md)
+- [AI/ML Threats Guide](content-06-advanced-ai-ml-threats.md)
 - [Adversarial Robustness Toolbox](https://github.com/Trusted-AI/adversarial-robustness-toolbox)
 - [MITRE ATLAS](https://atlas.mitre.org/)
 - [NIST AI Risk Management Framework](https://www.nist.gov/itl/ai-risk-management-framework)

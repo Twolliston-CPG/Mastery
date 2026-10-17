@@ -729,7 +729,7 @@ Create a complete data platform:
 
 ## Next Steps
 
-Continue to [Exercise 4: Volume Snapshots](04-volume-snapshots.md)
+Continue to [Exercise 4: Volume Snapshots](02-storage-systems-exercises-04-volume-snapshots.md)
 
 <!-- feynman-check -->
 

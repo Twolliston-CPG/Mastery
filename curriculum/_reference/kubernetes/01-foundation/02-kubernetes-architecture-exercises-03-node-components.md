@@ -461,7 +461,7 @@ kubectl run test-curl-$RANDOM --rm -it --restart=Never --image=curlimages/curl -
 
 ## Next Steps
 
-Continue to [Exercise 4: kubectl Advanced Usage](04-kubectl-advanced.md)
+Continue to [Exercise 4: kubectl Advanced Usage](02-kubernetes-architecture-exercises-04-kubectl-advanced.md)
 
 <!-- feynman-check -->
 

@@ -641,7 +641,7 @@ Compliance frameworks require systematic implementation:
 
 ## Next Module
 
-Continue to [Module 09: Security Monitoring](module-09-security-monitoring.md) to learn about SIEM and security event management.
+Continue to Module 09: Security Monitoring to learn about SIEM and security event management.
 
 <!-- feynman-check -->
 

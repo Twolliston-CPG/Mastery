@@ -1310,7 +1310,7 @@ rm -rf tempo otel-collector grafana apps
 - [Distributed Tracing Best Practices](https://opentelemetry.io/docs/concepts/sampling/)
 
 ## Next Lab
-Continue to [Lab 06: OpenTelemetry](../lab-06-opentelemetry/README.md) to implement unified telemetry collection.
+Continue to [Lab 06: OpenTelemetry](labs-lab-06-opentelemetry-README.md) to implement unified telemetry collection.
 
 <!-- feynman-check -->
 

@@ -1129,7 +1129,7 @@ kubectl logs -n ingress-nginx -l app.kubernetes.io/component=controller
 
 ## Next Lab
 
-Continue to [Lab 10: Persistent Storage](../lab-10-persistent-storage/)
+Continue to [Lab 10: Persistent Storage](lab-10-persistent-storage-README.md)
 
 <!-- feynman-check -->
 

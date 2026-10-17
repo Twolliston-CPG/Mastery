@@ -9,7 +9,7 @@ This collection features in-depth case studies of enterprise-scale DevOps transf
 | 1 | [StreamCo: Chaos Engineering at Scale](./01-streamco-chaos-engineering.md) | Streaming Media | Reliability, Chaos Engineering, Culture | Expert |
 | 2 | [Meridian Bank: Cloud-Native Banking](./02-Meridian Bank-cloud-native.md) | Financial Services | Security, Cloud Migration, Compliance | Expert |
 | 3 | [AudioWave: Squad Model & Platform](./03-audiowave-platform-engineering.md) | Technology | Platform Engineering, Culture, Autonomy | Advanced |
-| 4 | [Target: Retail DevOps Transformation](./04-target-retail-transformation.md) | Retail | CI/CD, Kubernetes, Platform | Advanced |
+| 4 | Target: Retail DevOps Transformation | Retail | CI/CD, Kubernetes, Platform | Advanced |
 | 5 | [CraftMarket: Continuous Deployment Culture](./05-craftmarket-continuous-deployment.md) | E-commerce | Deployment, Observability, Blameless Culture | Intermediate |
 | 6 | [Apex Athletics: Global E-commerce Platform](./06-Apex Athletics-global-platform.md) | Retail | Multi-region, Performance, Scale | Advanced |
 | 7 | [NexusAI: Scaling an AI Startup](./07-nexus-ai-startup-scale.md) | AI/ML SaaS | GPU Infrastructure, MLOps, Platform Engineering | Expert |

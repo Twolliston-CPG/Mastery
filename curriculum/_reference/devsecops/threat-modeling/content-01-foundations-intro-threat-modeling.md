@@ -446,8 +446,8 @@ For each scenario, decide if a threat model update is needed:
 
 ## Next Steps
 
-→ [Assets, Threats, and Threat Actors](assets-threats-actors.md)
-→ [Data Flow Diagrams Basics](dfd-basics.md)
+→ [Assets, Threats, and Threat Actors](content-01-foundations-assets-threats-actors.md)
+→ [Data Flow Diagrams Basics](content-01-foundations-dfd-basics.md)
 
 <!-- feynman-check -->
 

@@ -643,7 +643,7 @@ Create organization-specific policies:
 
 ## Next Steps
 
-Continue to [Exercise 5: Secrets Encryption](05-secrets-encryption.md)
+Continue to [Exercise 5: Secrets Encryption](02-security-rbac-exercises-05-secrets-encryption.md)
 
 <!-- feynman-check -->
 

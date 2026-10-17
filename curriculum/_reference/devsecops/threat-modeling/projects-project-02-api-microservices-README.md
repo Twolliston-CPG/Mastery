@@ -268,9 +268,9 @@ Compile comprehensive threat model:
 
 ## Resources
 
-- [API Security Guide](../content/03-technical-skills/api-security.md)
+- [API Security Guide](content-03-technical-skills-api-security.md)
 - [OWASP API Security Top 10](https://owasp.org/API-Security/)
-- [Kubernetes Security](../content/03-technical-skills/kubernetes.md)
+- [Kubernetes Security](content-03-technical-skills-kubernetes.md)
 - [PCI DSS Requirements](https://www.pcisecuritystandards.org/)
 
 <!-- feynman-check -->

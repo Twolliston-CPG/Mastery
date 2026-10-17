@@ -218,7 +218,7 @@ sequenceDiagram
 
 #### Supply Chain Constraints
 
-> Supply chain admission relies on OIDC-based Cosign signatures — see [cross-cutting/oidc-workload-identity.md](../cross-cutting/oidc-workload-identity.md) for the trust chain. Runtime vulnerability findings feed into centralized tracking — see [cross-cutting/vulnerability-sinks.md](../cross-cutting/vulnerability-sinks.md).
+> Supply chain admission relies on OIDC-based Cosign signatures — see [cross-cutting/oidc-workload-identity.md](cross-cutting-oidc-workload-identity.md) for the trust chain. Runtime vulnerability findings feed into centralized tracking — see [cross-cutting/vulnerability-sinks.md](cross-cutting-vulnerability-sinks.md).
 
 | Constraint | Enforcement | Purpose |
 |---|---|---|
@@ -278,7 +278,7 @@ sequenceDiagram
 
 ### 9. DLP Policies
 
-> This domain uses cloud-specific security services (Cloud DLP, GuardDuty, Security Hub, Defender for Cloud, etc.). For the full cross-cloud security feature matrix and service equivalents, see [Cloud Equivalence Mapping](../cross-cutting/cloud-equivalence-mapping.md).
+> This domain uses cloud-specific security services (Cloud DLP, GuardDuty, Security Hub, Defender for Cloud, etc.). For the full cross-cloud security feature matrix and service equivalents, see [Cloud Equivalence Mapping](cross-cutting-cloud-equivalence-mapping.md).
 
 **Source:** `security/dlp/`
 

@@ -316,13 +316,13 @@ After completing the lab, verify:
 
 ## Solution
 
-See [lab-01-solution.md](./lab-01-solution.md) after completing the lab.
+See lab-01-solution.md after completing the lab.
 
 ---
 
 ## Next Lab
 
-→ [Lab 02: API Threat Model with STRIDE](../lab-02-api-threat-model/)
+→ [Lab 02: API Threat Model with STRIDE](labs-lab-02-api-threat-model-README.md)
 
 <!-- feynman-check -->
 

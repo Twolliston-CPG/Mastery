@@ -707,7 +707,7 @@ Create a Job with init containers representing:
 ## Module Complete!
 
 You've completed the Core Workloads module. Continue to:
-- [Phase 2: Core Operations](../../phase-2-core-operations/README.md)
+- Phase 2: Core Operations
 
 <!-- feynman-check -->
 

@@ -382,7 +382,7 @@ echo "Challenge validation complete!"
 
 ## Next Lab
 
-Continue to [Lab 02: Image Management](../lab-02-image-management/)
+Continue to [Lab 02: Image Management](lab-02-image-management-README.md)
 
 <!-- feynman-check -->
 

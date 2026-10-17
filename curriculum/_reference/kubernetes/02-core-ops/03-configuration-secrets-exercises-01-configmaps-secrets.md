@@ -468,7 +468,7 @@ rm -rf config-files app.properties tls.key tls.crt
 
 ## Next Exercise
 
-Continue to [Exercise 2: External Secrets](./02-external-secrets.md) to learn about integrating with external secret managers.
+Continue to Exercise 2: External Secrets to learn about integrating with external secret managers.
 
 <!-- feynman-check -->
 

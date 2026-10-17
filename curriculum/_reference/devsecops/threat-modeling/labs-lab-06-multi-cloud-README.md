@@ -461,7 +461,7 @@ Governance:
 
 ## Next Lab
 
-→ [Lab 07: Healthcare PHI System](../lab-07-healthcare-phi/)
+→ [Lab 07: Healthcare PHI System](labs-lab-07-healthcare-phi-README.md)
 
 <!-- feynman-check -->
 

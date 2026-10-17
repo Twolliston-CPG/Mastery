@@ -363,7 +363,7 @@ Build with: `DOCKER_BUILDKIT=1 docker build -f Dockerfile.buildkit -t go-api:bui
 
 ## Next Exercise
 
-Continue to [Exercise 3: Security Scanning](./03-security-scanning.md) to learn how to scan your images for vulnerabilities.
+Continue to [Exercise 3: Security Scanning](01-container-fundamentals-exercises-03-security-scanning.md) to learn how to scan your images for vulnerabilities.
 
 <!-- feynman-check -->
 

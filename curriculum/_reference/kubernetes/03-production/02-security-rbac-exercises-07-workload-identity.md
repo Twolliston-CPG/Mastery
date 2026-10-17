@@ -600,7 +600,7 @@ Implement strict identity:
 ## Module Complete!
 
 You've completed the Security & RBAC module. Continue to:
-- [Scaling & Performance Module](../03-scaling-performance/README.md)
+- [Scaling & Performance Module](03-scaling-performance-README.md)
 
 <!-- feynman-check -->
 

@@ -7,38 +7,38 @@ A reusable, cloud-agnostic reference system for building enterprise-grade DevOps
 1. **Pick a domain** from the table below based on what you need
 2. **Read the architecture doc** to understand the pattern
 3. **Copy the consumer templates** into your service repo
-4. **Replace placeholders** — all templates use `{{VARIABLE_NAME}}` syntax (see [Placeholder Reference](INSTRUCTIONS.md#placeholder-variable-reference))
+4. **Replace placeholders** — all templates use `{{VARIABLE_NAME}}` syntax (see Placeholder Reference)
 5. **Follow the implementation checklist** step by step
 
 ## Domains
 
 | # | Domain | What You Get |
 |---|--------|-------------|
-| [01](01-cicd-pipelines/) | **CI/CD Pipelines** | GitHub Actions reusable workflows (26 standalone + composite), SLSA L3 hermetic builds, Cosign signing, SBOM generation, canary deployments |
-| [02](02-security-pipeline/) | **Security Pipeline** | 5-layer shift-left scanning (SAST, SCA, secrets, containers, licenses), DAST, DefectDojo/Dependency-Track integration, threat modeling |
-| [03](03-infrastructure-as-code/) | **Infrastructure as Code** | Terraform modules (13), Packer hardened images, OPA Rego policies, IaC security scanning |
-| [04](04-kubernetes-platform/) | **Kubernetes Platform** | Kustomize manifests, ArgoCD GitOps with sync-waves, External Secrets, Istio service mesh, in-cluster PostgreSQL/Redis |
-| [05](05-runtime-security/) | **Runtime Security** | Falco, KubeArmor, OPA Gatekeeper (workload + supply chain), Kyverno, ModSecurity WAF, DLP, incident response automation |
-| [06](06-compliance-as-code/) | **Compliance as Code** | OSCAL/Trestle (NIST 800-53, SOC2, ISO 27001), DefectDojo, Dependency-Track, CISO Assistant, GDPR data lifecycle |
-| [07](07-observability/) | **Observability** | Prometheus, Grafana dashboards, Fluent Bit, Alertmanager, SIEM rules |
-| [08](08-developer-experience/) | **Developer Experience** | 20 pre-commit hooks, Backstage portal, Renovate/Dependabot, PR preview environments |
-| [09](09-resilience-dr/) | **Resilience & DR** | Velero backups, Litestream WAL streaming, Litmus chaos experiments, etcd snapshots, DR test workflows |
+| 01 | **CI/CD Pipelines** | GitHub Actions reusable workflows (26 standalone + composite), SLSA L3 hermetic builds, Cosign signing, SBOM generation, canary deployments |
+| 02 | **Security Pipeline** | 5-layer shift-left scanning (SAST, SCA, secrets, containers, licenses), DAST, DefectDojo/Dependency-Track integration, threat modeling |
+| 03 | **Infrastructure as Code** | Terraform modules (13), Packer hardened images, OPA Rego policies, IaC security scanning |
+| 04 | **Kubernetes Platform** | Kustomize manifests, ArgoCD GitOps with sync-waves, External Secrets, Istio service mesh, in-cluster PostgreSQL/Redis |
+| 05 | **Runtime Security** | Falco, KubeArmor, OPA Gatekeeper (workload + supply chain), Kyverno, ModSecurity WAF, DLP, incident response automation |
+| 06 | **Compliance as Code** | OSCAL/Trestle (NIST 800-53, SOC2, ISO 27001), DefectDojo, Dependency-Track, CISO Assistant, GDPR data lifecycle |
+| 07 | **Observability** | Prometheus, Grafana dashboards, Fluent Bit, Alertmanager, SIEM rules |
+| 08 | **Developer Experience** | 20 pre-commit hooks, Backstage portal, Renovate/Dependabot, PR preview environments |
+| 09 | **Resilience & DR** | Velero backups, Litestream WAL streaming, Litmus chaos experiments, etcd snapshots, DR test workflows |
 
 ## Cross-Cutting Docs
 
 These patterns span multiple domains — read them for architectural context:
 
-- [Secret Management](cross-cutting/secret-management.md) — End-to-end secret lifecycle from cloud provider to pod
-- [OIDC / Workload Identity](cross-cutting/oidc-workload-identity.md) — Keyless authentication from CI/CD to cloud
-- [SARIF Integration](cross-cutting/sarif-integration.md) — Universal scanner output format and data flow
-- [Vulnerability Sinks](cross-cutting/vulnerability-sinks.md) — DefectDojo + Dependency-Track architecture
+- [Secret Management](cross-cutting-secret-management.md) — End-to-end secret lifecycle from cloud provider to pod
+- [OIDC / Workload Identity](cross-cutting-oidc-workload-identity.md) — Keyless authentication from CI/CD to cloud
+- [SARIF Integration](cross-cutting-sarif-integration.md) — Universal scanner output format and data flow
+- [Vulnerability Sinks](cross-cutting-vulnerability-sinks.md) — DefectDojo + Dependency-Track architecture
 
 ## Appendix
 
-- [New Service Checklist](appendix/new-service-checklist.md) — End-to-end checklist for onboarding a new microservice across all domains
-- [Architecture Decision Records](appendix/architecture-decision-records.md) — Consolidated ADRs (~15 decisions)
-- [Cost Analysis](appendix/cost-analysis.md) — Infrastructure and tooling cost breakdown
-- [Known Limitations](appendix/known-limitations.md) — Current gaps and workarounds
+- [New Service Checklist](appendix-new-service-checklist.md) — End-to-end checklist for onboarding a new microservice across all domains
+- [Architecture Decision Records](appendix-architecture-decision-records.md) — Consolidated ADRs (~15 decisions)
+- [Cost Analysis](appendix-cost-analysis.md) — Infrastructure and tooling cost breakdown
+- [Known Limitations](appendix-known-limitations.md) — Current gaps and workarounds
 
 ## Adding a New Service
 
@@ -91,7 +91,7 @@ Templates are designed for GCP but annotated for portability:
 | Kubernetes | v1.34.3 |
 | Terraform | >= 1.5 |
 
-See [INSTRUCTIONS.md](INSTRUCTIONS.md#reference-versions) for the complete version table.
+See INSTRUCTIONS.md for the complete version table.
 
 ## License
 

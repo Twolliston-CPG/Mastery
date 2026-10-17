@@ -797,7 +797,7 @@ Production server is unreachable:
 
 ## Next Lab
 
-[Lab 12: Production Server Setup](../lab-12-production-server/)
+[Lab 12: Production Server Setup](lab-12-production-server-README.md)
 
 <!-- feynman-check -->
 

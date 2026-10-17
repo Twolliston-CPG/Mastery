@@ -577,7 +577,7 @@ Map identified threats to compliance requirements:
 
 ## Next Lab
 
-→ [Lab 05: Serverless Application](../lab-05-serverless/)
+→ [Lab 05: Serverless Application](labs-lab-05-serverless-README.md)
 
 <!-- feynman-check -->
 

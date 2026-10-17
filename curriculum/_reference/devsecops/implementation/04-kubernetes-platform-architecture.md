@@ -314,9 +314,9 @@ Source: `k8s-manifests/infrastructure/argocd-image-updater/`
 
 ## Secrets Management: External Secrets Operator
 
-> For the unified secret management architecture spanning CI/CD, IaC, and Kubernetes layers, see [cross-cutting/secret-management.md](../cross-cutting/secret-management.md).
+> For the unified secret management architecture spanning CI/CD, IaC, and Kubernetes layers, see [cross-cutting/secret-management.md](cross-cutting-secret-management.md).
 
-> Several components in this domain (Secret Manager, Velero/GCS backups, Artifact Registry, Litestream) carry `[GCP-SPECIFIC]` markers. For equivalent services on AWS and Azure, see [Cloud Equivalence Mapping](../cross-cutting/cloud-equivalence-mapping.md).
+> Several components in this domain (Secret Manager, Velero/GCS backups, Artifact Registry, Litestream) carry `[GCP-SPECIFIC]` markers. For equivalent services on AWS and Azure, see [Cloud Equivalence Mapping](cross-cutting-cloud-equivalence-mapping.md).
 
 External Secrets Operator (ESO) synchronizes secrets from **GCP Secret Manager** [GCP-SPECIFIC] into Kubernetes Secrets.
 

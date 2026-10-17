@@ -482,8 +482,8 @@ A company deploys an employee wellness portal:
 
 ## Next Steps
 
-→ [Attack Trees](attack-trees.md)
-→ [Lab 07: Healthcare PHI System (HIPAA)](../../labs/lab-07-healthcare-phi/)
+→ [Attack Trees](content-02-methodologies-attack-trees.md)
+→ [Lab 07: Healthcare PHI System (HIPAA)](labs-lab-07-healthcare-phi-README.md)
 
 <!-- feynman-check -->
 

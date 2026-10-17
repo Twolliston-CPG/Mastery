@@ -418,7 +418,7 @@ Create a table mapping these threats to appropriate controls:
 ## Next Steps
 
 With these fundamentals in place, proceed to:
-→ [Introduction to Threat Modeling](intro-threat-modeling.md)
+→ [Introduction to Threat Modeling](content-01-foundations-intro-threat-modeling.md)
 
 <!-- feynman-check -->
 

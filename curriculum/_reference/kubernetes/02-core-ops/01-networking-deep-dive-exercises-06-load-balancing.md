@@ -555,7 +555,7 @@ Test load balancer behavior during failures:
 ## Module Complete!
 
 You've completed the Networking Deep Dive module. Continue to:
-- [Storage Systems Module](../../02-storage-systems/README.md)
+- [Storage Systems Module](02-storage-systems-README.md)
 
 <!-- feynman-check -->
 

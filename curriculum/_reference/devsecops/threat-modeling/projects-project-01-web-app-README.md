@@ -228,8 +228,8 @@ Once complete, consider these advanced scenarios:
 
 ## Resources
 
-- [STRIDE Reference](../content/02-methodologies/stride.md)
-- [DFD Basics](../content/01-foundations/dfd-basics.md)
+- [STRIDE Reference](content-02-methodologies-stride.md)
+- [DFD Basics](content-01-foundations-dfd-basics.md)
 - [OWASP Web Security Testing Guide](https://owasp.org/www-project-web-security-testing-guide/)
 - [AWS Security Best Practices](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/)
 

@@ -689,7 +689,7 @@ Build a complete platform:
 ## Module Complete!
 
 You've completed the Observability Stack module. Continue to:
-- [Security & RBAC Module](../02-security-rbac/README.md)
+- [Security & RBAC Module](02-security-rbac-README.md)
 
 <!-- feynman-check -->
 

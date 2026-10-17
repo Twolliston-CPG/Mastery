@@ -608,8 +608,8 @@ Visibility:
 
 ## Next Steps
 
-→ [Return to Advanced Topics](../threat-modeling-roadmap.md#advanced-topics)
-→ [Enterprise Scaling](../05-enterprise/scaling.md)
+→ [Return to Advanced Topics](threat-modeling-roadmap.md#advanced-topics)
+→ [Enterprise Scaling](content-05-enterprise-scaling.md)
 
 <!-- feynman-check -->
 

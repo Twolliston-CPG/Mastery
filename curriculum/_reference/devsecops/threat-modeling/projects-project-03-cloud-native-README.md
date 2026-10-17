@@ -281,9 +281,9 @@ Compile comprehensive analysis:
 
 ## Resources
 
-- [Cloud Security Guide](../content/03-technical-skills/cloud-security.md)
-- [IaC Security](../content/03-technical-skills/iac-security.md)
-- [Serverless Security](../content/03-technical-skills/serverless.md)
+- [Cloud Security Guide](content-03-technical-skills-cloud-security.md)
+- [IaC Security](content-03-technical-skills-iac-security.md)
+- [Serverless Security](content-03-technical-skills-serverless.md)
 - [AWS Well-Architected Security Pillar](https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/)
 - [Azure Security Documentation](https://docs.microsoft.com/en-us/azure/security/)
 

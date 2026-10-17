@@ -869,7 +869,7 @@ Infrastructure security requires a comprehensive approach:
 
 ## Next Module
 
-Continue to [Module 03: Container Security](module-03-container-security.md) to learn about securing containers and container images.
+Continue to [Module 03: Container Security](content-module-03-container-security.md) to learn about securing containers and container images.
 
 <!-- feynman-check -->
 

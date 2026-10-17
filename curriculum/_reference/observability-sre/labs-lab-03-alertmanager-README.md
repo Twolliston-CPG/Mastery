@@ -1177,7 +1177,7 @@ docker-compose down
 - [Routing Tree Visualization](https://prometheus.io/webtools/alerting/routing-tree-editor/)
 
 ## Next Lab
-Continue to [Lab 04: Logging with ELK](../lab-04-logging-elk/README.md) to implement centralized logging.
+Continue to [Lab 04: Logging with ELK](labs-lab-04-logging-elk-README.md) to implement centralized logging.
 
 <!-- feynman-check -->
 

@@ -602,7 +602,7 @@ kubectl delete -f tasks/
 
 ## Next Exercise
 
-Continue to [Exercise 2: GitHub Actions Integration](./02-github-actions.md) for cloud-hosted CI/CD.
+Continue to [Exercise 2: GitHub Actions Integration](02-cicd-pipelines-exercises-02-github-actions.md) for cloud-hosted CI/CD.
 
 <!-- feynman-check -->
 

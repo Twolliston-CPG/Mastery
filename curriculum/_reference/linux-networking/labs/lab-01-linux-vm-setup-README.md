@@ -457,7 +457,7 @@ aws ec2 run-instances ... --instance-type t3.micro
 
 ## Next Lab
 
-[Lab 02: Filesystem Navigation](../lab-02-filesystem/)
+[Lab 02: Filesystem Navigation](lab-02-filesystem-README.md)
 
 <!-- feynman-check -->
 

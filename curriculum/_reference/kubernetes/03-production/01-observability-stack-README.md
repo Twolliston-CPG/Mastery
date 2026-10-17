@@ -1051,20 +1051,20 @@ spec:
 
 ## Exercises
 
-1. **[Exercise 1: Prometheus Setup](./exercises/01-prometheus-setup.md)** - Deploy and configure Prometheus
-2. **[Exercise 2: Custom Metrics](./exercises/02-custom-metrics.md)** - Instrument applications
-3. **[Exercise 3: Alert Rules](./exercises/03-alert-rules.md)** - Create comprehensive alerting
-4. **[Exercise 4: Grafana Dashboards](./exercises/04-grafana-dashboards.md)** - Build dashboards from scratch
-5. **[Exercise 5: Loki Logging](./exercises/05-loki-logging.md)** - Deploy centralized logging
-6. **[Exercise 6: Distributed Tracing](./exercises/06-distributed-tracing.md)** - Implement tracing
-7. **[Exercise 7: SLO Implementation](./exercises/07-slo-implementation.md)** - Define and monitor SLOs
-8. **[Exercise 8: Full Stack Integration](./exercises/08-full-stack.md)** - Integrate all pillars
+1. **[Exercise 1: Prometheus Setup](01-observability-stack-exercises-01-prometheus-setup.md)** - Deploy and configure Prometheus
+2. **Exercise 2: Custom Metrics** - Instrument applications
+3. **Exercise 3: Alert Rules** - Create comprehensive alerting
+4. **[Exercise 4: Grafana Dashboards](01-observability-stack-exercises-04-grafana-dashboards.md)** - Build dashboards from scratch
+5. **Exercise 5: Loki Logging** - Deploy centralized logging
+6. **Exercise 6: Distributed Tracing** - Implement tracing
+7. **Exercise 7: SLO Implementation** - Define and monitor SLOs
+8. **Exercise 8: Full Stack Integration** - Integrate all pillars
 
 ---
 
 ## Next Section
 
-[02-security-rbac](../02-security-rbac/) - Security and access control
+[02-security-rbac](02-security-rbac-README.md) - Security and access control
 
 <!-- feynman-check -->
 

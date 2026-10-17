@@ -398,8 +398,8 @@ Given this simple architecture:
 
 ## Next Steps
 
-→ [Data Flow Diagrams Basics](dfd-basics.md)
-→ [Lab 01: Basic Web Application Threat Model](../../labs/lab-01-basic-web-app/)
+→ [Data Flow Diagrams Basics](content-01-foundations-dfd-basics.md)
+→ [Lab 01: Basic Web Application Threat Model](labs-lab-01-basic-web-app-README.md)
 
 <!-- feynman-check -->
 

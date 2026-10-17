@@ -426,7 +426,7 @@ killall sleep 2>/dev/null
 
 ## Next Lab
 
-[Lab 05: Shell Script Automation](../lab-05-shell-automation/)
+[Lab 05: Shell Script Automation](lab-05-shell-automation-README.md)
 
 <!-- feynman-check -->
 

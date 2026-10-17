@@ -543,7 +543,7 @@ Set up DNS configuration with:
 
 ## Next Steps
 
-Continue to [Exercise 5: CNI Plugins](05-cni-plugins.md)
+Continue to [Exercise 5: CNI Plugins](01-networking-deep-dive-exercises-05-cni-plugins.md)
 
 <!-- feynman-check -->
 

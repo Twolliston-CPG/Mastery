@@ -75,13 +75,13 @@ By the end of this phase, you will be able to:
 - Articulate security properties (CIA+)
 
 ### Content Modules
-1. [Security Fundamentals Review](content/01-foundations/security-fundamentals.md)
-2. [Introduction to Threat Modeling](content/01-foundations/intro-threat-modeling.md)
-3. [Assets, Threats, and Threat Actors](content/01-foundations/assets-threats-actors.md)
-4. [Data Flow Diagrams Basics](content/01-foundations/dfd-basics.md)
+1. [Security Fundamentals Review](content-01-foundations-security-fundamentals.md)
+2. [Introduction to Threat Modeling](content-01-foundations-intro-threat-modeling.md)
+3. [Assets, Threats, and Threat Actors](content-01-foundations-assets-threats-actors.md)
+4. [Data Flow Diagrams Basics](content-01-foundations-dfd-basics.md)
 
 ### Hands-On Lab
-- [Lab 01: Basic Web Application Threat Model](labs/lab-01-basic-web-app/)
+- [Lab 01: Basic Web Application Threat Model](labs-lab-01-basic-web-app-README.md)
 
 ### Competency Gate
 - [ ] Can explain threat modeling to a developer in 2 minutes
@@ -101,15 +101,15 @@ By the end of this phase, you will be able to:
 - Select appropriate methodology for context
 
 ### Content Modules
-1. [STRIDE Deep Dive](content/02-methodologies/stride.md)
-2. [PASTA Framework](content/02-methodologies/pasta.md)
-3. [LINDDUN Privacy Threats](content/02-methodologies/linddun.md)
-4. [Attack Trees](content/02-methodologies/attack-trees.md)
-5. [Methodology Selection Guide](content/02-methodologies/methodology-selection.md)
+1. [STRIDE Deep Dive](content-02-methodologies-stride.md)
+2. [PASTA Framework](content-02-methodologies-pasta.md)
+3. [LINDDUN Privacy Threats](content-02-methodologies-linddun.md)
+4. [Attack Trees](content-02-methodologies-attack-trees.md)
+5. Methodology Selection Guide
 
 ### Hands-On Labs
-- [Lab 02: API Threat Model with STRIDE](labs/lab-02-api-threat-model/)
-- [Lab 03: Microservices with PASTA](labs/lab-03-microservices/)
+- [Lab 02: API Threat Model with STRIDE](labs-lab-02-api-threat-model-README.md)
+- [Lab 03: Microservices with PASTA](labs-lab-03-microservices-README.md)
 
 ### Competency Gate
 - [ ] Can apply STRIDE to a component and identify threats in all 6 categories
@@ -130,18 +130,18 @@ By the end of this phase, you will be able to:
 - Assess CI/CD pipeline threats
 
 ### Content Modules
-1. [Cloud Security Fundamentals](content/03-technical-skills/cloud-security.md)
-2. [Kubernetes Threat Modeling](content/03-technical-skills/kubernetes.md)
-3. [Serverless Security Patterns](content/03-technical-skills/serverless.md)
-4. [Infrastructure as Code Threats](content/03-technical-skills/iac-security.md)
-5. [CI/CD Pipeline Security](content/03-technical-skills/cicd-security.md)
-6. [API Security Patterns](content/03-technical-skills/api-security.md)
+1. [Cloud Security Fundamentals](content-03-technical-skills-cloud-security.md)
+2. [Kubernetes Threat Modeling](content-03-technical-skills-kubernetes.md)
+3. [Serverless Security Patterns](content-03-technical-skills-serverless.md)
+4. [Infrastructure as Code Threats](content-03-technical-skills-iac-security.md)
+5. CI/CD Pipeline Security
+6. [API Security Patterns](content-03-technical-skills-api-security.md)
 
 ### Hands-On Labs
-- [Lab 04: Kubernetes Deployment](labs/lab-04-kubernetes/)
-- [Lab 05: Serverless Application](labs/lab-05-serverless/)
-- [Lab 06: Multi-Cloud Architecture](labs/lab-06-multi-cloud/)
-- [Lab 10: CI/CD Pipeline](labs/lab-10-cicd-pipeline/)
+- [Lab 04: Kubernetes Deployment](labs-lab-04-kubernetes-README.md)
+- [Lab 05: Serverless Application](labs-lab-05-serverless-README.md)
+- [Lab 06: Multi-Cloud Architecture](labs-lab-06-multi-cloud-README.md)
+- [Lab 10: CI/CD Pipeline](labs-lab-10-cicd-pipeline-README.md)
 
 ### Competency Gate
 - [ ] Can identify Kubernetes-specific threats (RBAC, network policies, secrets)
@@ -161,12 +161,12 @@ By the end of this phase, you will be able to:
 - Automate threat identification and tracking
 
 ### Content Modules
-1. [OWASP Threat Dragon Guide](content/04-tools/threat-dragon.md)
-2. [Threagile for DevSecOps](content/04-tools/threagile.md)
-3. [Microsoft Threat Modeling Tool](content/04-tools/ms-tmt.md)
-4. [pytm - Pythonic Threat Modeling](content/04-tools/pytm.md)
-5. [MITRE ATT&CK Integration](content/04-tools/mitre-attack.md)
-6. [CI/CD Integration Patterns](content/04-tools/cicd-integration.md)
+1. [OWASP Threat Dragon Guide](content-04-tools-threat-dragon.md)
+2. [Threagile for DevSecOps](content-04-tools-threagile.md)
+3. [Microsoft Threat Modeling Tool](content-04-tools-ms-tmt.md)
+4. [pytm - Pythonic Threat Modeling](content-04-tools-pytm.md)
+5. [MITRE ATT&CK Integration](content-04-tools-mitre-attack.md)
+6. CI/CD Integration Patterns
 
 ### Hands-On Labs
 - Build threat models using each tool
@@ -190,15 +190,15 @@ By the end of this phase, you will be able to:
 - Handle industry-specific requirements
 
 ### Content Modules
-1. [Building a Threat Modeling Program](content/05-enterprise/building-program.md)
-2. [Compliance Mapping](content/05-enterprise/compliance-mapping.md)
-3. [Risk Quantification & Communication](content/05-enterprise/risk-communication.md)
-4. [Scaling Threat Modeling](content/05-enterprise/scaling.md)
+1. [Building a Threat Modeling Program](content-05-enterprise-building-program.md)
+2. [Compliance Mapping](content-05-enterprise-compliance-mapping.md)
+3. Risk Quantification & Communication
+4. [Scaling Threat Modeling](content-05-enterprise-scaling.md)
 
 ### Industry-Specific Labs
-- [Lab 07: Healthcare PHI System (HIPAA)](labs/lab-07-healthcare-phi/)
-- [Lab 08: FinTech Payment Platform (PCI DSS)](labs/lab-08-fintech-pci/)
-- [Lab 09: SaaS Multi-Tenant Platform](labs/lab-09-saas-multi-tenant/)
+- [Lab 07: Healthcare PHI System (HIPAA)](labs-lab-07-healthcare-phi-README.md)
+- [Lab 08: FinTech Payment Platform (PCI DSS)](labs-lab-08-fintech-pci-README.md)
+- [Lab 09: SaaS Multi-Tenant Platform](labs-lab-09-saas-multi-tenant-README.md)
 
 ### Competency Gate
 - [ ] Can map threats to compliance control requirements
@@ -217,11 +217,11 @@ By the end of this phase, you will be able to:
 - Assess supply chain and third-party risks
 
 ### Content Modules
-1. [Threat Intelligence Integration](content/06-advanced/threat-intelligence.md)
-2. [Adversarial Thinking](content/06-advanced/adversarial-thinking.md)
-3. [AI/ML System Threats](content/06-advanced/ai-ml-threats.md)
-4. [Supply Chain Security](content/06-advanced/supply-chain.md)
-5. [Zero Trust Architecture](content/06-advanced/zero-trust.md)
+1. [Threat Intelligence Integration](content-06-advanced-threat-intelligence.md)
+2. [Adversarial Thinking](content-06-advanced-adversarial-thinking.md)
+3. [AI/ML System Threats](content-06-advanced-ai-ml-threats.md)
+4. [Supply Chain Security](content-06-advanced-supply-chain.md)
+5. [Zero Trust Architecture](content-06-advanced-zero-trust.md)
 
 ### Competency Gate
 - [ ] Can incorporate threat intelligence into threat models
@@ -240,10 +240,10 @@ By the end of this phase, you will be able to:
 - Handle complex, ambiguous scenarios
 
 ### Content Modules
-1. [Facilitating Threat Modeling Sessions](content/07-mastery/facilitation.md)
-2. [Training Development Teams](content/07-mastery/training-teams.md)
-3. [Handling Resistance](content/07-mastery/handling-resistance.md)
-4. [Continuous Improvement](content/07-mastery/continuous-improvement.md)
+1. [Facilitating Threat Modeling Sessions](content-07-mastery-facilitation.md)
+2. Training Development Teams
+3. [Handling Resistance](content-07-mastery-handling-resistance.md)
+4. Continuous Improvement
 
 ### Competency Gate
 - [ ] Can facilitate a threat modeling session with skeptical engineers
@@ -259,16 +259,16 @@ Complete these to demonstrate mastery:
 
 | # | Project | Skills Demonstrated |
 |---|---------|---------------------|
-| 1 | [Startup MVP Threat Model](projects/01-startup-mvp.md) | Foundations, STRIDE |
-| 2 | [API Gateway Security](projects/02-api-gateway.md) | API security, cloud |
-| 3 | [Kubernetes Platform](projects/03-kubernetes-platform.md) | K8s, containers |
-| 4 | [Serverless Data Pipeline](projects/04-serverless-pipeline.md) | Serverless, data flow |
-| 5 | [Healthcare Records System](projects/05-healthcare-system.md) | HIPAA, privacy |
-| 6 | [Payment Processing Platform](projects/06-payment-platform.md) | PCI DSS, finance |
-| 7 | [Multi-Tenant SaaS](projects/07-multi-tenant-saas.md) | Isolation, scaling |
-| 8 | [Government Cloud Migration](projects/08-gov-cloud.md) | FedRAMP, compliance |
-| 9 | [DevSecOps Pipeline](projects/09-devsecops-pipeline.md) | CI/CD, supply chain |
-| 10 | [Enterprise Threat Program](projects/10-enterprise-program.md) | Program design |
+| 1 | Startup MVP Threat Model | Foundations, STRIDE |
+| 2 | API Gateway Security | API security, cloud |
+| 3 | Kubernetes Platform | K8s, containers |
+| 4 | Serverless Data Pipeline | Serverless, data flow |
+| 5 | Healthcare Records System | HIPAA, privacy |
+| 6 | Payment Processing Platform | PCI DSS, finance |
+| 7 | Multi-Tenant SaaS | Isolation, scaling |
+| 8 | Government Cloud Migration | FedRAMP, compliance |
+| 9 | DevSecOps Pipeline | CI/CD, supply chain |
+| 10 | Enterprise Threat Program | Program design |
 
 ---
 
@@ -279,11 +279,11 @@ Learn from real-world incidents:
 | Case Study | Focus Area |
 |------------|------------|
 | [Meridian Bank 2019](case-studies/Meridian Bank.md) | Cloud misconfiguration, SSRF |
-| [OrionSoft 2020](case-studies/orionsoft.md) | Supply chain, build pipeline |
-| [Log4Shell 2021](case-studies/log4shell.md) | Dependency risk, SBOM |
-| [IdentityCo/ThreatGroup-A 2022](case-studies/identityco-threatgroup-a.md) | Third-party access |
-| [FileTransferApp 2023](case-studies/filetransferapp.md) | File transfer, zero-day |
-| [Microsoft ThreatGroup-B 2023](case-studies/threatgroup-b.md) | Key management, identity |
+| [OrionSoft 2020](case-studies-orionsoft.md) | Supply chain, build pipeline |
+| [Log4Shell 2021](case-studies-log4shell.md) | Dependency risk, SBOM |
+| [IdentityCo/ThreatGroup-A 2022](case-studies-identityco-threatgroup-a.md) | Third-party access |
+| [FileTransferApp 2023](case-studies-filetransferapp.md) | File transfer, zero-day |
+| [Microsoft ThreatGroup-B 2023](case-studies-threatgroup-b.md) | Key management, identity |
 
 ---
 
@@ -291,13 +291,13 @@ Learn from real-world incidents:
 
 Ready-to-use templates in `templates/`:
 
-- [Threat Model Document Template](templates/threat-model-template.md)
-- [DFD Component Library](templates/dfd-components.md)
-- [STRIDE Worksheet](templates/stride-worksheet.md)
-- [Risk Assessment Matrix](templates/risk-matrix.md)
-- [Session Facilitation Guide](templates/facilitation-guide.md)
-- [Executive Summary Template](templates/executive-summary.md)
-- [Compliance Mapping Worksheet](templates/compliance-mapping.md)
+- [Threat Model Document Template](templates-threat-model-template.md)
+- DFD Component Library
+- [STRIDE Worksheet](templates-stride-worksheet.md)
+- Risk Assessment Matrix
+- Session Facilitation Guide
+- Executive Summary Template
+- [Compliance Mapping Worksheet](content-05-enterprise-compliance-mapping.md)
 
 ---
 

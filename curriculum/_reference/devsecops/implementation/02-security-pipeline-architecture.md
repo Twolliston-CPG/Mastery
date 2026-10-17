@@ -2,7 +2,7 @@
 
 ## Overview
 
-The security pipeline implements a **shift-left DevSecOps** strategy with five scanning layers applied at PR time. All scanners emit SARIF format for unified reporting through GitHub Security tab, DefectDojo (centralized vulnerability aggregation), and Dependency-Track (SBOM-based continuous monitoring). For the complete SARIF data flow architecture, see [cross-cutting/sarif-integration.md](../cross-cutting/sarif-integration.md).
+The security pipeline implements a **shift-left DevSecOps** strategy with five scanning layers applied at PR time. All scanners emit SARIF format for unified reporting through GitHub Security tab, DefectDojo (centralized vulnerability aggregation), and Dependency-Track (SBOM-based continuous monitoring). For the complete SARIF data flow architecture, see [cross-cutting/sarif-integration.md](cross-cutting-sarif-integration.md).
 
 This architecture achieves **SEC540 compliance** and **SLSA Level 3 supply chain security** using entirely open-source tooling at $0/month security tool cost.
 
@@ -160,7 +160,7 @@ DAST is triggered via port-forward to the staging K8s service, avoiding the need
 
 ## Vulnerability Management
 
-> For the full integration architecture of DefectDojo + Dependency-Track as central vulnerability sinks, see [cross-cutting/vulnerability-sinks.md](../cross-cutting/vulnerability-sinks.md).
+> For the full integration architecture of DefectDojo + Dependency-Track as central vulnerability sinks, see [cross-cutting/vulnerability-sinks.md](cross-cutting-vulnerability-sinks.md).
 
 ### DefectDojo Integration
 

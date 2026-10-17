@@ -821,7 +821,7 @@ Develop custom plugin:
 
 ## Next Steps
 
-Continue to [Exercise 2: Crossplane Self-Service](02-crossplane-self-service.md)
+Continue to [Exercise 2: Crossplane Self-Service](03-developer-platform-exercises-02-crossplane-self-service.md)
 
 <!-- feynman-check -->
 

@@ -680,7 +680,7 @@ kubectl describe pdb <name>
 
 ## Next Lab
 
-Continue to [Lab 09: Services and Ingress](../lab-09-services-ingress/)
+Continue to [Lab 09: Services and Ingress](lab-09-services-ingress-README.md)
 
 <!-- feynman-check -->
 

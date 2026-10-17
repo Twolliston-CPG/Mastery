@@ -393,7 +393,7 @@ Data Exposure:
 
 ## Next Lab
 
-→ [Lab 03: Microservices with PASTA](../lab-03-microservices/)
+→ [Lab 03: Microservices with PASTA](labs-lab-03-microservices-README.md)
 
 <!-- feynman-check -->
 

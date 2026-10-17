@@ -168,7 +168,7 @@ Two versioning approaches coexist in the source:
 | `lint` | Code quality | gofmt check, go vet, golangci-lint v1.55.2 |
 | `test` | Correctness + coverage | `go test -race -coverprofile`, coverage threshold gate, optional PostgreSQL/Redis service containers |
 | `build` | Container image | Docker Buildx (no push in CI), BuildKit cache |
-| `security-scan` | Vulnerability detection | Gosec (SARIF output), Trivy filesystem scan (CRITICAL,HIGH → SARIF) — [see cross-cutting/sarif-integration.md](../cross-cutting/sarif-integration.md) |
+| `security-scan` | Vulnerability detection | Gosec (SARIF output), Trivy filesystem scan (CRITICAL,HIGH → SARIF) — [see cross-cutting/sarif-integration.md](cross-cutting-sarif-integration.md) |
 | `govulncheck` | Go-specific vulnerabilities | Official Go vulnerability database scan |
 
 ### Inputs
@@ -377,7 +377,7 @@ jobs:
 | `SONAR_HOST_URL` | Node.js quality | SonarQube server URL |
 | GCP Workload Identity | Deploy workflows | **[GCP-SPECIFIC]** OIDC-based auth (no stored keys) |
 
-> **Cross-cutting references**: For the unified secret management architecture spanning CI/CD, Kubernetes, and cloud providers, see [cross-cutting/secret-management.md](../cross-cutting/secret-management.md). For the OIDC/Workload Identity Federation trust chain used by deployment workflows, see [cross-cutting/oidc-workload-identity.md](../cross-cutting/oidc-workload-identity.md). For how DefectDojo and Dependency-Track aggregate scan results from these pipelines, see [cross-cutting/vulnerability-sinks.md](../cross-cutting/vulnerability-sinks.md).
+> **Cross-cutting references**: For the unified secret management architecture spanning CI/CD, Kubernetes, and cloud providers, see [cross-cutting/secret-management.md](cross-cutting-secret-management.md). For the OIDC/Workload Identity Federation trust chain used by deployment workflows, see [cross-cutting/oidc-workload-identity.md](cross-cutting-oidc-workload-identity.md). For how DefectDojo and Dependency-Track aggregate scan results from these pipelines, see [cross-cutting/vulnerability-sinks.md](cross-cutting-vulnerability-sinks.md).
 
 ## Source File References
 

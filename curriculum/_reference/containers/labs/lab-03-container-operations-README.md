@@ -472,7 +472,7 @@ docker update/rename/commit
 
 ## Next Lab
 
-Continue to [Lab 04: Docker Networking](../lab-04-docker-networking/)
+Continue to [Lab 04: Docker Networking](lab-04-docker-networking-README.md)
 
 <!-- feynman-check -->
 

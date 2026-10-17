@@ -408,7 +408,7 @@ kubectl delete clusterrolebinding platform-team-admin ops-team-reader
 
 ## Next Exercise
 
-Continue to [Exercise 2: Pod Security Standards](./02-pod-security.md) to learn about pod-level security controls.
+Continue to [Exercise 2: Pod Security Standards](02-security-rbac-exercises-02-pod-security.md) to learn about pod-level security controls.
 
 <!-- feynman-check -->
 

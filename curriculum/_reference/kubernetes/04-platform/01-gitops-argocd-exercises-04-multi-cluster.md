@@ -739,7 +739,7 @@ Manage a fleet of clusters:
 
 ## Next Steps
 
-Continue to [Exercise 5: Progressive Delivery](05-progressive-delivery.md)
+Continue to [Exercise 5: Progressive Delivery](01-gitops-argocd-exercises-05-progressive-delivery.md)
 
 <!-- feynman-check -->
 

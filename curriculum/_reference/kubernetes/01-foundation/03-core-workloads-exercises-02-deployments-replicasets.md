@@ -742,7 +742,7 @@ Deploy an application with:
 
 ## Next Steps
 
-Continue to [Exercise 3: StatefulSets](03-statefulsets.md)
+Continue to [Exercise 3: StatefulSets](03-core-workloads-exercises-03-statefulsets.md)
 
 <!-- feynman-check -->
 

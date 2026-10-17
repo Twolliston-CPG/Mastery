@@ -849,7 +849,7 @@ Configure PDB for zone-aware deployment:
 
 ## Next Steps
 
-Continue to [Exercise 6: Priority and Preemption](06-priority-preemption.md)
+Continue to [Exercise 6: Priority and Preemption](03-scaling-performance-exercises-06-priority-preemption.md)
 
 <!-- feynman-check -->
 

@@ -952,19 +952,19 @@ spec:
 
 ## Exercises
 
-1. **[Exercise 1: RBAC Design](./exercises/01-rbac-design.md)** - Design RBAC for multi-team cluster
-2. **[Exercise 2: Pod Security](./exercises/02-pod-security.md)** - Implement Pod Security Standards
-3. **[Exercise 3: Gatekeeper Policies](./exercises/03-gatekeeper.md)** - Create custom constraints
-4. **[Exercise 4: Secrets Management](./exercises/04-secrets.md)** - Implement secrets encryption
-5. **[Exercise 5: Audit Logging](./exercises/05-audit.md)** - Configure and analyze audit logs
-6. **[Exercise 6: Workload Identity](./exercises/06-workload-identity.md)** - Cloud IAM integration
-7. **[Exercise 7: Security Assessment](./exercises/07-assessment.md)** - Full security audit
+1. **Exercise 1: RBAC Design** - Design RBAC for multi-team cluster
+2. **[Exercise 2: Pod Security](02-security-rbac-exercises-02-pod-security.md)** - Implement Pod Security Standards
+3. **Exercise 3: Gatekeeper Policies** - Create custom constraints
+4. **Exercise 4: Secrets Management** - Implement secrets encryption
+5. **Exercise 5: Audit Logging** - Configure and analyze audit logs
+6. **Exercise 6: Workload Identity** - Cloud IAM integration
+7. **Exercise 7: Security Assessment** - Full security audit
 
 ---
 
 ## Next Section
 
-[03-scaling-performance](../03-scaling-performance/) - Scaling and performance optimization
+[03-scaling-performance](03-scaling-performance-README.md) - Scaling and performance optimization
 
 <!-- feynman-check -->
 

@@ -630,7 +630,7 @@ Monitoring:
 
 ## Next Lab
 
-→ [Lab 10: CI/CD Pipeline Security](../lab-10-cicd-pipeline/)
+→ [Lab 10: CI/CD Pipeline Security](labs-lab-10-cicd-pipeline-README.md)
 
 <!-- feynman-check -->
 

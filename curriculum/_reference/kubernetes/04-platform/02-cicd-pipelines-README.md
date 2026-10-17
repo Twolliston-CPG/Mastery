@@ -852,18 +852,18 @@ spec:
 
 ## Exercises
 
-1. **[Exercise 1: Tekton Setup](./exercises/01-tekton-setup.md)** - Install and configure Tekton
-2. **[Exercise 2: Build Pipeline](./exercises/02-build-pipeline.md)** - Create build pipeline
-3. **[Exercise 3: Triggers](./exercises/03-triggers.md)** - Configure webhooks
-4. **[Exercise 4: GitHub Actions](./exercises/04-github-actions.md)** - GitHub workflow
-5. **[Exercise 5: Security Scanning](./exercises/05-security-scanning.md)** - Integrate security
-6. **[Exercise 6: Promotion](./exercises/06-promotion.md)** - Environment promotion
+1. **[Exercise 1: Tekton Setup](02-cicd-pipelines-exercises-01-tekton-setup.md)** - Install and configure Tekton
+2. **Exercise 2: Build Pipeline** - Create build pipeline
+3. **Exercise 3: Triggers** - Configure webhooks
+4. **Exercise 4: GitHub Actions** - GitHub workflow
+5. **Exercise 5: Security Scanning** - Integrate security
+6. **Exercise 6: Promotion** - Environment promotion
 
 ---
 
 ## Next Section
 
-[03-developer-platform](../03-developer-platform/) - Building self-service platforms
+[03-developer-platform](03-developer-platform-README.md) - Building self-service platforms
 
 <!-- feynman-check -->
 

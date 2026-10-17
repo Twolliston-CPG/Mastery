@@ -488,7 +488,7 @@ docker run --rm -v volume:/data -v $(pwd):/backup alpine tar xzf /backup/backup.
 
 ## Next Lab
 
-Continue to [Lab 06: Docker Compose](../lab-06-docker-compose/)
+Continue to [Lab 06: Docker Compose](lab-06-docker-compose-README.md)
 
 <!-- feynman-check -->
 

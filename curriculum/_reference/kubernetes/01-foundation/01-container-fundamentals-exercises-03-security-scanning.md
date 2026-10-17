@@ -347,7 +347,7 @@ CMD ["node", "server.js"]
 
 ## Next Exercise
 
-Continue to [Exercise 4: Distroless Migration](./04-distroless.md) to learn about minimal container images.
+Continue to [Exercise 4: Distroless Migration](01-container-fundamentals-exercises-04-distroless.md) to learn about minimal container images.
 
 <!-- feynman-check -->
 

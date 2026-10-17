@@ -1536,7 +1536,7 @@ rm -rf otel-agent otel-gateway prometheus tempo loki grafana apps
 - [Grafana LGTM Stack](https://grafana.com/docs/grafana/latest/fundamentals/intro-to-prometheus/)
 
 ## Next Lab
-Continue to [Lab 07: SRE Practices](../lab-07-sre-practices/README.md) to implement SLOs and error budgets.
+Continue to [Lab 07: SRE Practices](labs-lab-07-sre-practices-README.md) to implement SLOs and error budgets.
 
 <!-- feynman-check -->
 

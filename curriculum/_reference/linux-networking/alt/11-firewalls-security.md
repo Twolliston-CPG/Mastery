@@ -493,7 +493,7 @@ You have completed Phase 1: Linux & Networking Fundamentals. You should now:
 - Troubleshoot network issues
 - Configure firewalls
 
-Continue to [Phase 2: Containers & Orchestration](../../phase-2-containers/README.md) to learn Docker and Kubernetes.
+Continue to Phase 2: Containers & Orchestration to learn Docker and Kubernetes.
 
 <!-- feynman-check -->
 

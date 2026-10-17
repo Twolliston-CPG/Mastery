@@ -849,18 +849,18 @@ spec:
 
 ## Exercises
 
-1. **[Exercise 1: HPA Configuration](./exercises/01-hpa.md)** - Configure multi-metric HPA
-2. **[Exercise 2: Custom Metrics](./exercises/02-custom-metrics.md)** - Prometheus adapter setup
-3. **[Exercise 3: VPA Analysis](./exercises/03-vpa.md)** - Right-size workloads with VPA
-4. **[Exercise 4: Cluster Autoscaler](./exercises/04-cluster-autoscaler.md)** - Configure node scaling
-5. **[Exercise 5: Resource Optimization](./exercises/05-resources.md)** - Quotas and limits
-6. **[Exercise 6: Performance Tuning](./exercises/06-performance.md)** - Optimize for throughput
+1. **Exercise 1: HPA Configuration** - Configure multi-metric HPA
+2. **Exercise 2: Custom Metrics** - Prometheus adapter setup
+3. **Exercise 3: VPA Analysis** - Right-size workloads with VPA
+4. **Exercise 4: Cluster Autoscaler** - Configure node scaling
+5. **Exercise 5: Resource Optimization** - Quotas and limits
+6. **Exercise 6: Performance Tuning** - Optimize for throughput
 
 ---
 
 ## Next Section
 
-[project-production-platform](../project-production-platform/) - Build the production monitoring platform
+[project-production-platform](project-production-platform-README.md) - Build the production monitoring platform
 
 <!-- feynman-check -->
 

@@ -332,7 +332,7 @@ Build a complete log analysis toolkit with:
 
 ## Next Lab
 
-[Lab 07: Network Configuration](../lab-07-network-config/)
+[Lab 07: Network Configuration](lab-07-network-config-README.md)
 
 <!-- feynman-check -->
 

@@ -507,7 +507,7 @@ echo "Challenge validation complete!"
 
 ## Next Lab
 
-Continue to [Lab 03: Container Operations](../lab-03-container-operations/)
+Continue to [Lab 03: Container Operations](lab-03-container-operations-README.md)
 
 <!-- feynman-check -->
 

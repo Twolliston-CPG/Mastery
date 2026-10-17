@@ -901,7 +901,7 @@ Best practices:
 
 ## Assessments
 
-Complete the [Phase 2 Assessment](../assessments/practical-assessment.md) to validate your container and Kubernetes knowledge.
+Complete the Phase 2 Assessment to validate your container and Kubernetes knowledge.
 
 <!-- feynman-check -->
 

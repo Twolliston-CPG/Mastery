@@ -77,7 +77,7 @@ Docker, Markdown, and commit message standards.
 
 | # | Hook ID | Repository | Category | Purpose |
 |---|---------|-----------|----------|---------|
-| 1 | `gitleaks` | gitleaks/gitleaks | Secret Detection | Prevent hardcoded secrets from being committed — [see cross-cutting/secret-management.md](../cross-cutting/secret-management.md) |
+| 1 | `gitleaks` | gitleaks/gitleaks | Secret Detection | Prevent hardcoded secrets from being committed — [see cross-cutting/secret-management.md](cross-cutting-secret-management.md) |
 | 2 | `terraform_fmt` | antonbabenko/pre-commit-terraform | IaC | Rewrite Terraform to canonical format |
 | 3 | `terraform_validate` | antonbabenko/pre-commit-terraform | IaC | Validate Terraform configuration |
 | 4 | `terraform_tflint` | antonbabenko/pre-commit-terraform | IaC | Lint Terraform for best practices |

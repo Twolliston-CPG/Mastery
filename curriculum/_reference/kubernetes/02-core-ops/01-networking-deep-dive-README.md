@@ -622,18 +622,18 @@ kubectl logs -n kube-system -l k8s-app=kube-dns
 
 ## Exercises
 
-1. **[Exercise 1: CNI Exploration](./exercises/01-cni-exploration.md)** - Compare CNI plugins
-2. **[Exercise 2: Service Deep Dive](./exercises/02-service-deep-dive.md)** - All service types
-3. **[Exercise 3: Ingress Configuration](./exercises/03-ingress-configuration.md)** - Advanced ingress
-4. **[Exercise 4: Network Policies](./exercises/04-network-policies.md)** - Secure a multi-tier app
-5. **[Exercise 5: DNS Configuration](./exercises/05-dns-configuration.md)** - Custom DNS setup
-6. **[Exercise 6: Traffic Analysis](./exercises/06-traffic-analysis.md)** - Debug network issues
+1. **Exercise 1: CNI Exploration** - Compare CNI plugins
+2. **Exercise 2: Service Deep Dive** - All service types
+3. **Exercise 3: Ingress Configuration** - Advanced ingress
+4. **Exercise 4: Network Policies** - Secure a multi-tier app
+5. **Exercise 5: DNS Configuration** - Custom DNS setup
+6. **Exercise 6: Traffic Analysis** - Debug network issues
 
 ---
 
 ## Next Section
 
-[02-storage-systems](../02-storage-systems/) - Persistent storage for stateful workloads
+[02-storage-systems](02-storage-systems-README.md) - Persistent storage for stateful workloads
 
 <!-- feynman-check -->
 

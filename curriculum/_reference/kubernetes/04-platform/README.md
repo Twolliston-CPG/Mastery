@@ -21,13 +21,13 @@ By the end of this phase, you will:
 
 | Week | Topic | Content | Exercises |
 |------|-------|---------|-----------|
-| 21-23 | GitOps & ArgoCD | [01-gitops-argocd](./01-gitops-argocd/) | 7 exercises |
-| 24-26 | CI/CD Pipelines | [02-cicd-pipelines](./02-cicd-pipelines/) | 6 exercises |
-| 27-28 | Developer Platform | [03-developer-platform](./03-developer-platform/) | 5 exercises |
+| 21-23 | GitOps & ArgoCD | [01-gitops-argocd](01-gitops-argocd-README.md) | 7 exercises |
+| 24-26 | CI/CD Pipelines | [02-cicd-pipelines](02-cicd-pipelines-README.md) | 6 exercises |
+| 27-28 | Developer Platform | [03-developer-platform](03-developer-platform-README.md) | 5 exercises |
 
 ## Phase Project
 
-**[Self-Service Platform](./project-self-service-platform/)**
+**[Self-Service Platform](project-self-service-platform-README.md)**
 
 Build an internal developer platform:
 - ArgoCD for GitOps deployments

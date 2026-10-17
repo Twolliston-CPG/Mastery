@@ -630,7 +630,7 @@ Implement maximum security:
 
 ## Next Steps
 
-Continue to [Exercise 3: Network Policies](03-network-policies.md)
+Continue to [Exercise 3: Network Policies](02-security-rbac-exercises-03-network-policies.md)
 
 <!-- feynman-check -->
 

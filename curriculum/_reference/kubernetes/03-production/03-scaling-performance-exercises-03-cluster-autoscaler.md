@@ -792,7 +792,7 @@ Configure scale-from-zero:
 
 ## Next Steps
 
-Continue to [Exercise 4: Resource Optimization](04-resource-optimization.md)
+Continue to [Exercise 4: Resource Optimization](03-scaling-performance-exercises-04-resource-optimization.md)
 
 <!-- feynman-check -->
 

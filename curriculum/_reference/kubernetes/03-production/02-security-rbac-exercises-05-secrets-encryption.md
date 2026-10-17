@@ -530,7 +530,7 @@ Implement secret auditing:
 
 ## Next Steps
 
-Continue to [Exercise 6: Audit Logging](06-audit-logging.md)
+Continue to [Exercise 6: Audit Logging](02-security-rbac-exercises-06-audit-logging.md)
 
 <!-- feynman-check -->
 

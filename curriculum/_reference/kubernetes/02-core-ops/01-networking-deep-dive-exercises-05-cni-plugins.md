@@ -458,7 +458,7 @@ Set up comprehensive network monitoring:
 
 ## Next Steps
 
-Continue to [Exercise 6: Load Balancing](06-load-balancing.md)
+Continue to [Exercise 6: Load Balancing](01-networking-deep-dive-exercises-06-load-balancing.md)
 
 <!-- feynman-check -->
 

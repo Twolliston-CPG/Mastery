@@ -501,7 +501,7 @@ Design a service topology for:
 
 ## Next Steps
 
-Continue to [Exercise 4: DNS and Service Discovery](04-dns-service-discovery.md)
+Continue to [Exercise 4: DNS and Service Discovery](01-networking-deep-dive-exercises-04-dns-service-discovery.md)
 
 <!-- feynman-check -->
 

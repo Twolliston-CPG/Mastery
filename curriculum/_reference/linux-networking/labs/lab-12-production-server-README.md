@@ -824,7 +824,7 @@ Congratulations! You've completed Phase 1: Linux & Networking. You now have:
 - Troubleshooting capabilities
 - Production server management skills
 
-Next: [Phase 2: Containers & Orchestration](../../phase-2-containers/)
+Next: Phase 2: Containers & Orchestration
 
 <!-- feynman-check -->
 

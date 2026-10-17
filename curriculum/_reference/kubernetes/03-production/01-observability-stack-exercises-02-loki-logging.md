@@ -722,7 +722,7 @@ Implement log correlation:
 
 ## Next Steps
 
-Continue to [Exercise 3: Distributed Tracing](03-distributed-tracing.md)
+Continue to [Exercise 3: Distributed Tracing](01-observability-stack-exercises-03-distributed-tracing.md)
 
 <!-- feynman-check -->
 

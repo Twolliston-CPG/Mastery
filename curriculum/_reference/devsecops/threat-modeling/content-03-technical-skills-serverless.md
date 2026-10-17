@@ -355,8 +355,8 @@ Network:
 
 ## Next Steps
 
-→ [Infrastructure as Code Security](iac-security.md)
-→ [API Security](api-security.md)
+→ [Infrastructure as Code Security](content-03-technical-skills-iac-security.md)
+→ [API Security](content-03-technical-skills-api-security.md)
 
 <!-- feynman-check -->
 

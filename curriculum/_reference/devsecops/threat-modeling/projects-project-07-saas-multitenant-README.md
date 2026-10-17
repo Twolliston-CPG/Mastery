@@ -287,8 +287,8 @@ Compile comprehensive analysis:
 
 ## Resources
 
-- [SaaS Multi-Tenant Lab](../labs/lab-09-saas-multi-tenant/)
-- [API Security Guide](../content/03-technical-skills/api-security.md)
+- [SaaS Multi-Tenant Lab](labs-lab-09-saas-multi-tenant-README.md)
+- [API Security Guide](content-03-technical-skills-api-security.md)
 - [OWASP Multi-Tenant Security](https://owasp.org/www-project-kubernetes-top-ten/)
 
 <!-- feynman-check -->

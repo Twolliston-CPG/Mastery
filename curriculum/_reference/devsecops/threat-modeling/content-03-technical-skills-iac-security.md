@@ -388,8 +388,8 @@ Scanning & Validation:
 
 ## Next Steps
 
-→ [API Security](api-security.md)
-→ [Cloud Security](cloud-security.md)
+→ [API Security](content-03-technical-skills-api-security.md)
+→ [Cloud Security](content-03-technical-skills-cloud-security.md)
 
 <!-- feynman-check -->
 

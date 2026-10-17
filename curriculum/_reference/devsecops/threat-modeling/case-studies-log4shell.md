@@ -430,7 +430,7 @@ For each third-party library:
 
 ## Next Case Study
 
-→ [IdentityCo/ThreatGroup-A Breach](identityco-threatgroup-a.md)
+→ [IdentityCo/ThreatGroup-A Breach](case-studies-identityco-threatgroup-a.md)
 
 <!-- feynman-check -->
 

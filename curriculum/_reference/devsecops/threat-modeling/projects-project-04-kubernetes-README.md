@@ -286,7 +286,7 @@ Compile comprehensive analysis:
 
 ## Resources
 
-- [Kubernetes Security Guide](../content/03-technical-skills/kubernetes.md)
+- [Kubernetes Security Guide](content-03-technical-skills-kubernetes.md)
 - [CNCF Kubernetes Security Whitepaper](https://github.com/cncf/tag-security)
 - [NSA Kubernetes Hardening Guide](https://media.defense.gov/2022/Aug/29/2003066362/-1/-1/0/CTR_KUBERNETES_HARDENING_GUIDANCE_1.2_20220829.PDF)
 - [Kubernetes Threat Matrix (Microsoft)](https://microsoft.github.io/Threat-Matrix-for-Kubernetes/)

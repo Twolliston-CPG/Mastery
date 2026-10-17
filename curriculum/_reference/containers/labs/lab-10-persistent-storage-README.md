@@ -1032,7 +1032,7 @@ kubectl exec -it <pod> -- ls -la /mount/path
 
 ## Next Lab
 
-Continue to [Lab 11: Configuration Management](../lab-11-configuration/)
+Continue to [Lab 11: Configuration Management](lab-11-configuration-README.md)
 
 <!-- feynman-check -->
 

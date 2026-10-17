@@ -529,12 +529,12 @@ kubectl debug node/<node-name> -it --image=ubuntu
 
 ## Exercises
 
-1. **[Exercise 1: Explore the API](./exercises/01-explore-api.md)** - Navigate the Kubernetes API
-2. **[Exercise 2: Component Deep Dive](./exercises/02-component-deep-dive.md)** - Inspect control plane components
-3. **[Exercise 3: kubeadm Cluster](./exercises/03-kubeadm-cluster.md)** - Bootstrap a cluster with kubeadm
-4. **[Exercise 4: etcd Operations](./exercises/04-etcd-operations.md)** - Backup and restore etcd
-5. **[Exercise 5: kubectl Mastery](./exercises/05-kubectl-mastery.md)** - Advanced kubectl operations
-6. **[Exercise 6: Troubleshooting](./exercises/06-troubleshooting.md)** - Debug cluster issues
+1. **Exercise 1: Explore the API** - Navigate the Kubernetes API
+2. **Exercise 2: Component Deep Dive** - Inspect control plane components
+3. **Exercise 3: kubeadm Cluster** - Bootstrap a cluster with kubeadm
+4. **Exercise 4: etcd Operations** - Backup and restore etcd
+5. **Exercise 5: kubectl Mastery** - Advanced kubectl operations
+6. **Exercise 6: Troubleshooting** - Debug cluster issues
 
 ---
 
@@ -550,7 +550,7 @@ Before moving on, ensure you can:
 
 ## Next Section
 
-[03-core-workloads](../03-core-workloads/) - Master Kubernetes workload types
+[03-core-workloads](03-core-workloads-README.md) - Master Kubernetes workload types
 
 <!-- feynman-check -->
 

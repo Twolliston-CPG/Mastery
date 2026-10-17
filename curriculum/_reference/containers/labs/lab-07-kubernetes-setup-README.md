@@ -581,7 +581,7 @@ kubectl config use-context <context>
 
 ## Next Lab
 
-Continue to [Lab 08: Deployments](../lab-08-deployments/)
+Continue to [Lab 08: Deployments](lab-08-deployments-README.md)
 
 <!-- feynman-check -->
 

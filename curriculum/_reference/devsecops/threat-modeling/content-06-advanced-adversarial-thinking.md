@@ -589,8 +589,8 @@ Monthly activities:
 
 ## Next Steps
 
-→ [AI/ML Threat Modeling](ai-ml-threats.md)
-→ [Supply Chain Security](supply-chain.md)
+→ [AI/ML Threat Modeling](content-06-advanced-ai-ml-threats.md)
+→ [Supply Chain Security](content-06-advanced-supply-chain.md)
 
 <!-- feynman-check -->
 

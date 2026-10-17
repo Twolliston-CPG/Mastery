@@ -503,7 +503,7 @@ Stage 7: Risk Analysis
 
 ## Next Lab
 
-→ [Lab 04: Kubernetes Deployment](../lab-04-kubernetes/)
+→ [Lab 04: Kubernetes Deployment](labs-lab-04-kubernetes-README.md)
 
 <!-- feynman-check -->
 

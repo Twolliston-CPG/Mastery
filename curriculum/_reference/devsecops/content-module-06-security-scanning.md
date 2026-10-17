@@ -689,7 +689,7 @@ Security scanning provides multiple layers of protection:
 
 ## Next Module
 
-Continue to [Module 07: Identity and Access Management](module-07-identity-access-management.md) to learn about authentication and authorization.
+Continue to [Module 07: Identity and Access Management](content-module-07-identity-access-management.md) to learn about authentication and authorization.
 
 <!-- feynman-check -->
 

@@ -40,7 +40,8 @@ Threat model: [`threat-model.md`](threat-model.md) (STRIDE, per component).
 | *(example — replace)* CVE-2024-XXXXX in a transitive dependency, no fix published | Not reachable: the vulnerable code path is behind a disabled feature flag | NetworkPolicy denies the egress an exploit would require | 2026-09-01 | platform-team |
 
 **Every accepted risk has an expiry and an owner.** An exception without both is a permanent
-unmanaged risk wearing a justification. See [`.trivyignore.yaml`](../.trivyignore.yaml).
+unmanaged risk wearing a justification. The file format is the one from Week 18:
+[`.trivyignore.yaml`](../../../week-18/solutions/pipeline/.trivyignore.yaml).
 
 ## What this does NOT cover
 

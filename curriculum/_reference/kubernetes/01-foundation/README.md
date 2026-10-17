@@ -20,13 +20,13 @@ By the end of this phase, you will:
 
 | Week | Topic | Content | Exercises |
 |------|-------|---------|-----------|
-| 1-2 | Container Fundamentals | [01-container-fundamentals](./01-container-fundamentals/) | 5 exercises |
-| 3-4 | Kubernetes Architecture | [02-kubernetes-architecture](./02-kubernetes-architecture/) | 6 exercises |
-| 5-6 | Core Workloads | [03-core-workloads](./03-core-workloads/) | 8 exercises |
+| 1-2 | Container Fundamentals | [01-container-fundamentals](01-container-fundamentals-README.md) | 5 exercises |
+| 3-4 | Kubernetes Architecture | [02-kubernetes-architecture](02-kubernetes-architecture-README.md) | 6 exercises |
+| 5-6 | Core Workloads | [03-core-workloads](03-core-workloads-README.md) | 8 exercises |
 
 ## Phase Project
 
-**[Microservices E-Commerce Application](./project-microservices-app/)**
+**[Microservices E-Commerce Application](project-microservices-app-README.md)**
 
 Deploy a complete e-commerce platform with:
 - Frontend (React/Vue)

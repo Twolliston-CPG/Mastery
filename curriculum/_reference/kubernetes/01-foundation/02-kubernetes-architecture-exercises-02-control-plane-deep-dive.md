@@ -434,7 +434,7 @@ echo "Backup completed: $BACKUP_DIR"
 
 ## Next Steps
 
-Continue to [Exercise 3: Node Components](03-node-components.md)
+Continue to [Exercise 3: Node Components](02-kubernetes-architecture-exercises-03-node-components.md)
 
 <!-- feynman-check -->
 

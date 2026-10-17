@@ -476,7 +476,7 @@ CMD ["node", "index.js"]
 
 ## Next Lab
 
-Continue to [Lab 3.4: Docker Compose](./lab-04-docker-compose.md)
+Continue to [Lab 3.4: Docker Compose](labs-lab-04-docker-compose.md)
 
 <!-- feynman-check -->
 

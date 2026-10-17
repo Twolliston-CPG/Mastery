@@ -500,7 +500,7 @@ Build a complete network configuration toolkit with:
 
 ## Next Lab
 
-[Lab 08: SSH Hardening](../lab-08-ssh-hardening/)
+[Lab 08: SSH Hardening](lab-08-ssh-hardening-README.md)
 
 <!-- feynman-check -->
 

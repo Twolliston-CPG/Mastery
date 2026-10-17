@@ -8,7 +8,7 @@ This architecture is derived from a production kubeadm-based Kubernetes platform
 
 ## Backup Strategy
 
-> Backup credentials and encryption keys are managed through the unified secret management architecture — see [cross-cutting/secret-management.md](../cross-cutting/secret-management.md). Backup validation relies on vulnerability data from [cross-cutting/vulnerability-sinks.md](../cross-cutting/vulnerability-sinks.md) to ensure restored environments are not reintroducing known vulnerabilities.
+> Backup credentials and encryption keys are managed through the unified secret management architecture — see [cross-cutting/secret-management.md](cross-cutting-secret-management.md). Backup validation relies on vulnerability data from [cross-cutting/vulnerability-sinks.md](cross-cutting-vulnerability-sinks.md) to ensure restored environments are not reintroducing known vulnerabilities.
 
 The backup strategy uses three complementary tools, each covering a different data tier:
 

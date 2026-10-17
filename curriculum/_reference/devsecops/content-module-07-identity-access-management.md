@@ -777,7 +777,7 @@ Identity and Access Management is fundamental to security:
 
 ## Next Module
 
-Continue to [Module 08: Compliance Frameworks](module-08-compliance-frameworks.md) to learn about SOC 2, ISO 27001, and other compliance requirements.
+Continue to [Module 08: Compliance Frameworks](content-module-08-compliance-frameworks.md) to learn about SOC 2, ISO 27001, and other compliance requirements.
 
 <!-- feynman-check -->
 

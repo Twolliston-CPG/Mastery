@@ -198,11 +198,11 @@ spec:
 
 ## Exercises
 
-1. **[Exercise 1: ConfigMap Patterns](./exercises/01-configmap-patterns.md)**
-2. **[Exercise 2: Secret Rotation](./exercises/02-secret-rotation.md)**
-3. **[Exercise 3: External Secrets](./exercises/03-external-secrets.md)**
-4. **[Exercise 4: Vault Integration](./exercises/04-vault-integration.md)**
-5. **[Exercise 5: GitOps Secrets](./exercises/05-gitops-secrets.md)**
+1. **Exercise 1: ConfigMap Patterns**
+2. **Exercise 2: Secret Rotation**
+3. **Exercise 3: External Secrets**
+4. **Exercise 4: Vault Integration**
+5. **Exercise 5: GitOps Secrets**
 
 <!-- feynman-check -->
 

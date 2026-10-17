@@ -655,8 +655,8 @@ training_metrics:
 
 ## Next Steps
 
-→ [Handling Resistance](handling-resistance.md)
-→ [Building a Program](../05-enterprise/building-program.md)
+→ [Handling Resistance](content-07-mastery-handling-resistance.md)
+→ [Building a Program](content-05-enterprise-building-program.md)
 
 <!-- feynman-check -->
 

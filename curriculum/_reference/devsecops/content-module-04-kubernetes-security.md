@@ -741,7 +741,7 @@ Kubernetes security requires multiple layers:
 
 ## Next Module
 
-Continue to [Module 05: Secrets Management](module-05-secrets-management.md) to learn about secure secrets handling.
+Continue to [Module 05: Secrets Management](content-module-05-secrets-management.md) to learn about secure secrets handling.
 
 <!-- feynman-check -->
 

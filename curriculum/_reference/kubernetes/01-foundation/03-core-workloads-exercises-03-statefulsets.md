@@ -646,7 +646,7 @@ Practice partitioned rolling updates:
 
 ## Next Steps
 
-Continue to [Exercise 4: DaemonSets](04-daemonsets.md)
+Continue to [Exercise 4: DaemonSets](03-core-workloads-exercises-04-daemonsets.md)
 
 <!-- feynman-check -->
 

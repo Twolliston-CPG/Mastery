@@ -214,7 +214,7 @@ CMD ["node", "server.js"]
 
 ## Next Exercise
 
-Continue to [Exercise 2: Multi-Stage Build](./02-multi-stage.md) to learn how to further optimize image size.
+Continue to [Exercise 2: Multi-Stage Build](01-container-fundamentals-exercises-02-multi-stage.md) to learn how to further optimize image size.
 
 <!-- feynman-check -->
 

@@ -707,7 +707,7 @@ Debug production issues:
 
 ## Next Steps
 
-Continue to [Exercise 4: Grafana Dashboards](04-grafana-dashboards.md)
+Continue to [Exercise 4: Grafana Dashboards](01-observability-stack-exercises-04-grafana-dashboards.md)
 
 <!-- feynman-check -->
 

@@ -511,7 +511,7 @@ Debugging & Support:
 
 ## Next Steps
 
-→ [Return to Case Studies Index](../threat-modeling-roadmap.md#case-studies)
+→ [Return to Case Studies Index](threat-modeling-roadmap.md#case-studies)
 
 <!-- feynman-check -->
 

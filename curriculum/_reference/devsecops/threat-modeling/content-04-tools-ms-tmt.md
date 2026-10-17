@@ -429,8 +429,8 @@ Workflow:
 
 ## Next Steps
 
-→ [pytm - Python Threat Modeling](pytm.md)
-→ [Threagile - Threat Modeling as Code](threagile.md)
+→ [pytm - Python Threat Modeling](content-04-tools-pytm.md)
+→ [Threagile - Threat Modeling as Code](content-04-tools-threagile.md)
 
 <!-- feynman-check -->
 

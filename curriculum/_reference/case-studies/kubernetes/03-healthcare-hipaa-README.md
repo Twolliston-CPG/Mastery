@@ -1251,9 +1251,9 @@ spec:
 
 ## Related Resources
 
-- [Phase 3: Production Readiness](../../phase-3-production-readiness/)
-- [Phase 5: Enterprise Multi-Cloud](../../phase-5-enterprise-multi-cloud/)
-- [Security RBAC Exercises](../../phase-3-production-readiness/02-security-rbac/)
+- Phase 3: Production Readiness
+- Phase 5: Enterprise Multi-Cloud
+- Security RBAC Exercises
 
 <!-- feynman-check -->
 

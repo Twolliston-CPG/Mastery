@@ -794,7 +794,7 @@ docker buildx build \
 
 ## Next Lab
 
-Continue to [Lab 3.3: Security Scanning](./lab-03-security-scanning.md)
+Continue to [Lab 3.3: Security Scanning](labs-lab-03-security-scanning.md)
 
 <!-- feynman-check -->
 

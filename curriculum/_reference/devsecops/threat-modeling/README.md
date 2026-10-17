@@ -291,7 +291,7 @@ cd ../../labs/lab-01-stride-basics
 cat README.md
 ```
 
-**Ready to begin?** Start with [Threat Modeling Roadmap](content/threat-modeling-roadmap.md)
+**Ready to begin?** Start with [Threat Modeling Roadmap](threat-modeling-roadmap.md)
 
 <!-- feynman-check -->
 

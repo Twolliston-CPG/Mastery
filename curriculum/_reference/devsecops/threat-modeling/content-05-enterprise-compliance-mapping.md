@@ -328,8 +328,8 @@ csf_profile:
 
 ## Next Steps
 
-→ [Scaling Threat Modeling](scaling.md)
-→ [Risk Communication](risk-communication.md)
+→ [Scaling Threat Modeling](content-05-enterprise-scaling.md)
+→ Risk Communication
 
 <!-- feynman-check -->
 

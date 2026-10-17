@@ -1071,7 +1071,7 @@ kubectl kustomize overlays/dev/
 
 ## Next Lab
 
-Continue to [Lab 12: Production Patterns](../lab-12-production-patterns/)
+Continue to [Lab 12: Production Patterns](lab-12-production-patterns-README.md)
 
 <!-- feynman-check -->
 

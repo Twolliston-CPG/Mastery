@@ -20,13 +20,13 @@ By the end of this phase, you will:
 
 | Week | Topic | Content | Exercises |
 |------|-------|---------|-----------|
-| 13-15 | Observability Stack | [01-observability-stack](./01-observability-stack/) | 8 exercises |
-| 16-18 | Security & RBAC | [02-security-rbac](./02-security-rbac/) | 7 exercises |
-| 19-20 | Scaling & Performance | [03-scaling-performance](./03-scaling-performance/) | 6 exercises |
+| 13-15 | Observability Stack | [01-observability-stack](01-observability-stack-README.md) | 8 exercises |
+| 16-18 | Security & RBAC | [02-security-rbac](02-security-rbac-README.md) | 7 exercises |
+| 19-20 | Scaling & Performance | [03-scaling-performance](03-scaling-performance-README.md) | 6 exercises |
 
 ## Phase Project
 
-**[Production Monitoring Platform](./project-production-platform/)**
+**[Production Monitoring Platform](project-production-platform-README.md)**
 
 Build enterprise-grade observability:
 - Prometheus + Thanos for metrics

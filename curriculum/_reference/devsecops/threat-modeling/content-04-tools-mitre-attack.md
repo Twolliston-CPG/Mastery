@@ -487,8 +487,8 @@ Based on ATT&CK coverage analysis:
 
 ## Next Steps
 
-→ [CI/CD Integration Patterns](cicd-integration.md)
-→ [Return to Tools Overview](../threat-modeling-roadmap.md#tools)
+→ [CI/CD Integration Patterns](../../terraform/labs/phase-4-advanced-lab-4.2-cicd-integration.md)
+→ [Return to Tools Overview](threat-modeling-roadmap.md#tools)
 
 <!-- feynman-check -->
 

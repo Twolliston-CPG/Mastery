@@ -294,10 +294,10 @@ Apply lessons from:
 
 ## Resources
 
-- [Supply Chain Security Guide](../content/06-advanced/supply-chain.md)
+- [Supply Chain Security Guide](content-06-advanced-supply-chain.md)
 - [SLSA Framework](https://slsa.dev/)
 - [Sigstore](https://sigstore.dev/)
-- [CI/CD Pipeline Lab](../labs/lab-10-cicd-pipeline/)
+- [CI/CD Pipeline Lab](labs-lab-10-cicd-pipeline-README.md)
 
 <!-- feynman-check -->
 

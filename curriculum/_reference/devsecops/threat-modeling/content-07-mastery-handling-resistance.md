@@ -581,8 +581,8 @@ backsliding_prevention:
 
 ## Next Steps
 
-→ [Facilitation](facilitation.md)
-→ [Training Others](training-others.md)
+→ [Facilitation](content-07-mastery-facilitation.md)
+→ [Training Others](content-07-mastery-training-others.md)
 
 <!-- feynman-check -->
 

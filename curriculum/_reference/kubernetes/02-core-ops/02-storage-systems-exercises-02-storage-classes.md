@@ -498,7 +498,7 @@ Plan and execute storage class migration:
 
 ## Next Steps
 
-Continue to [Exercise 3: Stateful Workloads](03-stateful-workloads.md)
+Continue to [Exercise 3: Stateful Workloads](02-storage-systems-exercises-03-stateful-workloads.md)
 
 <!-- feynman-check -->
 

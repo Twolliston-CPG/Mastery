@@ -995,7 +995,7 @@ You've completed Phase 1 when:
 
 ## Next Steps
 
-Proceed to [Phase 2: Core Operations](../../phase-2-core-operations/) to learn about networking, storage, and configuration management.
+Proceed to Phase 2: Core Operations to learn about networking, storage, and configuration management.
 
 <!-- feynman-check -->
 

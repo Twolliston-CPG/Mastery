@@ -816,7 +816,7 @@ Abstract across clouds:
 ## Module Complete!
 
 You've completed the GitOps & ArgoCD module. Continue to:
-- [CI/CD Pipelines Module](../02-cicd-pipelines/README.md)
+- [CI/CD Pipelines Module](02-cicd-pipelines-README.md)
 
 <!-- feynman-check -->
 

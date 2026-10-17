@@ -419,8 +419,8 @@ unauthorized access to protected resources.
 
 ## Next Steps
 
-→ [Microsoft Threat Modeling Tool](ms-tmt.md)
-→ [pytm Python Library](pytm.md)
+→ [Microsoft Threat Modeling Tool](content-04-tools-ms-tmt.md)
+→ [pytm Python Library](content-04-tools-pytm.md)
 
 <!-- feynman-check -->
 

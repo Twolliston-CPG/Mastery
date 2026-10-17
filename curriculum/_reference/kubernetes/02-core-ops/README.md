@@ -20,13 +20,13 @@ By the end of this phase, you will:
 
 | Week | Topic | Content | Exercises |
 |------|-------|---------|-----------|
-| 7-8 | Networking Deep Dive | [01-networking-deep-dive](./01-networking-deep-dive/) | 6 exercises |
-| 9-10 | Storage Systems | [02-storage-systems](./02-storage-systems/) | 5 exercises |
-| 11-12 | Configuration & Secrets | [03-configuration-secrets](./03-configuration-secrets/) | 5 exercises |
+| 7-8 | Networking Deep Dive | [01-networking-deep-dive](01-networking-deep-dive-README.md) | 6 exercises |
+| 9-10 | Storage Systems | [02-storage-systems](02-storage-systems-README.md) | 5 exercises |
+| 11-12 | Configuration & Secrets | [03-configuration-secrets](03-configuration-secrets-README.md) | 5 exercises |
 
 ## Phase Project
 
-**[Production Networking Stack](./project-production-networking/)**
+**[Production Networking Stack](project-production-networking-README.md)**
 
 Build a complete production networking setup:
 - Cilium CNI with network policies

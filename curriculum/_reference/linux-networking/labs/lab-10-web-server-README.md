@@ -735,7 +735,7 @@ sudo sed -i '/proxy.local/d' /etc/hosts
 
 ## Next Lab
 
-[Lab 11: Troubleshooting](../lab-11-troubleshooting/)
+[Lab 11: Troubleshooting](lab-11-troubleshooting-README.md)
 
 <!-- feynman-check -->
 

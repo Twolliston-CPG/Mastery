@@ -592,8 +592,8 @@ LLM-Specific:
 
 ## Next Steps
 
-→ [Supply Chain Security](supply-chain.md)
-→ [Zero Trust Architecture](zero-trust.md)
+→ [Supply Chain Security](content-06-advanced-supply-chain.md)
+→ [Zero Trust Architecture](content-06-advanced-zero-trust.md)
 
 <!-- feynman-check -->
 

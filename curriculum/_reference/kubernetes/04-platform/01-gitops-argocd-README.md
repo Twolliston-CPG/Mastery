@@ -774,19 +774,19 @@ spec:
 
 ## Exercises
 
-1. **[Exercise 1: ArgoCD Setup](./exercises/01-argocd-setup.md)** - Deploy and configure ArgoCD
-2. **[Exercise 2: App of Apps](./exercises/02-app-of-apps.md)** - Implement hierarchical apps
-3. **[Exercise 3: ApplicationSets](./exercises/03-applicationsets.md)** - Dynamic app generation
-4. **[Exercise 4: Multi-Cluster](./exercises/04-multi-cluster.md)** - Deploy across clusters
-5. **[Exercise 5: Canary Rollouts](./exercises/05-canary-rollouts.md)** - Progressive delivery
-6. **[Exercise 6: Analysis](./exercises/06-analysis.md)** - Automated rollout analysis
-7. **[Exercise 7: Secrets](./exercises/07-gitops-secrets.md)** - Secrets in GitOps
+1. **[Exercise 1: ArgoCD Setup](01-gitops-argocd-exercises-01-argocd-setup.md)** - Deploy and configure ArgoCD
+2. **[Exercise 2: App of Apps](01-gitops-argocd-exercises-02-app-of-apps.md)** - Implement hierarchical apps
+3. **[Exercise 3: ApplicationSets](01-gitops-argocd-exercises-03-applicationsets.md)** - Dynamic app generation
+4. **[Exercise 4: Multi-Cluster](01-gitops-argocd-exercises-04-multi-cluster.md)** - Deploy across clusters
+5. **Exercise 5: Canary Rollouts** - Progressive delivery
+6. **Exercise 6: Analysis** - Automated rollout analysis
+7. **Exercise 7: Secrets** - Secrets in GitOps
 
 ---
 
 ## Next Section
 
-[02-cicd-pipelines](../02-cicd-pipelines/) - CI/CD pipeline implementation
+[02-cicd-pipelines](02-cicd-pipelines-README.md) - CI/CD pipeline implementation
 
 <!-- feynman-check -->
 

@@ -232,8 +232,8 @@ Review Date: [Annual review date]
 
 ## References
 
-- [STRIDE Worksheet](stride-worksheet.md)
-- [Threat Model Template](threat-model-template.md)
+- [STRIDE Worksheet](templates-stride-worksheet.md)
+- [Threat Model Template](templates-threat-model-template.md)
 - [OWASP Risk Rating Methodology](https://owasp.org/www-community/OWASP_Risk_Rating_Methodology)
 
 <!-- feynman-check -->

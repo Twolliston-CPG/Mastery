@@ -812,7 +812,7 @@ kind delete cluster --name chaos-lab
 - [StreamCo Chaos Engineering](https://streamco.github.io/chaosmonkey/)
 
 ## Next Lab
-Continue to [Lab 10: Capacity Planning](../lab-10-capacity-planning/README.md) to implement capacity planning practices.
+Continue to [Lab 10: Capacity Planning](labs-lab-10-capacity-planning-README.md) to implement capacity planning practices.
 
 <!-- feynman-check -->
 

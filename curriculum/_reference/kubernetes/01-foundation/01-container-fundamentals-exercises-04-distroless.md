@@ -468,7 +468,7 @@ docker run --rm -it app:distroless /bin/sh
 
 ## Next Exercise
 
-Continue to [Exercise 5: Registry Workflow](./05-registry-workflow.md) to learn how to push images to cloud registries.
+Continue to [Exercise 5: Registry Workflow](01-container-fundamentals-exercises-05-registry-workflow.md) to learn how to push images to cloud registries.
 
 <!-- feynman-check -->
 

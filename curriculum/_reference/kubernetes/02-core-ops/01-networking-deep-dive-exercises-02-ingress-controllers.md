@@ -528,7 +528,7 @@ kubectl delete namespace ingress-nginx
 
 ## Next Exercise
 
-Continue to [Exercise 3: Service Mesh Basics](./03-service-mesh-basics.md) to learn about advanced traffic management.
+Continue to Exercise 3: Service Mesh Basics to learn about advanced traffic management.
 
 <!-- feynman-check -->
 

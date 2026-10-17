@@ -553,7 +553,7 @@ Configure Vault for multiple clusters:
 ## Module Complete!
 
 You've completed the Configuration & Secrets module. Continue to:
-- [Phase 3: Production Readiness](../../phase-3-production-readiness/README.md)
+- Phase 3: Production Readiness
 
 <!-- feynman-check -->
 

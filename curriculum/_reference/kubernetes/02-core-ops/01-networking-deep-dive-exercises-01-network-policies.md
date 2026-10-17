@@ -544,7 +544,7 @@ kubectl delete namespace monitoring
 
 ## Next Exercise
 
-Continue to [Exercise 2: Ingress Controllers](./02-ingress-controllers.md) to learn about exposing services externally.
+Continue to [Exercise 2: Ingress Controllers](01-networking-deep-dive-exercises-02-ingress-controllers.md) to learn about exposing services externally.
 
 <!-- feynman-check -->
 

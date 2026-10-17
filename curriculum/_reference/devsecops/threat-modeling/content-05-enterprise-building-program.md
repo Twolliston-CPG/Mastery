@@ -376,8 +376,8 @@ in serious trouble or has no severity discipline — and it is almost always the
 
 ## Next Steps
 
-→ [Compliance Mapping](compliance-mapping.md)
-→ [Scaling Threat Modeling](scaling.md)
+→ [Compliance Mapping](content-05-enterprise-compliance-mapping.md)
+→ [Scaling Threat Modeling](content-05-enterprise-scaling.md)
 
 <!-- feynman-check -->
 

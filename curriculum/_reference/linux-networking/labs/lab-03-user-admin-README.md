@@ -438,7 +438,7 @@ sudo rm -f /etc/sudoers.d/developers
 
 ## Next Lab
 
-[Lab 04: Process Control](../lab-04-process-control/)
+[Lab 04: Process Control](lab-04-process-control-README.md)
 
 <!-- feynman-check -->
 

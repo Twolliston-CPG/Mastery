@@ -500,8 +500,8 @@ detection_tools:
 
 ## Next Steps
 
-→ [Serverless Security](serverless.md)
-→ [Infrastructure as Code Security](iac-security.md)
+→ [Serverless Security](content-03-technical-skills-serverless.md)
+→ [Infrastructure as Code Security](content-03-technical-skills-iac-security.md)
 
 <!-- feynman-check -->
 

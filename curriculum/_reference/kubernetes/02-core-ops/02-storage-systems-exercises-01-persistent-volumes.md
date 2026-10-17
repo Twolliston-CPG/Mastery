@@ -392,7 +392,7 @@ kubectl delete pv manual-pv
 
 ## Next Exercise
 
-Continue to [Exercise 2: CSI Drivers](./02-csi-drivers.md) to learn about Container Storage Interface drivers.
+Continue to Exercise 2: CSI Drivers to learn about Container Storage Interface drivers.
 
 <!-- feynman-check -->
 

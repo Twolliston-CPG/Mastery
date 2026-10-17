@@ -746,7 +746,7 @@ Optimize cluster costs with VPA:
 
 ## Next Steps
 
-Continue to [Exercise 3: Cluster Autoscaler](03-cluster-autoscaler.md)
+Continue to [Exercise 3: Cluster Autoscaler](03-scaling-performance-exercises-03-cluster-autoscaler.md)
 
 <!-- feynman-check -->
 

@@ -305,7 +305,7 @@ Compile comprehensive analysis:
 
 - [HIPAA Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/)
 - [NIST HIPAA Guidance](https://csrc.nist.gov/pubs/sp/800/66/r2/final)
-- [Compliance Mapping Guide](../content/05-enterprise/compliance-mapping.md)
+- [Compliance Mapping Guide](content-05-enterprise-compliance-mapping.md)
 - [HHS Breach Portal](https://ocrportal.hhs.gov/ocr/breach/breach_report.jsf)
 
 <!-- feynman-check -->

@@ -768,7 +768,7 @@ You have completed all 10 labs. For your capstone:
 4. Present findings to stakeholders
 5. Develop a prioritized remediation roadmap
 
-→ [Return to Roadmap](../../threat-modeling-roadmap.md)
+→ [Return to Roadmap](threat-modeling-roadmap.md)
 
 <!-- feynman-check -->
 

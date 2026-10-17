@@ -510,7 +510,7 @@ Monitoring:
 
 ## Next Lab
 
-→ [Lab 06: Multi-Cloud Architecture](../lab-06-multi-cloud/)
+→ [Lab 06: Multi-Cloud Architecture](labs-lab-06-multi-cloud-README.md)
 
 <!-- feynman-check -->
 

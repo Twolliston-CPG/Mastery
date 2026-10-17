@@ -580,7 +580,7 @@ echo "Validation complete!"
 
 ## Next Lab
 
-[Lab 09: Firewall Configuration](../lab-09-firewall/)
+[Lab 09: Firewall Configuration](lab-09-firewall-README.md)
 
 <!-- feynman-check -->
 

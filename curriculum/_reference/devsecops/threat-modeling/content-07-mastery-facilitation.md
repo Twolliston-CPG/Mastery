@@ -573,8 +573,8 @@ solution:
 
 ## Next Steps
 
-→ [Training Others](training-others.md)
-→ [Handling Resistance](handling-resistance.md)
+→ [Training Others](content-07-mastery-training-others.md)
+→ [Handling Resistance](content-07-mastery-handling-resistance.md)
 
 <!-- feynman-check -->
 

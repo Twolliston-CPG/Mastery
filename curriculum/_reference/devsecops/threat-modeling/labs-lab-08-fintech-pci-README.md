@@ -505,7 +505,7 @@ Day 47: Card network fraud alerts trigger investigation
 
 ## Next Lab
 
-→ [Lab 09: SaaS Multi-Tenant Platform](../lab-09-saas-multi-tenant/)
+→ [Lab 09: SaaS Multi-Tenant Platform](labs-lab-09-saas-multi-tenant-README.md)
 
 <!-- feynman-check -->
 

@@ -542,7 +542,7 @@ Implement DR for secrets:
 
 ## Next Steps
 
-Continue to [Exercise 5: Vault Integration](05-vault-integration.md)
+Continue to [Exercise 5: Vault Integration](03-configuration-secrets-exercises-05-vault-integration.md)
 
 <!-- feynman-check -->
 

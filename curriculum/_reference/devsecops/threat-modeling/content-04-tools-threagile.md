@@ -697,8 +697,8 @@ trust_boundaries:
 
 ## Next Steps
 
-→ [OWASP Threat Dragon Guide](threat-dragon.md)
-→ [CI/CD Integration Patterns](cicd-integration.md)
+→ [OWASP Threat Dragon Guide](content-04-tools-threat-dragon.md)
+→ [CI/CD Integration Patterns](../../terraform/labs/phase-4-advanced-lab-4.2-cicd-integration.md)
 
 <!-- feynman-check -->
 

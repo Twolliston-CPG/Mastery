@@ -1,7 +1,7 @@
 # The Break/Fix Library
 
-> 50 scenarios. Every Friday you break something, diagnose it under a timer, and log it.
-> By week 26 you will have done this ~50 times, and "how would you debug X?" stops being scary.
+> 58 scenarios. Every Friday you break something, diagnose it under a timer, and log it.
+> By week 26 you will have done this ~58 times, and "how would you debug X?" stops being scary.
 
 ## Why this exists
 

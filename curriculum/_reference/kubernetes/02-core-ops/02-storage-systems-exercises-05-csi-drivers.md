@@ -544,7 +544,7 @@ Migrate from in-tree to CSI:
 ## Module Complete!
 
 You've completed the Storage Systems module. Continue to:
-- [Configuration & Secrets Module](../../03-configuration-secrets/README.md)
+- [Configuration & Secrets Module](03-configuration-secrets-README.md)
 
 <!-- feynman-check -->
 

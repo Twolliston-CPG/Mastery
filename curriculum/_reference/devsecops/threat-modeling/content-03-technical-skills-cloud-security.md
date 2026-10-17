@@ -343,8 +343,8 @@ Monitoring:
 
 ## Next Steps
 
-→ [Kubernetes Security](kubernetes.md)
-→ [Serverless Security](serverless.md)
+→ [Kubernetes Security](content-03-technical-skills-kubernetes.md)
+→ [Serverless Security](content-03-technical-skills-serverless.md)
 
 <!-- feynman-check -->
 

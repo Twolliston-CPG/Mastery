@@ -482,7 +482,7 @@ docker run -it --rm --network <network> nicolaka/netshoot
 
 ## Next Lab
 
-Continue to [Lab 05: Docker Volumes](../lab-05-docker-volumes/)
+Continue to [Lab 05: Docker Volumes](lab-05-docker-volumes-README.md)
 
 <!-- feynman-check -->
 

@@ -1064,9 +1064,9 @@ data:
 
 ## Related Resources
 
-- [Phase 3: Production Readiness](../../phase-3-production-readiness/)
-- [Phase 5: Enterprise Multi-Cloud](../../phase-5-enterprise-multi-cloud/)
-- [Troubleshooting Scenarios](../../scenarios/troubleshooting/)
+- Phase 3: Production Readiness
+- Phase 5: Enterprise Multi-Cloud
+- Troubleshooting Scenarios
 
 <!-- feynman-check -->
 

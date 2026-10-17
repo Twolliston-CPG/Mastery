@@ -597,7 +597,7 @@ Design snapshot replication:
 
 ## Next Steps
 
-Continue to [Exercise 5: CSI Drivers](05-csi-drivers.md)
+Continue to [Exercise 5: CSI Drivers](02-storage-systems-exercises-05-csi-drivers.md)
 
 <!-- feynman-check -->
 

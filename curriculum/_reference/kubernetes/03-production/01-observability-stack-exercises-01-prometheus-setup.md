@@ -431,7 +431,7 @@ curl -s http://localhost:9090/api/v1/alerts | jq '.data.alerts'
 
 ## Next Exercise
 
-Continue to [Exercise 2: Logging with Loki](./02-loki-logging.md) to set up centralized logging.
+Continue to [Exercise 2: Logging with Loki](01-observability-stack-exercises-02-loki-logging.md) to set up centralized logging.
 
 <!-- feynman-check -->
 

@@ -634,8 +634,8 @@ Your answer:
 
 ## Next Steps
 
-→ [LINDDUN Privacy Threats](linddun.md)
-→ [Lab 03: Microservices with PASTA](../../labs/lab-03-microservices/)
+→ [LINDDUN Privacy Threats](content-02-methodologies-linddun.md)
+→ [Lab 03: Microservices with PASTA](labs-lab-03-microservices-README.md)
 
 <!-- feynman-check -->
 

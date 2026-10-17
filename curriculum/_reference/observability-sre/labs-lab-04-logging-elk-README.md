@@ -1299,7 +1299,7 @@ rm -rf logstash filebeat loki promtail grafana apps
 - [LogQL Reference](https://grafana.com/docs/loki/latest/logql/)
 
 ## Next Lab
-Continue to [Lab 05: Distributed Tracing](../lab-05-distributed-tracing/README.md) to implement request tracing.
+Continue to [Lab 05: Distributed Tracing](labs-lab-05-distributed-tracing-README.md) to implement request tracing.
 
 <!-- feynman-check -->
 

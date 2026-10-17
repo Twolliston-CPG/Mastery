@@ -593,7 +593,7 @@ echo "Validation complete!"
 
 ## Next Lab
 
-[Lab 10: Web Server Setup](../lab-10-web-server/)
+[Lab 10: Web Server Setup](lab-10-web-server-README.md)
 
 <!-- feynman-check -->
 

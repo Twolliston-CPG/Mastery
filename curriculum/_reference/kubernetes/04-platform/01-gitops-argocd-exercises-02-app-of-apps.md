@@ -553,7 +553,7 @@ argocd app delete production-apps --cascade=false
 
 ## Next Exercise
 
-Continue to [Exercise 3: ApplicationSets](./03-applicationsets.md) for dynamic application generation.
+Continue to [Exercise 3: ApplicationSets](01-gitops-argocd-exercises-03-applicationsets.md) for dynamic application generation.
 
 <!-- feynman-check -->
 

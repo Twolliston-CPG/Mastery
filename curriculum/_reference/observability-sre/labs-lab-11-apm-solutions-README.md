@@ -818,7 +818,7 @@ rm -rf apps pyroscope parca grafana
 - [Go Profiling](https://go.dev/blog/pprof)
 
 ## Next Lab
-Continue to [Lab 12: Observability Platform](../lab-12-observability-platform/README.md) to build a complete observability platform.
+Continue to [Lab 12: Observability Platform](labs-lab-12-observability-platform-README.md) to build a complete observability platform.
 
 <!-- feynman-check -->
 

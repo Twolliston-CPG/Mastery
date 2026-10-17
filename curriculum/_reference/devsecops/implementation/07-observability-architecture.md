@@ -258,7 +258,7 @@ ServiceMonitors are the primary mechanism for configuring scrape targets:
 
 ### Supply Chain Security Dashboard
 
-> Supply chain metrics are sourced from the vulnerability sinks — see [cross-cutting/vulnerability-sinks.md](../cross-cutting/vulnerability-sinks.md). Scanner results arrive via SARIF — see [cross-cutting/sarif-integration.md](../cross-cutting/sarif-integration.md).
+> Supply chain metrics are sourced from the vulnerability sinks — see [cross-cutting/vulnerability-sinks.md](cross-cutting-vulnerability-sinks.md). Scanner results arrive via SARIF — see [cross-cutting/sarif-integration.md](cross-cutting-sarif-integration.md).
 
 | Dashboard | UID | Key Panels | Source |
 |-----------|-----|------------|--------|

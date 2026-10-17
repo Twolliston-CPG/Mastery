@@ -500,7 +500,7 @@ sudo journalctl --vacuum-size=100M
 
 ## Next Lab
 
-[Lab 03: User Administration](../lab-03-user-admin/)
+[Lab 03: User Administration](lab-03-user-admin-README.md)
 
 <!-- feynman-check -->
 

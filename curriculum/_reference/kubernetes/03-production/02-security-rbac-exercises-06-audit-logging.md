@@ -662,7 +662,7 @@ Build comprehensive dashboard:
 
 ## Next Steps
 
-Continue to [Exercise 7: Workload Identity](07-workload-identity.md)
+Continue to [Exercise 7: Workload Identity](02-security-rbac-exercises-07-workload-identity.md)
 
 <!-- feynman-check -->
 

@@ -481,7 +481,7 @@ kubectl delete applicationset api-environments -n argocd \
 
 ## Next Exercise
 
-Continue to [Exercise 4: Multi-Cluster Deployments](./04-multi-cluster.md) for cross-cluster GitOps.
+Continue to [Exercise 4: Multi-Cluster Deployments](01-gitops-argocd-exercises-04-multi-cluster.md) for cross-cluster GitOps.
 
 <!-- feynman-check -->
 

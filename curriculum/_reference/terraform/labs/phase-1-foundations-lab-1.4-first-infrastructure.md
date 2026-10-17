@@ -764,7 +764,7 @@ You have completed Phase 1! You should now be able to:
 
 ## Next: Phase 2 - Core Competencies
 
-Continue to [Phase 2: Core Competencies](../phase-2-core/README.md)
+Continue to [Phase 2: Core Competencies](phase-2-core-README.md)
 
 <!-- feynman-check -->
 

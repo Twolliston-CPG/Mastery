@@ -1148,9 +1148,9 @@ spec:
 
 ## Related Resources
 
-- [Phase 4: Platform Engineering](../../phase-4-platform-engineering/)
-- [Phase 5: Enterprise Multi-Cloud](../../phase-5-enterprise-multicloud/)
-- [Troubleshooting Scenarios](../../scenarios/troubleshooting/)
+- Phase 4: Platform Engineering
+- Phase 5: Enterprise Multi-Cloud
+- Troubleshooting Scenarios
 
 <!-- feynman-check -->
 

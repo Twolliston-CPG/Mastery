@@ -427,7 +427,7 @@ Congratulations! You've completed all container fundamentals exercises. You shou
 
 ## Next Steps
 
-Continue to [Phase 1 Project: Microservices Application](../../project-microservices-app/) to apply these skills in a real-world scenario.
+Continue to [Phase 1 Project: Microservices Application](project-microservices-app-README.md) to apply these skills in a real-world scenario.
 
 <!-- feynman-check -->
 

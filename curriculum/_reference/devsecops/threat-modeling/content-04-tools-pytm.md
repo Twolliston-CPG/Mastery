@@ -614,8 +614,8 @@ server.assumptions = [
 
 ## Next Steps
 
-→ [MITRE ATT&CK Integration](mitre-attack.md)
-→ [CI/CD Integration Patterns](cicd-integration.md)
+→ [MITRE ATT&CK Integration](content-04-tools-mitre-attack.md)
+→ [CI/CD Integration Patterns](../../terraform/labs/phase-4-advanced-lab-4.2-cicd-integration.md)
 
 <!-- feynman-check -->
 

@@ -526,7 +526,7 @@ gh run view <run-id> --log
 
 ## Next Exercise
 
-Continue to [Exercise 3: Security Scanning Pipeline](./03-security-scanning.md) for comprehensive security integration.
+Continue to [Exercise 3: Security Scanning Pipeline](../01-foundation/01-container-fundamentals-exercises-03-security-scanning.md) for comprehensive security integration.
 
 <!-- feynman-check -->
 

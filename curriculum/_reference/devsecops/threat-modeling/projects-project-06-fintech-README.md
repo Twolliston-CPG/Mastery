@@ -290,7 +290,7 @@ Compile comprehensive analysis:
 ## Resources
 
 - [PCI DSS v4.0](https://www.pcisecuritystandards.org/)
-- [Compliance Mapping Guide](../content/05-enterprise/compliance-mapping.md)
+- [Compliance Mapping Guide](content-05-enterprise-compliance-mapping.md)
 - [Payment Card Industry Documentation](https://www.pcisecuritystandards.org/document_library)
 - [NIST Cryptographic Guidelines](https://csrc.nist.gov/publications/fips)
 

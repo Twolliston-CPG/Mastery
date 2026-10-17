@@ -555,11 +555,11 @@ docker push myregistry.azurecr.io/myapp:latest
 
 Complete these exercises to validate your understanding:
 
-1. **[Exercise 1: Build a Production Image](./exercises/01-production-image.md)** - Build an optimized Node.js image
-2. **[Exercise 2: Multi-Stage Build](./exercises/02-multi-stage.md)** - Convert a single-stage to multi-stage
-3. **[Exercise 3: Security Scanning](./exercises/03-security-scanning.md)** - Scan and fix vulnerabilities
-4. **[Exercise 4: Distroless Migration](./exercises/04-distroless.md)** - Migrate to distroless base
-5. **[Exercise 5: Registry Workflow](./exercises/05-registry-workflow.md)** - Push to cloud registry
+1. **[Exercise 1: Build a Production Image](01-container-fundamentals-exercises-01-production-image.md)** - Build an optimized Node.js image
+2. **[Exercise 2: Multi-Stage Build](01-container-fundamentals-exercises-02-multi-stage.md)** - Convert a single-stage to multi-stage
+3. **[Exercise 3: Security Scanning](01-container-fundamentals-exercises-03-security-scanning.md)** - Scan and fix vulnerabilities
+4. **[Exercise 4: Distroless Migration](01-container-fundamentals-exercises-04-distroless.md)** - Migrate to distroless base
+5. **[Exercise 5: Registry Workflow](01-container-fundamentals-exercises-05-registry-workflow.md)** - Push to cloud registry
 
 ---
 
@@ -575,7 +575,7 @@ Before moving on, ensure you can answer:
 
 ## Next Section
 
-[02-kubernetes-architecture](../02-kubernetes-architecture/) - Deep dive into how Kubernetes works
+[02-kubernetes-architecture](02-kubernetes-architecture-README.md) - Deep dive into how Kubernetes works
 
 <!-- feynman-check -->
 

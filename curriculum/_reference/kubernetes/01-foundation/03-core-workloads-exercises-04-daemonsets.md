@@ -622,7 +622,7 @@ Create a DaemonSet that:
 
 ## Next Steps
 
-Continue to [Exercise 5: Jobs and CronJobs](05-jobs-cronjobs.md)
+Continue to [Exercise 5: Jobs and CronJobs](03-core-workloads-exercises-05-jobs-cronjobs.md)
 
 <!-- feynman-check -->
 

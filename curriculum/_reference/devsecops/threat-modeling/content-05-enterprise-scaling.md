@@ -405,8 +405,8 @@ Continuous Improvement:
 
 ## Next Steps
 
-→ [Risk Communication](risk-communication.md)
-→ [Building a Program](building-program.md)
+→ Risk Communication
+→ [Building a Program](content-05-enterprise-building-program.md)
 
 <!-- feynman-check -->
 

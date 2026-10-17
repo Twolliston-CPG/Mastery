@@ -748,7 +748,7 @@ Migrate from sealed secrets to ESO:
 
 ## Next Steps
 
-Continue to [Exercise 7: Infrastructure as Code](07-infrastructure-as-code.md)
+Continue to [Exercise 7: Infrastructure as Code](01-gitops-argocd-exercises-07-infrastructure-as-code.md)
 
 <!-- feynman-check -->
 

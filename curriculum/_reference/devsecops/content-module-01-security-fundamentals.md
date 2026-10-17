@@ -581,7 +581,7 @@ DevSecOps fundamentals establish the foundation for secure software delivery:
 
 ## Next Module
 
-Continue to [Module 02: Infrastructure Security](module-02-infrastructure-security.md) to learn about securing your infrastructure components.
+Continue to [Module 02: Infrastructure Security](content-module-02-infrastructure-security.md) to learn about securing your infrastructure components.
 
 <!-- feynman-check -->
 

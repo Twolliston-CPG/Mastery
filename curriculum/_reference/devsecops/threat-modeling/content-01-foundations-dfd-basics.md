@@ -637,8 +637,8 @@ Rel(api, payment, "Processes", "HTTPS/REST")
 
 ## Next Steps
 
-→ [Lab 01: Basic Web Application Threat Model](../../labs/lab-01-basic-web-app/)
-→ [STRIDE Deep Dive](../02-methodologies/stride.md)
+→ [Lab 01: Basic Web Application Threat Model](labs-lab-01-basic-web-app-README.md)
+→ [STRIDE Deep Dive](content-02-methodologies-stride.md)
 
 <!-- feynman-check -->
 

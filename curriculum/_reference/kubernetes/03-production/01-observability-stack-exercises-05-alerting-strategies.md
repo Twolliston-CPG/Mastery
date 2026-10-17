@@ -747,7 +747,7 @@ Create self-healing alerts:
 
 ## Next Steps
 
-Continue to [Exercise 6: SLOs and Error Budgets](06-slo-error-budgets.md)
+Continue to [Exercise 6: SLOs and Error Budgets](01-observability-stack-exercises-06-slo-error-budgets.md)
 
 <!-- feynman-check -->
 

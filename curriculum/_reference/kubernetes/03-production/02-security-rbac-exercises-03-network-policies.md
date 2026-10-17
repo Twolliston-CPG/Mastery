@@ -737,7 +737,7 @@ Automate policy generation:
 
 ## Next Steps
 
-Continue to [Exercise 4: OPA Gatekeeper](04-opa-gatekeeper.md)
+Continue to [Exercise 4: OPA Gatekeeper](02-security-rbac-exercises-04-opa-gatekeeper.md)
 
 <!-- feynman-check -->
 

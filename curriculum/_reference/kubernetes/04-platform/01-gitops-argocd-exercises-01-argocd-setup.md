@@ -505,7 +505,7 @@ kubectl delete namespace argocd
 
 ## Next Exercise
 
-Continue to [Exercise 2: App of Apps Pattern](./02-app-of-apps.md) to implement hierarchical application management.
+Continue to [Exercise 2: App of Apps Pattern](01-gitops-argocd-exercises-02-app-of-apps.md) to implement hierarchical application management.
 
 <!-- feynman-check -->
 

@@ -903,7 +903,7 @@ docker-compose restart prometheus
 - [Error Budget Policy](https://sre.google/workbook/error-budget-policy/)
 
 ## Next Lab
-Continue to [Lab 08: Incident Management](../lab-08-incident-management/README.md) to implement incident response procedures.
+Continue to [Lab 08: Incident Management](labs-lab-08-incident-management-README.md) to implement incident response procedures.
 
 <!-- feynman-check -->
 

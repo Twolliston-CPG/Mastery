@@ -727,7 +727,7 @@ Build SLO reporting system:
 
 ## Next Steps
 
-Continue to [Exercise 7: Long-term Storage with Thanos](07-thanos-long-term.md)
+Continue to [Exercise 7: Long-term Storage with Thanos](01-observability-stack-exercises-07-thanos-long-term.md)
 
 <!-- feynman-check -->
 

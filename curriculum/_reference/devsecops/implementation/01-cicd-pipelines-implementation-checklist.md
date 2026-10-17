@@ -78,7 +78,7 @@ gh secret set DEFECTDOJO_URL --org {{ORG_NAME}} --body "{{DEFECTDOJO_URL}}"
 gh secret set DEFECTDOJO_TOKEN --org {{ORG_NAME}} --body "your-defectdojo-token"
 ```
 
-**[GCP-SPECIFIC]** For deployment, configure Workload Identity Federation instead of service account keys (see [cross-cutting/oidc-workload-identity.md](../cross-cutting/oidc-workload-identity.md)):
+**[GCP-SPECIFIC]** For deployment, configure Workload Identity Federation instead of service account keys (see [cross-cutting/oidc-workload-identity.md](cross-cutting-oidc-workload-identity.md)):
 ```bash
 # No stored keys — WIF is configured via Terraform module (Domain 03)
 ```

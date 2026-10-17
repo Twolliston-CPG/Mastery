@@ -692,7 +692,7 @@ Container security requires attention at every stage:
 
 ## Next Module
 
-Continue to [Module 04: Kubernetes Security](module-04-kubernetes-security.md) to learn about securing Kubernetes clusters.
+Continue to [Module 04: Kubernetes Security](content-module-04-kubernetes-security.md) to learn about securing Kubernetes clusters.
 
 <!-- feynman-check -->
 

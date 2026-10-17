@@ -740,7 +740,7 @@ These skills form the foundation for all subsequent phases in your DevOps journe
 
 **Previous Module:** [System Monitoring](./11-system-monitoring.md)
 
-**Next Phase:** [Phase 2: Containers & Orchestration](../../phase-2-containers-orchestration/)
+**Next Phase:** Phase 2: Containers & Orchestration
 
 <!-- feynman-check -->
 

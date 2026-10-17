@@ -456,17 +456,17 @@ spec:
 
 ## Exercises
 
-1. **[Exercise 1: Storage Class Design](./exercises/01-storage-class-design.md)** - Design storage classes
-2. **[Exercise 2: StatefulSet Storage](./exercises/02-statefulset-storage.md)** - Persistent databases
-3. **[Exercise 3: Volume Snapshots](./exercises/03-volume-snapshots.md)** - Backup and restore
-4. **[Exercise 4: Volume Expansion](./exercises/04-volume-expansion.md)** - Online expansion
-5. **[Exercise 5: Velero Backup](./exercises/05-velero-backup.md)** - Disaster recovery
+1. **Exercise 1: Storage Class Design** - Design storage classes
+2. **Exercise 2: StatefulSet Storage** - Persistent databases
+3. **Exercise 3: Volume Snapshots** - Backup and restore
+4. **Exercise 4: Volume Expansion** - Online expansion
+5. **Exercise 5: Velero Backup** - Disaster recovery
 
 ---
 
 ## Next Section
 
-[03-configuration-secrets](../03-configuration-secrets/) - Secure configuration management
+[03-configuration-secrets](03-configuration-secrets-README.md) - Secure configuration management
 
 <!-- feynman-check -->
 

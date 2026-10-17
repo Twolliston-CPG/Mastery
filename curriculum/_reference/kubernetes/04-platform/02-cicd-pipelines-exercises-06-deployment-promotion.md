@@ -797,7 +797,7 @@ Promote across regions:
 ## Module Complete!
 
 You've completed the CI/CD Pipelines module. Continue to:
-- [Developer Platform Module](../03-developer-platform/README.md)
+- [Developer Platform Module](03-developer-platform-README.md)
 
 <!-- feynman-check -->
 

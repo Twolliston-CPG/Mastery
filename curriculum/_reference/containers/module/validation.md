@@ -150,7 +150,7 @@ _____________________________________________
 
 ## Next Steps
 
-Proceed to [Module 4: Kubernetes Foundations](../04-kubernetes-foundations/)
+Proceed to Module 4: Kubernetes Foundations
 
 <!-- feynman-check -->
 

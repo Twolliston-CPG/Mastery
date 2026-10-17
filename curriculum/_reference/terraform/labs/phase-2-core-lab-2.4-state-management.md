@@ -775,7 +775,7 @@ Before moving to Phase 3, verify you can:
 
 ## Next: Phase 3 - Intermediate Skills
 
-Continue to [Phase 3: Intermediate Skills](../phase-3-intermediate/README.md)
+Continue to [Phase 3: Intermediate Skills](phase-3-intermediate-README.md)
 
 <!-- feynman-check -->
 

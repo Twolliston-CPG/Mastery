@@ -181,7 +181,7 @@ flowchart LR
 
 ### Identity and Access
 
-> For the complete OIDC/Workload Identity Federation trust chain (GitHub Actions → GCP/AWS/Azure), see [cross-cutting/oidc-workload-identity.md](../cross-cutting/oidc-workload-identity.md).
+> For the complete OIDC/Workload Identity Federation trust chain (GitHub Actions → GCP/AWS/Azure), see [cross-cutting/oidc-workload-identity.md](cross-cutting-oidc-workload-identity.md).
 
 - **[GCP-SPECIFIC]** GitHub Actions authenticates via Workload Identity Federation (no static keys)
 - **[GCP-SPECIFIC]** Per-node service accounts with least-privilege IAM roles
@@ -198,11 +198,11 @@ flowchart LR
 
 ### Multi-Cloud Portability
 
-> Many modules in this domain carry `[GCP-SPECIFIC]` markers and have AWS/Azure variants under `modules/{name}/{aws,azure}`. For cloud-specific service equivalents when adapting these modules, see [Cloud Equivalence Mapping](../cross-cutting/cloud-equivalence-mapping.md).
+> Many modules in this domain carry `[GCP-SPECIFIC]` markers and have AWS/Azure variants under `modules/{name}/{aws,azure}`. For cloud-specific service equivalents when adapting these modules, see [Cloud Equivalence Mapping](cross-cutting-cloud-equivalence-mapping.md).
 
 ### Secret Management
 
-> For the unified secret management architecture spanning CI/CD, IaC, and Kubernetes, see [cross-cutting/secret-management.md](../cross-cutting/secret-management.md).
+> For the unified secret management architecture spanning CI/CD, IaC, and Kubernetes, see [cross-cutting/secret-management.md](cross-cutting-secret-management.md).
 
 - **[GCP-SPECIFIC]** Secret Manager for all secrets with automatic rotation
 - **[GCP-SPECIFIC]** Cloud Functions for rotation logic

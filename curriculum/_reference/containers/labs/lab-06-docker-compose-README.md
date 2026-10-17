@@ -629,7 +629,7 @@ docker compose down -v --remove-orphans  # Full cleanup
 
 ## Next Lab
 
-Continue to [Lab 07: Kubernetes Setup](../lab-07-kubernetes-setup/)
+Continue to [Lab 07: Kubernetes Setup](lab-07-kubernetes-setup-README.md)
 
 <!-- feynman-check -->
 

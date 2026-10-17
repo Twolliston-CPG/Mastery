@@ -75,7 +75,7 @@ Stored as GitHub organization or repository secrets, injected at workflow runtim
 
 ### 2. OIDC / Workload Identity Federation
 
-See [oidc-workload-identity.md](./oidc-workload-identity.md) for the full trust chain.
+See [oidc-workload-identity.md](cross-cutting-oidc-workload-identity.md) for the full trust chain.
 
 GitHub Actions authenticates to cloud providers via OIDC tokens — no long-lived service account keys stored in GitHub. **[GCP-SPECIFIC]** uses Workload Identity Federation; alternatives exist for AWS (OIDC Provider) and Azure (Federated Credentials).
 

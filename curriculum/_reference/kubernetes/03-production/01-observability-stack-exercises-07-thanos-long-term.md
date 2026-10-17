@@ -803,7 +803,7 @@ Implement DR for metrics:
 
 ## Next Steps
 
-Continue to [Exercise 8: Observability Patterns](08-observability-patterns.md)
+Continue to [Exercise 8: Observability Patterns](01-observability-stack-exercises-08-observability-patterns.md)
 
 <!-- feynman-check -->
 

@@ -434,7 +434,7 @@ docker rm -f redis
 ### Exercise 5.3: Explore northwind-platform Containers
 
 ```bash
-cd /Users/olorun/projects/northwind-platform
+cd ~/projects/northwind-platform
 
 # List all Dockerfiles
 find . -name "Dockerfile" -type f
@@ -475,7 +475,7 @@ cd ~/docker-lab
 
 ## Next Lab
 
-Continue to [Lab 3.2: Building Images](./lab-02-building-images.md)
+Continue to [Lab 3.2: Building Images](labs-lab-02-building-images.md)
 
 <!-- feynman-check -->
 

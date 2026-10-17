@@ -423,8 +423,8 @@ API Security Headers:
 
 ## Next Steps
 
-→ [Cloud Security](cloud-security.md)
-→ [Return to Technical Skills](../threat-modeling-roadmap.md#technical-skills)
+→ [Cloud Security](content-03-technical-skills-cloud-security.md)
+→ [Return to Technical Skills](threat-modeling-roadmap.md#technical-skills)
 
 <!-- feynman-check -->
 

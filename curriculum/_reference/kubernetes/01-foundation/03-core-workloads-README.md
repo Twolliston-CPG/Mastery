@@ -1168,14 +1168,14 @@ kubectl create secret tls my-tls \
 
 ## Exercises
 
-1. **[Exercise 1: Pod Lifecycle](./exercises/01-pod-lifecycle.md)** - Understand pod states and debugging
-2. **[Exercise 2: Deployment Strategies](./exercises/02-deployment-strategies.md)** - Implement rolling, blue-green, canary
-3. **[Exercise 3: StatefulSet Database](./exercises/03-statefulset-database.md)** - Deploy PostgreSQL with replication
-4. **[Exercise 4: DaemonSet Logging](./exercises/04-daemonset-logging.md)** - Deploy cluster-wide logging
-5. **[Exercise 5: Job Processing](./exercises/05-job-processing.md)** - Parallel job processing
-6. **[Exercise 6: CronJob Backup](./exercises/06-cronjob-backup.md)** - Scheduled database backups
-7. **[Exercise 7: Configuration Management](./exercises/07-configuration.md)** - ConfigMaps and Secrets
-8. **[Exercise 8: Full Stack](./exercises/08-full-stack.md)** - Deploy complete application
+1. **Exercise 1: Pod Lifecycle** - Understand pod states and debugging
+2. **Exercise 2: Deployment Strategies** - Implement rolling, blue-green, canary
+3. **Exercise 3: StatefulSet Database** - Deploy PostgreSQL with replication
+4. **Exercise 4: DaemonSet Logging** - Deploy cluster-wide logging
+5. **Exercise 5: Job Processing** - Parallel job processing
+6. **Exercise 6: CronJob Backup** - Scheduled database backups
+7. **Exercise 7: Configuration Management** - ConfigMaps and Secrets
+8. **Exercise 8: Full Stack** - Deploy complete application
 
 ---
 
@@ -1192,7 +1192,7 @@ Before moving on, ensure you can:
 
 ## Next: Phase 1 Project
 
-[Project: Microservices E-Commerce Application](../project-microservices-app/)
+[Project: Microservices E-Commerce Application](project-microservices-app-README.md)
 
 <!-- feynman-check -->
 

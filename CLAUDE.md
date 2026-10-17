@@ -50,7 +50,7 @@ Don't put dates, versions, or blockers anywhere but `## Status` — they go stal
 ## Commands
 
 ```bash
-# Validate diagrams + markdown structure across the library (~1s, no browser)
+# Validate diagrams, markdown structure, and relative links (~1s, no browser)
 python3 curriculum/_shared/diagrams/check-diagrams.py curriculum/_reference
 python3 curriculum/_shared/diagrams/check-diagrams.py            # whole repo
 
@@ -83,9 +83,9 @@ between a small edit and 600 quietly-broken files.
 | Piece | What it does |
 |---|---|
 | `infra/github/` | Terraform (`integrations/github`) that creates and hardens the private repo: squash-only, Dependabot, GitHub-authored actions only, archive-on-destroy, opt-in `main` ruleset. State is local and gitignored. Bootstrap pattern: the config lives inside the repo it creates |
-| `.github/workflows/ci.yml` | `secrets-scan` (gitleaks, pinned + sha256-checked, full history), `content-checks` (`check-diagrams.py` whole repo), `terraform-validate` (`fmt -check`, `validate`). These three job names are the required checks in `rulesets.tf` — rename in both places or never |
+| `.github/workflows/ci.yml` | `secrets-scan` (gitleaks, pinned + sha256-checked, full history), `content-checks` (`check-diagrams.py` on the authored layers, then on `_reference/`), `terraform-validate` (`fmt -check` repo-wide, `init -backend=false` + `validate` on all nine root modules, in one job so the check name is stable). These three job names are the required checks in `rulesets.tf` — rename in both places or never |
 | `.github/workflows/links.yml` | Weekly external link check |
-| `.pre-commit-config.yaml` | gitleaks, private-key, large-file (5 MB), yaml/json, `terraform fmt`, `check-diagrams.py` on changed `.md`. **No formatters on purpose** — a fixer would rewrite ~1,000 files |
+| `.pre-commit-config.yaml` | gitleaks, private-key, large-file (5 MB), yaml/json, `terraform fmt` on every root, `check-diagrams.py` on changed `.md`. **No formatters on purpose** — a fixer would rewrite ~1,000 files |
 | `.gitleaks.toml` | Allowlist for documented placeholder secrets in the reference library |
 
 Rules:
@@ -139,6 +139,10 @@ Each of these has already caused a repo-wide failure; `check-diagrams.py` now ca
   when an SVG is loaded via `<img>`.
 - **A bare ``` block full of box-drawing characters is unfinished work**, at any size — a five-step
   ASCII flow uses ~8 glyphs. There is deliberately no size threshold on that check.
+- **Every relative link must resolve.** `_reference/` was flattened from directory trees into one file
+  per topic, which left ~440 links pointing at paths that no longer exist; they were rewritten or
+  unlinked on 2026-10-17 and the checker now fails on any new one. Links inside code fences,
+  placeholders (`{var}`, `...`, `xxx`) and `_shared/templates/` are exempt.
 
 ## Conventions
 

@@ -35,6 +35,13 @@ where the architecture should be, and both are invisible in a diff.
      outer fence. This is the failure that looks like "the diagram has a syntax
      error" when the diagram is fine.
 
+  5. A relative link to a file that does not exist
+     Week READMEs point at _reference/ files by path, and the reference library
+     was flattened from a tree of directories into one file per topic. Both
+     break silently: the Markdown renders, the reader lands on a 404. Every
+     relative link target outside a code fence must exist on disk. Placeholders
+     (`{var}`, `...`, `xxx`) and the templates directory are skipped.
+
 Exit status is 0 when clean, 1 when anything failed. Advisories (a flowchart
 with no theme header) are printed but do not fail the run.
 
@@ -50,6 +57,7 @@ import re
 import subprocess
 import sys
 import time
+import urllib.parse
 
 # Every link form Mermaid accepts, including the OPEN ones that have no
 # arrowhead -- `A --- B` and `A === B` are edges too, and they count toward the
@@ -294,6 +302,40 @@ def check(path: pathlib.Path) -> tuple[list[str], list[str]]:
 
 
 # ---------------------------------------------------------------------------
+# Relative links: every target must exist on disk.
+# ---------------------------------------------------------------------------
+
+REL_LINK = re.compile(r"(?<!\\)\[[^\]]*\]\(\s*([^)\s]+?)\s*(?:\"[^\"]*\")?\s*\)")
+INLINE_CODE = re.compile(r"`[^`\n]*`")
+
+
+def check_internal_links(path: pathlib.Path) -> list[str]:
+    """Relative link and image targets that do not resolve to a file or directory."""
+    if "templates" in path.parts:        # templates hold deliberate placeholders
+        return []
+    text = path.read_text(encoding="utf-8", errors="replace")
+    body = INLINE_CODE.sub("", _strip_fences(text))
+    problems: list[str] = []
+    for m in REL_LINK.finditer(body):
+        raw = m.group(1)
+        if raw.startswith(("http://", "https://", "mailto:", "#", "<", "/")):
+            continue
+        if any(tok in raw for tok in ("{", "}", "...", "xxx", "XXX", "$")):
+            continue
+        target = urllib.parse.unquote(raw.split("#", 1)[0])
+        if not target or ("." not in target and "/" not in target):
+            continue                     # a bare word is code or a placeholder, not a path
+        if not (path.parent / target).exists():
+            problems.append(f"{path}: broken relative link -> {raw}")
+    return problems
+
+
+def _strip_fences(text: str) -> str:
+    """Blank out fenced code so links inside examples are not checked."""
+    return FENCE_BLOCK.sub(lambda m: "\n" * m.group(0).count("\n"), text)
+
+
+# ---------------------------------------------------------------------------
 # --links: external URL liveness.
 #
 # A dead link is invisible: the file still renders, the reader just lands on a
@@ -431,7 +473,7 @@ def main(argv: list[str]) -> int:
             continue
         scanned += 1
         p, a = check(md)
-        problems += p + check_fences(md) + check_untagged_ascii(md)
+        problems += p + check_fences(md) + check_untagged_ascii(md) + check_internal_links(md)
         advisories += a
 
     if problems:
@@ -445,7 +487,7 @@ def main(argv: list[str]) -> int:
             )
         return 1
 
-    print(f"\033[32mOK\033[0m  {scanned} files, no diagram errors")
+    print(f"\033[32mOK\033[0m  {scanned} files, no diagram or link errors")
     if advisories:
         print(f"\n  {len(advisories)} advisory:")
         for a in advisories[:20]:

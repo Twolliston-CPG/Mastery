@@ -714,7 +714,7 @@ Implement GitOps for dashboards:
 
 ## Next Steps
 
-Continue to [Exercise 5: Alerting Strategies](05-alerting-strategies.md)
+Continue to [Exercise 5: Alerting Strategies](01-observability-stack-exercises-05-alerting-strategies.md)
 
 <!-- feynman-check -->
 

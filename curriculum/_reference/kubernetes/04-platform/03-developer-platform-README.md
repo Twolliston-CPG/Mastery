@@ -818,17 +818,17 @@ spec:
 
 ## Exercises
 
-1. **[Exercise 1: Backstage Setup](./exercises/01-backstage.md)** - Deploy Backstage
-2. **[Exercise 2: Service Templates](./exercises/02-templates.md)** - Create software templates
-3. **[Exercise 3: Crossplane](./exercises/03-crossplane.md)** - Self-service infrastructure
-4. **[Exercise 4: PR Environments](./exercises/04-pr-environments.md)** - Ephemeral environments
-5. **[Exercise 5: Cost Tracking](./exercises/05-cost.md)** - Implement cost management
+1. **Exercise 1: Backstage Setup** - Deploy Backstage
+2. **Exercise 2: Service Templates** - Create software templates
+3. **Exercise 3: Crossplane** - Self-service infrastructure
+4. **Exercise 4: PR Environments** - Ephemeral environments
+5. **Exercise 5: Cost Tracking** - Implement cost management
 
 ---
 
 ## Next Section
 
-[project-self-service-platform](../project-self-service-platform/) - Build the complete platform
+[project-self-service-platform](project-self-service-platform-README.md) - Build the complete platform
 
 <!-- feynman-check -->
 
