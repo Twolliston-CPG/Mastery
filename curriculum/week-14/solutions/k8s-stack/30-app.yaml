@@ -11,6 +11,11 @@ metadata:
   name: app
   namespace: shop
   labels: { app: app }
+  annotations:
+    # Scanner exceptions live on the resource they excuse, with the reason.
+    checkov.io/skip1: CKV_K8S_15=imagePullPolicy Always would make kind try to pull the week-4 image from ghcr.io instead of using the one you `kind load`ed; set it once the image is pushed
+    checkov.io/skip2: CKV_K8S_43=the app image is yours to build; pin ITS digest once you have pushed it (busybox is pinned below)
+    checkov.io/skip3: CKV_K8S_35=the week-4 app reads DATABASE_URL from the environment; week 16 moves the credentials to External Secrets
 spec:
   replicas: 2
   revisionHistoryLimit: 5
@@ -26,6 +31,7 @@ spec:
       labels: { app: app }
     spec:
       serviceAccountName: shop-app
+      automountServiceAccountToken: false   # belt and braces with the ServiceAccount above
       securityContext:
         runAsNonRoot: true
         runAsUser: 10001
@@ -42,7 +48,7 @@ spec:
       initContainers:
         # Same job as compose's `depends_on: condition: service_healthy`.
         - name: wait-for-db
-          image: busybox:1.36
+          image: busybox:1.36@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
           command:
             - sh
             - -c
@@ -60,8 +66,9 @@ spec:
             capabilities: { drop: ["ALL"] }
       containers:
         - name: app
-          # Replace with your week-4 image.
-          image: ghcr.io/REPLACE_ME/week04-app:latest
+          # Replace with your week-4 image. Never `:latest`: a rollout you cannot name is a
+          # rollout you cannot roll back (BF-44). Pin the digest once it is pushed.
+          image: ghcr.io/REPLACE_ME/week04-app:1.0.0
           ports:
             - { name: http, containerPort: 8080 }
           envFrom:

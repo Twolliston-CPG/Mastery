@@ -22,6 +22,7 @@ locals {
 }
 
 data "aws_availability_zones" "available" {
+  # checkov:skip=CKV_AWS_394: The check wants an allowlist filter on zone-name or zone-id so a new AZ can never enter the set. This module is region-agnostic by design (var.region, var.az_count), so pinning zone names would need a per-region map. The slice() in locals caps the set at az_count, and AWS appends new zones after the existing ones, so the first N stay stable. Pin zone-name in a real deployment.
   state = "available"
 }
 
@@ -31,6 +32,14 @@ resource "aws_vpc" "this" {
   enable_dns_support   = true
 
   tags = { Name = local.name }
+}
+
+# Every VPC gets a default security group that allows its members to talk to each other.
+# Nothing here uses it; adopting it with no rules strips those and makes "forgot to set a
+# security group" fail closed instead of open.
+resource "aws_default_security_group" "this" {
+  vpc_id = aws_vpc.this.id
+  tags   = { Name = "${local.name}-default-DO-NOT-USE" }
 }
 
 resource "aws_internet_gateway" "this" {
@@ -44,10 +53,12 @@ resource "aws_internet_gateway" "this" {
 resource "aws_subnet" "public" {
   for_each = local.public_subnets
 
-  vpc_id                  = aws_vpc.this.id
-  cidr_block              = each.value
-  availability_zone       = each.key
-  map_public_ip_on_launch = true
+  vpc_id            = aws_vpc.this.id
+  cidr_block        = each.value
+  availability_zone = each.key
+  # Nothing is *launched* here. NAT gateways use an EIP and the ALB's ENIs get addresses from
+  # the ELB service, so auto-assigning public IPs would only matter to a stray instance.
+  map_public_ip_on_launch = false
 
   tags = {
     Name                     = "${local.name}-public-${each.key}"
@@ -185,6 +196,8 @@ resource "aws_flow_log" "this" {
 }
 
 resource "aws_cloudwatch_log_group" "flow_logs" {
+  # checkov:skip=CKV_AWS_158: Encrypted at rest with the CloudWatch Logs service key. A customer-managed KMS key costs money monthly and protects nothing extra for REJECT-only flow logs.
+  # checkov:skip=CKV_AWS_338: 14 (dev) / 30 (prod) days is enough to investigate an incident. A year of retention is a compliance requirement this project does not have.
   count             = var.enable_flow_logs ? 1 : 0
   name              = "/vpc/${local.name}/flowlogs"
   retention_in_days = var.log_retention_days

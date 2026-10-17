@@ -1,0 +1,174 @@
+name: security
+
+# Security checks that complement ci.yml:
+#   secrets   -> ci.yml `secrets-scan` (gitleaks, full history)
+#   workflows -> actions-lint  (actionlint + zizmor, including the local composite action)
+#   shell     -> shell-lint    (shellcheck on every tracked .sh)
+#   IaC       -> iac-scan      (checkov + trivy on the whole repository: the Terraform that
+#                               touches real accounts, the workflows, and the teaching projects
+#                               and solutions, which are held to the same bar)
+#
+# Supply chain: binaries come from pinned releases through ./.github/actions/fetch-tool, which
+# verifies a sha256 per CPU architecture; Python tools install from hash-locked requirements
+# (.github/requirements/*.txt, regenerated with `uv pip compile --generate-hashes`). Only
+# GitHub-authored actions plus the local one are used, because infra/github/actions.tf allows
+# nothing else to run with the repository token. Nothing is uploaded to code scanning: SARIF
+# upload on a private repository needs GitHub Advanced Security, so reports are artifacts.
+#
+# Runners: ubuntu-24.04-arm, pinned (ubuntu-latest moves to 26.04 in November 2026). Nothing here
+# depends on image-provided software except python3 for setup-python; every tool is installed.
+# The arm64 runner bills at a lower per-minute rate than x64 for private repositories.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 14 * * 1" # Mondays: scanners gain rules weekly, so re-scan main without a commit
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  # Superseded PR pushes cancel the previous run; a run on main always completes.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  # One version and two checksums (x64, arm64) per binary, copied from the vendor's checksums file.
+  ACTIONLINT_VERSION: 1.7.12
+  ACTIONLINT_SHA256_AMD64: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+  ACTIONLINT_SHA256_ARM64: 325e971b6ba9bfa504672e29be93c24981eeb1c07576d730e9f7c8805afff0c6
+  TRIVY_VERSION: 0.76.0
+  TRIVY_SHA256_AMD64: e24b1c51293c1b15e4ba8d45bbc7891ba053f90278ec2698f3562c993e145fe7
+  TRIVY_SHA256_ARM64: aab21e677a7b7071fc79f1711480840754c18a1b9d9cefa7ccd06af63a0e8f4c
+  # ShellCheck publishes no checksums; these were computed from the release assets on 2026-10-17
+  # and recorded here (trust on first use). The runner image's shellcheck is 0.9.0, two years
+  # older than what runs locally, so it is installed rather than inherited.
+  SHELLCHECK_VERSION: 0.11.0
+  SHELLCHECK_SHA256_AMD64: 8c3be12b05d5c177a04c29e3c78ce89ac86f1595681cab149b65b97c4e227198
+  SHELLCHECK_SHA256_ARM64: 12b331c1d2db6b9eb13cfca64306b1b157a86eb69db83023e261eaa7e7c14588
+
+jobs:
+  actions-lint:
+    name: actions-lint
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - uses: ./.github/actions/fetch-tool
+        with:
+          name: shellcheck
+          url-amd64: https://github.com/koalaman/shellcheck/releases/download/v${{ env.SHELLCHECK_VERSION }}/shellcheck-v${{ env.SHELLCHECK_VERSION }}.linux.x86_64.tar.xz
+          url-arm64: https://github.com/koalaman/shellcheck/releases/download/v${{ env.SHELLCHECK_VERSION }}/shellcheck-v${{ env.SHELLCHECK_VERSION }}.linux.aarch64.tar.xz
+          sha256-amd64: ${{ env.SHELLCHECK_SHA256_AMD64 }}
+          sha256-arm64: ${{ env.SHELLCHECK_SHA256_ARM64 }}
+          member: shellcheck-v${{ env.SHELLCHECK_VERSION }}/shellcheck
+
+      - uses: ./.github/actions/fetch-tool
+        with:
+          name: actionlint
+          url-amd64: https://github.com/rhysd/actionlint/releases/download/v${{ env.ACTIONLINT_VERSION }}/actionlint_${{ env.ACTIONLINT_VERSION }}_linux_amd64.tar.gz
+          url-arm64: https://github.com/rhysd/actionlint/releases/download/v${{ env.ACTIONLINT_VERSION }}/actionlint_${{ env.ACTIONLINT_VERSION }}_linux_arm64.tar.gz
+          sha256-amd64: ${{ env.ACTIONLINT_SHA256_AMD64 }}
+          sha256-arm64: ${{ env.ACTIONLINT_SHA256_ARM64 }}
+          version-flag: -version
+
+      # Syntax, expression types, runner labels, and (through shellcheck) every `run:` script.
+      - name: actionlint
+        run: actionlint -no-color -shellcheck shellcheck .github/workflows/*.yml
+
+      # Supply-chain posture of the workflows and the composite action: unpinned actions,
+      # template injection, credential persistence, cache poisoning, known-vulnerable versions.
+      - name: zizmor
+        env:
+          GH_TOKEN: ${{ github.token }} # read-only; lets zizmor resolve tags for the online audits
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet --require-hashes -r .github/requirements/actions.txt
+          zizmor --version
+          zizmor --persona regular .github
+
+  shell-lint:
+    name: shell-lint
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: ./.github/actions/fetch-tool
+        with:
+          name: shellcheck
+          url-amd64: https://github.com/koalaman/shellcheck/releases/download/v${{ env.SHELLCHECK_VERSION }}/shellcheck-v${{ env.SHELLCHECK_VERSION }}.linux.x86_64.tar.xz
+          url-arm64: https://github.com/koalaman/shellcheck/releases/download/v${{ env.SHELLCHECK_VERSION }}/shellcheck-v${{ env.SHELLCHECK_VERSION }}.linux.aarch64.tar.xz
+          sha256-amd64: ${{ env.SHELLCHECK_SHA256_AMD64 }}
+          sha256-arm64: ${{ env.SHELLCHECK_SHA256_ARM64 }}
+          member: shellcheck-v${{ env.SHELLCHECK_VERSION }}/shellcheck
+
+      - name: shellcheck every tracked shell script (warning and above)
+        run: git ls-files -z -- '*.sh' | xargs -0 shellcheck -S warning
+
+  iac-scan:
+    name: iac-scan
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+
+      - name: Install checkov (hash-locked)
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet --require-hashes -r .github/requirements/iac.txt
+          checkov --version
+
+      - uses: ./.github/actions/fetch-tool
+        with:
+          name: trivy
+          url-amd64: https://github.com/aquasecurity/trivy/releases/download/v${{ env.TRIVY_VERSION }}/trivy_${{ env.TRIVY_VERSION }}_Linux-64bit.tar.gz
+          url-arm64: https://github.com/aquasecurity/trivy/releases/download/v${{ env.TRIVY_VERSION }}/trivy_${{ env.TRIVY_VERSION }}_Linux-ARM64.tar.gz
+          sha256-amd64: ${{ env.TRIVY_SHA256_AMD64 }}
+          sha256-arm64: ${{ env.TRIVY_SHA256_ARM64 }}
+
+      # Everything checkov understands here: Terraform, Dockerfiles, Kubernetes manifests, the
+      # workflows, and secrets. Every suppression is an inline `checkov:skip` comment (Terraform)
+      # or a `checkov.io/skip` annotation (Kubernetes) on the resource it excuses, with its reason.
+      # .checkov.yaml holds only frameworks and skip-paths. Run the same thing locally: `make scan`.
+      - name: checkov
+        run: |
+          set -euo pipefail
+          mkdir -p reports
+          checkov --config-file .checkov.yaml --directory . \
+            --output cli --output sarif --output-file-path console,reports/checkov.sarif
+
+      # Terraform exceptions are inline `#trivy:ignore` comments; the Kubernetes ones (no inline
+      # form) are in .trivyignore.yaml, which trivy only reads when told to.
+      - name: trivy misconfiguration scan (HIGH, CRITICAL)
+        run: |
+          set -euo pipefail
+          trivy config --exit-code 1 --severity HIGH,CRITICAL --skip-version-check \
+            --ignorefile .trivyignore.yaml \
+            --skip-dirs curriculum/_reference --skip-dirs _figures --skip-dirs _backups \
+            .
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: iac-scan-reports
+          path: reports/
+          retention-days: 14

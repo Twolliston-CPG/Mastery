@@ -97,15 +97,15 @@ collect_memory() {
 # Populates DISK_ROWS (name|pct|avail) and DISK_JSON
 collect_disk() {
   DISK_ROWS=()
-  local fs pct mount avail
-  while read -r fs _ _ avail pct mount; do
+  local pct mount avail
+  while read -r _ _ _ avail pct mount; do
     pct="${pct%\%}"
     DISK_ROWS+=("${mount}|${pct}|${avail}")
     (( pct > THRESHOLD )) && EXIT_CODE=1
   done < <(df -PH -x tmpfs -x devtmpfs -x squashfs -x overlay 2>/dev/null | tail -n +2)
 
   INODE_ROWS=()
-  while read -r fs _ _ _ pct mount; do
+  while read -r _ _ _ _ pct mount; do
     pct="${pct%\%}"
     [[ "$pct" == "-" ]] && continue
     INODE_ROWS+=("${mount}|${pct}")

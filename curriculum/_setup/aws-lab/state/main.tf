@@ -64,6 +64,9 @@ resource "aws_s3_bucket_versioning" "state" {
   }
 }
 
+# trivy: same decision as the CKV_AWS_145 skip on the bucket (S3-managed keys, not a customer-managed
+# KMS key). trivy attributes the finding to this resource, so the ignore lives here.
+#trivy:ignore:AVD-AWS-0132
 resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
   bucket = aws_s3_bucket.state.id
 

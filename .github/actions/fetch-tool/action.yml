@@ -1,0 +1,74 @@
+name: fetch-tool
+description: >-
+  Download a pinned release archive for this runner's CPU architecture, verify its SHA-256, and
+  put the single binary inside it on PATH. Replaces four copies of the same curl-and-checksum
+  step. Local actions are not subject to the allowed-actions policy in infra/github/actions.tf,
+  and nothing here runs with the repository token.
+
+inputs:
+  name:
+    description: Binary name as it should appear on PATH (trivy, terraform, ...).
+    required: true
+  url-amd64:
+    description: Release archive URL for X64 runners.
+    required: true
+  url-arm64:
+    description: Release archive URL for ARM64 runners.
+    required: true
+  sha256-amd64:
+    description: SHA-256 of the X64 archive, from the vendor's checksums file.
+    required: true
+  sha256-arm64:
+    description: SHA-256 of the ARM64 archive, from the vendor's checksums file.
+    required: true
+  member:
+    description: Path of the binary inside the archive. Defaults to the binary name.
+    required: false
+    default: ""
+  version-flag:
+    description: Flag that prints the version, for the log.
+    required: false
+    default: "--version"
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      # Inputs reach the script through the environment, never by template expansion inside it.
+      env:
+        TOOL_NAME: ${{ inputs.name }}
+        URL_AMD64: ${{ inputs.url-amd64 }}
+        URL_ARM64: ${{ inputs.url-arm64 }}
+        SHA_AMD64: ${{ inputs.sha256-amd64 }}
+        SHA_ARM64: ${{ inputs.sha256-arm64 }}
+        MEMBER: ${{ inputs.member }}
+        VERSION_FLAG: ${{ inputs.version-flag }}
+        ARCH: ${{ runner.arch }}
+      # zizmor: ignore[github-env] -- the GITHUB_PATH value is a constant built from $HOME; no input reaches it
+      run: | # zizmor: ignore[github-env]
+        set -euo pipefail
+        case "$ARCH" in
+          X64)   url="$URL_AMD64"; sha="$SHA_AMD64" ;;
+          ARM64) url="$URL_ARM64"; sha="$SHA_ARM64" ;;
+          *)     echo "::error::fetch-tool: unsupported runner architecture '$ARCH'"; exit 1 ;;
+        esac
+        member="${MEMBER:-$TOOL_NAME}"
+        work="$RUNNER_TEMP/fetch-tool/$TOOL_NAME"
+        mkdir -p "$work" && cd "$work"
+        archive="${url##*/}"
+        curl -fsSLo "$archive" "$url"
+        echo "$sha  $archive" | sha256sum -c -
+        case "$archive" in
+          *.tar.gz|*.tgz) tar -xzf "$archive" "$member" ;;
+          *.tar.xz)       tar -xJf "$archive" "$member" ;;
+          *.zip)          unzip -oq "$archive" "$member" ;;
+          *)              echo "::error::fetch-tool: unknown archive type '$archive'"; exit 1 ;;
+        esac
+        bin="$HOME/.local/bin"
+        mkdir -p "$bin"
+        install -m 0755 "$member" "$bin/$TOOL_NAME"
+        # GitHub-hosted images already have ~/.local/bin on PATH; add it only where they do not.
+        # The value is a constant built from $HOME, so no input can steer this write.
+        case ":$PATH:" in *":$bin:"*) ;; *) echo "$bin" >> "$GITHUB_PATH" ;; esac
+        echo "fetch-tool: $TOOL_NAME ($ARCH) from $archive"
+        "$bin/$TOOL_NAME" $VERSION_FLAG 2>&1 | head -3 || true

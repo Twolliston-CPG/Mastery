@@ -33,126 +33,126 @@
 <polygon fill="#ffffff" stroke="#aeb6be" stroke-dasharray="5,2" points="16,-707.8 16,-908.8 199.25,-908.8 199.25,-707.8 16,-707.8"/>
 <text xml:space="preserve" text-anchor="middle" x="107.62" y="-895.3" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">no Terraform resource · one gh api call</text>
 </g>
-<!-- 63188e1d58474b47b2b98f13643caf10 -->
+<!-- c17816527de04047a0eb7c6698f6cc34 -->
 <g id="node1" class="node">
-<title>63188e1d58474b47b2b98f13643caf10</title>
+<title>c17816527de04047a0eb7c6698f6cc34</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/client/user.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="62.125" y="-1095.8"/>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-977.85" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">You</text>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-966.6" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">fine&#45;grained PAT · Administration RW · ≤90 days</text>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-955.35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">shell env only, never in a file</text>
 </g>
-<!-- a2e51012741347d0a6983e2356088fa3 -->
+<!-- b0f4c51b32504de890b9d507afcb4b02 -->
 <g id="node2" class="node">
-<title>a2e51012741347d0a6983e2356088fa3</title>
+<title>b0f4c51b32504de890b9d507afcb4b02</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/iac/terraform.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="438" y="-1095.8"/>
 <text xml:space="preserve" text-anchor="middle" x="483" y="-977.85" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">github_repository</text>
 <text xml:space="preserve" text-anchor="middle" x="483" y="-966.6" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">private · squash&#45;only · auto_init=false</text>
 <text xml:space="preserve" text-anchor="middle" x="483" y="-955.35" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">archive_on_destroy · prevent_destroy</text>
 </g>
-<!-- 63188e1d58474b47b2b98f13643caf10&#45;&gt;a2e51012741347d0a6983e2356088fa3 -->
+<!-- c17816527de04047a0eb7c6698f6cc34&#45;&gt;b0f4c51b32504de890b9d507afcb4b02 -->
 <g id="edge1" class="edge">
-<title>63188e1d58474b47b2b98f13643caf10&#45;&gt;a2e51012741347d0a6983e2356088fa3</title>
+<title>c17816527de04047a0eb7c6698f6cc34&#45;&gt;b0f4c51b32504de890b9d507afcb4b02</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M152.11,-1050.8C220.17,-1050.8 350.95,-1050.8 425.78,-1050.8"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="425.46,-1054.3 435.46,-1050.8 425.46,-1047.3 425.46,-1054.3"/>
 </g>
-<!-- 9e5a1deb63924a9b98ed03a7164ce413 -->
+<!-- c0766d6b80264ef29af4f011ecc3d310 -->
 <g id="node3" class="node">
-<title>9e5a1deb63924a9b98ed03a7164ce413</title>
+<title>c0766d6b80264ef29af4f011ecc3d310</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/github.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="801.75" y="-560.8"/>
-<text xml:space="preserve" text-anchor="middle" x="846.75" y="-446" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">thewayofthesurge</text>
+<text xml:space="preserve" text-anchor="middle" x="846.75" y="-446" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">twots</text>
 <text xml:space="preserve" text-anchor="middle" x="846.75" y="-434.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">issues on · wiki, projects, discussions off</text>
 </g>
-<!-- a2e51012741347d0a6983e2356088fa3&#45;&gt;9e5a1deb63924a9b98ed03a7164ce413 -->
+<!-- b0f4c51b32504de890b9d507afcb4b02&#45;&gt;c0766d6b80264ef29af4f011ecc3d310 -->
 <g id="edge2" class="edge">
-<title>a2e51012741347d0a6983e2356088fa3&#45;&gt;9e5a1deb63924a9b98ed03a7164ce413</title>
+<title>b0f4c51b32504de890b9d507afcb4b02&#45;&gt;c0766d6b80264ef29af4f011ecc3d310</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M527.77,-1044.34C582.03,-1034.02 673.66,-1008.61 725.5,-949.8 809,-855.08 835,-707.14 842.82,-610.84"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="846.31,-611.13 843.57,-600.9 839.33,-610.61 846.31,-611.13"/>
 <text xml:space="preserve" text-anchor="middle" x="749.62" y="-932.32" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">apply</text>
 </g>
-<!-- 0f0710f56cbe4aeea3d988d6590f6aa4 -->
+<!-- 1ce6a158c8824ce7a13465d0c2661e04 -->
 <g id="node9" class="node">
-<title>0f0710f56cbe4aeea3d988d6590f6aa4</title>
+<title>1ce6a158c8824ce7a13465d0c2661e04</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/git.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="438" y="-127.8"/>
 <text xml:space="preserve" text-anchor="middle" x="483" y="-13" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">git push &#45;u origin main</text>
 <text xml:space="preserve" text-anchor="middle" x="483" y="-1.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">the codebase, including infra/github, uploads itself</text>
 </g>
-<!-- a2e51012741347d0a6983e2356088fa3&#45;&gt;0f0710f56cbe4aeea3d988d6590f6aa4 -->
+<!-- b0f4c51b32504de890b9d507afcb4b02&#45;&gt;1ce6a158c8824ce7a13465d0c2661e04 -->
 <g id="edge8" class="edge">
-<title>a2e51012741347d0a6983e2356088fa3&#45;&gt;0f0710f56cbe4aeea3d988d6590f6aa4</title>
+<title>b0f4c51b32504de890b9d507afcb4b02&#45;&gt;1ce6a158c8824ce7a13465d0c2661e04</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M438.28,-1045.81C383.37,-1037.02 292.42,-1013.21 250.85,-949.8 188.36,-854.46 218.23,-546.03 250.85,-436.8 285.73,-320.01 372.85,-205.97 429.88,-140.14"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="432.32,-142.66 436.27,-132.83 427.06,-138.05 432.32,-142.66"/>
 <text xml:space="preserve" text-anchor="middle" x="220.38" y="-294.2" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">then</text>
 </g>
-<!-- b66e6c80a6924670aab80b43dcdb8cfc -->
+<!-- 20a0d7a610bd445aac5c89f02779b0b5 -->
 <g id="node4" class="node">
-<title>b66e6c80a6924670aab80b43dcdb8cfc</title>
+<title>20a0d7a610bd445aac5c89f02779b0b5</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/ci/github-actions.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="964.75" y="-464.8"/>
 <text xml:space="preserve" text-anchor="middle" x="1009.75" y="-350" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">Actions policy</text>
 <text xml:space="preserve" text-anchor="middle" x="1009.75" y="-338.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">GitHub&#45;owned actions only · no cross&#45;repo access</text>
 </g>
-<!-- 9e5a1deb63924a9b98ed03a7164ce413&#45;&gt;b66e6c80a6924670aab80b43dcdb8cfc -->
+<!-- c0766d6b80264ef29af4f011ecc3d310&#45;&gt;20a0d7a610bd445aac5c89f02779b0b5 -->
 <g id="edge3" class="edge">
-<title>9e5a1deb63924a9b98ed03a7164ce413&#45;&gt;b66e6c80a6924670aab80b43dcdb8cfc</title>
+<title>c0766d6b80264ef29af4f011ecc3d310&#45;&gt;20a0d7a610bd445aac5c89f02779b0b5</title>
 <path fill="none" stroke="#7a7a7a" d="M891.74,-489.57C911.27,-477.93 934.42,-464.12 954.96,-451.87"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="956.71,-454.9 963.51,-446.78 953.13,-448.89 956.71,-454.9"/>
 </g>
-<!-- c72c05c4afae465a829ec8cdd83a295f -->
+<!-- a1af08c0e1e241ff9ccb001007dea409 -->
 <g id="node5" class="node">
-<title>c72c05c4afae465a829ec8cdd83a295f</title>
+<title>a1af08c0e1e241ff9ccb001007dea409</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/github.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="964.75" y="-695.8"/>
 <text xml:space="preserve" text-anchor="middle" x="1009.75" y="-581" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">Dependabot</text>
 <text xml:space="preserve" text-anchor="middle" x="1009.75" y="-569.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">alerts + security updates</text>
 </g>
-<!-- 9e5a1deb63924a9b98ed03a7164ce413&#45;&gt;c72c05c4afae465a829ec8cdd83a295f -->
+<!-- c0766d6b80264ef29af4f011ecc3d310&#45;&gt;a1af08c0e1e241ff9ccb001007dea409 -->
 <g id="edge4" class="edge">
-<title>9e5a1deb63924a9b98ed03a7164ce413&#45;&gt;c72c05c4afae465a829ec8cdd83a295f</title>
+<title>c0766d6b80264ef29af4f011ecc3d310&#45;&gt;a1af08c0e1e241ff9ccb001007dea409</title>
 <path fill="none" stroke="#7a7a7a" d="M891.74,-552.69C911.62,-569.36 935.27,-589.18 956.08,-606.64"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="953.74,-609.24 963.65,-612.98 958.24,-603.88 953.74,-609.24"/>
 </g>
-<!-- 23f651674bb84779aee0e23b3d500cb6 -->
+<!-- c2abd0943f4a4acda72b5f237f6e3fc2 -->
 <g id="node6" class="node">
-<title>23f651674bb84779aee0e23b3d500cb6</title>
+<title>c2abd0943f4a4acda72b5f237f6e3fc2</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/github.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="62.125" y="-317.8"/>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-203" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">ruleset · enable_rulesets=true</text>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-191.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">Pro required on private repos</text>
 </g>
-<!-- 9e5a1deb63924a9b98ed03a7164ce413&#45;&gt;23f651674bb84779aee0e23b3d500cb6 -->
+<!-- c0766d6b80264ef29af4f011ecc3d310&#45;&gt;c2abd0943f4a4acda72b5f237f6e3fc2 -->
 <g id="edge5" class="edge">
-<title>9e5a1deb63924a9b98ed03a7164ce413&#45;&gt;23f651674bb84779aee0e23b3d500cb6</title>
+<title>c0766d6b80264ef29af4f011ecc3d310&#45;&gt;c2abd0943f4a4acda72b5f237f6e3fc2</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M801.81,-486.65C790.34,-479.66 777.8,-472.56 765.75,-466.8 539.17,-358.4 480.28,-323.59 233.5,-276.8 210.83,-272.5 185.45,-271.08 163.48,-270.88"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="163.52,-267.38 153.52,-270.89 163.52,-274.38 163.52,-267.38"/>
 <text xml:space="preserve" text-anchor="middle" x="483" y="-447.23" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">second apply</text>
 </g>
-<!-- ce5db33a4b82492ebba4171553e7dbd8 -->
+<!-- e4abfca9106543baae7c326af2bc0492 -->
 <g id="node8" class="node">
-<title>ce5db33a4b82492ebba4171553e7dbd8</title>
+<title>e4abfca9106543baae7c326af2bc0492</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/github.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="62.125" y="-843.8"/>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-729" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">account default GITHUB_TOKEN = read</text>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-717.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">Actions may not approve PRs</text>
 </g>
-<!-- 9e5a1deb63924a9b98ed03a7164ce413&#45;&gt;ce5db33a4b82492ebba4171553e7dbd8 -->
+<!-- c0766d6b80264ef29af4f011ecc3d310&#45;&gt;e4abfca9106543baae7c326af2bc0492 -->
 <g id="edge7" class="edge">
-<title>9e5a1deb63924a9b98ed03a7164ce413&#45;&gt;ce5db33a4b82492ebba4171553e7dbd8</title>
+<title>c0766d6b80264ef29af4f011ecc3d310&#45;&gt;e4abfca9106543baae7c326af2bc0492</title>
 <path fill="none" stroke="#7a7a7a" stroke-dasharray="5,2" d="M802.05,-532.57C674.48,-581.51 302.78,-724.12 162.54,-777.92"/>
 <polygon fill="#7a7a7a" stroke="#7a7a7a" points="161.55,-774.55 153.47,-781.4 164.06,-781.09 161.55,-774.55"/>
 </g>
-<!-- 2e44fbdd9f9d43e2952c2a9b056b3879 -->
+<!-- 4d03638be74f4b1d823883a0a41e1fd5 -->
 <g id="node7" class="node">
-<title>2e44fbdd9f9d43e2952c2a9b056b3879</title>
+<title>4d03638be74f4b1d823883a0a41e1fd5</title>
 <image xlink:href="/opt/homebrew/lib/python3.14/site-packages/resources/onprem/vcs/github.png" width="90px" height="90px" preserveAspectRatio="xMinYMin meet" x="62.125" y="-612.8"/>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-498" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">required signatures</text>
 <text xml:space="preserve" text-anchor="middle" x="107.12" y="-486.75" font-family="Helvetica,sans-Serif" font-size="10.00" fill="#2d3436">only after SSH signing works locally</text>
 </g>
-<!-- 23f651674bb84779aee0e23b3d500cb6&#45;&gt;2e44fbdd9f9d43e2952c2a9b056b3879 -->
+<!-- c2abd0943f4a4acda72b5f237f6e3fc2&#45;&gt;4d03638be74f4b1d823883a0a41e1fd5 -->
 <g id="edge6" class="edge">
-<title>23f651674bb84779aee0e23b3d500cb6&#45;&gt;2e44fbdd9f9d43e2952c2a9b056b3879</title>
+<title>c2abd0943f4a4acda72b5f237f6e3fc2&#45;&gt;4d03638be74f4b1d823883a0a41e1fd5</title>
 <path fill="none" stroke="#aeb6be" stroke-dasharray="5,2" d="M107.12,-355.37C107.12,-392.29 107.12,-435.99 107.12,-474.13"/>
 <polygon fill="#aeb6be" stroke="#aeb6be" points="103.63,-473.74 107.13,-483.74 110.63,-473.74 103.63,-473.74"/>
 <text xml:space="preserve" text-anchor="middle" x="97.38" y="-414.7" font-family="Sans-Serif" font-size="13.00" fill="#2d3436">third apply</text>
 </g>
-<!-- 0f0710f56cbe4aeea3d988d6590f6aa4&#45;&gt;9e5a1deb63924a9b98ed03a7164ce413 -->
+<!-- 1ce6a158c8824ce7a13465d0c2661e04&#45;&gt;c0766d6b80264ef29af4f011ecc3d310 -->
 <g id="edge9" class="edge">
-<title>0f0710f56cbe4aeea3d988d6590f6aa4&#45;&gt;9e5a1deb63924a9b98ed03a7164ce413</title>
+<title>1ce6a158c8824ce7a13465d0c2661e04&#45;&gt;c0766d6b80264ef29af4f011ecc3d310</title>
 <path fill="none" stroke="#c7254e" stroke-width="1.8" d="M528,-135.46C594.99,-215.65 722.31,-368.05 793.77,-453.58"/>
 <polygon fill="#c7254e" stroke="#c7254e" stroke-width="1.8" points="790.93,-455.65 800.03,-461.08 796.31,-451.16 790.93,-455.65"/>
 </g>

@@ -8,8 +8,49 @@ locals {
   name = "${var.project}-${var.environment}"
 }
 
+# ---------------------------------------------------------- encryption ------
+# Why a customer-managed key and not alias/aws/sns: CloudWatch Alarms publish to the topic, and
+# the AWS-managed SNS key's policy does not let cloudwatch.amazonaws.com use it. Encrypt the topic
+# with alias/aws/sns and every alarm fires into silence -- "KMS access denied" shows up only in
+# the alarm history. The key policy below is the whole point of the resource.
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+
+resource "aws_kms_key" "alerts" {
+  description             = "${local.name} alert topic encryption"
+  enable_key_rotation     = true
+  deletion_window_in_days = 30
+  tags                    = { Name = "${local.name}-alerts" }
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "AccountAdministration"
+        Effect    = "Allow"
+        Principal = { AWS = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root" }
+        Action    = "kms:*"
+        Resource  = "*"
+      },
+      {
+        Sid       = "CloudWatchAlarmsPublish"
+        Effect    = "Allow"
+        Principal = { Service = "cloudwatch.amazonaws.com" }
+        Action    = ["kms:Decrypt", "kms:GenerateDataKey*"]
+        Resource  = "*"
+      },
+    ]
+  })
+}
+
+resource "aws_kms_alias" "alerts" {
+  name          = "alias/${local.name}-alerts"
+  target_key_id = aws_kms_key.alerts.key_id
+}
+
 resource "aws_sns_topic" "alerts" {
-  name = "${local.name}-alerts"
+  name              = "${local.name}-alerts"
+  kms_master_key_id = aws_kms_key.alerts.id
 }
 
 resource "aws_sns_topic_subscription" "email" {

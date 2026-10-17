@@ -42,11 +42,29 @@ resource "aws_vpc_security_group_ingress_rule" "from_app" {
 # Deliberately no egress rule: the database has no reason to initiate outbound
 # connections, and the data subnets have no default route anyway.
 
+data "aws_caller_identity" "current" {}
+data "aws_partition" "current" {}
+
 resource "aws_kms_key" "db" {
   description             = "${local.name} RDS encryption"
   enable_key_rotation     = true
   deletion_window_in_days = 30
   tags                    = { Name = local.name }
+
+  # An explicit key policy, even though it reproduces the default. The default is implicit and
+  # invisible in review; writing it down is what lets a later "and this service may use it" be a
+  # diff rather than a console change. RDS and Secrets Manager use the key through grants created
+  # by the caller's IAM permissions, so no service principal needs listing here.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid       = "AccountAdministration"
+      Effect    = "Allow"
+      Principal = { AWS = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:root" }
+      Action    = "kms:*"
+      Resource  = "*"
+    }]
+  })
 }
 
 resource "aws_kms_alias" "db" {
@@ -63,10 +81,20 @@ resource "aws_db_parameter_group" "this" {
     value = "1000" # log anything slower than 1s
   }
 
+  # Encryption at rest is storage_encrypted below; this is encryption in transit. Without it a
+  # client that forgets sslmode=require talks to the database in clear text inside the VPC.
+  parameter {
+    name  = "rds.force_ssl"
+    value = "1"
+  }
+
   lifecycle { create_before_destroy = true }
 }
 
 resource "aws_db_instance" "this" {
+  # checkov:skip=CKV_AWS_293: False positive. deletion_protection is `var.environment == "prod"` below; checkov does not evaluate the comparison. Dev stays unprotected so `make destroy` works.
+  # checkov:skip=CKV_AWS_353: False positive. performance_insights_enabled is `var.environment == "prod"` below; same reason.
+  # checkov:skip=CKV_AWS_118: Enhanced monitoring needs a monitoring IAM role and bills per instance for OS-level metrics the dashboard does not use. The free CloudWatch RDS metrics drive the alarms.
   identifier_prefix = "${local.name}-"
 
   engine         = "postgres"
@@ -90,6 +118,10 @@ resource "aws_db_instance" "this" {
   vpc_security_group_ids = [aws_security_group.db.id]
   parameter_group_name   = aws_db_parameter_group.this.name
   publicly_accessible    = false
+
+  # IAM auth lets the instance role mint 15-minute tokens instead of using the master password
+  # at all. Free, and the password in Secrets Manager then exists only for break-glass.
+  iam_database_authentication_enabled = true
 
   multi_az                = var.multi_az
   backup_retention_period = var.backup_retention_days

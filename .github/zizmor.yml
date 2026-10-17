@@ -1,0 +1,9 @@
+# zizmor configuration (https://docs.zizmor.sh/configuration/).
+rules:
+  # zizmor prefers GitHub's newer `$/path` syntax for same-repository actions. actionlint 1.7.12,
+  # which is a required check, rejects that syntax as "ref is missing", so the workflows keep the
+  # long-documented `./path` form. Drop this ignore once actionlint accepts `$/`.
+  self-repository:
+    ignore:
+      - ci.yml
+      - security.yml
