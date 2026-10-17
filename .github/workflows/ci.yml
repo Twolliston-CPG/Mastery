@@ -17,6 +17,11 @@ env:
   # Keep in step with .pre-commit-config.yaml. Checksum is for gitleaks_<ver>_linux_x64.tar.gz.
   GITLEAKS_VERSION: 8.30.1
   GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+  # The ubuntu-24.04 runner image does not ship Terraform, and hashicorp/setup-terraform is not a
+  # GitHub-authored action (infra/github/actions.tf allows nothing else), so it is installed the
+  # same way as gitleaks. Checksum is for terraform_<ver>_linux_amd64.zip from the SHA256SUMS file.
+  TERRAFORM_VERSION: 1.15.8
+  TERRAFORM_SHA256: d25ce7b6902013ad905db3d2eab0be4cd905887fe88b81a6171b8d5503c31f3d
 
 jobs:
   secrets-scan:
@@ -62,14 +67,23 @@ jobs:
 
   terraform-validate:
     name: terraform-validate
-    runs-on: ubuntu-24.04 # Terraform is preinstalled on GitHub-hosted Ubuntu runners
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - run: terraform version
+      - name: Install Terraform (pinned release, checksum verified)
+        run: |
+          set -euo pipefail
+          curl -fsSLo terraform.zip \
+            "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          echo "${TERRAFORM_SHA256}  terraform.zip" | sha256sum -c -
+          mkdir -p "$HOME/.local/bin"
+          unzip -oq terraform.zip terraform -d "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          "$HOME/.local/bin/terraform" version
 
       # One job, not a matrix: the job name is a required status check in
       # infra/github/rulesets.tf, and a matrix would rename it per root.
