@@ -94,7 +94,7 @@ Tick every box before moving to week 2.
 ## Setup checklist (do this first, Monday morning)
 
 ```bash
-bash ../_setup/00-toolchain.sh     # install everything
+bash ../_setup/macos-setup.sh      # install everything (linux-setup.sh on Linux/WSL)
 bash ../_setup/verify.sh           # confirm
 
 mkdir -p ~/mastery/progress

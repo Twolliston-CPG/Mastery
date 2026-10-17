@@ -90,7 +90,7 @@ case "${1:-}" in
   *)         usage >&2; exit 2 ;;
 esac
 
-[[ "$(uname -s)" == "Darwin" ]] || { echo "macOS only. On Debian/Ubuntu use 00-toolchain.sh." >&2; exit 1; }
+[[ "$(uname -s)" == "Darwin" ]] || { echo "macOS only. On Linux use linux-setup.sh." >&2; exit 1; }
 [[ "$EUID" -ne 0 ]] || { echo "Run as your normal user, not with sudo. Homebrew refuses to run as root." >&2; exit 1; }
 
 have_brew() { command -v brew >/dev/null 2>&1; }

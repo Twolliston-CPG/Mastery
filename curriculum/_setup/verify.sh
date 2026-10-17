@@ -22,4 +22,4 @@ echo "== Dev =="
 chk gh; chk pre-commit
 echo
 echo "passed: $pass   missing: $fail"
-[[ $fail -eq 0 ]] && echo "Toolchain ready." || echo "Run 00-toolchain.sh, or install the missing items manually."
+[[ $fail -eq 0 ]] && echo "Toolchain ready." || echo "Run macos-setup.sh or linux-setup.sh (windows-setup.ps1 on Windows), or install the missing items manually."

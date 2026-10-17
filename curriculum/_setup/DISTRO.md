@@ -30,8 +30,8 @@ which path you chose.
 **Gates are distro-neutral.** Gate 1 says "from a fresh VM"; either distro passes. If you are
 job-hunting, do the gate itself on Ubuntu even if you studied on Arch.
 
-`_setup/00-toolchain.sh` supports macOS and Debian/Ubuntu only — it has no Arch branch. Do not run
-it inside the Arch VM; install what each lab needs with `pacman`, per the table below.
+The setup scripts (`macos-setup.sh`, `linux-setup.sh`) install the *workstation* toolchain. Do not run
+them inside the lab VM; install what each lab needs there with `pacman`, per the table below.
 
 ---
 
@@ -211,7 +211,7 @@ These explain most of the surprises; the table below is just their consequences.
 | Week 3 — Nginx site layout | `/etc/nginx/sites-available/` + `sites-enabled/`, a `default` site to remove | Neither directory exists; one stock `server` block lives in `nginx.conf`. See below |
 | Week 3 — Nginx worker user | `www-data` | `http` |
 | Week 3 — certbot | `sudo apt install -y certbot python3-certbot-nginx` | `sudo pacman -S certbot certbot-nginx` |
-| Week 4 — Docker | Installed by `00-toolchain.sh` (the `get.docker.com` script) | `sudo pacman -S docker docker-compose docker-buildx`, then `sudo systemctl enable --now docker` |
+| Week 4 — Docker | Docker's apt repository, pinned to its signing key (the Week 4 lab) | `sudo pacman -S docker docker-compose docker-buildx`, then `sudo systemctl enable --now docker` |
 | Anywhere — admin group | `sudo` | `wheel` |
 | Anywhere — creating users | `adduser` (interactive wrapper) | `useradd -m` only |
 | Anywhere — text logs | `/var/log/syslog`, `/var/log/auth.log` | Journal only: `journalctl`, `journalctl -u sshd` |

@@ -88,7 +88,11 @@ if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
   Set-ExecutionPolicy Bypass -Scope Process -Force
   # Chocolatey's documented install command; forces TLS 1.2 on older Windows.
   [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-  Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  # Downloaded to a file first so that what runs is what was fetched, and can be read
+  # before it runs -- the same rule linux-setup.sh applies to the Homebrew installer.
+  $installer = Join-Path ([System.IO.Path]::GetTempPath()) "chocolatey-install-$PID.ps1"
+  Invoke-WebRequest -Uri 'https://community.chocolatey.org/install.ps1' -OutFile $installer -UseBasicParsing
+  try { & $installer } finally { Remove-Item $installer -ErrorAction SilentlyContinue }
 }
 
 $chocoRoot = if ($env:ChocolateyInstall) { $env:ChocolateyInstall } else { Join-Path $env:ProgramData 'chocolatey' }

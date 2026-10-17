@@ -35,10 +35,10 @@ Open 30 job postings for your target titles, in your actual market. Then answer:
 
 ```bash
 cd curriculum/_setup
-bash 00-toolchain.sh        # installs everything (macOS or Debian/Ubuntu)
-# Fuller, self-contained alternatives with a --check mode:
-#   bash macos-setup.sh      macOS
-#   bash linux-setup.sh      Debian/Ubuntu (incl. WSL 2) or Arch
+bash macos-setup.sh         # macOS
+bash linux-setup.sh         # Debian/Ubuntu (incl. WSL 2) or Arch
+# Windows: .\windows-setup.ps1 in an elevated PowerShell
+# Each has a --check mode that reports what is missing and installs nothing.
 bash verify.sh              # confirms it
 ```
 

@@ -1,0 +1,2 @@
+03-teardown.sh skips any Terraform directory that contains this file.
+This directory manages the GitHub repository itself. prevent_destroy already refuses; this file keeps the nightly run from even trying.

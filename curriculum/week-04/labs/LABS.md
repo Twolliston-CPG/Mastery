@@ -288,7 +288,7 @@ when asked about resilience.
 
 # Lab 3 — Docker: What a Container Actually Is (3h)
 
-> **Arch path:** `00-toolchain.sh` does not run on Arch, so install Docker on the VM yourself:
+> **Arch path:** the setup scripts install the workstation toolchain, not Docker on the lab VM, so install it there yourself:
 > `sudo pacman -S docker docker-compose docker-buildx`, `sudo systemctl enable --now docker`,
 > `sudo usermod -aG docker "$USER"`, then log out and back in.
 
