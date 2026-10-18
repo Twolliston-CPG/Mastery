@@ -12,3 +12,11 @@ require_signed_commits = false
 # security.yml, every one seen green on the runner. Override here only to drop a job that has
 # started failing for an environmental reason while it is fixed:
 # required_status_checks = ["secrets-scan", "content-checks", "terraform-validate"]
+
+# Access as code (collaborators.tf). Authoritative once manage_collaborators = true: anyone with
+# access who is not listed is removed. Import the existing list first (steps in collaborators.tf).
+# manage_collaborators = true
+# collaborators = {
+#   "octocat"  = "push"
+#   "hubot"    = "push"
+# }

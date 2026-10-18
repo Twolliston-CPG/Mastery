@@ -1,0 +1,9 @@
+# Copy to .envrc (gitignored) and run `direnv allow`. See state/README.md.
+#
+# Every `terraform init` in this directory and in image/ then passes the backend file itself,
+# so Terraform never prompts for the bucket name. The path is absolute on purpose: direnv
+# inherits the variable into image/, where a relative backend.hcl would not exist.
+export TF_CLI_ARGS_init="-backend-config=$PWD/backend.hcl"
+
+# Never prompt. A missing value becomes an error with a message instead of a hung terminal.
+export TF_INPUT=0

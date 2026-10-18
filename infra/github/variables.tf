@@ -54,3 +54,20 @@ variable "required_status_checks" {
     "actions-lint", "shell-lint", "iac-scan",
   ]
 }
+
+variable "manage_collaborators" {
+  description = "Make var.collaborators the complete, authoritative list of people with access (anyone not listed is removed). Off by default; see collaborators.tf for the adoption steps."
+  type        = bool
+  default     = false
+}
+
+variable "collaborators" {
+  description = "GitHub login -> permission for everyone except the owner. On a personal account the only meaningful value is \"push\" (write); pull/triage/maintain exist for organization repositories."
+  type        = map(string)
+  default     = {}
+
+  validation {
+    condition     = alltrue([for _, p in var.collaborators : contains(["pull", "triage", "push", "maintain", "admin"], p)])
+    error_message = "Permissions must be one of pull, triage, push, maintain, admin."
+  }
+}

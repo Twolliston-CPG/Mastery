@@ -86,6 +86,11 @@ jobs:
       - name: actionlint
         run: actionlint -no-color -shellcheck shellcheck .github/workflows/*.yml
 
+      # Actions validates; it never applies. Fails on any deploy verb, cloud login action, OIDC
+      # token grant, or credential variable in a workflow GitHub runs.
+      - name: no deploy path from Actions
+        run: bash .github/scripts/no-deploy-from-actions.sh
+
       # Supply-chain posture of the workflows and the composite action: unpinned actions,
       # template injection, credential persistence, cache poisoning, known-vulnerable versions.
       - name: zizmor
