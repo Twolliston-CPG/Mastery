@@ -322,7 +322,7 @@ monthly image this should not happen; it is the symptom of starting from an old 
 ### 12. Take the `clean` snapshot
 
 ```bash
-gcloud compute disks snapshot lab --zone=us-central1-a --snapshot-names=clean
+gcloud compute disks snapshot lab --zone=us-east1-b --snapshot-names=clean
 ```
 
 You now have what Week 1, Lab 1 asks for. Go back to the lab.
@@ -332,14 +332,32 @@ You now have what Week 1, Lab 1 asks for. Go back to the lab.
 ## Every session
 
 ```bash
-gcloud compute instances start lab --zone=us-central1-a     # the schedule stopped it overnight
-$(terraform -chdir=curriculum/_setup/gcp-lab output -raw ssh_command)
+# if previously stopped
+gcloud compute instances start lab --zone=us-east1-b 
+
+or 
+# if previously paused
+gcloud compute instances resume lab --zone=us-east1-b 
+
+    # the schedule stopped it overnight
+    # connect to the GCP instance
+$(terraform -chdir=/Users/Twolliston/Documents/twots/curriculum/_setup/gcp-lab output -raw ssh_command)
+
+or
+
+# working command must be in gcp lab
+# connect to the GCP instance
+$(terraform output -raw ssh_command) 
 ```
 
 When you finish, stop it yourself instead of waiting for midnight:
 
 ```bash
-gcloud compute instances stop lab --zone=us-central1-a
+gcloud compute instances stop lab --zone=us-east1-b
+
+or
+
+gcloud compute instances suspend lab --zone=us-east1-b
 ```
 
 The external IP changes on every start. Nothing in weeks 1–2 depends on it.
@@ -350,7 +368,7 @@ The external IP changes on every start. Nothing in weeks 1–2 depends on it.
 
 | Lab step | What to do |
 |---|---|
-| "Snapshot your VM first" (every break/fix lab) | `gcloud compute disks snapshot lab --zone=us-central1-a --snapshot-names=pre-bf1` |
+| "Snapshot your VM first" (every break/fix lab) | `gcloud compute disks snapshot lab --zone=us-east1-b --snapshot-names=pre-bf1` |
 | Week 2 — SSH config and hardening | Use the `Host lab` block and the `AllowUsers` warning in [`../DISTRO.md`](../DISTRO.md#week-2--ssh-to-the-gcp-vm) |
 | Week 3 — open web ports | Set `open_web = true` in `terraform.tfvars`, then `terraform apply` |
 | Week 3 — stop exposing web ports | Set it back to `false` and apply again |
@@ -374,7 +392,7 @@ the VM), and the serial console is enabled — set `enable_serial_console = true
 `terraform.tfvars` and `terraform apply`. Then:
 
 ```bash
-gcloud compute connect-to-serial-port lab --zone=us-central1-a
+gcloud compute connect-to-serial-port lab --zone=us-east1-b
 ```
 
 Set it back to `false` and apply when the week is done. An interactive serial console is a second
