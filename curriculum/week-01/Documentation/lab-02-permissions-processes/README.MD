@@ -1,13 +1,13 @@
 # Lab 2 — Permissions, Users, and Processes (Step-by-Step Guide)
 
 > Source: `curriculum/week-01/labs/lab-02-permissions-processes.md`
-> Time: ~3 hours · Environment: **macOS (Apple Silicon) host** + **Arch Linux VM**
+> Time: ~3 hours · Environment: **macOS host** + **Arch Linux VM on GCP** (`lab`, project `twollist-twots-lab`, zone `us-east1-b`)
 
 Every step is tagged with where you run it:
 
 | Tag | Meaning |
 |---|---|
-| 🍎 **[macOS]** | Run on your Mac (Terminal app or your VM app) |
+| 🍎 **[macOS]** | Run on your Mac, in Terminal (`gcloud` is installed here, not on the VM) |
 | 🐧 **[Arch VM]** | Run inside the Arch Linux VM, logged in as your normal user (`arch`), **not root** |
 | ✍️ **Your answer** | A space for you to write. Type directly under the prompt |
 
@@ -19,30 +19,21 @@ Every step is tagged with where you run it:
 ## Part 0 — Get into the VM (10 min)
 
 ### Step 0.1 — Start the VM · 🍎 [macOS]
-Your VM is currently stopped. Start it from your VM app (UTM, Parallels, or VMware Fusion): select the
-Arch VM and click **Play / Start**.
-
-If you use UTM, you can also start it from Terminal (replace `Arch` with your VM's name):
+Your VM is currently stopped. Start it:
 ```bash
-/Applications/UTM.app/Contents/MacOS/utmctl list
-/Applications/UTM.app/Contents/MacOS/utmctl start "Arch"
+gcloud compute instances start lab --zone=us-east1-b
 ```
 
-### Step 0.2 — Log in on the VM console and get its IP · 🐧 [Arch VM]
-Log in as `arch` in the VM window, then:
+### Step 0.2 — SSH in through IAP · 🍎 [macOS]
+The VM has no public SSH port, so you connect through Identity-Aware Proxy:
 ```bash
-ip -br a                            # note the IP on the non-"lo" interface, e.g. 192.168.64.5
-sudo systemctl enable --now sshd    # make sure SSH is running (one-time)
+gcloud compute ssh arch@lab --zone us-east1-b --project twollist-twots-lab --tunnel-through-iap
 ```
+The prompt changes to `[arch@lab ~]$`. From here on, every 🐧 step is typed into this SSH session.
+> If it fails with `4003: failed to connect to backend`, the VM is still booting. Wait a minute and
+> run it again.
 
-### Step 0.3 — SSH in from your Mac (recommended) · 🍎 [macOS]
-SSH lets you copy/paste and use your Mac's terminal. Replace the IP with yours:
-```bash
-ssh arch@192.168.64.5
-```
-From here on, every 🐧 step is typed into this SSH session.
-
-### Step 0.4 — Check sudo and install the tools this lab needs · 🐧 [Arch VM]
+### Step 0.3 — Check sudo and install the tools this lab needs · 🐧 [Arch VM]
 ```bash
 sudo -v                                     # should ask for your password, then return silently
 sudo pacman -Syu --needed psmisc htop nano  # pstree, htop, and an editor for visudo
@@ -357,7 +348,7 @@ Prove it survives logout:
 exit                       # 🐧 log out of SSH
 ```
 ```bash
-ssh arch@<VM-IP>           # 🍎 [macOS] log back in
+gcloud compute ssh arch@lab --zone us-east1-b --project twollist-twots-lab --tunnel-through-iap   # 🍎 [macOS] log back in
 ```
 ```bash
 pgrep -af long_task        # 🐧 still running?
@@ -472,6 +463,9 @@ sudo gpasswd -d $USER deployers && sudo groupdel deployers   # optional
 
 ### Shut down the VM · 🐧 [Arch VM] then 🍎 [macOS]
 ```bash
-sudo systemctl poweroff      # 🐧 cleanly powers off the VM (your SSH session will drop)
+exit                         # 🐧 leave the SSH session and get back to the Mac prompt
 ```
-Confirm in your VM app on the Mac that the VM shows as **Stopped**.
+```bash
+gcloud compute instances stop lab --zone=us-east1-b    # 🍎 [macOS]
+gcloud compute instances list                          # 🍎 [macOS] lab should show TERMINATED
+```
