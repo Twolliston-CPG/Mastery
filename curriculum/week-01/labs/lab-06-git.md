@@ -135,7 +135,7 @@ takes 3-4 tests, 1000 commits takes 10.
 ## Part 4 — Publish the deliverable (60 min)
 
 ```bash
-cd ~/mastery/sysreport    # or wherever lab 4 lives
+cd ~/mastery-progress/sysreport    # or wherever lab 4 lives
 git init && git branch -M main
 
 cat > .gitignore <<'EOF2'

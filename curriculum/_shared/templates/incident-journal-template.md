@@ -3,7 +3,7 @@
 > One entry per break/fix scenario, written on Friday while it is fresh. Target about 50 by week
 > 26. Every entry is a STAR story source (`_shared/templates/STAR-story-template.md`); the
 > **Prevent** line is what separates a fixer from a hire, and the **Surprised** line marks the edge
-> of your mental model. Lives at `~/mastery/progress/incident-journal.md`.
+> of your mental model. Lives at `~/mastery-progress/progress/incident-journal.md`.
 
 Format, one block per scenario (`BF-NN` from `_shared/breakfix/`, or `OWN-NN` for something you
 broke yourself):

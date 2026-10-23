@@ -2,7 +2,7 @@
 
 > A lightweight ADR log: one row for every non-obvious choice across Alpha, Bravo, and Charlie.
 > The column that matters is **alternatives rejected, and why** — that is the staff-level signal in
-> an interview, and it is the first thing you forget. Lives at `~/mastery/progress/decisions.md`.
+> an interview, and it is the first thing you forget. Lives at `~/mastery-progress/progress/decisions.md`.
 
 | Date | Week | Project | Decision | Alternatives rejected, and why | Revisit when |
 |---|---|---|---|---|---|

@@ -2,7 +2,7 @@
 
 > One row per week, written on Sunday. The column that matters is **what surprised me**: surprise
 > is where your model was wrong, and by week 26 these cells are the honest record of what you
-> learned. Lives at `~/mastery/progress/progress.md`; copied from `_shared/templates/`.
+> learned. Lives at `~/mastery-progress/progress/progress.md`; copied from `_shared/templates/`.
 
 ## Weekly rows
 

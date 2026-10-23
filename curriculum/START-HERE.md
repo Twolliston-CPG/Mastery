@@ -58,7 +58,7 @@ reminder: "check AWS bill."** For 26 weeks. A surprise $400 bill in week 6 ends 
 
 ```bash
 T="$(pwd)/_shared/templates"          # run from the curriculum/ folder
-mkdir -p ~/mastery/progress && cd ~/mastery && git init
+mkdir -p ~/mastery-progress/progress && cd ~/mastery-progress && git init
 cp "$T/progress-template.md"         progress/progress.md
 cp "$T/incident-journal-template.md" progress/incident-journal.md
 cp "$T/decisions-template.md"        progress/decisions.md
