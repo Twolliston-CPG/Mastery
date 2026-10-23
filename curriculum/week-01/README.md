@@ -108,7 +108,7 @@ bash ../_setup/macos-setup.sh      # install everything (linux-setup.sh on Linux
 bash ../_setup/verify.sh           # confirm
 
 T="$(pwd)/../_shared/templates"      # run from curriculum/week-01/
-mkdir -p ~/mastery/progress && cd ~/mastery && git init
+mkdir -p ~/mastery-progress/progress && cd ~/mastery-progress && git init
 cp "$T/PROJECT-README-template.md"   README.md
 cp "$T/progress-template.md"         progress/progress.md
 cp "$T/incident-journal-template.md" progress/incident-journal.md

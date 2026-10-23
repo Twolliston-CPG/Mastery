@@ -40,7 +40,7 @@
 
 ## Log each one
 
-Append to `~/mastery/progress/incident-journal.md`:
+Append to `~/mastery-progress/progress/incident-journal.md`:
 
 ```markdown
 ## BF-01 - Disk full  (week 1, __ min)

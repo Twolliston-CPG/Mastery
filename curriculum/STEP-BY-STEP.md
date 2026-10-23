@@ -18,7 +18,7 @@ Do all of [`START-HERE.md`](START-HERE.md). Summarised, so you can check it off:
       cloud track now. Decide once; re-litigating in month 3 costs a month
 - [ ] Pick a cert track (A/B/C) from [`../CERTIFICATIONS.md`](../CERTIFICATIONS.md) §4
 - [ ] `cd _setup && bash macos-setup.sh && bash verify.sh` (`linux-setup.sh` on Linux/WSL, `windows-setup.ps1` on Windows)
-- [ ] Create `~/mastery/progress/` from the three templates in [`_shared/templates/`](_shared/templates/) (`progress`, `incident-journal`, `decisions`)
+- [ ] Create `~/mastery-progress/progress/` from the three templates in [`_shared/templates/`](_shared/templates/) (`progress`, `incident-journal`, `decisions`)
 - [ ] Buy a domain (~$12). Best $12 in the program
 - [ ] Import the Anki decks from [`_shared/anki/`](_shared/anki/)
 - [ ] **Recurring Monday reminder: "check AWS bill."** For 26 weeks
