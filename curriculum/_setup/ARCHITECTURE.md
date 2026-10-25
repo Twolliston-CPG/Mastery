@@ -173,6 +173,8 @@ family name on purpose; the provider suppresses a needless VM rebuild only when 
 **Teach it.** *"A checksum matched. Is the image safe?"* No. The checksum came from the same server
 as the file. Explain which link in the chain the signature protects and which it does not.
 
+The runbook for this chain is [`gcp-lab/image/README.md`](gcp-lab/image/README.md).
+
 ---
 
 ## Figure 6 — AWS lab topology

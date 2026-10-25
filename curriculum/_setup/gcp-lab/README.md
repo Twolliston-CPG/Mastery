@@ -4,9 +4,11 @@
 > marked **Arch** apply only to the Arch path. Background and the Ubuntu/Arch differences are in
 > [`../DISTRO.md`](../DISTRO.md).
 
-**Status: `state/` and `image/` applied (image `arch-20261001`); the lab plans cleanly and has
-not yet been applied.** All three configurations pass `terraform validate`. Steps 10 onward have
-not been run end-to-end; anything marked *untested* is exactly that.
+**Status (2026-10-25): the state bucket exists; `image/` and the lab were each applied once and
+later destroyed, so both state objects are empty and nothing is running.** All three
+configurations pass `terraform validate`; the image pipeline has been run end to end twice
+(builds `20261001` and `20261015`). To start again: step 8 (Arch) or step 9 (Ubuntu). Steps 10
+onward have not been run end-to-end on a VM; anything marked *untested* is exactly that.
 
 ## What you get
 
@@ -168,21 +170,11 @@ What you trade for that: the official image has cloud-init but not Google's gues
 not in Arch's repositories. The differences that follow are listed under [what is different on
 Arch](#what-is-different-on-arch) below. None of them block the labs.
 
-#### What `image/` does
+#### Build and import it
 
-| Stage | Tool | What happens |
-|---|---|---|
-| Find | `fetch.sh` (macOS, Linux) or `fetch.ps1` (Windows) | Reads the mirror's `latest/` listing for the current build number. `BUILD=20261001.604814 bash fetch.sh` or `.\fetch.ps1 -Build 20261001.604814` pins one |
-| Verify | `shasum`, `gpgv` | SHA256 must match, and the file must carry a valid signature from the pinned arch-boxes key shipped in `image/arch-boxes.asc`. Anything else stops the script. Details under [verifying what you download](#verifying-what-you-download) |
-| Convert | `qemu-img` | qcow2 → raw, padded to a whole GiB as Compute Engine requires |
-| Package | `tar` | A gzip tarball containing one file named `disk.raw`, the only format the image API imports |
-| Upload | Terraform | Into a staging bucket, `<project>-images`, separate from the state bucket. The tarball stays there (about a cent a month) so Terraform never fights an expiry rule; a new build replaces it |
-| Create | Terraform | `google_compute_image` named `arch-<date>`, family `arch`, declared UEFI-, gVNIC-, and multiqueue-SCSI-capable |
-
-The image name contains the family name on purpose: the lab's VM references the family, and the
-provider suppresses a needless rebuild only when the resolved image name contains it.
-
-#### Instructions
+The full walkthrough — every stage, the two checks and what each proves, pinning a build, the
+monthly refresh, rollback, the key refresh in May 2027, troubleshooting, teardown — is
+[**`image/README.md`**](image/README.md). The short form:
 
 **macOS / Linux**
 
@@ -191,80 +183,22 @@ brew install qemu gnupg                             # qemu-img converts; gpgv ve
 ssh-keygen -t rsa -b 4096 -f ~/.ssh/google_compute_engine -N ''   # if it does not exist; see step 10 for why
 
 cd image
-bash fetch.sh                                       # ~600 MB download, a minute to convert
+bash fetch.sh                                       # find, download (~570 MB), verify, convert, package
 terraform init -backend-config=../backend.hcl       # state in the same bucket, prefix "image"
 terraform plan                                      # 2 API enablements, staging bucket, tarball object, image
 terraform apply -var project_id=$PROJECT_ID         # upload plus image creation: 5-10 minutes
-terraform output image                              # arch-20261001 (2 GB, family arch)
+terraform output image                              # arch-20261015 (2 GB, family arch)
 cd ..
 ```
 
-**Windows** (PowerShell, not Git Bash — the script is a PowerShell port of `fetch.sh` with the
-same checks and the same pinned key). *Untested on Windows*: the logic has been run under
-PowerShell on macOS; the Windows-specific parts, install paths and `tar.exe`, have not.
+**Windows** (PowerShell, not Git Bash; `choco install qemu gnupg -y`, then a new terminal):
+`.\fetch.ps1` in place of `bash fetch.sh`, `$env:PROJECT_ID` in place of `$PROJECT_ID`, everything
+else identical. *Untested on Windows*: the script has been run under PowerShell on macOS only.
 
-```powershell
-choco install qemu gnupg -y          # elevated PowerShell. gnupg is the command-line GnuPG, not gpg4win
-# open a NEW terminal: the installers change PATH, and the current session does not see it
-ssh-keygen -t rsa -b 4096 -f $HOME\.ssh\google_compute_engine -N '""'   # if it does not exist
-
-cd image
-.\fetch.ps1                                        # same stages as fetch.sh
-terraform init -backend-config=../backend.hcl
-terraform plan
-terraform apply -var project_id=$env:PROJECT_ID
-terraform output image
-cd ..
-```
-
-If `qemu-img` or `gpgv` is still not found after a new terminal, the installer did not add
-itself to PATH. The script also looks in `C:\Program Files\qemu` and
-`C:\Program Files (x86)\GnuPG\bin`, which is where the two installers put things by default; if
-you installed elsewhere, add that folder to PATH. `tar.exe` and `curl.exe` ship with Windows 10
-1803 and later, so nothing else is needed. Everything from `terraform init` on is identical to
-the macOS path, and the resulting tarball is byte-for-byte the same format.
-
-`fetch.sh` checks for its tools before downloading anything, skips downloads it already has,
-re-verifies, and reuses the tarball if this build's already exists, so a re-run is a few seconds and
-changes nothing Terraform would re-upload. Delete the tarball to force a rebuild. Downloads, the dearmored key, and the tarball live in `image/_build/`;
-`build.auto.tfvars`, the two lines Terraform reads, sits next to `main.tf`. Both are ignored by
-git. Delete `_build/` after a successful apply if you want the 3 GB back.
-
-#### Verifying what you download
-
-Two checks run, and they prove different things:
-
-- **The SHA256** is fetched from the same mirror as the image. A match proves the download is not
-  corrupt. It proves nothing about who made the file.
-- **The PGP signature** is the provenance check. Arch's CI signs every cloud image with the
-  `arch-boxes <arch-boxes@archlinux.org>` key. That key's public half is in `image/arch-boxes.asc`,
-  and the script accepts an image only if `gpgv` reports a valid signature **and** the signing
-  key's primary fingerprint is `1B9A 1698 4A4E 8CB4 4871 2D2A E0B7 8BF4 326C 6F8F`. A signature by
-  any other key, an expired key, or no signature stops the script with
-  `image is NOT signed by the pinned arch-boxes key`.
-
-Where the trust comes from: the key is copied from the arch-boxes project README, which embeds
-it under "Every release is signed by our CI with the following key". It is **not** certified by
-Arch's master keys and is not on keys.openpgp.org, so a bare `gpg --verify` cannot find it; that
-is why it ships here. Its signing subkey expires in **May 2027**. When it does, or if the project
-rotates keys, the header of `arch-boxes.asc` has the one-line command to pull the current key from
-the README. Compare the primary fingerprint before committing the new file: a changed primary
-means a changed owner, and deserves a look at the project's announcements.
-
-The check uses `gpgv` with a dearmored copy of that one key, not your keyring. Nothing is
-imported into `~/.gnupg`, no gpg-agent starts, and the result cannot be swayed by what else you
-trust. `SKIP_GPG=1 bash fetch.sh` bypasses the signature for the rare case the key really has
-rotated and you have confirmed the new one by hand; it warns loudly and should never be the
-normal path.
-
-#### Keeping it current
-
-Re-run `bash fetch.sh && terraform apply` in `image/` when a new monthly build is out. Terraform
-creates the new image first, points the family at it, then deletes the old one. The running VM
-is not touched — its disk was copied from the old image when it was created — and its next
-`pacman -Syu` is what brings it current. The new image is used the next time the VM is rebuilt,
-so a Gate 1 "from a fresh VM" rebuild is the natural moment to refresh. Monthly is plenty; the
-first upgrade on a VM built from a one-month-old image takes a minute.
+Two things to know before moving on. `fetch.sh` refuses any image that is not signed by Arch's
+pinned release key, and a checksum match alone is not that proof. And the image is yours: re-run
+`bash fetch.sh && terraform apply` in `image/` when a new monthly build is out; the running VM is
+untouched and the new build is used at the next rebuild.
 
 #### What is different on Arch
 
@@ -506,7 +440,7 @@ destroy the lab with `terraform destroy -var lookup_image=false`.
 | `backend.tf` | Tells Terraform to keep state in the Cloud Storage bucket |
 | `backend.hcl` | Created in step 6: the bucket's name. Not committed |
 | `.envrc.example` | Copy to `.envrc` (not committed) so `terraform init` passes `backend.hcl` itself and never prompts. See `state/README.md` |
-| `image/` | Arch only, step 8. `fetch.sh` downloads and converts the newest Arch cloud image; `main.tf` uploads it and creates the custom image under family `arch`. Applied before the lab, re-applied for newer builds |
+| `image/` | Arch only, step 8. `fetch.sh` downloads, verifies and converts the newest Arch cloud image; `main.tf` uploads it and creates the custom image under family `arch`. Applied before the lab, re-applied for newer builds. **[`image/README.md`](image/README.md)** is the step-by-step runbook |
 | `image/fetch.ps1` | Windows port of `fetch.sh`: same stages, checks, and outputs, in PowerShell 5.1+. Tools via `choco install qemu gnupg`. Not yet run on Windows |
 | `image/arch-boxes.asc` | The public key Arch's CI signs cloud images with, copied from the arch-boxes project README. `fetch.sh` refuses an image not signed by it. The header says how to refresh it when the signing subkey expires (May 2027) |
 | `state/` | Independent configuration that creates the state bucket. Applied once, before the lab. Its own state is a local file in that folder — keep it, or re-import per the comments in `state/main.tf`. `state/README.md` covers the backend handshake: why `init` prompts, how to stop it, second-machine recovery |

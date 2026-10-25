@@ -54,6 +54,7 @@ Arch itself publishes a fresh [cloud image](https://geo.mirror.pkgbuild.com/imag
 month, with cloud-init. The Terraform lab imports that into your own project as a custom image
 (`gcp-lab/image/`), so the VM starts from a current build and the first `pacman -Syu` is small.
 The manual `gcloud` path below uses the 2022 community image; expect a long first upgrade.
+Building the image, step by step, is [`gcp-lab/image/README.md`](gcp-lab/image/README.md).
 
 ### Create it
 
@@ -101,7 +102,7 @@ cd curriculum/_setup/gcp-lab
 gcloud auth application-default login          # Terraform's credentials, separate from `gcloud auth login`
 cp terraform.tfvars.example terraform.tfvars   # set project_id, and distro = "arch" for the Arch path
 (cd state && terraform init && terraform apply -var project_id=YOUR_PROJECT && terraform output -raw backend_config > ../backend.hcl)
-(cd image && bash fetch.sh && terraform init -backend-config=../backend.hcl && terraform apply -var project_id=YOUR_PROJECT)   # Arch only
+(cd image && bash fetch.sh && terraform init -backend-config=../backend.hcl && terraform apply -var project_id=YOUR_PROJECT)   # Arch only: gcp-lab/image/README.md
 terraform init -backend-config=backend.hcl && terraform apply
 terraform output image                         # which image build you got, and its age
 terraform output -raw ssh_command
