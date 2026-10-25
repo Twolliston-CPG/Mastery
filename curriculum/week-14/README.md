@@ -69,7 +69,7 @@ kubectl cluster-info --context kind-mastery
 **Local-first.** kind is free and iterates in seconds. EKS comes in week 16, for exactly two weeks.
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 14.2 to 14.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## Exit criteria
 - [ ] Terraform Associate sat

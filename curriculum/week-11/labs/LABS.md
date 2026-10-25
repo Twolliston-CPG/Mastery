@@ -1,5 +1,9 @@
 # Week 11 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (11.2 to 11.6). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — Module Design (3h)

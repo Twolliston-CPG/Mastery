@@ -47,7 +47,7 @@
 chapter and the "Alerting on SLOs" chapter — they are the source for everything in Lab 5.
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 20.2 to 20.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## Exit criteria
 - [ ] App instrumented with a counter, a histogram, and a gauge

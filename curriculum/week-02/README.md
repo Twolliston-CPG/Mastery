@@ -47,7 +47,7 @@ Julia Evans' networking zines, and Beej's Guide to Network Programming (chapters
 
 ## Labs
 
-All labs: [labs/LABS.md](labs/LABS.md) · Solutions: [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+All labs: [labs/LABS.md](labs/LABS.md) · Figures: [labs/FIGURES.md](labs/FIGURES.md) (figures 2.2 to 2.6, one per lab) · Solutions: [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 | # | Lab | Time |
 |---|---|---|

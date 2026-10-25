@@ -42,6 +42,6 @@ weekend. Couldn't answer something about cost optimization? Add a FinOps dashboa
 rejection is a curriculum.
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 26.2 to 26.6, one per activity) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## ★ GATE 6 and the program retrospective — [assessment.md](assessment.md)

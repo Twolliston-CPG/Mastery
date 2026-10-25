@@ -1,5 +1,9 @@
 # Week 21 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (21.2 to 21.5). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — Incident Response (2h)
@@ -153,7 +157,8 @@ Then test it.
 ```bash
 kubectl -n shop delete pod -l app=app --field-selector status.phase=Running \
   --wait=false -o name | head -1
-kubectl -n shop drain-simulate                # or: kubectl drain a node
+kubectl drain "$(kubectl get nodes -o name | tail -1 | cut -d/ -f2)" \
+  --ignore-daemonsets --delete-emptydir-data   # then uncordon it when the experiment is over
 kubectl -n shop exec deploy/app -- sh -c 'kill 1'
 ```
 
@@ -192,7 +197,7 @@ context for what the numbers mean.
 
 # Lab 4 — ⚑ Project Bravo to Acceptance (Thu–Sat)
 
-Full criteria: [`../../PROJECTS.md`](../../../PROJECTS.md) §3.
+Full criteria: [`../../../PROJECTS.md`](../../../PROJECTS.md) §3.
 
 ## The demonstrations that matter
 

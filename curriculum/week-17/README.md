@@ -55,6 +55,6 @@ be clear it's what you're buying.
   plus `_reference/kubernetes/01-foundation/` for the fundamentals domain
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 17.2 to 17.4, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## ★ GATE 4 — [assessment.md](assessment.md)

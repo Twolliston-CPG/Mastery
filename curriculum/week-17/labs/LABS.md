@@ -1,5 +1,9 @@
 # Week 17 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (17.2 to 17.4). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — Rebuild From Memory (Mon, 3h)
@@ -130,8 +134,6 @@ flowchart LR
 ```
 
 </details>
-
-## The STRIDE threat model```
 
 ## The STRIDE threat model
 

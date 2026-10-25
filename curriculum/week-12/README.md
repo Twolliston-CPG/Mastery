@@ -42,7 +42,7 @@
 - `_reference/kubernetes/04-platform/02-cicd-pipelines-exercises-02-github-actions.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) ·
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 12.2 to 12.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) ·
 Reference workflows: [`../projects/alpha-cloud-foundation/.github/workflows/`](../projects/alpha-cloud-foundation/.github/workflows/)
 
 ## Exit criteria

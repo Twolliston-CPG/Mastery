@@ -42,7 +42,7 @@
 - **Drill:** `_shared/drills/kubectl-speed.md` Tiers 2–4, daily
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 15.2 to 15.7, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## Exit criteria
 - [ ] Explain requests vs limits, QoS classes, and why CPU is throttled but memory is killed

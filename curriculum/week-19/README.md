@@ -48,7 +48,7 @@
 - `_reference/devsecops/threat-modeling/templates-compliance-mapping-template.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 19.2 to 19.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## Exit criteria
 - [ ] Conftest policy failing a Terraform plan with a public S3 bucket

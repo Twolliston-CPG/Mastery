@@ -204,7 +204,7 @@ platform for application developers who shouldn't need to learn it are different
 
 ### High level
 <!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
-![High level — diagram](../../../_figures/curriculum-_shared-interview-bank-04-system-design-2-5f5630de.png)
+![High level — diagram](../../../_figures/curriculum-_shared-interview-bank-04-system-design-2-c69d2aac.png)
 
 <details>
 <summary>Diagram source (Mermaid)</summary>

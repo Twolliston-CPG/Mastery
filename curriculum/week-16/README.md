@@ -51,7 +51,7 @@
 - `_reference/devsecops/implementation/cross-cutting-secret-management.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 16.2 to 16.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## Exit criteria
 - [ ] EKS provisioned by Terraform, destroyed and re-created at least twice

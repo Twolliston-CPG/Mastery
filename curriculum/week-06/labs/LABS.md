@@ -1,5 +1,9 @@
 # Week 6 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (6.2 to 6.6). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — Build a VPC by Hand (3h)
@@ -60,8 +64,6 @@ flowchart TB
 > The data tier having **no default route at all** is deliberate, not an omission. A database should
 > never initiate an outbound internet connection; denying it by *routing* rather than by firewall
 > rule means even a misconfigured security group cannot create an exfiltration path.
-
-## Build it```
 
 ## Build it
 

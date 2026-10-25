@@ -1,5 +1,9 @@
 # Week 15 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (15.2 to 15.7). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — Probes, Resources, QoS (3h)
@@ -218,9 +222,26 @@ case $((RANDOM % 5)) in
        '[{"op":"replace","path":"/spec/template/spec/containers/0/livenessProbe/periodSeconds","value":1},
          {"op":"remove","path":"/spec/template/spec/containers/0/startupProbe"}]' ;;
   2) kubectl taint nodes "$(kubectl get nodes -o name | tail -1 | cut -d/ -f2)" broken=yes:NoSchedule ;;
-  3) kubectl -n shop patch statefulset db --type=json -p \
-       '[{"op":"replace","path":"/spec/volumeClaimTemplates/0/spec/storageClassName","value":"nope"}]' ;;
-  4) kubectl -n shop patch svc app -p '{"spec":{"selector":{"app":"wrong"}}}' ;;
+  3) kubectl -n shop apply -f - <<'EOF'
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: { name: scratch }
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: nonexistent
+  resources: { requests: { storage: 1Gi } }
+---
+apiVersion: v1
+kind: Pod
+metadata: { name: scratch-user }
+spec:
+  containers: [{ name: c, image: busybox:1.36, command: [sleep, '3600'],
+                 volumeMounts: [{ name: s, mountPath: /scratch }] }]
+  volumes: [{ name: s, persistentVolumeClaim: { claimName: scratch } }]
+EOF
+     ;;   # volumeClaimTemplates on a live StatefulSet are immutable, so the break is a new claim
+  4) kubectl -n shop patch role pod-reader --type=json -p \
+       '[{"op":"replace","path":"/rules/0/verbs","value":["get"]}]' ;;   # list and watch gone
 esac
 echo "something is broken. go."
 SH

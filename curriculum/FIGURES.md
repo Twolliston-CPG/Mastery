@@ -64,6 +64,55 @@ rather than a cause, and it is the reading to reopen.
 | 25.1 | [The interview kit, and where every piece of it comes from](week-25/content/FIGURE.md) | 11 |
 | 26.1 | [The weekly cadence that carries months 6 to 10](week-26/content/FIGURE.md) | 10 |
 
+## Lab figures
+
+The week figure is the three-minute answer; the lab figures are the thirty-second answers underneath
+it. A week that has them carries `labs/FIGURES.md`, numbered `W.2` upward (one per lab, in lab order),
+each with four parts:
+
+| Part | What it is for |
+|---|---|
+| The figure | Hand-written Mermaid in the house style, badges ① to ⑪ in speaking order, blue path first, orange where it refuses |
+| **Say it, badge by badge** | The spoken script. Each line is a thirty-second interview answer |
+| **Numbers to own** | Every concrete number in the lab, where it comes from, and why it matters. Mastery is being able to say these unprompted |
+| **Prove it** | One command per badge that makes the mechanism visible on your own cluster or account |
+| **The question a senior interviewer asks** | The one question the lab is secretly preparing you for, and which badges answer it |
+
+Redraw cadence is the week's, after the week figure. Lab figures are plain Mermaid, validated by
+`check-diagrams.py` and embedded as PNGs by `embed-figures.py`; they are not generated from a spec and
+are edited by hand (edit the Mermaid inside the `<details>`, then re-run the embed). A struck-through
+title is a lab with no mechanism to draw; its entry says why and what to redraw instead. Every Friday
+break/fix lab shares [Figure BF.0, the diagnostic loop](_shared/breakfix/FIGURE.md).
+
+| Week | Lab figures |
+|---|---|
+| 1 | [1.2 to 1.7](week-01/labs/FIGURES.md) — the VM, the kernel as files, and a find that is safe · the mode bits, the directory x bit, and what a signal does · a log line to a report, the awk pipeline · sysreport.sh, from a strict shell to an exit code · Break/Fix Friday #1, four breaks and the loop they share · what a commit is, and the two ways to undo one |
+| 2 | [2.2 to 2.6](week-02/labs/FIGURES.md) — a unit file to a restarted process, and where its logs go · the SSH door, hardened without locking yourself out, and a disk from a file · a /16 carved for three AZs, and the five addresses AWS keeps · one curl, as packets, states, and timings · Break/Fix Friday #2, four breaks and the loop they share |
+| 3 | [3.2 to 3.7](week-03/labs/FIGURES.md) — a packet out of a private namespace, through NAT, past the firewall · your domain, from the registrar to a cached answer · nginx in front of two backends, and what 502 and 504 each mean · the chain of trust, and the three ways it fails · Break/Fix Friday #3, four breaks and the loop they share · rebase, conflicts, bisect, and a pull request against yourself |
+| 4 | [4.2 to 4.7](week-04/labs/FIGURES.md) — a Python ops CLI, from argparse to an exit code · tests that pin the boundary, a package that installs, a client that cannot hang · a container is a process, and the four things that prove it · 1.2 GB to 20 MB, measured at every step · Break/Fix Friday #4, six container symptoms and the row each belongs to · the Compose stack, the week's deliverable |
+| 5 | [5.2 to 5.6](week-05/labs/FIGURES.md) — ~~Lab 1~~ · how AWS decides, the evaluation order as a ladder · who may become a role, what it may do, and the cap on top · an instance from run-instances to a mounted disk, and a security group that names another · credentials with no keys on disk, and the SSRF that IMDSv2 closes |
+| 6 | [6.2 to 6.6](week-06/labs/FIGURES.md) — what makes a subnet public · NAT, bastion versus Session Manager, and stateful versus stateless · endpoints instead of NAT, and flow logs that bisect · an object's life in a versioned bucket · the layers that keep a bucket private, and Friday |
+| 7 | [7.2 to 7.6](week-07/labs/FIGURES.md) — from the client to a healthy target, and the two ways it fails · the ASG replaces what the health check condemns · the Multi-AZ failover, as a timeline you measured · the table is the index · a function with an ENI, and the timeout that must be shorter |
+| 8 | [8.2 to 8.6](week-08/labs/FIGURES.md) — the life of a message, and the timeout that duplicates it · envelope encryption, and why KMS never sees your data · from a metric to a human, and every link that silently breaks · a private bucket served to the world, and the record that cannot be a CNAME · choose a DR tier, build pilot light, and know what it costs |
+| 9 | [9.2 to 9.6](week-09/labs/FIGURES.md) — the whiteboard, with the badges you narrate in order · ~~Activity 2~~ · from the weakest exam domain to the thing you rebuild · ~~Activity 4~~ · ~~Activity 5~~ |
+| 10 | [10.2 to 10.5](week-10/labs/FIGURES.md) — from HCL to a running instance, and the graph underneath · state, the lock, and the recovery path · import, move, drift, and who did it · Alpha kickoff, the repository skeleton |
+| 11 | [11.2 to 11.6](week-11/labs/FIGURES.md) — a module is an API · count and for_each, before and after removing one · two environments, one set of modules · the gate stack, and a test that tests the guardrail · Break/Fix and the Alpha milestone — a secret in state, rotation first |
+| 12 | [12.2 to 12.6](week-12/labs/FIGURES.md) — a workflow run from trigger to artifact, and the five rules · OIDC federation, the token, two trust policies, and no keys anywhere · the pipeline: gates, queue, approval, and the claim that pins prod · a container build with no keys: ECR, multi-arch, tags, attestations · branch protection that binds admins, and the Alpha milestone |
+| 13 | [13.2 to 13.6](week-13/labs/FIGURES.md) — the alarm path, proven, and the teardown that finds what still bills · the measurements a hiring manager reads in ninety seconds · the clean-account test, and the measured recovery · Terraform Associate prep, the HCP run lifecycle · ~~Lab 5~~ |
+| 14 | [14.2 to 14.6](week-14/labs/FIGURES.md) — a pod from manifest to running, and why delete is not kill · a rollout, and the datapath that reaches it · where a Secret lives, and where it leaks · the diagnostic ladder, describe before logs · the week-4 stack, as Kubernetes objects |
+| 15 | [15.2 to 15.7](week-15/labs/FIGURES.md) — what the kubelet throttles, kills, and restarts · who adds pods, who removes them, and who refuses to place them · a claim from Pending to Bound, and the modes that refuse · RBAC: who, may do what, where · the Gate 4 set, symptom to fault · a chart to a release, revision by revision |
+| 16 | [16.2 to 16.6](week-16/labs/FIGURES.md) — what the EKS module creates, and what it costs · IRSA, the token's path from webhook to STS · two controllers that turn annotations into AWS resources · ArgoCD, the pull loop · three failures, and the bill |
+| 17 | [17.2 to 17.4](week-17/labs/FIGURES.md) — ~~Lab 1~~ · nine symptoms, nine first commands · threat, control, evidence |
+| 18 | [18.2 to 18.6](week-18/labs/FIGURES.md) — three scanners, one hard gate, and the proof that it refuses · five images, measured at every step · SBOM, a signature on the digest, and the admission check that enforces it · the SLSA ladder, and the four attacks it answers · the CVE you cannot fix, and the signature that did not move |
+| 19 | [19.2 to 19.6](week-19/labs/FIGURES.md) — a plan becomes JSON, and a Rego rule refuses it · the admission path, and the two ways it locks you out · default deny, the DNS trap, and the CNI that must enforce it · a rotated secret reaching a file, and a detection rule tuned instead of silenced · a control in code, traced to the requirement an auditor will ask about |
+| 20 | [20.2 to 20.6](week-20/labs/FIGURES.md) — a request becomes three signals, and the one line that keeps metrics small · metric type decides the function · one dashboard that answers in five seconds, and one page instead of fifteen · one request across two services, traced and logged as one investigation · from an SLI to a page, with the arithmetic |
+| 21 | [21.2 to 21.5](week-21/labs/FIGURES.md) — the first ten minutes of an incident · six phases, timed, and the postmortem that changes something · runbooks you have run, chaos with a hypothesis, DORA you measured · the two demonstrations that are the project |
+| 22 | [22.2 to 22.6](week-22/labs/FIGURES.md) — ~~Lab 1~~ · ~~Lab 2~~ · a service.yaml, validated, derived, and refused well · from one command to an open pull request · ~~Lab 5~~ |
+| 23 | [23.2 to 23.6](week-23/labs/FIGURES.md) — the controller flow is already drawn · one contract, nine resources, and the policy nobody wrote by hand · one word becomes a paging decision · one pipeline for every service, and the cost before the merge · deprovisioning in the right order, and what leaks if you reverse it |
+| 24 | [24.2 to 24.5](week-24/labs/FIGURES.md) — ~~Lab 1~~ · the stranger test, and what each hesitation means · ~~Lab 3~~ · ~~Lab 4~~ |
+| 25 | [25.2 to 25.5](week-25/labs/FIGURES.md) — ~~Lab 1~~ · the six-step design method, with its minute budget · ~~Lab 3~~ · ~~Lab 4~~ |
+| 26 | [26.2 to 26.6](week-26/labs/FIGURES.md) — the funnel, and where it stalls · ~~Activity 2~~ · ~~Activity 3~~ · ~~Activity 4~~ · ~~Activity 5~~ |
+
 ## The lab platform and its guardrails
 
 | Figure | Title |

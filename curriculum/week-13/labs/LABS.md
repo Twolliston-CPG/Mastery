@@ -1,11 +1,15 @@
 # Week 13 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (13.2 to 13.6). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — ⚑ Alpha to Acceptance Criteria (Mon–Tue)
 
-Work the checklist from [`../../PROJECTS.md`](../../../PROJECTS.md) §2. Reference implementation:
-[`../projects/alpha-cloud-foundation/`](../../projects/alpha-cloud-foundation/)
+Work the checklist from [`../../../PROJECTS.md`](../../../PROJECTS.md) §2. Reference implementation:
+[`../../projects/alpha-cloud-foundation/`](../../projects/alpha-cloud-foundation/)
 
 ## Remaining build work
 
@@ -60,7 +64,7 @@ CIDRs, IGW/NAT/route direction, ALB, ASG, RDS with Multi-AZ, the S3 endpoint, an
 the account.
 
 <!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
-![The architecture diagram — diagram](../../../_figures/curriculum-week-13-labs-LABS-0-ac4dccc8.png)
+![The architecture diagram — diagram](../../../_figures/curriculum-week-13-labs-LABS-0-307d7c4b.png)
 
 <details>
 <summary>Diagram source (Mermaid)</summary>
@@ -84,17 +88,17 @@ flowchart TB
     PR -->|"OIDC → STS"| MAIN
   end
 
-  subgraph VPC["VPC 10.20.0.0/16 · 3 AZs"]
+  subgraph VPC["VPC 10.20.0.0/16 · 2 AZs"]
     direction TB
-    subgraph PUB["public /24 × 3 · NAT and ALB only"]
+    subgraph PUB["public /24 × 2 · NAT and ALB only"]
       direction LR
       ALB["Application Load Balancer<br/><small>ACM cert · HTTPS only</small>"]:::crit
-      NAT["NAT gateway × 3<br/><small>one per AZ</small>"]:::n
+      NAT["NAT gateway × 2<br/><small>one per AZ</small>"]:::n
     end
-    subgraph APP["app /20 × 3 · sized for pod IPs"]
+    subgraph APP["app /20 × 2 · sized for pod IPs"]
       ASG["ASG t3.small<br/><small>ELB health check · IMDSv2</small>"]:::n
     end
-    subgraph DATA["data /24 × 3 · NO default route"]
+    subgraph DATA["data /24 × 2 · NO default route"]
       RDS[("RDS PostgreSQL<br/><small>Multi-AZ · KMS · 14d backups</small>")]:::data
     end
   end

@@ -37,6 +37,8 @@ failure mode you are training away.
 
 Saying *"I don't know, but here's how I'd find out"* is a **passing answer.** Silence is not.
 
+The loop as a figure, with a spoken script: [`FIGURE.md`](FIGURE.md) (Figure BF.0). Every Friday lab links to it.
+
 ## Logging (non-negotiable)
 
 Every scenario gets an entry in `progress/incident-journal.md`:

@@ -47,7 +47,7 @@
 Paper, and platformengineering.org's maturity model.
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 22.2 to 22.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## Exit criteria
 - [ ] Explain a golden path in 60 seconds, without saying "self-service" more than once

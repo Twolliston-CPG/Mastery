@@ -1,5 +1,9 @@
 # Week 20 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (20.2 to 20.6). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — The Three Signals and Instrumentation (3h)
@@ -352,9 +356,12 @@ repeatedly.
         labels: { severity: ticket }
 ```
 
-**Where 14.4 comes from:** burning the entire 30-day budget in 2 days means consuming at
-`30/2 = 15×`... and the standard Google SRE figure is 14.4, which corresponds to consuming 2% of the
-budget in 1 hour. Two windows (1h **and** 5m) prevent a single brief spike from paging.
+**Where 14.4 comes from:** a burn rate of 1 spends the budget exactly over the 30-day window
+(720 hours). Paging when 2% of the budget goes in one hour means an error ratio 0.02 × 720 = 14.4
+times the SLO's allowance; at that pace the whole budget is gone in 720 / 14.4 = 50 hours, about two
+days. The slow burn is 5% in six hours: 0.05 × 720 / 6 = 6×, budget gone in five days. Two windows
+(1h **and** 5m) prevent a single brief spike from paging: the long window says it has been going on,
+the short one says it still is.
 
 ## Tasks
 1. Define an SLO for your app; compute the budget by hand; verify against the table

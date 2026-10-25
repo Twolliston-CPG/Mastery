@@ -43,7 +43,7 @@
 - **Project:** `phase-1-foundations-projects-project-01-multi-tier-vpc-architecture.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 6.2 to 6.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 | # | Lab | Time | Cost |
 |---|---|---|---|
