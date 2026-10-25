@@ -31,6 +31,12 @@ updates:
     schedule:
       interval: weekly
       day: monday
+    # One pull request per provider across every root above, instead of one per root. The first
+    # weekly run produced eight separate PRs for two provider bumps; a provider's roots must move
+    # together anyway, because the Alpha modules and environments share one constraint line.
+    groups:
+      terraform-providers:
+        patterns: ["*"]
     commit-message:
       prefix: "infra"
 

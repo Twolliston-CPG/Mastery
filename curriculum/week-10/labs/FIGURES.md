@@ -21,7 +21,7 @@
 > Lab 1 · badges ① to ⑪ · about three and a half minutes.
 
 <!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
-![Figure 10.2 — Lab 1: from HCL to a running instance, and the graph underneath — diagram](../../../_figures/curriculum-week-10-labs-FIGURES-0-3ca60c47.png)
+![Figure 10.2 — Lab 1: from HCL to a running instance, and the graph underneath — diagram](../../../_figures/curriculum-week-10-labs-FIGURES-0-75ded282.png)
 
 <details>
 <summary>Diagram source (Mermaid)</summary>
@@ -38,7 +38,7 @@ flowchart TB
 
   subgraph CFG["The configuration · four files, one graph"]
     direction LR
-    VER["① versions.tf<br/><small>required_version ~&gt; 1.9 · aws ~&gt; 5.60 · provider with default_tags</small>"]:::crit
+    VER["① versions.tf<br/><small>required_version ~&gt; 1.9 · aws ~&gt; 6.68 · provider with default_tags</small>"]:::crit
     VAR["② variables.tf<br/><small>type + description · validation: contains dev, staging, prod</small>"]:::n
     DATA["④ data sources<br/><small>aws_ami al2023 most_recent · aws_vpc default · looked up at plan time</small>"]:::data
     EDGE["⑤ the implicit edge<br/><small>aws_security_group.web.id inside aws_instance.web</small>"]:::crit
@@ -85,7 +85,7 @@ flowchart TB
 
 | Number | Where it comes from | Why it matters |
 |---|---|---|
-| `~> 1.9` and `~> 5.60` | versions.tf | pessimistic pins: patch and minor may move, major may not; a plan that changes with no commit is a pin that was too loose |
+| `~> 1.9` and `~> 6.68` | versions.tf | pessimistic pins: patch and minor may move, major may not; a plan that changes with no commit is a pin that was too loose |
 | 3 allowed environments | the validation block | `dev`, `staging`, `prod`; `production` is rejected at plan time with your error message |
 | `t3.micro`, port 80 | the variable default and the security group | the one ingress rule, from anywhere; egress is everything |
 | hop limit `1` | metadata_options | the IMDSv2 setting from week 5 that stops a container or an SSRF reaching the credential endpoint |
