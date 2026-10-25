@@ -362,6 +362,53 @@ The external IP changes on every start. Nothing in weeks 1–2 depends on it.
 
 ---
 
+## Kubeadm nodes (weeks 27 to 30)
+
+The CKA module needs what kind cannot give: a control plane you can break, an etcd you can
+restore from a snapshot, and a cluster you can upgrade one minor with `kubeadm`. Two or three
+small VMs beside the lab VM, in the same subnet with the same guardrails, off until week 27.
+
+| Piece | Detail |
+|---|---|
+| Nodes | `k8s-cp`, then `k8s-w1` and `k8s-w2` as `kubeadm_nodes` goes 1 → 2 → 3. e2-medium (2 vCPU, 4 GB: the smallest shape kubeadm's preflight accepts), 30 GB disk, Ubuntu 24.04 LTS |
+| Network | The lab subnet. Nodes talk to each other on every port (API 6443, etcd 2379–2380, kubelet 10250, the CNI overlay, NodePorts); nothing outside the subnet can reach any of them |
+| SSH | IAP only, OS Login, as the lab VM |
+| API server | Port 6443 open from IAP's range only, for `gcloud compute start-iap-tunnel` from your laptop. Never from the internet |
+| Identity | No service account on any node, so no pod can call a GCP API |
+| Startup script | [`kubeadm-node.sh`](kubeadm-node.sh): swap off, `overlay` and `br_netfilter`, forwarding sysctls, containerd with the systemd cgroup driver, then `kubelet`, `kubeadm` and `kubectl` from pkgs.k8s.io at `kubernetes_minor`, held. **It does not run `kubeadm init` or `join`**; that is week 27 Lab 1, by hand |
+| Auto-stop | The same nightly schedule as the lab VM |
+
+**Turn them on** in `terraform.tfvars`, then apply:
+
+```hcl
+kubeadm_nodes    = 2        # control plane + one worker; 3 adds a second worker
+kubernetes_minor = "1.34"   # one minor BELOW the version the exam tracks
+```
+
+```bash
+terraform apply
+terraform output kubeadm_ssh_commands
+$(terraform output -json kubeadm_ssh_commands | jq -r '."k8s-cp"')
+sudo journalctl -u google-startup-scripts -o cat | tail -5    # ends with "kubeadm node ready: ..."
+```
+
+**The version note.** Set `kubernetes_minor` one below whatever the exam tracks when you book
+it; the exam follows upstream closely and the module's upgrade lab moves the cluster up by one
+minor by hand. Changing the variable later does not touch a running node: the apt repository is
+per minor, and switching it is the first step of that lab.
+
+**Cost.** Two e2-medium nodes for a three-hour session cost well under a dollar; the nightly stop
+covers forgotten sessions. Between weeks, `terraform apply -var kubeadm_nodes=0` removes the
+nodes and keeps the lab VM.
+
+**A broken node** is rebuilt, not repaired, unless repairing it is the lab:
+
+```bash
+terraform apply -replace='google_compute_instance.kubeadm["k8s-w1"]'
+```
+
+---
+
 ## Recovering a broken VM
 
 **Fastest, always works: rebuild.** You lose what was on the VM and get a clean one in about a
@@ -443,6 +490,7 @@ destroy the lab with `terraform destroy -var lookup_image=false`.
 | `versions.tf` | Terraform and provider versions, provider config |
 | `variables.tf` | Every setting, with defaults |
 | `main.tf` | Network, firewall, auto-stop schedule, VM |
+| `kubeadm.tf`, `kubeadm-node.sh` | Opt-in kubeadm nodes for weeks 27–30 and the script that prepares them |
 | `outputs.tf` | SSH command, IP, image build, Arch bootstrap command |
 | `terraform.tfvars.example` | Copy to `terraform.tfvars` |
 | `.teardown-skip` | Tells `03-teardown.sh` to leave this directory alone |

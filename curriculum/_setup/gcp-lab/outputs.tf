@@ -17,3 +17,16 @@ output "bootstrap_command" {
   description = "Arch only: copy arch-bootstrap.sh to the VM. Run from this directory, then `bash arch-bootstrap.sh` on the VM"
   value       = var.distro == "arch" ? "gcloud compute scp ../arch-bootstrap.sh arch@${google_compute_instance.lab.name}:~ --project=${var.project_id} --zone=${var.zone} --tunnel-through-iap" : null
 }
+
+output "kubeadm_ssh_commands" {
+  description = "One IAP-tunnelled SSH line per kubeadm node. Empty when kubeadm_nodes = 0"
+  value = {
+    for name, vm in google_compute_instance.kubeadm :
+    name => "gcloud compute ssh ${vm.name} --project=${var.project_id} --zone=${var.zone} --tunnel-through-iap"
+  }
+}
+
+output "kubeadm_api_tunnel" {
+  description = "Forward the API server to your laptop through IAP, then point kubectl at https://localhost:6443 with the admin.conf copied from the control plane. Null when kubeadm_nodes = 0"
+  value       = var.kubeadm_nodes > 0 ? "gcloud compute start-iap-tunnel k8s-cp 6443 --local-host-port=localhost:6443 --project=${var.project_id} --zone=${var.zone}" : null
+}

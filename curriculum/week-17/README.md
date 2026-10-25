@@ -26,7 +26,7 @@
 | Mon | Rebuild the whole stack in a fresh kind cluster **from memory** |
 | Tue | Gate 4 rehearsal: 5 scenarios, timed, narrated |
 | Wed | **Gate 4, for real.** Then the KCNA decision. |
-| Thu | KCNA prep *or* CKA foundations (whichever you chose) |
+| Thu | KCNA prep *or* **CKA foundations: Lab 4**, kubeadm by hand, once (whichever you chose) |
 | Fri | ⚑ Project Bravo: architecture + STRIDE threat model |
 | Sat | ⚑ Bravo: repo scaffolding + 15 applications |
 | Sun | Month 4 retrospective; plan month 5 |
@@ -36,9 +36,10 @@
 Full analysis: [`../../CERTIFICATIONS.md`](../../CERTIFICATIONS.md) §3.
 
 ```
-Passed Gate 4 comfortably?           -> SKIP KCNA. Bank the ~$250 and ~25 hours toward CKA.
+Passed Gate 4 comfortably?           -> SKIP KCNA. Bank the ~$250 and ~25 hours toward CKA
+                                        (weeks 27-30, the module after Gate 6).
 Gate 4 was a struggle?               -> TAKE KCNA in week 17-18 as a forcing function,
-                                        then target CKA after the first job.
+                                        then take the weeks 27-30 module after the first job.
 ```
 
 **The honest read:** KCNA is an awareness credential. Hiring managers who care about Kubernetes
@@ -55,6 +56,6 @@ be clear it's what you're buying.
   plus `_reference/kubernetes/01-foundation/` for the fundamentals domain
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 17.2 to 17.4, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 17.2 to 17.5, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
 
 ## ★ GATE 4 — [assessment.md](assessment.md)

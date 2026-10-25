@@ -1,6 +1,6 @@
 # Week 17 — Lab figures
 
-> One figure per lab, numbered 17.2 to 17.4. Figure 17.1 is the week figure in
+> One figure per lab, numbered 17.2 to 17.5. Figure 17.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these three go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
@@ -231,6 +231,32 @@ Any row ② to ⑦, in three parts. The trap is stopping after the control: "we 
 
 ---
 
+## Figure 17.5 — Lab 4: no figure
+
+> Thursday, only on the "skip KCNA" branch · kubeadm by hand, once.
+
+The lab is a first encounter, and its figure already exists one module later: **Figure 27.2** draws the
+cluster kubeadm writes, badge by badge, from `init` to an upgraded worker. Do the lab with the file
+closed, then open [`../../week-27/content/FIGURE.md`](../../week-27/content/FIGURE.md) and check which
+of its first five badges you could already name. Those are the ones you own; the rest are week 27.
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 2 CPUs | kubeadm preflight | below it, `init` refuses; the lab nodes are e2-medium for exactly this |
+| 4 static pods | `/etc/kubernetes/manifests` | apiserver, controller-manager, scheduler, etcd, started by the kubelet with no API server involved |
+| 24 hours | the join token | after that, `kubeadm token create --print-join-command` |
+| 1 minor below | `kubernetes_minor` | so week 27 Lab 4 has an upgrade to perform |
+
+### The question a senior interviewer asks
+
+*"Why is a node NotReady right after kubeadm init?"*
+No CNI yet. The kubelet reports the network as
+unconfigured until a CNI plugin writes its config, and nothing is wrong. Say that before installing Calico.
+
+---
+
 ## Redraw schedule
 
-Same cadence as the week figure, see [`../../FIGURES.md`](../../FIGURES.md): this is a gate week, so the Gate 4 Sunday covers figures 14.2 to 17.4 cold; then the Sunday of week 19, and cold again at the Gate 5 Sunday in week 21. Lab figures are redrawn **after** the week figure, one at a time, and only the badge order has to be right; the captions are the check, not the test.
+Same cadence as the week figure, see [`../../FIGURES.md`](../../FIGURES.md): this is a gate week, so the Gate 4 Sunday covers figures 14.2 to 17.5 cold; then the Sunday of week 19, and cold again at the Gate 5 Sunday in week 21. Lab figures are redrawn **after** the week figure, one at a time, and only the badge order has to be right; the captions are the check, not the test.

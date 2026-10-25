@@ -286,6 +286,8 @@ kubectl get pv,pvc -A                                                    # ⑤ B
 kubectl delete statefulset db && kubectl get pvc                         # ⑩ the claims are still there
 ```
 
+**CKA thread.** Lab 3 now ends with a Job (completions 3, parallelism 2, backoffLimit 1) and a CronJob with `concurrencyPolicy: Forbid`, then suspended. Not storage, but the exam's workloads domain; week 28 Lab 4 drills both under a clock.
+
 ### The question a senior interviewer asks
 
 *"Why can't two pods on different nodes share an EBS-backed ReadWriteOnce volume, and what changes with EFS?"*
@@ -552,6 +554,8 @@ helm install shop ./shop -n shop --create-namespace -f values-dev.yaml && helm h
 helm upgrade shop ./shop -n shop -f values-prod.yaml && helm rollback shop 1 -n shop && helm history shop -n shop   # ⑥ ⑧ revisions 2 and 3
 diff values-dev.yaml values-prod.yaml                             # ② only values differ
 ```
+
+**CKA thread.** The lab now adds the same stack as Kustomize overlays, one strategic-merge patch and one JSON patch, applied with `kubectl apply -k`. The exam asks for both tools; week 28 Lab 1 does both timed.
 
 ### The question a senior interviewer asks
 

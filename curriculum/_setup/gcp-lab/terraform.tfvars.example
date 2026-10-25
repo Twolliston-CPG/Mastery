@@ -14,3 +14,9 @@ distro     = "ubuntu" # or "arch" -- see ../DISTRO.md. Choose once: changing it 
 # Arch only. Public key seeded into the VM's metadata for the `arch` user before first boot;
 # cloud-init reads it once. Must exist before apply. README step 8 explains.
 # ssh_public_key_file   = "~/.ssh/google_compute_engine.pub"
+
+# Kubeadm nodes for the CKA module (weeks 27-30). Off until then. README: "Kubeadm nodes".
+# kubeadm_nodes        = 2        # 1 = control plane only; 2 or 3 add workers; 0 removes them
+# kubernetes_minor     = "1.34"   # one minor BELOW the exam's version; week 27 Lab 4 upgrades by hand
+# kubeadm_machine_type = "e2-medium"
+# kubeadm_disk_size_gb = 30

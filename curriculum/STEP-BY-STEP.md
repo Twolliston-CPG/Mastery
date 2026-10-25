@@ -182,6 +182,7 @@ Then write the month's retrospective (the format is at the bottom of each gate's
 | **4** | 14–17 | Kubernetes + EKS | **Apply for jobs from week 14.** Not week 26 — see below |
 | **5** | 18–21 | DevSecOps → **Project BRAVO** | Supply chain, policy, runtime. The differentiator most candidates don't have |
 | **6** | 22–26 | Platform + SRE → **Project CHARLIE** | Observability, IDP, interview reps. Pipeline should be converting |
+| **7** | 27–30 | CKA module, beside the search | Optional, recommended. Book the exam on the Monday of week 27; the second simulator session is Gate 7 |
 
 ### Week 14 is not a typo
 

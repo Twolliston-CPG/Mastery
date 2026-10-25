@@ -128,6 +128,24 @@ implements OS Login.
 default-deny; the IP exists for outbound package installs because Cloud NAT would cost more than
 the VM. Say the trade-off out loud, with the numbers.
 
+### The kubeadm nodes (weeks 27 to 30)
+
+The same VPC grows two or three nodes for the CKA module (`kubeadm_nodes` in
+[`gcp-lab/kubeadm.tf`](gcp-lab/kubeadm.tf)), because kind cannot offer a kubelet to stop, an etcd
+to restore, or a `kubeadm upgrade` to run. Every guardrail above applies to them unchanged.
+
+| Number | Meaning |
+|---|---|
+| 0 | nodes until week 27; `kubeadm_nodes` is 1 (control plane), 2 or 3 (workers) |
+| 10.10.0.0/24 → 10.10.0.0/24 | the one rule that opens every port: node to node, inside the subnet only |
+| 6443 | the API server, reachable from IAP's range alone; a laptop reaches it through `start-iap-tunnel` |
+| 1 minor below | `kubernetes_minor` is set one below the exam's version so the upgrade lab has somewhere to go |
+| 0 | `kubeadm init` and `join` run by the platform; the startup script stops at a prepared node |
+| 00:00 | the same nightly stop as the lab VM |
+
+**Teach it.** *"Why not just use kind for the CKA labs?"* Name the three things kind cannot do, and
+why a cluster whose control plane is a container cannot teach you to recover one.
+
 ---
 
 ## Figure 5 — GCP state and image supply chain

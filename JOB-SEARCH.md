@@ -259,7 +259,7 @@ Week 26 is not the end of the program. It is the point where the pipeline is ful
 | Interview prep, tailored per company | 6 |
 | **Continued building** — iterate the projects, add features | 10 |
 | One blog post | 3 |
-| CKA prep, if not already done | 8 |
+| CKA module, weeks 27–30, if taking it (`curriculum/week-27/` onward) | ~17 |
 
 **Keep building.** A candidate still shipping during their search interviews differently from one who is waiting — they have new material, momentum, and no desperation in their voice. It is also the best available defense against the morale erosion of a long search.
 

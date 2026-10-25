@@ -179,6 +179,8 @@ docker exec mastery-worker iptables-save | grep web | head               # ⑦ t
 kubectl patch svc web -p '{"spec":{"selector":{"app":"nope"}}}' && kubectl get endpoints web   # ⑪ <none>
 ```
 
+**CKA thread.** The lab now ends with the same route as Gateway API: a GatewayClass, a Gateway, an HTTPRoute. Badges ⑧ and ⑨ become three objects with three owners; week 28 Lab 2 is the full version, on the kubeadm cluster.
+
 ### The question a senior interviewer asks
 
 *"A Service returns nothing. What is the one command you run first, and what do its two possible answers tell you?"*

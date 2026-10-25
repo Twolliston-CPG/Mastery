@@ -147,6 +147,11 @@ kubectl get pv,pvc -A
 5. Scale a Deployment with an RWO PVC to 2 replicas across nodes → the second pod is stuck. Explain.
 6. Delete a StatefulSet and observe that the **PVCs are retained** on purpose.
 7. `reclaimPolicy: Retain` vs `Delete` — set both and delete the PVC each time.
+8. **CKA thread — Jobs (30 min):** a `Job` with `completions: 3`, `parallelism: 2`, `backoffLimit: 1`
+   whose command fails on the first attempt (`sh -c 'exit $((RANDOM % 2))'`). Read `describe job`,
+   the pod names, and when the Job gives up. Then a `CronJob` on `* * * * *` with
+   `concurrencyPolicy: Forbid` and `successfulJobsHistoryLimit: 1`; watch two runs, then
+   `kubectl patch cronjob <n> -p '{"spec":{"suspend":true}}'` and prove nothing new starts.
 
 ```yaml
 volumeClaimTemplates:
@@ -268,6 +273,14 @@ helm uninstall shop -n shop
 **Tasks:** package the week-14 stack as a chart. Values must control replicas, image tag, resources,
 probe timings, ingress host, and whether the database is enabled. Then write `values-dev.yaml` and
 `values-prod.yaml` differing **only in values** — the same discipline as week 11's dev/prod split.
+
+**CKA thread — the same stack with Kustomize (45 min).** No templating: a `base/` holding the plain
+manifests and a `kustomization.yaml` listing them, then `overlays/dev/` and `overlays/prod/` that
+patch only replicas and the image tag (a strategic-merge patch for one, a JSON patch for the other,
+so you have written both). `kubectl kustomize overlays/prod | less`, then `kubectl apply -k
+overlays/prod`. Write the one-paragraph comparison: Helm templates and packages a release with a
+history; Kustomize patches plain YAML with no release object at all. The exam asks for both, and
+most production teams run both.
 
 ```yaml
 # templates/_helpers.tpl

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A 26-week DevOps/DevSecOps/Platform Engineering curriculum — **not an application.** The "source" is
+A 26-week DevOps/DevSecOps/Platform Engineering curriculum plus a four-week CKA module (weeks 27–30) — **not an application.** The "source" is
 ~360,000 lines of Markdown plus a small Python toolchain that generates and validates parts of it.
 Changes are almost always *content* changes, and the risk is silent breakage across hundreds of files
 rather than a failing build.
@@ -38,7 +38,7 @@ for how a learner moves through it.
   Decision needed: upgrade to Pro (recommended), transfer to an organization for read-only roles, or make the
   repo public. Removing collaborators is not the intent.
 - **Unverified on a live system (2026-10-17):** Contour on kind (`02-kind-cluster.sh`), OS Login on the
-  Ubuntu GCP lab image, `windows-setup.ps1`, the `figures-fresh` CI job, and all four `security.yml` jobs
+  Ubuntu GCP lab image, the kubeadm nodes (`gcp-lab/kubeadm.tf`, weeks 27–30), `windows-setup.ps1`, the `figures-fresh` CI job, and all four `security.yml` jobs
   (every one passes locally; `gh` is not authenticated here, so runner results have not been seen). A job
   joins `required_status_checks` only after it has run green on the runner; the full target list is in
   `infra/github/terraform.tfvars.example`.
@@ -100,7 +100,7 @@ python3 curriculum/_shared/feynman/inject.py --apply
 # Re-render the ten lab-platform figures for curriculum/_setup/ARCHITECTURE.md (diagrams lib + graphviz)
 python3 curriculum/_shared/diagrams/generate-setup-figures.py
 
-# Re-render the 26 weekly figures + their content/FIGURE.md scripts + README sections (same toolchain)
+# Re-render the 30 weekly figures + their content/FIGURE.md scripts + README sections (same toolchain)
 python3 curriculum/_shared/diagrams/generate-week-figures.py            # --only 14 for one week
 python3 curriculum/_shared/diagrams/generate-week-figures.py --docs-only # what CI runs: FIGURE.md + README only
 pip install --require-hashes -r curriculum/_shared/diagrams/requirements.txt  # hash-locked; edit requirements.in, then recompile (command in that file)
@@ -167,8 +167,8 @@ Four layers, each with a different audience:
 | Layer | Purpose |
 |---|---|
 | Root `*.md` | Strategy — roadmap, certs, projects, job search. Read by a human deciding whether to commit |
-| `curriculum/week-01…26/` | Execution. Every week is `README.md` (thesis · **Figure W.1**, always the first H2 · day plan · reading map · exit criteria) + `content/` (the figure as PNG/SVG and `FIGURE.md`, its numbered spoken script) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates**. `curriculum/FIGURES.md` indexes the figures and states the convention |
-| `curriculum/_shared/` | Cross-cutting: 58 break/fix scenarios (`BF-01`–`BF-58`), drills, Anki, interview bank, templates, and the `diagrams/` + `feynman/` toolchains |
+| `curriculum/week-01…30/` | Execution (27–30 are the CKA module). Every week is `README.md` (thesis · **Figure W.1**, always the first H2 · day plan · reading map · exit criteria) + `content/` (the figure as PNG/SVG and `FIGURE.md`, its numbered spoken script) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates**; week 30 is the seventh, the CKA simulator session. `curriculum/FIGURES.md` indexes the figures and states the convention |
+| `curriculum/_shared/` | Cross-cutting: 64 break/fix scenarios (`BF-01`–`BF-64`), drills, Anki, interview bank, templates, and the `diagrams/` + `feynman/` toolchains |
 | `curriculum/_reference/` | 623 files of anonymized long-form material, ten domains. A **lookup, not a course** — each week's reading map names the exact files |
 
 The coupling that matters: **week READMEs reference `_reference/` files by path.** Renaming or moving

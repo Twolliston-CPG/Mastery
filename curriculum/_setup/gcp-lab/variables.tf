@@ -101,3 +101,39 @@ variable "ssh_public_key_file" {
     error_message = "distro = \"arch\" needs ssh_public_key_file to exist before apply; cloud-init reads it only at first boot. Create it: ssh-keygen -t rsa -b 4096 -f ~/.ssh/google_compute_engine -N ''"
   }
 }
+
+# --- Kubeadm nodes (weeks 27-30, the CKA module) --------------------------------
+
+variable "kubeadm_nodes" {
+  description = "How many kubeadm nodes to run beside the lab VM: 0 is off, 1 is a control plane only, 2 or 3 add workers. kind cannot teach kubeadm init, etcd restore or a cluster upgrade; these can"
+  type        = number
+  default     = 0
+
+  validation {
+    condition     = var.kubeadm_nodes >= 0 && var.kubeadm_nodes <= 3 && floor(var.kubeadm_nodes) == var.kubeadm_nodes
+    error_message = "kubeadm_nodes must be a whole number from 0 to 3."
+  }
+}
+
+variable "kubernetes_minor" {
+  description = "Kubernetes minor the nodes are installed at, for example 1.34. Pick one minor BELOW the version the exam tracks, so week 27 Lab 4 can upgrade the cluster by hand; the pkgs.k8s.io repository keeps every minor. Changing it does not touch an existing node -- that is the upgrade lab"
+  type        = string
+  default     = "1.34"
+
+  validation {
+    condition     = can(regex("^1\\.[0-9]{2}$", var.kubernetes_minor))
+    error_message = "kubernetes_minor must look like 1.34 (major.minor, no patch)."
+  }
+}
+
+variable "kubeadm_machine_type" {
+  description = "Shape of each kubeadm node. kubeadm's preflight wants 2 CPUs and 1.7 GB; e2-medium is the cheapest that passes. Use e2-standard-2 if the control plane feels tight under etcd plus a CNI"
+  type        = string
+  default     = "e2-medium"
+}
+
+variable "kubeadm_disk_size_gb" {
+  description = "Boot disk per kubeadm node. Images, etcd and container logs need more room than the week-1 VM"
+  type        = number
+  default     = 30
+}

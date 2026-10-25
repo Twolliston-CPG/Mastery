@@ -452,7 +452,29 @@ Then the real test: hand the README to someone who has never seen it and watch t
 
 **★ GATE 6:** a person who has never seen the repo follows the README and deploys a new service via pull request in under 10 minutes, unaided.
 
-**Then: this plan does not end at week 26.** It converts into a maintenance cadence — see [JOB-SEARCH.md § After week 26](JOB-SEARCH.md#after-week-26--the-cadence-that-carries-you-to-the-offer). Weeks 27+ are: interviewing as the primary job, one new blog post a week, CKA if it wasn't taken, and continued project iteration driven by whatever the interviews reveal as weak.
+**Then: this plan does not end at week 26.** It converts into a maintenance cadence — see [JOB-SEARCH.md § After week 26](JOB-SEARCH.md#after-week-26--the-cadence-that-carries-you-to-the-offer). Weeks 27+ are: interviewing as the primary job, one new blog post a week, continued project iteration driven by whatever the interviews reveal as weak, and the CKA module below, run alongside that cadence.
+
+---
+
+## Month 7 · The CKA module (weeks 27–30)
+
+Optional, and the recommended track ([CERTIFICATIONS.md §3](CERTIFICATIONS.md#3-the-kcna-and-kcsa-question--my-actual-recommendation)). About 17 hours of labs a week beside the week-26 cadence. The kubeadm nodes are in `curriculum/_setup/gcp-lab/` (`kubeadm_nodes = 2`). Book the exam on the Monday of week 27 for the end of week 30. Every exam fact in these weeks is a planning estimate; the candidate handbook is the contract.
+
+### Week 27 — Cluster architecture, on kubeadm
+
+**Focus:** the quarter of the exam kind cannot teach. **Labs:** `kubeadm init`, Calico, join two workers and read what kubeadm wrote · certificates and kubeconfigs · etcd snapshot and restore · upgrade one minor, control plane then workers · node break/fix (BF-59 to BF-64). **Exit:** restore etcd and upgrade a worker from memory, timed.
+
+### Week 28 — Workloads, networking, storage: the gap-fill
+
+**Focus:** everything the 2025 blueprint added. **Labs:** Kustomize and Helm as install tools · Gateway API and CoreDNS · CRDs and an operator · scheduling, Jobs, CronJobs, DaemonSets under exam conditions · dynamic provisioning. **Exit:** every lab repeated with the file closed, against its target time.
+
+### Week 29 — Troubleshooting and speed
+
+**Focus:** the exam is a speed test on top of a knowledge test. **Labs:** the exam terminal and the per-task ritual · the four troubleshooting families on real nodes, timed · mock exam 1 (18 weighted tasks, two hours) · killer.sh session 1 · triage and the weak-domain tally. **Exit:** the tally names two domains for week 30.
+
+### Week 30 — Exam week ★ Gate 7
+
+**Focus:** nothing new. **Labs:** killer.sh session 2 (the gate) · two weak-domain drill days · the exam checklist · the exam · the retrospective and the retake rule. **★ GATE 7:** the second simulator session finished inside two hours at or above the pass mark without opening the solutions; then the exam is sat.
 
 ---
 
@@ -486,3 +508,7 @@ Then the real test: hand the README to someone who has never seen it and watch t
 | 24 | Charlie completion | Docs, demo video, KCSA prep | |
 | 25 | **KCSA**, interview kit | 8 STAR stories, 6 mocks | **★ KCSA** |
 | 26 | Full-time conversion | 20+ applications | **★ Gate 6** |
+| 27 | CKA: cluster architecture on kubeadm | etcd restored, cluster upgraded | |
+| 28 | CKA: workloads, networking, storage | Gateway API, CRDs, Kustomize on your cluster | |
+| 29 | CKA: troubleshooting and speed | Mock exam 1, killer.sh session 1 | |
+| 30 | CKA: exam week | killer.sh session 2, the exam | **★ Gate 7 · ★ CKA** |

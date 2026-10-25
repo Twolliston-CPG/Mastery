@@ -27,13 +27,13 @@ three times, with the file closed, and checked against its `content/FIGURE.md` a
 |---|---|---|
 | Friday of week N, after break/fix | figure N.1 | 5 minutes |
 | Sunday of week N+2, before planning the next week | figure N.1 again | 5 minutes |
-| Sunday of the next gate week (4, 9, 13, 17, 21, 26) | every figure since the previous gate, cold | about 20 minutes |
+| Sunday of the next gate week (4, 9, 13, 17, 21, 26; 30 for the CKA module) | every figure since the previous gate, cold | about 20 minutes |
 
 Record each in the **Figures redrawn** column of `progress.md` with the badge where the order
 slipped. The order is the argument; the badge that slipped is the mechanism you still hold as a word
 rather than a cause, and it is the reading to reopen.
 
-## The 26 weekly figures
+## The weekly figures
 
 | Figure | Title | Badges |
 |---|---|---|
@@ -63,6 +63,10 @@ rather than a cause, and it is the reading to reopen.
 | 24.1 | [The documentation set and the stranger test](week-24/content/FIGURE.md) | 12 |
 | 25.1 | [The interview kit, and where every piece of it comes from](week-25/content/FIGURE.md) | 11 |
 | 26.1 | [The weekly cadence that carries months 6 to 10](week-26/content/FIGURE.md) | 10 |
+| 27.1 | [A cluster you built by hand, and what kubeadm wrote](week-27/content/FIGURE.md) | 10 |
+| 28.1 | [Everything the 2025 blueprint added, on your own cluster](week-28/content/FIGURE.md) | 10 |
+| 29.1 | [The exam is a speed test, and this is the speed](week-29/content/FIGURE.md) | 10 |
+| 30.1 | [Exam week: the second simulator session is the gate](week-30/content/FIGURE.md) | 10 |
 
 ## Lab figures
 
@@ -112,6 +116,10 @@ break/fix lab shares [Figure BF.0, the diagnostic loop](_shared/breakfix/FIGURE.
 | 24 | [24.2 to 24.5](week-24/labs/FIGURES.md) — ~~Lab 1~~ · the stranger test, and what each hesitation means · ~~Lab 3~~ · ~~Lab 4~~ |
 | 25 | [25.2 to 25.5](week-25/labs/FIGURES.md) — ~~Lab 1~~ · the six-step design method, with its minute budget · ~~Lab 3~~ · ~~Lab 4~~ |
 | 26 | [26.2 to 26.6](week-26/labs/FIGURES.md) — the funnel, and where it stalls · ~~Activity 2~~ · ~~Activity 3~~ · ~~Activity 4~~ · ~~Activity 5~~ |
+| 27 | [27.2 to 27.6](week-27/labs/FIGURES.md) — from a bare VM to three Ready nodes · who signed you, and for how long · a snapshot, a new directory, and the object that must disappear · one minor, control plane first · six ways a node fails, and the first command for each |
+| 28 | [28.2 to 28.6](week-28/labs/FIGURES.md) — one base, many overlays, and a chart you did not write · three roles, one route, and the names that resolve · teach the API a kind, then give it a controller · fourteen objects, three minutes each · a cluster with no storage, and what each field decides |
+| 29 | [29.2 to 29.6](week-29/labs/FIGURES.md) — the per-task ritual, and why the wrong context scores zero · the four troubleshooting families, and the first command of each · ~~Lab 3~~ · ~~Lab 4~~ · the triage order, and the two-minute rule |
+| 30 | [30.2 to 30.6](week-30/labs/FIGURES.md) — ~~Lab 1~~ · ~~Lab 2~~ · exam day, from the day before to the note to self · ~~Lab 4~~ · after the result, both branches |
 
 ## The lab platform and its guardrails
 

@@ -188,3 +188,32 @@ Templates: `_reference/devsecops/threat-modeling/templates-stride-worksheet.md` 
 
 **Create `evidence/` on day one.** The acceptance criteria demand proof that the pipeline *refuses*
 things, and capturing it as you go is far easier than reconstructing it in week 21.
+
+---
+
+# Lab 4 — CKA foundations: kubeadm, by hand, once (Thu, 3h)
+
+Only if Wednesday's decision was "skip KCNA". The point is not a working cluster. It is to have
+typed `kubeadm init` once, and read what it wrote, before week 27 makes you own it.
+
+1. **Turn on the nodes.** In `curriculum/_setup/gcp-lab/terraform.tfvars` set `kubeadm_nodes = 2`
+   and `kubernetes_minor` to one minor below the version the exam tracks (the candidate handbook
+   says which), then `terraform apply`. The startup script installs containerd, kubeadm, kubelet and
+   kubectl and stops there; `terraform output kubeadm_ssh_commands` prints the way in.
+2. **On `k8s-cp`:** `sudo kubeadm init --pod-network-cidr=192.168.0.0/16`. Read every preflight
+   line. Copy `admin.conf` into place exactly as the output says, and save the `kubeadm join` line.
+3. **Read what it wrote, before installing anything else:**
+   ```bash
+   ls /etc/kubernetes /etc/kubernetes/manifests /etc/kubernetes/pki
+   kubectl get nodes            # NotReady -- say why before you fix it
+   sudo crictl ps               # the four static pods, running with no API server involved
+   ```
+4. **Install Calico** (the operator manifests from the Calico quickstart) and watch the node go Ready.
+5. **On `k8s-w1`:** the `kubeadm join` line from step 2. Then, from `k8s-cp`, `kubectl get nodes -o wide`.
+6. `kubectl run web --image=nginx:alpine && kubectl get pod -o wide`: a pod on the worker, with an
+   address from the CIDR you chose in step 2.
+7. **Journal, five lines:** what kubeadm wrote, where, and the one thing that surprised you. Then
+   stop the nodes (they stop at midnight anyway): `gcloud compute instances stop k8s-cp k8s-w1`.
+
+Week 27 Lab 1 rebuilds this from memory and goes on to certificates, etcd and the upgrade.
+Figure 27.2 is the picture; `_shared/breakfix/08-cluster-nodes.md` is what you will break.

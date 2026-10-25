@@ -197,6 +197,41 @@ curl -H 'Host: web.local' http://localhost/
 `ingressClassName`, wrong service name, wrong port, put the Ingress in a different namespace from the
 Service — and read each failure. (BF-49)
 
+**CKA thread — the same route as Gateway API (30 min).** The CKA blueprint lists Gateway API beside
+Ingress, and Contour implements both. Install the standard CRDs, then say the same routing as three
+role-separated objects: a `GatewayClass` (the implementation, owned by whoever runs the cluster), a
+`Gateway` (the listener, owned by the platform team), an `HTTPRoute` (the rule, owned by the app team).
+
+```bash
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/latest/download/standard-install.yaml
+kubectl get gatewayclass          # a class named for Contour must show ACCEPTED True
+```
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata: { name: web, namespace: default }
+spec:
+  gatewayClassName: contour
+  listeners:
+    - { name: http, protocol: HTTP, port: 80 }
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata: { name: web, namespace: default }
+spec:
+  parentRefs: [{ name: web }]
+  hostnames: ["web.local"]
+  rules:
+    - matches: [{ path: { type: PathPrefix, value: / } }]
+      backendRefs: [{ name: web, port: 80 }]
+```
+
+If no GatewayClass is accepted, the kind setup installed Contour's static mode; install Contour's
+Gateway provisioner from its docs and apply a `GatewayClass` with `controllerName:
+projectcontour.io/gateway-controller`. Hit it with the same `curl -H 'Host: web.local'`, then say
+what changed: one Ingress became three objects with three owners. Week 28 does the full lab.
+
 ---
 
 # Lab 3 — Config, Secrets, Namespaces (2h)

@@ -13,14 +13,14 @@
 | 3 | | | | | 3.1 ok · 1.1 slipped at ④ | |
 
 - **Deliverable shipped** — `y`/`n` and the repo link. "Nearly" is `n`.
-- **Gate** — `—`, `pass`, or `fail: <the criterion, in one sentence>`. Only gate weeks (4, 9, 13, 17, 21, 26).
+- **Gate** — `—`, `pass`, or `fail: <the criterion, in one sentence>`. Only gate weeks (4, 9, 13, 17, 21, 26, and 30 if taking the CKA module).
 - **Hours** — actually logged, not planned. This number predicts everything else.
 - **Figures redrawn** — the figures you redrew from memory this week and the badge where the order
   slipped: this week's on Friday, the one from two weeks ago on Sunday, every figure since the last
   gate on a gate Sunday. Schedule in `curriculum/FIGURES.md`.
 - **What surprised me** — one sentence. Where a word stood in for a mechanism.
 
-## Monthly retrospective (gate weeks: 4, 9, 13, 17, 21, 26)
+## Monthly retrospective (gate weeks: 4, 9, 13, 17, 21, 26, and 30 for the CKA module)
 
 Copy this block under the gate week's row and fill it in. The format matches the bottom of each
 gate's `assessment.md`.

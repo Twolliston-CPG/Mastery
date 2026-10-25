@@ -120,6 +120,14 @@ everything.
 If you have not reached the Terraform weeks yet, create the VM by hand once first. The
 configuration is short enough to read afterwards and recognise every resource.
 
+### The kubeadm nodes for weeks 27 to 30
+
+The same configuration can add two or three Ubuntu nodes prepared for `kubeadm` (`kubeadm_nodes`
+in `terraform.tfvars`), for the CKA module: a real control plane to break, an etcd to restore and
+a cluster to upgrade, which kind cannot provide. They are off until week 27. The runbook section
+["Kubeadm nodes"](gcp-lab/README.md#kubeadm-nodes-weeks-27-to-30) covers turning them on, the
+version to pick, and the cost.
+
 ### Or run the VM on AWS instead
 
 [`aws-lab/`](aws-lab/README.md) is the same VM on AWS: its own VPC, SSH only through an EC2
