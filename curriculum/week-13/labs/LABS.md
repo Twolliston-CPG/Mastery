@@ -270,15 +270,15 @@ this lab transfers to OPA, which you already write.
 ## 2. Local, no cloud: the Sentinel CLI
 
 ```bash
-brew tap hashicorp/tap && brew install hashicorp/tap/sentinel
-sentinel version
+sentinel version                                   # the setup scripts install it from HashiCorp's tap
+brew tap hashicorp/tap && brew install hashicorp/tap/sentinel   # if it is missing
 mkdir -p ~/sentinel-lab/test && cd ~/sentinel-lab
 ```
 
 Three policies on the `tfplan/v2` import, the document HCP Terraform hands a policy after a plan.
 It has the same shape you read in week 19: `resource_changes`, each with `type`, `mode`,
-`change.actions` and `change.after`. These are written to the documented import and have not been
-executed in this repository; the test step below is where you prove them.
+`change.actions` and `change.after`. All three were run with the Sentinel CLI (v0.41) against a pass
+mock and a fail mock each, exactly as the test step below has you do; `sentinel fmt` is the formatter.
 
 ```hcl
 # require-tags.sentinel
@@ -289,8 +289,8 @@ taggable_types = ["aws_instance", "aws_db_instance", "aws_s3_bucket", "aws_vpc"]
 
 taggable = filter tfplan.resource_changes as _, rc {
 	rc.mode is "managed" and
-	rc.type in taggable_types and
-	rc.change.actions is not ["delete"]
+		rc.type in taggable_types and
+		rc.change.actions is not ["delete"]
 }
 
 has_all_tags = func(rc) {
@@ -371,7 +371,29 @@ test {
 }
 ```
 
+A mock module is a Sentinel file that assigns the import's values. The smallest one that exercises
+`require-tags` is one resource with all three tags; the fail mock is the same with one tag removed:
+
+```hcl
+# test/require-tags/mock-tfplan-pass.sentinel
+resource_changes = {
+	"aws_instance.web": {
+		"address": "aws_instance.web",
+		"mode":    "managed",
+		"type":    "aws_instance",
+		"change": {
+			"actions": ["create"],
+			"after": {
+				"instance_type": "t3.micro",
+				"tags_all":      {"Environment": "dev", "Owner": "platform", "Project": "alpha"},
+			},
+		},
+	},
+}
+```
+
 ```bash
+sentinel fmt -check=true *.sentinel         # the formatter; -check fails on an unformatted file
 sentinel test -verbose                      # every test/<policy>/*.hcl
 sentinel apply -trace require-tags.sentinel # with a mock in sentinel.hcl: the trace shows each filter's result
 ```

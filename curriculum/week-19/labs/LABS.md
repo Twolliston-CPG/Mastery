@@ -394,7 +394,7 @@ build goes red. That is one input shape of one engine. This lab takes the engine
 what a Rego rule actually computes, where policy and data part ways, how a policy reaches a running
 OPA without a redeploy, and OPA deciding every HTTP request of the week-20 app. Every Rego block
 below was run with `conftest verify` and `conftest test` before it was written here; the `opa`
-commands need the binary (`brew install opa`), which is the same evaluator Conftest embeds.
+commands need the binary (the setup scripts install it; otherwise `brew install opa`), which is the same evaluator Conftest embeds.
 
 ## Part 1 — What a rule computes (45 min)
 
@@ -692,7 +692,7 @@ left the application's code.
 ## Part 5 — Regal, and the three style rules that matter (15 min)
 
 ```bash
-brew install styrainc/tap/regal
+brew install regal                 # the setup scripts install it too
 regal lint policy/ authz/
 ```
 

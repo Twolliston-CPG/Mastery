@@ -53,8 +53,10 @@ $Packages = @(
 $PipxTools = @('pre-commit', 'checkov', 'semgrep')
 
 # No usable Chocolatey package. Install inside WSL, or download the Windows binary from
-# each project's GitHub releases page and put it on PATH.
-$Manual = @('conftest', 'kubeseal', 'kyverno', 'hey')
+# each project's GitHub releases page and put it on PATH. sentinel comes from
+# https://releases.hashicorp.com/sentinel/ (a zip per platform, with SHA256SUMS); opa, regal
+# and gator from their GitHub releases. The Chocolatey package named "sentinel" is unrelated.
+$Manual = @('conftest', 'sentinel', 'opa', 'regal', 'gator', 'kubeseal', 'kyverno', 'hey')
 
 function Write-Step([string]$Message) { Write-Host "==> $Message" -ForegroundColor Blue }
 

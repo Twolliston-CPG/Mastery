@@ -5,7 +5,7 @@
 # How it installs:
 #   - system packages and Docker Engine   from the distro's own package manager,
 #                                         using signed repositories
-#   - the ~35 command-line tools          with Homebrew, the same list as macos-setup.sh,
+#   - the ~40 command-line tools          with Homebrew, the same list as macos-setup.sh,
 #                                         so both platforms get the same current versions
 #   - nothing is piped from the internet into a root shell
 #
@@ -56,6 +56,11 @@ brew|kubectx|kubectx
 brew|argocd|argocd
 brew|kubeseal|kubeseal
 brew|kyverno|kyverno
+# Policy as code (weeks 13, 19, 23, 28; conftest above covers week 19 Lab 1)
+brew|hashicorp/tap/sentinel|sentinel
+brew|opa|opa
+brew|regal|regal
+brew|gator|gator
 # Security tooling (weeks 18-19)
 brew|trivy|trivy
 brew|syft|syft
