@@ -1,6 +1,6 @@
 # Week 23 — Lab figures
 
-> One figure per lab, numbered 23.2 to 23.6. Figure 23.1 is the week figure in
+> One figure per lab, numbered 23.2 to 23.7 (23.7 is the Go deeper lab). Figure 23.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these five go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
@@ -393,6 +393,90 @@ gh repo archive org/orders-api                                                  
 
 *"Why must the ArgoCD Application be deleted and its load balancers gone before `terraform destroy`, and what leaks if you reverse the order?"*
 Badges ④ ⑤ ⑥ ⑨: the load balancers were created by the in-cluster controller for Ingress objects, so they are in no Terraform state. Destroy first and the controller that would have deleted them is gone with the cluster resources, and the ALBs bill until someone finds them by name. The order is a consequence of who created what.
+
+---
+
+## Figure 23.7 — Go deeper: shape is schema, rules are policy
+
+> Go deeper · badges ① to ⑩ · about three minutes.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 23.7 — Go deeper: shape is schema, rules are policy — diagram](../../../_figures/curriculum-week-23-labs-FIGURES-4-c8884abc.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  YAML["① service.yaml<br/><small>the contract a developer writes · three required fields and nothing else</small>"]:::crit
+  SCHEMA["② JSON Schema: shape<br/><small>types, enums, patterns, required keys · one answer per field, every file alike</small>"]:::crit
+  VAL["③ validate.py<br/><small>where · what · the options with their meaning · did you mean · docs link</small>"]:::crit
+  REGO["④ contract.rego: rules<br/><small>what a valid file means · cross-field, cross-file, data-driven</small>"]:::crit
+  TEAMS["⑤ data.teams<br/><small>--data platform/teams · the owner must exist here · change the YAML, the rule follows</small>"]:::data
+  CROSS["⑥ cross-field<br/><small>critical needs replicas.min ≥ 2 · experimental is never public · the minimum depends on the tier</small>"]:::n
+  COMB["⑦ --combine<br/><small>every file as one array · names unique across services · guarded by is_array</small>"]:::n
+  MSG["⑧ the refusal<br/><small>four failures on the bad file · each says what to do next</small>"]:::warn
+  CI["⑨ the same gate in CI<br/><small>conftest verify first, so a broken rule fails before any service is judged · then the validator</small>"]:::n
+  TASKS["⑩ your rules<br/><small>expiry from time.now_ns · budget from teams.yaml and a catalog · warn, then deny</small>"]:::data
+
+  YAML ==> SCHEMA ==> VAL ==> REGO ==> MSG
+  REGO --> TEAMS
+  REGO --> CROSS
+  REGO --> COMB
+  MSG -.-> CI
+  REGO -.-> TASKS
+  linkStyle 0,1,2,3 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "A platform contract has two halves. The schema says what the file may contain; the policy says what it may mean. Lab 3 built the first half; this builds the second and ships both in one gate."
+- **① service.yaml.** "Three required fields. Everything the developer did not write is decided by the platform, which is the whole point of the contract."
+- **② JSON Schema.** "Types, enums, patterns, required keys. Every file is judged alike, and a field's rule cannot depend on another field. That is the ceiling of a schema, not a flaw in this one."
+- **③ validate.py.** "The error messages are the feature: where, what, the valid options with their meaning, a suggestion, a link. Shape is checked first, so the rules never see a file that is not even the right shape."
+- **④ contract.rego.** "Six rules, each one something the schema could not say: the owner must exist, critical needs two replicas, experimental is never public, dependencies must be offered, names must be unique. A deny set with the violations in it."
+- **⑤ data.teams.** "The team list is loaded from the real teams.yaml with one flag, and the rule reads it as data. Nothing about teams is hard-coded in the policy, so adding a team is a YAML change, not a policy change."
+- **⑥ cross-field.** "The replica minimum depends on the tier, and the public flag is only wrong on one tier. Two fields in one rule body; a schema's minimum is one number for everyone."
+- **⑦ combine.** "One flag hands every service in as a single array, and a rule guarded by is_array checks that no two share a name. Uniqueness is the rule a single-file check cannot express at all."
+- **⑧ the refusal.** "The bad file fails four ways, and each message keeps the validator's discipline: here is the option list with meanings, here is the suggestion, here is what to do. A policy that only says denied is half a feature."
+- **⑨ the same gate in CI.** "conftest verify runs before anything else, so a rule with a typo fails the pipeline rather than silently matching nothing. Then the validator, which shells out to the same rules. One gate, on the laptop and in the workflow."
+- **⑩ your rules.** "Expiry from the clock, a budget from the team's number and a dependency catalog, shipped as warn and promoted to deny once the examples pass. The rollout discipline from week 19, on your own platform."
+- **Close.** "Shape, then rules, then a message that says what to do. The schema is the floor; the policy is where the platform's opinions live."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 6 rules | `contract.rego` | owner, name, critical replicas, experimental not public, offered dependencies, unique names |
+| 10 tests | `contract_test.rego` | each rule both ways, against the real teams.yaml through `--data` |
+| 4 failures | the bad file | one per rule it breaks, each with the next step |
+| 2 modes | single file and `--combine` | guarded by `is_object` and `is_array`, one package serves both |
+| ≥ 2 replicas | the critical tier | the cross-field minimum a schema cannot express |
+| 30 days | the experimental tier | the expiry the first task turns into a rule |
+
+### Prove it
+
+```bash
+conftest verify --policy policies/contract --data platform/teams                     # ④ ⑤ the rules' own tests
+conftest test --policy policies/contract --data platform/teams /tmp/bad.yaml         # ⑧ four failures
+conftest test --policy policies/contract --data platform/teams --combine services/*/service.yaml   # ⑦
+./cli/validate.py services/orders-api/service.yaml                                  # ③ then ④, in order
+```
+
+### The question a senior interviewer asks
+
+*"Why is `tier` a better abstraction than individual knobs, and where do the rules about it live?"*
+Badges ② and ④: the tier bundles four decisions the schema can enumerate, and the policy holds the rules those decisions imply, which a schema cannot express because they cross fields and files.
 
 ---
 

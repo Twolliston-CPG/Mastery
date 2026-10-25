@@ -32,5 +32,5 @@ gate's `assessment.md`.
 5. **Sustainability** — a rest day every week? If not, fix that before the next week starts.
 6. **Figures redrawn cold** — every figure since the last gate, with the badge where it slipped.
    A figure you cannot redraw at the gate is the criterion you will fail next.
-7. **Kubernetes ladder scored** (from Gate 4) — the twelve-topic table from `KUBERNETES-MASTERY.md` §6,
+7. **Kubernetes ladder scored** (from Gate 4) — the thirteen-topic table from `KUBERNETES-MASTERY.md` §6,
    with evidence per rung and the topic that has not moved in two scorings.

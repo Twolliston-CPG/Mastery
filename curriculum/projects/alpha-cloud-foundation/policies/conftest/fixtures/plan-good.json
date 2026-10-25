@@ -1,0 +1,17 @@
+{
+  "format_version": "1.2",
+  "resource_changes": [
+    {"address": "module.network.aws_vpc.this", "type": "aws_vpc",
+     "change": {"actions": ["create"], "after": {"cidr_block": "10.10.0.0/16", "tags": {}, "tags_all": {"Environment": "dev", "Owner": "team-platform", "Project": "alpha"}}}},
+    {"address": "module.database.aws_db_instance.this", "type": "aws_db_instance",
+     "change": {"actions": ["create"], "after": {"storage_encrypted": true, "backup_retention_period": 7, "publicly_accessible": false, "tags_all": {"Environment": "dev", "Owner": "team-platform", "Project": "alpha"}}}},
+    {"address": "module.compute.aws_vpc_security_group_ingress_rule.alb_https", "type": "aws_vpc_security_group_ingress_rule",
+     "change": {"actions": ["create"], "after": {"cidr_ipv4": "0.0.0.0/0", "from_port": 443, "to_port": 443}}},
+    {"address": "module.compute.aws_launch_template.app", "type": "aws_launch_template",
+     "change": {"actions": ["create"], "after": {"tags_all": {"Environment": "dev", "Owner": "team-platform", "Project": "alpha"}, "block_device_mappings": [{"device_name": "/dev/xvda", "ebs": [{"encrypted": true, "volume_size": 20}]}]}}},
+    {"address": "module.network.aws_s3_bucket_public_access_block.flow", "type": "aws_s3_bucket_public_access_block",
+     "change": {"actions": ["create"], "after": {"block_public_acls": true, "block_public_policy": true, "ignore_public_acls": true, "restrict_public_buckets": true}}},
+    {"address": "module.database.aws_db_instance.retired", "type": "aws_db_instance",
+     "change": {"actions": ["delete"], "after": null}}
+  ]
+}

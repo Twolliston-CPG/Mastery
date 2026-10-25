@@ -1,6 +1,7 @@
 # Week 19 — Lab figures
 
-> One figure per lab, numbered 19.2 to 19.6. Figure 19.1 is the week figure in
+> One figure per lab, numbered 19.2 to 19.6, then 19.7 for the "Go deeper" lab of the mastery
+> ladder. Figure 19.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these five go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
@@ -430,6 +431,91 @@ kube-bench run --targets node,policies | tail -20                            # �
 
 *"Take one control you built and trace it to a SOC 2 or NIST requirement, including the evidence an auditor would accept."*
 One row of badges ① to ④, out loud: cosign signing plus Kyverno verification, evidenced by the admission-denied screenshot, satisfying NIST SI-7 on artifact integrity. Pick the row with a screenshot; evidence you can show beats evidence you describe.
+
+---
+
+## Figure 19.7 — Go deeper: one engine, four input shapes
+
+> Go deeper · badges ① to ⑨ · about three minutes. Reads top-down: the engine, then where it is fed from.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 19.7 — Go deeper: one engine, four input shapes — diagram](../../../_figures/curriculum-week-19-labs-FIGURES-5-d2d55ef3.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  RULE["① a rule computes a document<br/><small>deny is a partial set · allow is one value · default, or it is undefined</small>"]:::crit
+  UNIFY["② a body unifies<br/><small>some r in input.resource_changes · each binding tried · no loops, no if/else</small>"]:::crit
+  DATA["③ input versus data<br/><small>the plan is input · the allowlist is data.allowlist · different owners, different schedules</small>"]:::data
+  TEST["④ opa test<br/><small>test_ rules · with input as · json.patch one field per test</small>"]:::crit
+  PARTIAL["⑤ partial evaluation<br/><small>--partial --unknowns input · the residual over what is not yet known</small>"]:::n
+  BUNDLE["⑥ a bundle<br/><small>opa build -b · served over HTTP · opa run --server pulls on a schedule · no redeploy</small>"]:::data
+  SERVER["⑦ OPA as a service<br/><small>before_request → POST /v1/data/authz/allow → 403 · roles are data · about a millisecond</small>"]:::crit
+  SHAPES["⑧ four input shapes, one evaluator<br/><small>plan JSON → deny · AdmissionReview → violation · HTTP request → allow · tfplan → rule</small>"]:::crit
+  DEBUG["⑨ why it did not fire<br/><small>wrong package · wrong input path · undefined mistaken for false · lint with regal</small>"]:::warn
+
+  RULE ==> UNIFY ==> TEST ==> SERVER ==> SHAPES
+  UNIFY --> DATA
+  DATA --> PARTIAL
+  TEST --> BUNDLE --> SERVER
+  SHAPES -.-> DEBUG
+  linkStyle 0,1,2,3 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "Lab 1 met OPA as a pipeline step. This figure is the engine underneath, and the one sentence that makes every OPA deployment the same thing: one evaluator, four input shapes."
+- **① a rule computes a document.** "A Rego rule does not run; it defines a value at a path. `deny` is a partial set, every body that succeeds adds an element. `allow` is a complete rule with one value, and without a `default` it is undefined when nothing matches, which is not false."
+- **② a body unifies.** "`some r in input.resource_changes` binds `r` to each element and tries the rest of the body for it. A failing body contributes nothing for that binding and the next is tried. That is why there are no loops: iteration is what unification does. `--explain full` shows every binding tried."
+- **③ input versus data.** "The plan arrives as `input`; the allowlist lives in `data.allowlist`, loaded from a file or a bundle. Same policy, different data file, different decision. Policy is reviewed like code; data is updated like configuration."
+- **④ opa test.** "Rules named `test_` are the tests; `with input as` and `with data.x as` substitute anything. One good document, `json.patch` one field per test, so each test says exactly which field it is about."
+- **⑤ partial evaluation.** "Evaluate with `input` unknown and the engine returns the residual: the conditions on input that remain once everything knowable from data has been folded in. That residual is what becomes a SQL filter in data-filtering setups."
+- **⑥ a bundle.** "`opa build` makes a tarball of policy and data; a server pulls it over HTTP on a schedule and `/v1/status` shows the revision. Change the policy, rebuild, and a hundred OPAs follow without a redeploy."
+- **⑦ OPA as a service.** "The week-20 app's `before_request` posts method, path and user to `/v1/data/authz/allow` and returns 403 on anything but true. Roles are data. The cost is about a millisecond in memory; the cost that matters is the network hop, so OPA runs beside the app, never across a region."
+- **⑧ four input shapes, one evaluator.** "Conftest sends a plan and asks for `deny`. Gatekeeper sends an AdmissionReview and asks for `violation`. The server gets a request and answers `allow`. HCP Terraform sends a tfplan. Same language, same tests, same bundles; only the document and the path change."
+- **⑨ why it did not fire.** "The package name is not what the caller asked for, the input path is one level off, or a complete rule came back undefined and the caller read that as pass. `regal lint` catches the first two shapes of that mistake before a reviewer does."
+- **Close.** "A rule is a document, a body unifies, data is separate, tests substitute, bundles deliver, and the same engine answers a pipeline, an admission controller, an application and a Terraform run. Say that and you can explain any OPA deployment you are handed."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 3 deny rules, 5 tests | Part 1 | one good input, one `json.patch` per test; the test that fails when `default` is removed is the lesson |
+| 2 kinds of rule | Rego | partial set (`contains`) and complete (`:=`); only the second can be undefined |
+| 10 to 20 s | the bundle polling window | how long a policy change takes to reach every OPA with no redeploy |
+| about 1 ms | the authz hook, measured over 100 requests | the in-memory cost; the network hop is the real one, hence sidecar or library |
+| 4 input shapes | Part 6 | plan JSON · AdmissionReview · HTTP request · tfplan, one evaluator |
+| 3 style rules | Regal and the style guide | package per directory · `default` on booleans · `some ... in`, never a bare `_` |
+
+### Prove it
+
+```bash
+opa eval -i input-bad.json -d policy/ -d data.json --format pretty 'data.main'            # ① the whole document
+opa eval -i input-bad.json -d policy/ -d data.json --explain full 'data.main.allow' | head  # ② the bindings tried
+opa eval -i input-bad.json -d policy/ -d data-eu.json --format pretty 'data.main.deny'     # ③ same policy, other data
+opa test -v policy/                                                                        # ④
+opa eval -d policy/ -d data.json --partial --unknowns input 'data.main.allow'              # ⑤
+curl -s localhost:8181/v1/status | jq '.result.bundles'                                    # ⑥
+curl -s localhost:8181/v1/data/authz/allow -d '{"input":{"method":"POST","path":["orders"],"user":"sam"}}'   # ⑦ false
+regal lint policy/ authz/                                                                  # ⑨
+```
+
+### The question a senior interviewer asks
+
+*"What is OPA, and why would you run it as a server rather than in the pipeline?"*
+Badge ⑧ first, in one sentence, then ⑦: the pipeline refuses a change once at merge time; the server decides every request, in the same language with the same tests, and authorization leaves the application's code. Then ⑥, because the follow-up is "how do policies reach a hundred of them".
 
 ---
 

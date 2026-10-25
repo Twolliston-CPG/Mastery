@@ -54,7 +54,7 @@
 - **Drill:** `_shared/drills/kubectl-speed.md`, daily; from today add `kubectl create job`, `cronjob`, `--dry-run=client -o yaml` for every type in this week
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 28.2 to 28.9, one per lab plus the Go deeper labs) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-28)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 28.2 to 28.10, one per lab plus the Go deeper labs) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-28)
 
 ## Exit criteria
 - [ ] A Kustomize base with dev and prod overlays, a strategic-merge patch and a JSON patch, applied with `-k`, from memory in 8 minutes

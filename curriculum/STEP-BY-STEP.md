@@ -157,7 +157,7 @@ only person it fools is you.
 figures, about twenty minutes. A figure you cannot redraw at the gate names the criterion you will
 fail next, one level below where you are looking.
 
-**From Gate 4 on, the gate's Sunday also scores the Kubernetes ladder**: twelve topics, five rungs, the
+**From Gate 4 on, the gate's Sunday also scores the Kubernetes ladder**: thirteen topics, five rungs, the
 table in [`../KUBERNETES-MASTERY.md`](../KUBERNETES-MASTERY.md) §6 copied under the retrospective. The exam is
 rung two; the ladder is how the rest is measured. After every lab, from week 1, read the lab's entry in
 [`KUBERNETES-THREAD.md`](KUBERNETES-THREAD.md) and say its sentence; that is the five minutes that turn the

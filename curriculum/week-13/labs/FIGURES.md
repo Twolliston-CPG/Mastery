@@ -1,6 +1,6 @@
 # Week 13 — Lab figures
 
-> One figure per lab, numbered 13.2 to 13.6. Figure 13.1 is the week figure in
+> One figure per lab, numbered 13.2 to 13.7 (13.7 is the Go deeper lab). Figure 13.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these go one level down, to the mechanism each lab
 > makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
@@ -365,6 +365,88 @@ of 50 companies, the application tracker, 5 people to contact, and the GitHub pr
 job-search work with no system mechanism to draw. Do it on Sunday as written; the figure that
 belongs to this day is [Figure 25.1](../../week-25/content/FIGURE.md), the interview kit, which is
 where this checklist ends up.
+
+---
+
+## Figure 13.7 — Go deeper: a policy that refuses an apply
+
+> Go deeper · badges ① to ⑩ · about three minutes. This figure reads top-down.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 13.7 — Go deeper: a policy that refuses an apply — diagram](../../../_figures/curriculum-week-13-labs-FIGURES-4-d6ccbc75.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  PLAN["① the plan<br/><small>an HCP Terraform run · random provider only · no credential anywhere</small>"]:::crit
+  DOC["② the document a policy reads<br/><small>Sentinel: tfplan/v2 import · OPA: input.plan · both carry resource_changes</small>"]:::data
+  POL["③ the policy<br/><small>Sentinel: filters and a main rule · Rego: a deny set · same question, two grammars</small>"]:::crit
+  TEST["④ tested before it ships<br/><small>sentinel test with mocks the platform generates · conftest verify with inputs you write</small>"]:::n
+  SET["⑤ the policy set<br/><small>a VCS repository · sentinel.hcl or policies.hcl · scoped to workspaces</small>"]:::crit
+  LVL["⑥ enforcement level<br/><small>advisory warns · soft-mandatory stops but can be overridden, logged · hard-mandatory stops</small>"]:::crit
+  STOP["⑦ the run stops after plan<br/><small>the apply button never appears · this is the refusal week 19 could only print</small>"]:::warn
+  OVR["⑧ override<br/><small>soft-mandatory only · a named person, recorded on the run</small>"]:::n
+  OPA["⑨ OPA on the same run<br/><small>a second policy set · advisory or mandatory, two levels not three</small>"]:::n
+  CMP["⑩ the comparison<br/><small>Rego runs in five places · Sentinel in HashiCorp's · the exam asks where the check sits</small>"]:::data
+
+  PLAN ==> DOC ==> POL ==> SET ==> LVL ==> STOP
+  POL --> TEST
+  STOP -.-> OVR
+  LVL -.-> OPA
+  OPA -.-> CMP
+  linkStyle 0,1,2,3,4 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "Week 19 put a policy in front of a reviewer. This puts one in front of apply, on a run that cannot continue if the policy says no, and does it in both languages the platform understands."
+- **① the plan.** "A workspace on HCP Terraform's free tier running a configuration with only the random provider, so no cloud credential exists anywhere in this exercise. The plan is the same plan you have read all month."
+- **② the document.** "After the plan, the platform hands the policy a document. Sentinel calls it the tfplan/v2 import; OPA sees it as input.plan. Both are the resource_changes list from week 19, so a rule you can write for one you can write for the other."
+- **③ the policy.** "Sentinel filters the list down to the resources it cares about and a main rule says whether the filtered list is empty. Rego says the same as a deny set with the violations in it. Two grammars, one question: is there anything in this plan I refuse?"
+- **④ tested first.** "sentinel test runs each policy against a mock the platform generated from a real plan, so the mock is not your guess about the document's shape. conftest verify runs the Rego against inputs you wrote. Either way, a policy nobody tested may match nothing."
+- **⑤ the policy set.** "A repository the platform watches, with a manifest naming each policy and its level, attached to the workspaces it governs. Policy is versioned and reviewed the same way the infrastructure is."
+- **⑥ enforcement level.** "Advisory warns and the run continues. Soft-mandatory stops the run, and someone with the permission can override it, with their name on the run. Hard-mandatory stops it, full stop. The exam asks you to name the three."
+- **⑦ the run stops.** "This is the badge the lab exists for. The plan finished, the policy failed, and there is no apply button. Week 19's gate printed a failure in CI; this one makes the apply impossible."
+- **⑧ override.** "Only for soft-mandatory, only by someone granted it, and it is recorded. That audit trail is the strongest argument a Terraform Enterprise shop has for Sentinel."
+- **⑨ OPA on the same run.** "Attach a second policy set of kind OPA with the same rule in Rego. Two levels here, advisory and mandatory. Fail the run with both attached and read the two failures side by side."
+- **⑩ the comparison.** "Rego runs in CI, at admission, in an application, and here. Sentinel runs in HashiCorp's products. Write policy in Rego; know Sentinel's levels and where it sits; and be able to say why a shop chose it without defending it as a general tool."
+- **Close.** "Plan, document, policy, tested, set, level, refusal. The mechanism is the same one you built in week 19; the difference is who gets to press apply afterwards."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 3 enforcement levels | Sentinel: advisory, soft-mandatory, hard-mandatory | the exam question, and the override audit trail lives in the middle one |
+| 2 enforcement levels | OPA on HCP Terraform: advisory, mandatory | the same gate, one fewer knob |
+| 2 places Sentinel runs | HCP Terraform and Terraform Enterprise (plus the enterprise Vault, Consul, Nomad tiers) | the ceiling on its hiring signal |
+| 0 credentials | the random-provider workspace | the repository's no-credentials rule survives a SaaS workspace |
+| 1 document | `tfplan/v2` and `input.plan` | both are the week-19 `resource_changes` list |
+| 20 minutes | the from-memory target | three policies and the manifest, tested, files closed |
+
+### Prove it
+
+```bash
+sentinel test -verbose                                  # ④ every policy against its mocks
+sentinel apply -trace require-tags.sentinel             # ③ the filters' intermediate values
+terraform plan                                          # ① ⑦ the run in the UI stops after plan on a hard-mandatory failure
+```
+
+### The question a senior interviewer asks
+
+*"Where does a Sentinel policy check sit in a run, and what happens at each enforcement level?"*
+Badges ⑥ and ⑦: between plan and apply; advisory warns, soft-mandatory stops with a logged override, hard-mandatory stops. The follow-up is "and why would you choose OPA instead?", which is badge ⑩.
 
 ---
 

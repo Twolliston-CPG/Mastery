@@ -122,6 +122,7 @@ product manager can join.
 
 ```
 platform/
+policies/contract/    the business rules in Rego, their tests; run after the schema check
   schemas/service.schema.json    the contract, as JSON Schema -- also the field reference
   teams/teams.yaml               valid owners and their cost centers
   modules/                       versioned Terraform: runtime, pipeline, database,
@@ -157,6 +158,23 @@ docs/
 
 **Charlie introduces almost no new technology.** It is everything from months 1–5 composed behind one
 contract — which is exactly the point, and worth saying in an interview.
+
+## The contract's business rules
+
+The schema says what `service.yaml` may contain. It cannot say what a valid file means: that the
+owner is a real team, that a critical service can survive a node drain, that an experimental service
+is never public, that a name is not already taken. Those are rules, and rules live in
+`policies/contract/`, in Rego, run by Conftest with `platform/teams/teams.yaml` loaded as data:
+
+```bash
+conftest verify --policy policies/contract --data platform/teams                      # the rules' own tests
+conftest test   --policy policies/contract --data platform/teams services/*/service.yaml
+conftest test   --policy policies/contract --data platform/teams --combine services/*/service.yaml   # uniqueness across files
+./cli/validate.py services/orders-api/service.yaml      # shape first, then the rules, when conftest is installed
+```
+
+Every message keeps the validator's discipline: where, what, the valid options with their meaning,
+and what to do next. Week 23's Go deeper lab is where the rules are written.
 
 ## ★ GATE 6
 

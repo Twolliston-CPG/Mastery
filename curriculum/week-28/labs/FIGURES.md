@@ -1,6 +1,6 @@
 # Week 28 — Lab figures
 
-> One figure per lab, numbered 28.2 to 28.6, then 28.7 to 28.9 for the three "Go deeper" labs of the
+> One figure per lab, numbered 28.2 to 28.6, then 28.7 to 28.10 for the four "Go deeper" labs of the
 > mastery ladder. Figure 28.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
@@ -698,6 +698,95 @@ kubectl -n kube-system get ds node-local-dns                                    
 
 *"DNS in the cluster randomly takes five seconds. Where do you look?"*
 Badges ② ④ ⑨, in that order: is ndots multiplying queries, is the query UDP to a VIP through DNAT, and is a conntrack race dropping the twin. The fix is NodeLocal DNSCache or a lower ndots, and saying the race out loud is what separates "restart CoreDNS" from an answer.
+
+---
+
+## Figure 28.10 — Go deeper: three admission engines, one policy set
+
+> Go deeper · badges ① to ⑧ · about three minutes. Reads top-down: the chain, the three engines, and the comparison.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 28.10 — Go deeper: three admission engines, one policy set — diagram](../../../_figures/curriculum-week-28-labs-FIGURES-8-84bd3f2b.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  APPLY["① kubectl apply bad.yaml<br/><small>nginx:latest · no limits · no owner label</small>"]:::crit
+  CHAIN["② the admission chain, in order<br/><small>mutating webhooks → schema → ValidatingAdmissionPolicy → validating webhooks</small>"]:::crit
+  KYV["③ Kyverno<br/><small>YAML patterns · mutate and validate in one kind · Audit → Enforce · a webhook with failurePolicy</small>"]:::crit
+  GK["④ Gatekeeper<br/><small>ConstraintTemplate holds the Rego, Constraint holds match and parameters · dryrun → deny · Assign mutates</small>"]:::crit
+  VAP["⑤ ValidatingAdmissionPolicy<br/><small>CEL, inside the API server · paramKind for data · Warn → Deny · no webhook to be down</small>"]:::crit
+  AUDIT["⑥ what already exists<br/><small>Kyverno reports · Gatekeeper's audit controller every 60 s · VAP: only new requests</small>"]:::data
+  REFUSE["⑦ the same pod refused three ways<br/><small>six messages from Gatekeeper, one per rule · the message is the product</small>"]:::warn
+  DOWN["⑧ when the engine is down<br/><small>webhook: failurePolicy Fail refuses everything, Ignore admits everything · VAP: nothing is down</small>"]:::warn
+
+  APPLY ==> CHAIN
+  CHAIN ==> KYV
+  CHAIN ==> GK
+  CHAIN ==> VAP
+  KYV --> REFUSE
+  GK --> REFUSE
+  VAP --> REFUSE
+  KYV -.-> AUDIT
+  GK -.-> AUDIT
+  KYV -.-> DOWN
+  GK -.-> DOWN
+  linkStyle 0,1,2,3 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "Week 19 wrote five policies in Kyverno. This figure is the same five in the two other engines a platform team is choosing between, and the comparison that ends the argument: the rules are the policy, the engine is the delivery."
+- **① kubectl apply bad.yaml.** "One pod that breaks four rules at once: a latest tag from a foreign registry, no limits, no owner label. Keep it beside a good pod for the whole lab, so every engine is judged on the same two objects."
+- **② the admission chain, in order.** "Mutating webhooks first, then schema validation, then ValidatingAdmissionPolicy, then validating webhooks. So a mutation can make a validation pass, and a VAP sees the object after every mutation. Prove it with Gatekeeper's `Assign` adding `runAsNonRoot` before a VAP that requires it."
+- **③ Kyverno.** "YAML patterns, mutation and validation in the same object kind, Audit then Enforce, PolicyReports for what already exists. The decision travels through a webhook, so `failurePolicy` is a choice you make."
+- **④ Gatekeeper.** "OPA in the cluster. The template holds the Rego and defines a CRD; the constraint is an instance with the match and parameters. `dryrun`, then `deny`. The input is `input.review.object`, the same engine as Lab 1 with a different document. Mutation is a separate CRD family, `Assign`, not Rego."
+- **⑤ ValidatingAdmissionPolicy.** "CEL expressions evaluated inside the API server, no webhook. A binding decides where and whether it warns, audits or denies. `paramKind` points at a real object, so the registry allowlist is a ConfigMap a team edits. `parameterNotFoundAction` is the fail-open-or-closed question, asked without a webhook."
+- **⑥ what already exists.** "The first thing a platform team wants: a new policy that reports what is already wrong. Kyverno has reports, Gatekeeper has an audit controller on a 60-second loop writing into constraint status. VAP judges only requests that arrive, so a cluster-wide audit needs something else."
+- **⑦ the same pod refused three ways.** "Six lines from Gatekeeper, one per violated rule with the constraint's name in brackets; Kyverno names the policy and rule; VAP names the policy and binding. The message is the product: a developer reads it once and fixes the manifest without asking."
+- **⑧ when the engine is down.** "A webhook that is unreachable either refuses every write or admits every write; Kyverno defaults one way, Gatekeeper the other. A VAP has nothing to be down; its `failurePolicy` only covers an expression that errors. That is the whole reason VAP exists."
+- **Close.** "VAP for anything CEL can say, because it removes a webhook from the failure path. Kyverno or Gatekeeper for mutation, generated resources and audit of what exists. Gatekeeper when the organisation already writes Rego. The same five rules in whichever you pick."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 5 policies × 3 engines | the lab | the same rule set delivered three ways; the rules are the policy |
+| 4 stages | the admission chain | mutating webhooks → schema → VAP → validating webhooks; a mutation can make a validation pass |
+| 60 s | Gatekeeper's audit interval | how long until a new constraint reports what already exists |
+| 6 messages | the Gatekeeper refusal of `bad.yaml` | one per violated rule, each naming its constraint |
+| 3 validation actions | a VAP binding | `Warn`, `Audit`, `Deny`; the rollout is the order they are listed in |
+| 2 fail modes | `failurePolicy` and `parameterNotFoundAction` | fail open or fail closed, chosen on purpose, said out loud |
+| 1 engine with no webhook | VAP | nothing to be down; the row that changes the decision |
+
+### Prove it
+
+```bash
+kubectl apply -f bad.yaml                                                                 # ① ⑦ the refusal, per engine
+kubectl get validatingwebhookconfiguration -o custom-columns='NAME:.metadata.name,FAIL:.webhooks[*].failurePolicy'   # ③ ④ ⑧
+kubectl get constraints                                                                   # ④ ⑥ TOTAL-VIOLATIONS
+kubectl get k8srequiredlimits require-limits -o jsonpath='{.status.violations}' | jq .   # ⑥ the audit's findings
+kubectl get validatingadmissionpolicy require-limits -o jsonpath='{.status.typeChecking}'  # ⑤ the API server checked the CEL
+kubectl apply -f good.yaml --dry-run=server -o jsonpath='{.spec.securityContext}'       # ② Assign ran before validation
+kubectl api-resources | grep -i mutatingadmissionpolic                                   # ⑤ does this version mutate in CEL
+```
+
+### The question a senior interviewer asks
+
+*"Kyverno, Gatekeeper, or ValidatingAdmissionPolicy?"*
+Badge ⑧ first, because it is the row that decides: VAP removes a webhook from the failure path. Then ⑥, because audit of what already exists is what the other two still do better. Then the close: the same five rules in whichever you pick, and the engine is the delivery, not the policy. An answer that names a winner without those two rows is a preference, not an assessment.
 
 ---
 

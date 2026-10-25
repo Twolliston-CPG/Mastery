@@ -93,6 +93,9 @@ Put the two flags in `terraform.tfvars` (gitignored) once they are permanent.
    visible event rather than a quiet default. Nobody else holds the bypass.
 5. The author has worked through the checklist in `.github/PULL_REQUEST_TEMPLATE.md`.
 6. Merge is squash-only, the branch is deleted on merge, history stays linear.
+7. The repository's own policy gate passes: `infra/policy/terraform/` (Conftest, run by `iac-scan`
+   and `make policy`). It has no inline skip; an exception is a rule change in the same pull request,
+   reviewed as code.
 
 ### Who can merge today, and why the plan matters
 

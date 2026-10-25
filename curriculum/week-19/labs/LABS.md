@@ -1,7 +1,7 @@
 # Week 19 Labs
 
 > **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
-> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (19.2 to 19.6). Read a lab's figure
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (19.2 to 19.6; 19.7 for the "Go deeper" lab at the end). Read a lab's figure
 > before you start it; redraw it after.
 
 ---
@@ -383,3 +383,330 @@ is solving an expensive problem — and in an interview it demonstrates that you
 controls to business requirements, which very few junior candidates do.
 
 Template: `_reference/devsecops/threat-modeling/templates-compliance-mapping-template.md`.
+
+---
+
+# Go deeper — OPA as a decision engine (3h · ladder: policy as code, rung 3 and 4)
+
+Optional inside this week, mandatory for the ladder ([`../../../KUBERNETES-MASTERY.md`](../../../KUBERNETES-MASTERY.md)).
+Lab 1 used OPA the way most people meet it: Conftest reads a plan, a `deny` rule prints a line, the
+build goes red. That is one input shape of one engine. This lab takes the engine out of the pipeline:
+what a Rego rule actually computes, where policy and data part ways, how a policy reaches a running
+OPA without a redeploy, and OPA deciding every HTTP request of the week-20 app. Every Rego block
+below was run with `conftest verify` and `conftest test` before it was written here; the `opa`
+commands need the binary (`brew install opa`), which is the same evaluator Conftest embeds.
+
+## Part 1 — What a rule computes (45 min)
+
+Put Lab 1's thinking on a clean page. A policy directory, one rule file, one test file:
+
+```bash
+mkdir -p ~/opa-lab/policy && cd ~/opa-lab
+```
+
+```rego
+# policy/main.rego
+package main
+
+import rego.v1
+
+# A deny rule is a PARTIAL SET: every body that succeeds contributes one element.
+# `deny` is the set of all messages; an empty set means "nothing wrong".
+deny contains msg if {
+	some r in input.resource_changes
+	r.type == "aws_instance"
+	not r.change.after.metadata_options[0].http_tokens == "required"
+	msg := sprintf("%s: IMDSv2 must be required", [r.address])
+}
+
+deny contains msg if {
+	some r in input.resource_changes
+	r.type == "aws_instance"
+	not r.change.after.ami in data.allowlist.amis
+	msg := sprintf("%s: ami %q is not in data.allowlist.amis", [r.address, r.change.after.ami])
+}
+
+deny contains msg if {
+	some r in input.resource_changes
+	region := r.change.after.region
+	not region in data.allowlist.regions
+	msg := sprintf("%s: region %q is not approved", [r.address, region])
+}
+
+# A COMPLETE rule produces one value. Without `default`, `allow` is undefined
+# (not false) when no body succeeds -- and undefined is what trips people.
+default allow := false
+
+allow if count(deny) == 0
+
+# `every` is the universal quantifier: true only if every element satisfies the body.
+all_tagged if {
+	every r in input.resource_changes {
+		r.change.after.tags.Owner
+	}
+}
+```
+
+Three things to say out loud, because they are the whole language:
+
+- **A rule defines a document, not a function.** `data.main.deny` is a set that exists whether or
+  not anyone asks for it; `data.main.allow` is a single value. Evaluation is asking "what is the
+  value of this path", and the engine works out which rule bodies make it true.
+- **A body is a conjunction, and variables unify.** In `some r in input.resource_changes`, `r` is
+  not assigned, it is bound to each element in turn and the rest of the body is tried for each. A
+  body that fails for one `r` contributes nothing for that `r` and the next is tried. That is why
+  there are no loops and no `if/else`: iteration is what unification does.
+- **Undefined is not false.** A complete rule with no `default` whose bodies all fail has no value
+  at all. `count(deny) == 0` works because an empty set is a value; `allow` without a default would
+  be *missing* from the response, and a caller testing `if result == false` would never see it.
+
+Now watch it:
+
+```bash
+cat > input-bad.json <<'EOF'
+{"resource_changes": [{"address": "aws_instance.web", "type": "aws_instance", "change": {"after": {"ami": "ami-9999", "region": "eu-west-1", "tags": {}, "metadata_options": [{"http_tokens": "optional"}]}}}]}
+EOF
+cat > data.json <<'EOF'
+{"allowlist": {"amis": ["ami-0abc"], "regions": ["us-east-1", "us-west-2"]}}
+EOF
+
+opa eval -i input-bad.json -d policy/ -d data.json --format pretty 'data.main.deny'
+#   [ "aws_instance.web: IMDSv2 must be required",
+#     "aws_instance.web: ami \"ami-9999\" is not in data.allowlist.amis",
+#     "aws_instance.web: region \"eu-west-1\" is not approved" ]
+opa eval -i input-bad.json -d policy/ -d data.json --format pretty 'data.main.allow'      # false
+opa eval -i input-bad.json -d policy/ -d data.json --format pretty 'data.main'            # the whole document: deny, allow, all_tagged
+opa eval -i input-bad.json -d policy/ -d data.json --explain full 'data.main.allow' | head -40   # every binding the engine tried
+conftest test -p policy -d data.json input-bad.json                                       # the same three lines, as Lab 1 showed them
+```
+
+The `--explain full` output is unification made visible: each `Enter`, `Eval`, `Fail` line is one
+binding being tried. Read it once for one rule; after that you can predict it.
+
+Unit tests are rules whose names start with `test_`; `with` substitutes `input` or any `data` path:
+
+```rego
+# policy/main_test.rego
+package main
+
+import rego.v1
+
+good := {"resource_changes": [{
+	"address": "aws_instance.web",
+	"type": "aws_instance",
+	"change": {"after": {
+		"ami": "ami-0abc",
+		"region": "us-east-1",
+		"tags": {"Owner": "platform"},
+		"metadata_options": [{"http_tokens": "required"}],
+	}},
+}]}
+
+allowlist := {"amis": ["ami-0abc"], "regions": ["us-east-1", "us-west-2"]}
+
+test_good_instance_allowed if {
+	allow with input as good with data.allowlist as allowlist
+}
+
+test_imdsv1_denied if {
+	count(deny) == 1 with input as json.patch(good, [{"op": "replace", "path": "/resource_changes/0/change/after/metadata_options/0/http_tokens", "value": "optional"}])
+		with data.allowlist as allowlist
+}
+
+test_unlisted_ami_denied if {
+	deny["aws_instance.web: ami \"ami-9999\" is not in data.allowlist.amis"] with input as json.patch(good, [{"op": "replace", "path": "/resource_changes/0/change/after/ami", "value": "ami-9999"}])
+		with data.allowlist as allowlist
+}
+
+test_allow_is_false_not_undefined if {
+	allow == false with input as {"resource_changes": [{"address": "x", "type": "aws_instance", "change": {"after": {"ami": "ami-x", "region": "eu-west-1", "metadata_options": [{"http_tokens": "optional"}]}}}]}
+		with data.allowlist as allowlist
+}
+
+test_every_tagged if {
+	all_tagged with input as good
+	not all_tagged with input as json.patch(good, [{"op": "remove", "path": "/resource_changes/0/change/after/tags/Owner"}])
+}
+```
+
+```bash
+opa test -v policy/            # 5 tests, PASS, with timings
+opa fmt --diff policy/         # the one formatting; `opa fmt -w` rewrites in place
+conftest verify -p policy -d data.json
+```
+
+`json.patch` is the trick: one good input, each test mutates one field, so a test says exactly
+which field it is about. Delete the `default allow := false` line and run the tests again:
+`test_allow_is_false_not_undefined` fails, and the failure message is the lesson.
+
+## Part 2 — Data is not policy (20 min)
+
+The two allowlists live in `data.json`, loaded with `-d`, addressed as `data.allowlist.amis`. Policy
+says "the AMI must be approved"; data says which ones are. They change on different schedules and
+are owned by different people: the rule is reviewed like code, the list is updated like
+configuration. Prove the separation:
+
+```bash
+# the same policy, a different allowlist, no Rego changed
+echo '{"allowlist": {"amis": ["ami-9999"], "regions": ["eu-west-1"]}}' > data-eu.json
+opa eval -i input-bad.json -d policy/ -d data-eu.json --format pretty 'data.main.deny'
+#   [ "aws_instance.web: IMDSv2 must be required" ]      only the hard rule is left
+```
+
+Then the question that separates rung 2 from rung 3: what does the engine know before it sees any
+input? Ask it with partial evaluation:
+
+```bash
+opa eval -d policy/ -d data.json --partial --unknowns input --format pretty 'data.main.allow'
+```
+
+The output is the residual: the conditions on `input` that remain once everything knowable from
+`data` has been folded in. That residual is what OPA compiles down to a SQL `WHERE` clause or a
+filter in data-filtering deployments. One sentence to own: *partial evaluation turns a policy plus
+known data into a smaller policy over the unknowns.*
+
+## Part 3 — A bundle, and policy delivered without a redeploy (30 min)
+
+An OPA server does not read files from disk forever; it pulls a **bundle**, a tarball of policy
+and data, from a service, on a schedule. That is how a policy change reaches a hundred OPAs
+without touching their deployments.
+
+```bash
+opa build -b policy/ data.json -o bundle.tar.gz      # -b: bundle mode, includes data.json as data
+tar tzf bundle.tar.gz                                 # /policy/main.rego, /policy/main_test.rego, /data.json, /.manifest
+
+# the "bucket": any HTTP server will do for the lab
+(cd ~/opa-lab && python3 -m http.server 8000 >/dev/null 2>&1 &)
+
+cat > config.yaml <<'EOF'
+services:
+  local:
+    url: http://127.0.0.1:8000
+bundles:
+  main:
+    resource: bundle.tar.gz
+    polling:
+      min_delay_seconds: 10
+      max_delay_seconds: 20
+EOF
+opa run --server --addr :8181 -c config.yaml &
+sleep 2
+curl -s localhost:8181/v1/data/main/allow -d @<(jq '{input: .}' input-bad.json) | jq .   # {"result": false}
+curl -s localhost:8181/v1/status | jq '.result.bundles'                                      # which bundle, which revision, when
+```
+
+Now change the policy without touching the server: edit `data.json` to approve `ami-9999` and
+`eu-west-1`, rebuild the bundle, and watch:
+
+```bash
+opa build -b policy/ data.json -o bundle.tar.gz
+sleep 20
+curl -s localhost:8181/v1/data/main/deny -d @<(jq '{input: .}' input-bad.json) | jq .   # only the IMDSv2 line remains
+```
+
+In production the service is a bucket or the OPA control plane, the bundle is signed
+(`opa build --signing-key`), and the `.manifest` carries a revision you can see in `/v1/status`.
+The mechanism is the same: policy is a versioned artefact that OPAs pull.
+
+## Part 4 — OPA as the authorization service for the week-20 app (60 min)
+
+The step most people never take. The week-20 Flask app gets a `before_request` hook that asks OPA
+whether this user may do this thing, and OPA answers from a policy plus a roles document.
+
+```rego
+# authz/authz.rego
+package authz
+
+import rego.v1
+
+# Called by the Flask before_request hook with
+#   {"input": {"method": "GET", "path": ["orders", "42"], "user": "sam"}}
+# Roles live in data, not in the policy: data.roles.sam == ["reader"].
+
+default allow := false
+
+# Anyone may read health.
+allow if {
+	input.method == "GET"
+	input.path == ["health"]
+}
+
+# Readers may GET under /orders; writers may do anything under /orders.
+allow if {
+	input.method == "GET"
+	input.path[0] == "orders"
+	"reader" in data.roles[input.user]
+}
+
+allow if {
+	input.path[0] == "orders"
+	"writer" in data.roles[input.user]
+}
+```
+
+```bash
+cat > roles.json <<'EOF'
+{"roles": {"sam": ["reader"], "ana": ["reader", "writer"]}}
+EOF
+opa test -v authz/     # write the five tests first: health open, reader GET, reader POST refused, writer POST, unknown user false
+pkill -f 'opa run' ; opa run --server --addr :8181 authz/ roles.json &
+curl -s localhost:8181/v1/data/authz/allow -d '{"input":{"method":"POST","path":["orders"],"user":"sam"}}'   # {"result":false}
+curl -s localhost:8181/v1/data/authz/allow -d '{"input":{"method":"POST","path":["orders"],"user":"ana"}}'   # {"result":true}
+```
+
+The hook, in the app from week 20 Lab 1 (the user comes from a header here; in week 16's EKS
+version it comes from the OIDC token the Ingress validated):
+
+```python
+import requests
+from flask import request, abort
+
+OPA = "http://127.0.0.1:8181/v1/data/authz/allow"
+
+@app.before_request
+def authorize():
+    path = [p for p in request.path.split("/") if p]
+    decision = requests.post(OPA, json={"input": {
+        "method": request.method,
+        "path": path,
+        "user": request.headers.get("X-User", "anonymous"),
+    }}, timeout=0.2).json()
+    if not decision.get("result", False):      # undefined and false both land here, on purpose
+        abort(403)
+```
+
+Measure what a decision costs, because this is the question a reviewer asks first:
+
+```bash
+time (for i in $(seq 100); do curl -s -o /dev/null -H 'X-User: sam' localhost:8080/orders; done)   # with the hook
+# comment the decorator out, restart the app, run it again: the difference / 100 is the per-request price
+```
+
+On a laptop the difference is around a millisecond a request, because OPA evaluates in memory
+against data it already holds; the cost that matters in production is the network hop, which is why
+OPA runs as a sidecar or a library, never across a region. Then say why this is the step that changes
+what policy is: in the pipeline, a policy refuses a change once, at merge time; here it decides every
+request, from the same language, with the same tests, with roles that are data. Authorization has
+left the application's code.
+
+## Part 5 — Regal, and the three style rules that matter (15 min)
+
+```bash
+brew install styrainc/tap/regal
+regal lint policy/ authz/
+```
+
+Fix what it reports, then keep three rules from the Rego style guide and let the linter hold the
+rest: one package per directory and the package name is the path; booleans get a `default`; iterate
+with `some ... in`, never with a bare `_` you will not be able to explain in review.
+
+## Part 6 — One engine, four input shapes (10 min)
+
+Say it, then draw figure 19.7: Conftest hands OPA a plan JSON and asks for `deny`; Gatekeeper hands
+it an `AdmissionReview` and asks for `violation`; the server hands it an HTTP request and asks for
+`allow`; HCP Terraform hands it a `tfplan` and asks for a rule. The evaluator, the language, the tests
+and the bundles are identical. What changes is the input document and which path you ask for. That
+sentence is the rung-three answer to "what is OPA".
+
+**Do it again, from memory, timed.** Parts 1 and 4 in 30 minutes: the three deny rules with tests
+passing, and the authz policy answering `curl` correctly for a reader, a writer, and a stranger.

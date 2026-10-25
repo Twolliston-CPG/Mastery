@@ -11,7 +11,7 @@
 
 | Artefact | What it is |
 |---|---|
-| This file | The five rungs, the twelve topics, the rubric, the schedule, the reading, the scoring table |
+| This file | The five rungs, the thirteen topics, the rubric, the schedule, the reading, the scoring table |
 | [`curriculum/KUBERNETES-THREAD.md`](curriculum/KUBERNETES-THREAD.md) | Every lab in the program, weeks 1 to 30, read as Kubernetes: what in it is the same mechanism, explained one level under the lab, with a command that shows it on a cluster and a sentence to say aloud. Read the entry after each lab |
 | The eleven **Go deeper** labs | Appended to weeks 14, 15, 16, 27, 28 and 30. Each opens machinery the week's labs use without looking inside, and each has a figure. Optional inside the week; mandatory for the ladder |
 
@@ -27,13 +27,13 @@
 | **4** | Modify | You have changed the mechanism: configured it differently and shown the difference, replaced a piece of it, or written a piece of it |
 | **5** | Teach | You have taught it to someone who did not know it, from a blank page, and they could then do rung 2. A published post with a figure counts; a recorded fifteen-minute explanation a stranger followed counts |
 
-The program as written reaches rung 2 on everything and rung 3 on the figures. This file is the path to rungs 3, 4 and 5 on twelve topics, and the way to know which rung you are on.
+The program as written reaches rung 2 on everything and rung 3 on the figures. This file is the path to rungs 3, 4 and 5 on thirteen topics, and the way to know which rung you are on.
 
 ---
 
-## 2. The twelve topics, and the rubric
+## 2. The thirteen topics, and the rubric
 
-One row per topic. The cell is the test for that rung; passing it is binary and demonstrated.
+One row per topic, thirteen with policy as code, which cuts across Terraform, CI and admission. The cell is the test for that rung; passing it is binary and demonstrated.
 
 | Topic | 1 · Use | 2 · Debug | 3 · Explain | 4 · Modify | 5 · Teach |
 |---|---|---|---|---|---|
@@ -49,6 +49,7 @@ One row per topic. The cell is the test for that rung; passing it is binary and 
 | **Isolation and security** | securityContext, Pod Security Admission labels | A PSA rejection, a seccomp denial, a missing capability, a read-only root crash | Namespaces, cgroups, capabilities, seccomp, AppArmor, user namespaces; what a shared node does and does not isolate | A seccomp profile from a trace; a RuntimeClass with a sandboxed runtime | "What a container isolates, and what it does not" |
 | **Lifecycle, upgrades, HA** | kubeadm init, join, upgrade; certificate renewal | Expired certificates; a failed upgrade; version skew | Static pods, the PKI fan-out, the skew policy, stacked and external etcd, the load balancer on 6443 | A cluster built with no kubeadm; a custom CA; an external etcd | "What kubeadm wrote, and why" |
 | **Resources and scale** | Requests and limits, HPA, quotas, LimitRange | Throttling vs OOM; eviction order; an autoscaler that does not scale | QoS and the cgroup math, the HPA algorithm, node autoscaling, the published scalability thresholds | A thousand simulated nodes; a load test; API server and etcd flags tuned with a measured effect | "What happens at ten thousand pods" |
+| **Policy as code** | A Rego rule that blocks a known-bad plan or pod; a Kyverno policy in audit mode | A policy that did not fire: wrong package or input path, audit vs enforce, a webhook's failure policy | The evaluation model of each engine: Rego's unification, sets and partial sets, `data` vs `input`, partial evaluation; Sentinel's imports, rules and enforcement levels; CEL as expression-only; the admission order | A policy shipped in a gate you built: the repo's CI, Alpha's pipeline, Gatekeeper or ValidatingAdmissionPolicy on your cluster, a Sentinel policy set on HCP Terraform | "One engine, four input shapes": Conftest, Gatekeeper, the OPA server and the Terraform provider are one evaluator fed differently |
 
 **Scoring rule.** A rung is held only if every rung below it is held. Rung 3 is passed by a recorded fifteen-minute explanation checked against the cell; rung 4 by the artefact and its proof; rung 5 by the student of your explanation reaching rung 2.
 
@@ -60,7 +61,7 @@ One row per topic. The cell is the test for that rung; passing it is binary and 
 
 Every lab from week 1 has an entry in [`curriculum/KUBERNETES-THREAD.md`](curriculum/KUBERNETES-THREAD.md). After the lab, read its entry, run the **See it in Kubernetes** command when a cluster is at hand, and say the **Say it** sentence aloud. It takes five minutes and it is how the Linux, networking, AWS and Terraform weeks become Kubernetes understanding rather than prerequisites you once did. The entry's **Ladder** line says which topic and rung the lab fed.
 
-### The eleven Go deeper labs
+### The fifteen Go deeper labs
 
 | Week | Lab | Hours | Topic · rung |
 |---|---|---|---|
@@ -75,12 +76,16 @@ Every lab from week 1 has an entry in [`curriculum/KUBERNETES-THREAD.md`](curric
 | 28 | The Service datapath, three ways | 3 | Networking datapath 3 |
 | 28 | DNS, five queries for one name | 2 | DNS 3 |
 | 30 | The cluster you cannot afford | 3 | Resources and scale 3 · scheduling 3 |
+| 13 | Sentinel and OPA at the apply gate | 2 | Policy as code 3 · 4 |
+| 19 | OPA as a decision engine | 3 | Policy as code 3 · 4 |
+| 23 | The contract's business rules in Rego | 2 | Policy as code 4 |
+| 28 | Three admission engines, one policy set | 3 | Policy as code 3 · authn, authz, admission 4 |
 
 **When.** Inside the week if the week is ahead of schedule; otherwise one per week after week 30, in the order above, while the cadence continues. None of them is exam preparation; all of them are what the exam leaves out. Each ends with a "from memory, timed" line because rung 4 includes doing it again without the file.
 
 ### The explanation drill, at three depths
 
-The week-25 discipline for stories, applied to mechanisms. For each of the twelve topics, three versions: **thirty seconds** (the sentence an interviewer hears first), **three minutes** (the figure, badge by badge), **fifteen minutes** (rung 3: the whiteboard, no notes, the hard part included). From week 14, one topic a week in the table's order, recorded on a phone, the fifteen-minute version scored against the rung-3 cell. After week 30 the cycle repeats monthly. The figures are the retrieval cue; the recording is the evidence.
+The week-25 discipline for stories, applied to mechanisms. For each of the thirteen topics, three versions: **thirty seconds** (the sentence an interviewer hears first), **three minutes** (the figure, badge by badge), **fifteen minutes** (rung 3: the whiteboard, no notes, the hard part included). From week 14, one topic a week in the table's order, recorded on a phone, the fifteen-minute version scored against the rung-3 cell. After week 30 the cycle repeats monthly. The figures are the retrieval cue; the recording is the evidence.
 
 ### Scoring, at the gates
 
@@ -115,10 +120,11 @@ Mastery of a system includes knowing where its code and its decisions live. One 
 | Isolation and security | `namespaces(7)`, `cgroups(7)` and `user_namespaces(7)`; the cgroup v2 kernel documentation; user namespaces for pods (KEP-127) | `pkg/kubelet/cm` (the cgroup managers) |
 | Lifecycle, upgrades, HA | The kubeadm implementation-details page; the version skew policy; the upstream "Kubernetes the Hard Way" | `cmd/kubeadm/app/phases` |
 | Resources and scale | The SIG Scalability thresholds document; the HPA algorithm page; the kwok and kube-burner documentation | `pkg/controller/podautoscaler`, `pkg/kubelet/cm/cgroup_manager_linux.go` |
+| Policy as code | The OPA policy language reference and the Rego style guide; Gatekeeper's ConstraintTemplate docs; the ValidatingAdmissionPolicy page and the CEL spec; HashiCorp's Sentinel language and `tfplan/v2` import docs | OPA `topdown/` (the evaluator); Gatekeeper `pkg/`; `staging/src/k8s.io/apiserver/pkg/admission/plugin/policy` (the CEL admission plugin) |
 
 ### Write it down: the series
 
-Rung 5 needs a student. The cheapest one is the public: twelve posts, one per topic, each with its figure, each written from the fifteen-minute recording. Weeks 14 to 30 produce the first five or six alongside the planned posts; the rest follow one a month. A post that a stranger used to debug something is a rung-5 pass. The posts are also the only rung an interviewer can see before the interview.
+Rung 5 needs a student. The cheapest one is the public: thirteen posts, one per topic, each with its figure, each written from the fifteen-minute recording. Weeks 14 to 30 produce the first five or six alongside the planned posts; the rest follow one a month. A post that a stranger used to debug something is a rung-5 pass. The posts are also the only rung an interviewer can see before the interview.
 
 ---
 
@@ -165,6 +171,7 @@ Copy under each gate's retrospective in `progress.md`. The **Evidence** is a lin
 | Isolation and security | | | | |
 | Lifecycle, upgrades, HA | | | | |
 | Resources and scale | | | | |
+| Policy as code | | | | |
 
 Moved since last time: <topics>. Stuck for two scorings: <topics> → next Go deeper lab: <which>.
 ```

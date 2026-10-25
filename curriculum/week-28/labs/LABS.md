@@ -1,7 +1,7 @@
 # Week 28 Labs
 
 > **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
-> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (28.2 to 28.6; 28.7 to 28.9 for the "Go deeper" labs at the end). Read a lab's figure
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (28.2 to 28.6; 28.7 to 28.10 for the "Go deeper" labs at the end). Read a lab's figure
 > before you start it; redraw it after.
 
 > **Exam habit for the whole week:** generate, never type from scratch. `kubectl create <kind> ...
@@ -1225,3 +1225,395 @@ conntrack races, the cache removes the DNAT. Four layers, one five-second stall.
 
 **Do it again, from memory, timed.** Parts 1 and 3 in 15 minutes: show the five queries, fix them two
 ways, and produce A, headless A, SRV, and PTR answers with `dig`.
+
+---
+
+# Go deeper — Three admission engines, one policy set (3h · ladder: policy as code, rung 3; authn, authz, admission, rung 4)
+
+Optional inside this week, mandatory for the ladder ([`../../../KUBERNETES-MASTERY.md`](../../../KUBERNETES-MASTERY.md)).
+Week 19 Lab 2 wrote five policies in Kyverno. This lab writes the same five in the other two engines a
+Kubernetes platform team is choosing between, on the kubeadm cluster, and ends with the comparison a
+staff engineer gives rather than a preference. The Rego for the Gatekeeper templates was run
+against a bad and a good pod with `conftest` before it was written here; the CEL below follows the
+Kubernetes reference and is checked in Part 3 by the API server itself, which rejects an invalid
+expression at `apply` time.
+
+The five, from week 19: require CPU and memory limits · no `:latest` (or untagged) images · images
+from your registry only · `app.kubernetes.io/owner` and `team` labels · mutate a default
+`securityContext`. Keep one bad pod and one good pod to hand for the whole lab:
+
+```bash
+kubectl create ns engines
+cat > bad.yaml <<'EOF'
+apiVersion: v1
+kind: Pod
+metadata: { name: bad, namespace: engines, labels: { app: bad } }
+spec:
+  containers: [{ name: app, image: nginx:latest }]
+EOF
+cat > good.yaml <<'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good
+  namespace: engines
+  labels: { app.kubernetes.io/owner: platform, team: shop }
+spec:
+  containers:
+    - name: app
+      image: registry.example.com/shop/app:1.4.2
+      resources: { limits: { cpu: 200m, memory: 128Mi } }
+EOF
+```
+
+## Part 1 — Kyverno, as you have it (15 min)
+
+Apply the five ClusterPolicies from week 19 in `Audit`, confirm the bad pod is reported and the good
+one is not, then switch to `Enforce` and read the refusal:
+
+```bash
+kubectl apply -f bad.yaml
+# Error from server: admission webhook "validate.kyverno.svc-fail" denied the request:
+#   resource Pod/engines/bad was blocked due to the following policies
+#   require-resource-limits: require-limits: validation error: CPU and memory limits are required ...
+kubectl get clusterpolicyreport,policyreport -A       # Audit's output: the report objects
+kubectl get validatingwebhookconfiguration kyverno-resource-validating-webhook-cfg -o jsonpath='{.webhooks[*].failurePolicy}{"\n"}'
+```
+
+Note the three facts you will compare against: the policy language is YAML patterns, mutation and
+validation are the same object kind, and the decision travels through a webhook with a
+`failurePolicy`.
+
+## Part 2 — Gatekeeper: a template, a constraint, an audit (60 min)
+
+Gatekeeper is OPA inside the cluster. A **ConstraintTemplate** holds the Rego and defines a new CRD;
+a **Constraint** is an instance of that CRD with the match and the parameters. Policy logic and policy
+instances are separate objects, which is the point.
+
+```bash
+helm repo add gatekeeper https://open-policy-agent.github.io/gatekeeper/charts
+helm install gatekeeper gatekeeper/gatekeeper -n gatekeeper-system --create-namespace
+kubectl -n gatekeeper-system get pods            # the controller (webhook) and the audit pod, separately
+```
+
+The first template, limits. The Rego's package name must match `metadata.name`; `violation` is the
+partial set Gatekeeper reads, each element an object with `msg`:
+
+```yaml
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8srequiredlimits
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRequiredLimits
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srequiredlimits
+
+        import future.keywords.contains
+        import future.keywords.if
+        import future.keywords.in
+
+        violation contains {"msg": msg} if {
+        	some c in input.review.object.spec.containers
+        	not c.resources.limits.cpu
+        	msg := sprintf("container %q has no cpu limit", [c.name])
+        }
+
+        violation contains {"msg": msg} if {
+        	some c in input.review.object.spec.containers
+        	not c.resources.limits.memory
+        	msg := sprintf("container %q has no memory limit", [c.name])
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLimits
+metadata:
+  name: require-limits
+spec:
+  enforcementAction: dryrun          # START HERE, the audit-mode idea again; then `deny`
+  match:
+    kinds: [{ apiGroups: [""], kinds: ["Pod"] }]
+    excludedNamespaces: [kube-system, gatekeeper-system, kyverno]
+```
+
+The input shape is the thing to memorise: `input.review.object` is the object being admitted
+(the `AdmissionReview` request's object), `input.parameters` is the constraint's `spec.parameters`.
+Compare with Conftest's `input.resource_changes` and the server's `input.method`: same engine,
+different document.
+
+The other three validating templates, with parameters where the rule needs data:
+
+```yaml
+# k8snolatest -- no parameters
+        violation contains {"msg": msg} if {
+        	some c in input.review.object.spec.containers
+        	endswith(c.image, ":latest")
+        	msg := sprintf("container %q uses the :latest tag", [c.name])
+        }
+
+        violation contains {"msg": msg} if {
+        	some c in input.review.object.spec.containers
+        	not contains(c.image, ":")
+        	not contains(c.image, "@")
+        	msg := sprintf("container %q has no tag, which means :latest", [c.name])
+        }
+```
+
+```yaml
+# k8sallowedrepos -- parameters.repos, declared in the template's CRD schema
+spec:
+  crd:
+    spec:
+      names: { kind: K8sAllowedRepos }
+      validation:
+        openAPIV3Schema:
+          type: object
+          properties:
+            repos: { type: array, items: { type: string } }
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8sallowedrepos
+
+        import future.keywords.contains
+        import future.keywords.every
+        import future.keywords.if
+        import future.keywords.in
+
+        violation contains {"msg": msg} if {
+        	some c in input.review.object.spec.containers
+        	every repo in input.parameters.repos {
+        		not startswith(c.image, repo)
+        	}
+        	msg := sprintf("container %q image %q is not from an allowed registry %v", [c.name, c.image, input.parameters.repos])
+        }
+---
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sAllowedRepos
+metadata: { name: own-registry-only }
+spec:
+  enforcementAction: dryrun
+  match: { kinds: [{ apiGroups: [""], kinds: ["Pod"] }], excludedNamespaces: [kube-system, gatekeeper-system, kyverno] }
+  parameters:
+    repos: ["registry.example.com/"]
+```
+
+```yaml
+# k8srequiredlabels -- parameters.labels
+        violation contains {"msg": msg} if {
+        	some label in input.parameters.labels
+        	not input.review.object.metadata.labels[label]
+        	msg := sprintf("missing required label %q", [label])
+        }
+# constraint: parameters: { labels: ["app.kubernetes.io/owner", "team"] }
+```
+
+Apply all four in `dryrun`, then read the audit, which is the thing Kyverno's reports and VAP do
+differently:
+
+```bash
+kubectl apply -f bad.yaml                       # admitted: dryrun records, does not refuse
+kubectl get constraints                         # ENFORCEMENT-ACTION and TOTAL-VIOLATIONS per constraint
+kubectl get k8srequiredlimits require-limits -o jsonpath='{.status.violations}' | jq .
+# [{"enforcementAction":"dryrun","kind":"Pod","message":"container \"app\" has no cpu limit","name":"bad","namespace":"engines"}, ...]
+```
+
+The audit controller re-evaluates every matching object in the cluster on a schedule (every 60 s
+by default), so a policy added today reports what is already wrong, not only what arrives next. That
+is the first thing a platform team wants from an engine, and it is why the audit pod is separate from
+the webhook.
+
+Now switch to `deny` and refuse:
+
+```bash
+for c in require-limits no-latest own-registry-only required-labels; do
+  kubectl patch "$(kubectl get constraints -o name | grep "/$c$")" --type merge -p '{"spec":{"enforcementAction":"deny"}}'
+done
+kubectl delete -f bad.yaml; kubectl apply -f bad.yaml
+# Error from server (Forbidden): error when creating "bad.yaml": admission webhook "validation.gatekeeper.sh" denied the request:
+#   [require-limits] container "app" has no cpu limit
+#   [require-limits] container "app" has no memory limit
+#   [no-latest] container "app" uses the :latest tag
+#   [own-registry-only] container "app" image "nginx:latest" is not from an allowed registry ["registry.example.com/"]
+#   [required-labels] missing required label "app.kubernetes.io/owner"
+#   [required-labels] missing required label "team"
+kubectl apply -f good.yaml                      # created
+```
+
+Mutation is a separate family of CRDs in Gatekeeper, not Rego: `Assign` writes a value at a path
+when a condition holds.
+
+```yaml
+apiVersion: mutations.gatekeeper.sh/v1
+kind: Assign
+metadata: { name: default-run-as-non-root }
+spec:
+  applyTo: [{ groups: [""], kinds: ["Pod"], versions: ["v1"] }]
+  match:
+    scope: Namespaced
+    kinds: [{ apiGroups: ["*"], kinds: ["Pod"] }]
+    excludedNamespaces: [kube-system, gatekeeper-system, kyverno]
+  location: "spec.securityContext.runAsNonRoot"
+  parameters:
+    pathTests:
+      - subPath: "spec.securityContext.runAsNonRoot"
+        condition: MustNotExist          # only add it when absent: the +(...) of week 19's Kyverno rule
+    assign:
+      value: true
+```
+
+```bash
+kubectl apply -f good.yaml --dry-run=server -o jsonpath='{.spec.securityContext}{"\n"}'   # {"runAsNonRoot":true}: the mutating webhook ran
+kubectl get validatingwebhookconfiguration gatekeeper-validating-webhook-configuration -o jsonpath='{.webhooks[*].failurePolicy}{"\n"}'
+# Ignore, by default. Gatekeeper chose availability; Kyverno's default is the other side. Say what each means when the pod is down.
+```
+
+Test templates without a cluster with Gatekeeper's own CLI, `gator test` and `gator verify`, the
+way Lab 1's `conftest verify` tests Conftest policies; the suites are YAML listing objects and the
+constraints that should or should not flag them.
+
+## Part 3 — ValidatingAdmissionPolicy: CEL, in the API server (60 min)
+
+No webhook. The API server evaluates the expression itself, in process, as part of admission. The
+language is CEL, expressions only: no loops, no rules, no sets, a value per expression. The policy
+object holds the expressions; a **binding** decides where it applies and what happens.
+
+```yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata: { name: require-limits }
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: [CREATE, UPDATE]
+        resources: [pods]
+  validations:
+    - expression: "object.spec.containers.all(c, has(c.resources) && has(c.resources.limits) && has(c.resources.limits.cpu) && has(c.resources.limits.memory))"
+      message: "every container needs cpu and memory limits"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata: { name: require-limits }
+spec:
+  policyName: require-limits
+  validationActions: [Warn]            # START HERE; then [Deny]; [Audit] writes an audit annotation instead
+  matchResources:
+    namespaceSelector:
+      matchExpressions:
+        - { key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kyverno, gatekeeper-system] }
+```
+
+```bash
+kubectl apply -f vap-limits.yaml
+kubectl get validatingadmissionpolicy require-limits -o jsonpath='{.status.typeChecking}{"\n"}'   # the API server type-checked the expression
+kubectl apply -f bad.yaml
+# Warning: Validation failed for ValidatingAdmissionPolicy 'require-limits' with binding 'require-limits': every container needs cpu and memory limits
+# pod/bad created                       <- Warn admits
+```
+
+The other three. The registry allowlist is the interesting one: parameters come from a real object
+through `paramKind`, so the list is a ConfigMap a team can edit without touching the policy:
+
+```yaml
+# no :latest
+    - expression: "object.spec.containers.all(c, !c.image.endsWith(':latest') && (c.image.contains(':') || c.image.contains('@')))"
+      message: "images must carry a tag or digest, and not :latest"
+# required labels
+    - expression: "has(object.metadata.labels) && 'app.kubernetes.io/owner' in object.metadata.labels && 'team' in object.metadata.labels"
+      message: "app.kubernetes.io/owner and team labels are required"
+```
+
+```yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata: { name: own-registry-only }
+spec:
+  failurePolicy: Fail
+  paramKind: { apiVersion: v1, kind: ConfigMap }
+  matchConstraints:
+    resourceRules: [{ apiGroups: [""], apiVersions: ["v1"], operations: [CREATE, UPDATE], resources: [pods] }]
+  validations:
+    - expression: "object.spec.containers.all(c, params.data.repos.split(',').exists(r, c.image.startsWith(r)))"
+      messageExpression: "'image is not from an allowed registry: ' + params.data.repos"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: { name: allowed-registries, namespace: engines }
+data:
+  repos: "registry.example.com/"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata: { name: own-registry-only }
+spec:
+  policyName: own-registry-only
+  paramRef: { name: allowed-registries, namespace: engines, parameterNotFoundAction: Deny }
+  validationActions: [Deny]
+  matchResources:
+    namespaceSelector:
+      matchExpressions:
+        - { key: kubernetes.io/metadata.name, operator: NotIn, values: [kube-system, kyverno, gatekeeper-system] }
+```
+
+Switch every binding to `[Deny]` and refuse:
+
+```bash
+kubectl delete -f bad.yaml; kubectl apply -f bad.yaml
+# The pods "bad" is invalid: : ValidatingAdmissionPolicy 'require-limits' with binding 'require-limits' denied request: every container needs cpu and memory limits
+kubectl apply -f good.yaml      # created
+```
+
+`parameterNotFoundAction: Deny` is the question to be able to answer: if the ConfigMap is deleted,
+does the policy fail open or closed? You chose closed. With a webhook that choice was
+`failurePolicy`; here there is no webhook to be down, which is the whole reason VAP exists.
+
+The fifth policy, mutation: `MutatingAdmissionPolicy` is the CEL counterpart (JSON Patch or
+apply-configuration expressions). Check whether this cluster's version serves it before writing one:
+
+```bash
+kubectl api-resources | grep -i mutatingadmissionpolic
+```
+
+If the line is missing, the feature gate is off or the version is older (it arrived as alpha in 1.32
+and moved to beta later; the version skew page for your minor says which); mutation stays with
+Kyverno or Gatekeeper, and that is itself a row in the comparison.
+
+## Part 4 — The order, and the comparison (30 min)
+
+Admission runs in a fixed order: **mutating webhooks** (Kyverno's mutate, Gatekeeper's `Assign`),
+then object schema validation, then **ValidatingAdmissionPolicy**, then **validating webhooks**
+(Kyverno's validate, Gatekeeper's constraints). So a VAP sees the object after every mutation, and a
+mutating policy that adds a label can make a validating policy pass. Prove it: delete the Kyverno
+mutation, keep the Gatekeeper `Assign`, apply a pod with no `securityContext` under a VAP that
+requires `runAsNonRoot`, and watch it pass because `Assign` ran first.
+
+Then the table, said aloud, one row per breath:
+
+| | Kyverno | Gatekeeper | ValidatingAdmissionPolicy |
+|---|---|---|---|
+| Language | YAML patterns, with CEL and JMESPath available | Rego | CEL expressions |
+| Mutation | Same object kind, `mutate:` | Separate CRDs (`Assign`, `ModifySet`) | `MutatingAdmissionPolicy`, version-dependent |
+| Audit of existing objects | PolicyReports in `background: true` | The audit controller, every 60 s, into constraint status | None in-cluster; `[Audit]` writes annotations for new requests only |
+| Parameters | In the policy; `context` can read ConfigMaps | `spec.parameters` with a schema in the template | `paramKind` + `paramRef`: any object |
+| Where it runs | Webhook pod | Webhook pod + audit pod | Inside the API server |
+| When the engine is down | `failurePolicy` decides: refuse everything or admit everything | Same; defaults to `Ignore` | Nothing is down; `failurePolicy` only covers an expression that errors |
+| Rollout | Audit → Enforce | dryrun → warn → deny | Warn → Deny, plus Audit |
+| Coupling | Helm chart, its own versions | Helm chart, its own versions | The cluster's version: new CEL functions arrive with upgrades |
+
+The staff answer is not a winner. It is: VAP for anything expressible in CEL, because it removes a
+webhook from the failure path; Kyverno or Gatekeeper for mutation, generated resources, and audit of
+what already exists; Gatekeeper when the organisation already writes Rego for Conftest and wants one
+language for plan time and admission time; and the same five rules in whichever you pick, because
+the rules are the policy and the engine is the delivery.
+
+**Do it again, from memory, timed.** In 25 minutes: the limits rule in all three engines, each in
+its warn-equivalent mode, each refusing `bad.yaml` and admitting `good.yaml`, and the order of the
+admission chain said aloud with the proof from the mutation experiment.

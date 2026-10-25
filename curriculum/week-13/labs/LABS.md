@@ -1,7 +1,7 @@
 # Week 13 Labs
 
 > **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
-> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (13.2 to 13.6). Read a lab's figure
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (13.2 to 13.7). Read a lab's figure
 > before you start it; redraw it after.
 
 ---
@@ -247,3 +247,225 @@ Read [`../../JOB-SEARCH.md`](../../../JOB-SEARCH.md) end to end. Then:
 
 **Do not skip this.** The instinct to postpone applying "until I know Kubernetes" costs three months
 of runway, and it is the single most common way this program fails.
+
+---
+
+# Go deeper — Sentinel and OPA at the apply gate (2h · ladder: policy as code, rung 3 and 4)
+
+Optional inside the week; mandatory for the ladder ([`KUBERNETES-MASTERY.md`](../../../KUBERNETES-MASTERY.md),
+the policy-as-code row). Week 19 puts a policy between `plan` and the reviewer. This lab puts one
+between `plan` and `apply`, where a refusal is a run that stops, and does it in both languages HCP
+Terraform understands.
+
+## 1. The honest framing
+
+Sentinel is HashiCorp's policy language. It is proprietary and it runs in exactly two places: HCP
+Terraform and Terraform Enterprise (and the enterprise tiers of Vault, Consul and Nomad). Its hiring
+signal is narrow: real in a shop on Terraform Enterprise, invisible elsewhere. OPA is open, CNCF
+graduated, and runs anywhere, including on HCP Terraform since 2023. Two reasons to spend two hours
+on Sentinel anyway: the Associate exam asks where a policy check sits in a run, and the apply gate is
+the one place you should have felt a policy refuse an apply rather than a plan. Everything else in
+this lab transfers to OPA, which you already write.
+
+## 2. Local, no cloud: the Sentinel CLI
+
+```bash
+brew tap hashicorp/tap && brew install hashicorp/tap/sentinel
+sentinel version
+mkdir -p ~/sentinel-lab/test && cd ~/sentinel-lab
+```
+
+Three policies on the `tfplan/v2` import, the document HCP Terraform hands a policy after a plan.
+It has the same shape you read in week 19: `resource_changes`, each with `type`, `mode`,
+`change.actions` and `change.after`. These are written to the documented import and have not been
+executed in this repository; the test step below is where you prove them.
+
+```hcl
+# require-tags.sentinel
+import "tfplan/v2" as tfplan
+
+required_tags = ["Environment", "Owner", "Project"]
+taggable_types = ["aws_instance", "aws_db_instance", "aws_s3_bucket", "aws_vpc"]
+
+taggable = filter tfplan.resource_changes as _, rc {
+	rc.mode is "managed" and
+	rc.type in taggable_types and
+	rc.change.actions is not ["delete"]
+}
+
+has_all_tags = func(rc) {
+	tags = rc.change.after.tags_all else {}
+	return all required_tags as t { t in keys(tags) }
+}
+
+violations = filter taggable as _, rc { not has_all_tags(rc) }
+
+main = rule { length(violations) is 0 }
+```
+
+```hcl
+# deny-public-s3.sentinel
+import "tfplan/v2" as tfplan
+
+settings = ["block_public_acls", "block_public_policy", "ignore_public_acls", "restrict_public_buckets"]
+
+blocks = filter tfplan.resource_changes as _, rc {
+	rc.type is "aws_s3_bucket_public_access_block" and rc.change.actions is not ["delete"]
+}
+
+open = filter blocks as _, rc {
+	any settings as s { rc.change.after[s] is false }
+}
+
+main = rule { length(open) is 0 }
+```
+
+```hcl
+# restrict-instance-types.sentinel
+import "tfplan/v2" as tfplan
+
+allowed = ["t3.micro", "t3.small", "t3.medium"]
+
+instances = filter tfplan.resource_changes as _, rc {
+	rc.type is "aws_instance" and rc.change.actions is not ["delete"]
+}
+
+oversized = filter instances as _, rc { rc.change.after.instance_type not in allowed }
+
+main = rule { length(oversized) is 0 }
+```
+
+```hcl
+# sentinel.hcl -- the policy set: which policies, at which enforcement level
+policy "require-tags" {
+  source            = "./require-tags.sentinel"
+  enforcement_level = "hard-mandatory"
+}
+policy "deny-public-s3" {
+  source            = "./deny-public-s3.sentinel"
+  enforcement_level = "hard-mandatory"
+}
+policy "restrict-instance-types" {
+  source            = "./restrict-instance-types.sentinel"
+  enforcement_level = "advisory"
+}
+```
+
+**Mocks.** A Sentinel test runs a policy against a mock of the import, and you do not write mocks by
+hand. Two sources: HashiCorp's `terraform-sentinel-policies` repository on GitHub ships
+`mock-tfplan-v2.sentinel` files under each policy's `test/` directory, and any HCP Terraform run page
+has **Download Sentinel mocks**, which gives you the real document from a real plan. Fetch one of
+each kind for `aws_instance` and put them in `test/require-tags/`:
+
+```hcl
+# test/require-tags/pass.hcl
+mock "tfplan/v2" {
+  module {
+    source = "mock-tfplan-pass.sentinel"
+  }
+}
+test {
+  rules = {
+    main = true
+  }
+}
+```
+
+```bash
+sentinel test -verbose                      # every test/<policy>/*.hcl
+sentinel apply -trace require-tags.sentinel # with a mock in sentinel.hcl: the trace shows each filter's result
+```
+
+Read the trace. It prints every rule and every intermediate value, which is the thing Rego's
+`conftest --trace` also does and the thing you use when a policy "does nothing": the filter emptied
+the list before the rule ever ran.
+
+## 3. HCP Terraform's free tier, with no credentials anywhere
+
+The free tier includes policy enforcement. The only thing to protect is the repository rule that no
+cloud credential lives in CI or in a SaaS workspace, so the configuration the workspace runs uses the
+`random` provider and nothing else:
+
+```hcl
+# main.tf in a new repository, policy-lab
+terraform {
+  required_providers {
+    random = { source = "hashicorp/random", version = "~> 3.6" }
+  }
+  cloud {
+    organization = "YOUR_ORG"
+    workspaces { name = "policy-lab" }
+  }
+}
+
+resource "random_pet" "lab" { length = var.pet_length }
+resource "random_integer" "port" {
+  min = 1024
+  max = 65535
+}
+variable "pet_length" { default = 2 }
+```
+
+1. Create the organization and a VCS-connected workspace on that repository. `terraform login`,
+   `terraform init`, `terraform plan` from your laptop; watch the run appear in the UI.
+2. A second repository, `policy-lab-sentinel`, with `sentinel.hcl` and two policies that fit this
+   configuration: `pet-length.sentinel` (hard-mandatory: `random_pet.length` must be at most 2) and
+   `high-port.sentinel` (advisory: `random_integer.min` must be at least 1024). Same shape as the
+   three above; the resource types change.
+3. Organization settings → Policy sets → connect the repository as a Sentinel policy set, scoped to
+   the workspace.
+4. Run with `pet_length = 3`: the run stops after the plan with the hard-mandatory failure, and the
+   apply button never appears. Set it back to 2 and lower `min` to 80: the advisory policy warns,
+   the run continues to apply. Then change `pet-length` to `soft-mandatory` and fail it again: now
+   the run shows an **Override** button for anyone with the permission, and the override is logged
+   with a name. That is the whole difference between the three levels, and the exam question.
+
+## 4. The same rule as OPA, on the same run
+
+HCP Terraform runs Rego natively. A second policy set, kind OPA, from a third repository:
+
+```rego
+# pet_length.rego
+package terraform.policies.pet_length
+
+import future.keywords.contains
+import future.keywords.if
+
+deny contains msg if {
+	rc := input.plan.resource_changes[_]
+	rc.type == "random_pet"
+	rc.change.after.length > 2
+	msg := sprintf("%s: length %d is more than 2", [rc.address, rc.change.after.length])
+}
+```
+
+```hcl
+# policies.hcl
+policy "pet_length" {
+  query             = "data.terraform.policies.pet_length.deny"
+  enforcement_level = "mandatory"
+}
+```
+
+The input document is `input.plan` (plus `input.state`, `input.config` and `input.run`), and OPA
+policy sets have two enforcement levels, `advisory` and `mandatory`, not three. Fail the same run
+with both sets attached and read the two failures side by side.
+
+## 5. The comparison a staff engineer gives
+
+| | Sentinel | OPA / Rego |
+|---|---|---|
+| Language | Imperative-looking, rules and filters, HashiCorp's own | Declarative, unification and sets, CNCF |
+| Where it runs | HCP Terraform, Terraform Enterprise, enterprise Vault/Consul/Nomad | Anywhere: CI (Conftest), admission (Gatekeeper), HCP Terraform, an app's request path |
+| Enforcement | advisory, soft-mandatory (overridable, logged), hard-mandatory | advisory, mandatory on HCP; whatever the caller decides elsewhere |
+| Testing | `sentinel test` with mocks the platform generates | `opa test` or `conftest verify` with inputs you write |
+| Cost model | Comes with the platform tier | Free; you run it |
+| Portability of what you wrote | Zero outside HashiCorp products | The same file runs in five places |
+| What the exam asks | Where the check sits (between plan and apply), the three levels | Nothing by name |
+
+The honest recommendation: write policy in Rego, know Sentinel's three levels and where it sits,
+and be able to say why a shop on Terraform Enterprise chose it (the mocks, the override audit
+trail, the policy-set UI) without having to defend it as a general tool.
+
+**From memory, timed:** write the three Sentinel policies and `sentinel.hcl` with the files closed,
+run `sentinel test`, in under 20 minutes. Then the `pet_length` rule in Rego in under 5.

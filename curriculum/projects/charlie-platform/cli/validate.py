@@ -214,6 +214,24 @@ def validate(path: Path, teams: set[str]) -> list[Finding]:
     return out
 
 
+def policy(paths: list[str]) -> int:
+    """The business rules, in Rego (policies/contract), after the shape check above has passed.
+
+    The schema says what the file may contain; the policy says what it may mean: a real owner,
+    enough replicas for the tier, nothing public on an experimental tier. Skipped, with a note,
+    when conftest is not installed, so the shape check alone still works on a bare laptop.
+    """
+    import shutil
+    import subprocess
+
+    if not shutil.which("conftest"):
+        print("note: conftest not installed, policies/contract skipped  (brew install conftest)")
+        return 0
+    cmd = ["conftest", "test", "--policy", str(ROOT / "policies" / "contract"),
+           "--data", str(ROOT / "platform" / "teams"), *paths]
+    return subprocess.run(cmd, check=False).returncode
+
+
 def main(argv: list[str]) -> int:
     if len(argv) < 2:
         print(__doc__)
@@ -236,8 +254,8 @@ def main(argv: list[str]) -> int:
 
     if not findings:
         n = len(argv) - 1
-        print(f"\033[32mOK\033[0m  {n} service definition{'s' if n != 1 else ''} valid")
-        return 0
+        print(f"\033[32mOK\033[0m  {n} service definition{'s' if n != 1 else ''} valid", flush=True)
+        return policy(argv[1:])
 
     print(f"\n\033[31m{len(findings)} problem(s) found\033[0m\n")
     for f in findings:
