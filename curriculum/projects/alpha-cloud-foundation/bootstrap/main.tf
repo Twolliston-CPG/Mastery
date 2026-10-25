@@ -5,7 +5,14 @@
 # It is applied once and changed rarely.
 #
 #   cd bootstrap && terraform init && terraform apply
+#
+# What it builds, in dependency order: the bucket, then versioning, encryption, the public-access
+# block, a TLS-only policy and a lifecycle rule on it. Locking needs no table: the environments'
+# backends set use_lockfile = true, so Terraform 1.10+ writes a .tflock object in this bucket
+# with an only-if-absent precondition, and two applies cannot both win that race.
 
+# Pinned to the same provider line as the modules and environments, so a provider upgrade is one
+# change across every root. No backend block: this is the one root whose state stays local.
 terraform {
   required_version = ">= 1.9"
   required_providers {
@@ -13,6 +20,9 @@ terraform {
   }
 }
 
+# default_tags puts these three tags on everything the provider creates here, the bucket
+# included, with Component telling the state bucket apart from the environments' resources in
+# Cost Explorer.
 provider "aws" {
   region = var.region
   default_tags {
@@ -24,12 +34,19 @@ provider "aws" {
   }
 }
 
+# Read, not created: the account id makes the bucket name unique, because S3 bucket names are
+# global across every AWS account.
 data "aws_caller_identity" "current" {}
 
+# tfstate-<account>-<region>: unique, and it says what it is and where. The region is in the
+# name because the environments' backend blocks must name the bucket's region too.
 locals {
   bucket_name = "tfstate-${data.aws_caller_identity.current.account_id}-${var.region}"
 }
 
+# The bucket. Every environment's state is an object under alpha/<env>/ here, and the lock
+# objects beside them. The four scanner findings skipped inside are each a trade-off a single
+# person's project makes on purpose; each carries its reason.
 resource "aws_s3_bucket" "state" {
   # checkov:skip=CKV_AWS_18: Access logging needs a second bucket to log into. For one person's project state, CloudTrail already records who touched the bucket.
   # checkov:skip=CKV_AWS_144: Cross-region replication is disaster recovery for production state. Versioning is the recovery path here.
@@ -52,6 +69,8 @@ resource "aws_s3_bucket_versioning" "state" {
   }
 }
 
+# Encryption at rest with AES256, applied by default to every object written, so no backend block
+# can forget it; the backends also set encrypt = true, which is the same thing requested twice.
 # trivy: S3-managed keys, not a customer-managed KMS key. A CMK costs money monthly and adds a way
 # to lock yourself out of your own state; versioning is the recovery path here.
 #trivy:ignore:AVD-AWS-0132
@@ -64,6 +83,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "state" {
   }
 }
 
+# All four switches on: no ACL can make an object public, no policy can make the bucket public,
+# and existing public ACLs are ignored. State holds secrets in plaintext; this is the floor.
 resource "aws_s3_bucket_public_access_block" "state" {
   bucket                  = aws_s3_bucket.state.id
   block_public_acls       = true
@@ -72,6 +93,8 @@ resource "aws_s3_bucket_public_access_block" "state" {
   restrict_public_buckets = true
 }
 
+# aws:SecureTransport is false on a plain-HTTP request; the Deny wins over any Allow, so the only
+# way to read or write state is over TLS, whatever IAM says.
 # Deny any non-TLS access to state. State contains secrets in plaintext.
 resource "aws_s3_bucket_policy" "state" {
   bucket = aws_s3_bucket.state.id
@@ -90,6 +113,8 @@ resource "aws_s3_bucket_policy" "state" {
   })
 }
 
+# 90 days of noncurrent versions is roughly a quarter of history for a state file that changes a
+# few times a week. Multipart uploads abandoned for 7 days are deleted so they stop billing.
 # Expire old state versions so the bucket does not grow without bound,
 # but keep enough history to recover from a bad apply.
 resource "aws_s3_bucket_lifecycle_configuration" "state" {

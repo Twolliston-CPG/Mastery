@@ -1,3 +1,7 @@
+# Outputs are for the human running the apply from a laptop; nothing else reads this state.
+
+# Consumed by the first push (`git remote add origin <ssh_clone_url>`) and by the README's
+# status line. node_id is the GraphQL id, handy for `gh api graphql` queries about the repository.
 output "repositories" {
   description = "Clone URLs and metadata for every managed repository."
   value = {
@@ -11,6 +15,10 @@ output "repositories" {
   }
 }
 
+# Printed after every apply as the checklist of what Terraform cannot do: the push itself, the
+# account-level token default (no provider resource for it), and the two opt-in flags in the
+# order their preconditions are met. The try() keeps the output valid on a plan where the
+# repository does not exist yet.
 output "next_steps" {
   description = "What Terraform cannot do for you, in order."
   value       = <<-EOT

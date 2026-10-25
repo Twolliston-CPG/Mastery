@@ -12,6 +12,11 @@
 #   3. terraform import 'github_repository_collaborators.this["<repo>"]' <repo>
 #   4. set manage_collaborators = true and confirm the plan shows no changes
 # After that, adding or removing a person is a one-line change, reviewed like any other.
+# The for_each is the opt-in guard: off, the resource has no instances; on, it owns the whole
+# collaborator list of the repository. One `user` block is rendered per entry of
+# var.collaborators, and anyone on the live list without a block is removed on apply, which is
+# the removal the adoption steps above exist to prevent. Pending invitations count as
+# collaborators to this resource, so an invited-but-unaccepted login must be listed too.
 resource "github_repository_collaborators" "this" {
   for_each = var.manage_collaborators ? github_repository.this : {}
 

@@ -1,3 +1,7 @@
+# Every setting of the lab root, with its default and the reason for it in the description.
+# Only the decisions that interact with another variable, or that a learner should question,
+# carry a comment here; the rest is the description. Values go in terraform.tfvars (gitignored).
+
 variable "project_id" {
   description = "GCP project that holds the lab. Use a dedicated personal project so `terraform destroy` plus deleting the project removes everything"
   type        = string
@@ -20,6 +24,9 @@ variable "zone" {
   }
 }
 
+# The one choice that changes the shape of the VM. It selects the image family in main.tf, whether
+# OS Login and Shielded VM are on (Ubuntu only), and whether ssh_public_key_file is read (Arch
+# only). Changing it after the VM exists replaces the VM, because the boot image changes.
 variable "distro" {
   description = "Which path from DISTRO.md: ubuntu or arch"
   type        = string
@@ -31,12 +38,16 @@ variable "distro" {
   }
 }
 
+# Exists only so the lab can still be destroyed after image/ is gone; see the data source in
+# main.tf for why a failing lookup would otherwise block even `terraform destroy`.
 variable "lookup_image" {
   description = "Resolve the image family to report its current build in the `image` output. Set false when the family no longer exists -- for example to destroy the lab after `image/` was already destroyed -- because a failing data source blocks every plan, destroy included"
   type        = bool
   default     = true
 }
 
+# e2-medium is a shared-core shape: 2 vCPUs that may be throttled under sustained load, which is
+# fine for a lab and roughly half the price of an e2-standard-2.
 variable "machine_type" {
   description = "e2-medium matches the Week 1 lab VM: 2 vCPU, 4 GB"
   type        = string
@@ -49,6 +60,8 @@ variable "disk_size_gb" {
   default     = 20
 }
 
+# open_web and web_source_ranges work together: the first creates the 80/443 firewall rule at all,
+# the second decides who it admits. Narrow the second before you set the first in week 3.
 variable "open_web" {
   description = "Open 80/443 to the internet. Leave false until Week 3 asks for it"
   type        = bool
@@ -67,18 +80,25 @@ variable "flow_logs" {
   default     = true
 }
 
+# Only consulted when distro = "ubuntu"; main.tf forces OS Login off on Arch because the image has
+# no guest agent to implement it. True is the better default: SSH becomes an IAM grant.
 variable "os_login" {
   description = "Ubuntu only: govern SSH through OS Login (IAM roles, your Google identity as the Linux user) instead of keys in metadata. Ignored on Arch, whose image lacks the guest agent that implements it"
   type        = bool
   default     = true
 }
 
+# A second way into the VM that no firewall rule covers. Off by default and worth turning back off
+# after the week that needs it.
 variable "enable_serial_console" {
   description = "Allow interactive serial-console login: the way back in after an SSH lockout. Turn on before the Week 2 hardening lab, off afterwards"
   type        = bool
   default     = false
 }
 
+# null does more than skip the schedule: the custom role, the grant to the service agent and the
+# resource policy are all behind `count = var.auto_stop_cron == null ? 0 : 1` in main.tf, so
+# nothing of the auto-stop machinery exists at all.
 variable "auto_stop_cron" {
   description = "When to stop the VM every day, as a cron expression in var.time_zone. Set to null to disable"
   type        = string
@@ -91,6 +111,8 @@ variable "time_zone" {
   default     = "America/New_York"
 }
 
+# Arch only. The validation runs at plan time, which is the point: cloud-init reads this key once,
+# at first boot, so a key that does not exist yet would mean a VM nobody can log in to.
 variable "ssh_public_key_file" {
   description = "Arch only: public key placed in instance metadata for the `arch` user before first boot. The default is the key `gcloud compute ssh` uses; create it once with `ssh-keygen -t rsa -b 4096 -f ~/.ssh/google_compute_engine -N ''` if it does not exist"
   type        = string
@@ -115,6 +137,8 @@ variable "kubeadm_nodes" {
   }
 }
 
+# Read by kubeadm-node.sh through the metadata server, not baked into the script, so the same
+# script serves every minor. It pins the apt repository the packages come from, nothing else.
 variable "kubernetes_minor" {
   description = "Kubernetes minor the nodes are installed at, for example 1.34. Pick one minor BELOW the version the exam tracks, so week 27 Lab 4 can upgrade the cluster by hand; the pkgs.k8s.io repository keeps every minor. Changing it does not touch an existing node -- that is the upgrade lab"
   type        = string
@@ -132,6 +156,8 @@ variable "kubeadm_machine_type" {
   default     = "e2-medium"
 }
 
+# Interacts with auto_stop_cron: when true, kubeadm.tf attaches no resource policy to the nodes,
+# so they run until you stop them. The lab VM keeps its schedule either way.
 variable "kubeadm_keep" {
   description = "Exclude the kubeadm nodes from the nightly auto-stop so the cluster runs for months (the long-lived cluster in KUBERNETES-MASTERY.md). Budget it first: two e2-medium nodes around the clock cost roughly what the lab VM would, about $50 a month in most regions. The lab VM keeps its schedule either way"
   type        = bool

@@ -7,6 +7,9 @@
 # plane is containers, so there is no kubelet to break, no etcd to restore from a
 # snapshot, and no `kubeadm upgrade` to run. These nodes exist for exactly those labs.
 
+# The node names, in a fixed order, cut to the first kubeadm_nodes of them: 1 is a control plane
+# alone, 2 adds a worker, 3 adds a second. A set keyed by name, not a count, so removing k8s-w2
+# never renames k8s-w1 (the week-11 count-versus-for_each lesson, applied here).
 locals {
   kubeadm_nodes = toset(slice(["k8s-cp", "k8s-w1", "k8s-w2"], 0, var.kubeadm_nodes))
 }
@@ -26,6 +29,9 @@ resource "google_compute_firewall" "k8s_internal" {
   source_ranges = [google_compute_subnetwork.lab.ip_cidr_range]
   target_tags   = ["k8s"]
 
+  # Every TCP and UDP port, written as an explicit range rather than "all": the effect is the
+  # same and the scanners accept it. ICMP for ping between nodes; ipip for Calico's IPIP mode,
+  # which VXLAN (udp/4789, inside the UDP range) replaces in the labs' default configuration.
   allow {
     protocol = "tcp"
     ports    = ["1-65535"]
@@ -67,6 +73,9 @@ resource "google_compute_firewall" "iap_k8s_api" {
 
 # trivy: same decision as the CKV_GCP_40 skip inside (the external IP is deliberate).
 #trivy:ignore:AVD-GCP-0031
+# One instance per name in the local, all identical except the name: the same shape is what
+# makes the control plane and the workers interchangeable for the break/fix labs. Ubuntu only;
+# the Arch path is for the week-1 VM, not for kubeadm, so Shielded VM is unconditional here.
 resource "google_compute_instance" "kubeadm" {
   # checkov:skip=CKV_GCP_40: The external IP is deliberate - apt pulls containerd and the Kubernetes packages without paying for Cloud NAT. Inbound is default-deny; SSH and 6443 are IAP-only.
   # checkov:skip=CKV_GCP_38: Disks are encrypted at rest with Google-managed keys. Customer-supplied keys add key-loss risk and nothing a lab needs.
@@ -109,6 +118,9 @@ resource "google_compute_instance" "kubeadm" {
     kubernetes-minor = var.kubernetes_minor
   }
 
+  # Runs on every boot, not just the first, so the script is idempotent: it holds the packages at
+  # the requested minor and stops before `kubeadm init`. The file is read at plan time; editing it
+  # changes the instance metadata, which does not replace the VM.
   metadata_startup_script = file("${path.module}/kubeadm-node.sh")
 
   shielded_instance_config {

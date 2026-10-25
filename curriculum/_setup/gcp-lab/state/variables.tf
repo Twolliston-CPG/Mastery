@@ -1,3 +1,6 @@
+# Settings for the state bucket root. project_id has no default by design; the rest are judgement
+# calls explained in each description.
+
 variable "project_id" {
   description = "The lab's GCP project. No default on purpose: pass -var project_id=... or put it in terraform.tfvars (gitignored)"
   type        = string

@@ -3,7 +3,13 @@
 #
 # Design decision: these alarms are SYMPTOM-based, not cause-based. High CPU is
 # not an incident. 5xx responses and p99 latency are. See _shared/breakfix BF-57.
+#
+# Contract: the load balancer, target group and auto scaling group identifiers in, plus the
+# database identifier and an email; the topic ARN, the dashboard URL and the alarm names out. It
+# creates nothing that serves traffic and it owns the only path from an alarm to a human.
 
+# The same <project>-<environment> prefix as the other modules, so an alarm name says which
+# environment is paging before you open it.
 locals {
   name = "${var.project}-${var.environment}"
 }
@@ -43,16 +49,23 @@ resource "aws_kms_key" "alerts" {
   })
 }
 
+# A stable name for the key, for the same reason as the database module's alias.
 resource "aws_kms_alias" "alerts" {
   name          = "alias/${local.name}-alerts"
   target_key_id = aws_kms_key.alerts.key_id
 }
 
+# The fan-out point. Every alarm publishes here and every human or system that should hear about
+# it subscribes here, so adding a pager later is a subscription, not four alarm edits.
 resource "aws_sns_topic" "alerts" {
   name              = "${local.name}-alerts"
   kms_master_key_id = aws_kms_key.alerts.id
 }
 
+# count as a switch: no email, no subscription, and the alarms publish to a topic nobody reads.
+# Terraform can create the subscription but cannot confirm it; the confirmation is a link in an
+# email, and until it is clicked the topic delivers nothing. Test the path after apply with the
+# alarm_names output's set-alarm-state command, not by waiting for an outage.
 resource "aws_sns_topic_subscription" "email" {
   count = var.alert_email == null ? 0 : 1
 
@@ -65,6 +78,9 @@ resource "aws_sns_topic_subscription" "email" {
 }
 
 # SYMPTOM: users are getting errors.
+# The maths: Sum of 5xx over 60-second periods, 2 consecutive periods above the threshold
+# (default 5 per minute) before it fires, so a single bad minute does not page. ok_actions sends
+# the recovery too, which is how you know an incident ended without logging in.
 resource "aws_cloudwatch_metric_alarm" "target_5xx" {
   alarm_name          = "${local.name}-target-5xx"
   alarm_description   = "Application is returning 5xx responses. Runbook: docs/runbooks/5xx.md"
@@ -82,6 +98,8 @@ resource "aws_cloudwatch_metric_alarm" "target_5xx" {
 }
 
 # SYMPTOM: the load balancer has nowhere to send traffic. This is a total outage.
+# Minimum healthy count over 60 seconds, 2 periods, LessThan 1: zero healthy targets for two
+# minutes. No ok_actions here on purpose; the recovery is visible on the 5xx alarm.
 resource "aws_cloudwatch_metric_alarm" "no_healthy_hosts" {
   alarm_name        = "${local.name}-no-healthy-hosts"
   alarm_description = "Zero healthy targets. The ALB is returning 503 to everyone."
@@ -103,6 +121,9 @@ resource "aws_cloudwatch_metric_alarm" "no_healthy_hosts" {
 }
 
 # SYMPTOM: the site is slow.
+# extended_statistic because a percentile is not one of the five basic statistics. 300-second
+# periods, 2 of them: ten minutes with the slowest one percent of requests above the threshold
+# (default 1.0 s). Longer periods than the error alarm because latency is noisy minute to minute.
 resource "aws_cloudwatch_metric_alarm" "latency_p99" {
   alarm_name          = "${local.name}-latency-p99"
   alarm_description   = "p99 latency above target. Users notice this."
@@ -119,6 +140,9 @@ resource "aws_cloudwatch_metric_alarm" "latency_p99" {
 }
 
 # CAUSE-based, but genuinely actionable: running out of disk is a hard failure.
+# count as a switch: no database identifier, no alarm. One 300-second period is enough because
+# free storage does not flap; breaching on missing data because a database that stops reporting
+# is a database you want to look at. The threshold is bytes (default 2 GiB).
 resource "aws_cloudwatch_metric_alarm" "db_storage" {
   count = var.db_instance_id == null ? 0 : 1
 
@@ -136,6 +160,11 @@ resource "aws_cloudwatch_metric_alarm" "db_storage" {
   alarm_actions       = [aws_sns_topic.alerts.arn]
 }
 
+# The dashboard is one JSON document; jsonencode builds it from HCL so the metric names and
+# dimensions are the same expressions the alarms use. Four widgets on a 24-column grid, symptoms
+# on the top row and the one cause on the bottom right, which is the reading order on call. The
+# "." and "..." entries repeat the previous row's namespace and dimensions, the console's own
+# shorthand. region is per widget because the console renders a dashboard from any region.
 resource "aws_cloudwatch_dashboard" "this" {
   dashboard_name = local.name
   dashboard_body = jsonencode({
