@@ -20,3 +20,4 @@ distro     = "ubuntu" # or "arch" -- see ../DISTRO.md. Choose once: changing it 
 # kubernetes_minor     = "1.34"   # one minor BELOW the exam's version; week 27 Lab 4 upgrades by hand
 # kubeadm_machine_type = "e2-medium"
 # kubeadm_disk_size_gb = 30
+# kubeadm_keep         = false    # true from week 27 if you keep the cluster alive for the mastery ladder (budget ~$50/month)

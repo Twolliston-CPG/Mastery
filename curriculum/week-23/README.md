@@ -42,7 +42,7 @@
 - `_reference/devsecops/implementation/appendix-cost-analysis.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 23.2 to 23.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) ·
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 23.2 to 23.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · · [Kubernetes thread](../KUBERNETES-THREAD.md#week-23)
 Reference: [`../projects/charlie-platform/`](../projects/charlie-platform/)
 
 ## Exit criteria

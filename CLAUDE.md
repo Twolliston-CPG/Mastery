@@ -166,7 +166,7 @@ Four layers, each with a different audience:
 
 | Layer | Purpose |
 |---|---|
-| Root `*.md` | Strategy — roadmap, certs, projects, job search. Read by a human deciding whether to commit |
+| Root `*.md` | Strategy — roadmap, certs, projects, job search, and the Kubernetes mastery ladder (`KUBERNETES-MASTERY.md`; its per-lab companion is `curriculum/KUBERNETES-THREAD.md`, linked from every week README). Read by a human deciding whether to commit |
 | `curriculum/week-01…30/` | Execution (27–30 are the CKA module). Every week is `README.md` (thesis · **Figure W.1**, always the first H2 · day plan · reading map · exit criteria) + `content/` (the figure as PNG/SVG and `FIGURE.md`, its numbered spoken script) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates**; week 30 is the seventh, the CKA simulator session. `curriculum/FIGURES.md` indexes the figures and states the convention |
 | `curriculum/_shared/` | Cross-cutting: 64 break/fix scenarios (`BF-01`–`BF-64`), drills, Anki, interview bank, templates, and the `diagrams/` + `feynman/` toolchains |
 | `curriculum/_reference/` | 623 files of anonymized long-form material, ten domains. A **lookup, not a course** — each week's reading map names the exact files |

@@ -117,7 +117,9 @@ resource "google_compute_instance" "kubeadm" {
     enable_integrity_monitoring = true
   }
 
-  resource_policies = [for p in google_compute_resource_policy.auto_stop : p.id]
+  # kubeadm_keep = true drops the nightly stop so the cluster lives for months: certificate
+  # expiry, etcd growth and version skew are failures only time produces (KUBERNETES-MASTERY.md).
+  resource_policies = var.kubeadm_keep ? [] : [for p in google_compute_resource_policy.auto_stop : p.id]
 
   allow_stopping_for_update = true
 

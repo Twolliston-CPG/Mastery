@@ -58,7 +58,7 @@
 - **Drill:** `_shared/drills/kubectl-speed.md`, every day, timed
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 27.2 to 27.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 27.2 to 27.10, one per lab plus the Go deeper labs) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-27)
 
 ## Exit criteria
 - [ ] Exam booked for the end of week 30

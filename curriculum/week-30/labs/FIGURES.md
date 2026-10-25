@@ -1,6 +1,7 @@
 # Week 30 — Lab figures
 
-> One figure per lab, numbered 30.2 to 30.6. Figure 30.1 is the week figure in
+> One figure per lab, numbered 30.2 to 30.6, then 30.7 for the "Go deeper" scale lab of the mastery
+> ladder. Figure 30.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these go one level down, to the mechanism each lab
 > makes you touch. Same language: gray is structure, **blue is the path to follow first**, orange-red
 > is where something refuses, washed boxes are stores. Each badge line is a thirty-second interview
@@ -184,6 +185,94 @@ cd curriculum/_setup/gcp-lab && terraform plan -var kubeadm_nodes=0 | tail -3   
 
 *"Tell me about a time you failed at something you had prepared for."*
 Badge ③, told as a sequence: the booking the same day, the two domains, the rebuild, the retake. Interviewers ask this to hear whether a setback produced a plan or a pause; the figure is the plan.
+
+---
+
+## Figure 30.7 — Go deeper: the cluster you cannot afford
+
+> Go deeper, resources and scale · badges ① to ⑩ · about three minutes. This figure reads top-down.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 30.7 — Go deeper: the cluster you cannot afford — diagram](../../../_figures/curriculum-week-30-labs-FIGURES-2-66f4316d.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  KWOK["① kwok<br/><small>a controller that plays the kubelet · 1,000 Node objects · Ready with no machine</small>"]:::crit
+  PODS["② ten thousand pods<br/><small>a Deployment with a toleration and a nodeSelector · scaled in steps</small>"]:::crit
+  SCHED["③ the scheduler's queue<br/><small>scheduler_pending_pods · schedule_attempts_total · hundreds a second on a laptop</small>"]:::crit
+  API["④ the API server<br/><small>apiserver_request_total · inflight 400 read, 200 mutating · Priority and Fairness sheds</small>"]:::crit
+  ETCD["⑤ etcd<br/><small>every object · 2 GiB quota by default · database space exceeded means read-only</small>"]:::data
+  KB["⑥ kube-burner<br/><small>templates at a qps · podLatency P99 · 50 namespaces, 1,000 pods</small>"]:::n
+  THR["⑦ the thresholds<br/><small>5,000 nodes · 150,000 pods · 110 per node · 100 per slice</small>"]:::data
+  BRK["⑧ what breaks first<br/><small>queue → inflight → slow controllers → etcd quota</small>"]:::warn
+  AS["⑨ meanwhile, autoscaling<br/><small>Cluster Autoscaler asks for nodes per loop · Karpenter bin-packs · nothing to launch here</small>"]:::mut
+  DRILL["⑩ fifteen minutes on a whiteboard<br/><small>what happens at ten thousand pods · recorded</small>"]:::data
+
+  KWOK ==> PODS ==> SCHED ==> API ==> ETCD
+  KB --> API
+  THR -.-> BRK
+  ETCD -.-> BRK
+  SCHED -.-> AS
+  BRK -.-> DRILL
+  linkStyle 0,1,2,3 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "Three nodes taught the objects. The judgement a platform engineer is paid for shows up at a thousand nodes, and you cannot rent that for an afternoon. So fake the nodes, keep the control plane real, and watch where it bends."
+- **① kwok.** "A controller in the cluster that watches Nodes and Pods with its annotation and does what a kubelet would: marks the node Ready, moves pods to Running, never starts a container. A thousand Node objects from one template, applied in a loop, in under a minute."
+- **② ten thousand pods.** "A Deployment of pause containers that tolerates the fake taint and selects the fake nodes, scaled in steps. Nothing pulls an image, so every second of latency belongs to the control plane."
+- **③ the scheduler's queue.** "scheduler_pending_pods is the backlog; schedule_attempts_total over the wall clock is throughput, on the order of hundreds a second here. Filter, score, bind, per pod, from one queue. That is the number you quote when someone asks how fast Kubernetes schedules."
+- **④ the API server.** "Every create, patch and watch is a request. The inflight limits, four hundred reads and two hundred mutations by default, are its protection against itself, and Priority and Fairness queues what exceeds them. Watch the inflight gauge sit at the limit and the queue length climb."
+- **⑤ etcd.** "Every object, a few kilobytes each, in a database with a two-gibibyte quota by default. Compaction and defragmentation keep it small; past the quota it turns read-only and the cluster stops accepting writes. That is the hard wall."
+- **⑥ kube-burner.** "Objects from templates at a rate, with a report: how long pods took to be scheduled and Ready, at P50 and P99. Raise the qps until the API server's queue appears in the metrics; that is load testing a control plane."
+- **⑦ the thresholds.** "The published limits: five thousand nodes, a hundred and fifty thousand pods, a hundred and ten per node, a hundred endpoints per slice. Each has a reason, and the reason is the number to know: watch fan-out, list sizes in memory, the kubelet's bookkeeping, the cost of one pod changing."
+- **⑧ what breaks first.** "The queue grows but keeps up. Then inflight requests queue and latency climbs. Then controllers that list large kinds fall behind. Then etcd nears its quota. In that order, each with a metric. Say the order and you have explained a real outage you have not had yet."
+- **⑨ meanwhile, autoscaling.** "A Cluster Autoscaler would read the same Pending pods and ask the cloud for nodes, a group at a time, every loop. Karpenter would bin-pack them into the fewest, largest instances it can launch in one call. Here there is nothing to launch, which is the point: the data plane is removed so you can see the control plane."
+- **⑩ the drill.** "Fifteen minutes, whiteboard, recorded, no notes: what happens at ten thousand pods. Objects, scheduler, watches, slices, capacity, the first three failures in order. Rung three of two topics at once."
+- **Close.** "Fake the nodes, load the control plane, read the metrics, know the thresholds, name the order things break. The exam asked whether you can operate a cluster; this is whether you know where it stops."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 1,000 nodes · 110 pods each | the kwok node template | the capacity ceiling the lab hits on purpose at 15,000 replicas |
+| 400 / 200 | `max-requests-inflight` and its mutating twin, by default | the API server's self-protection; P&F queues above it |
+| 2 GiB | etcd's default backend quota | the hard wall; 8 GiB is the recommended maximum |
+| 5,000 · 150,000 · 300,000 | nodes, pods, containers per cluster | the published limits, each with a mechanism behind it |
+| 100 | endpoints per slice | why one pod changing is cheap |
+| P99 | kube-burner's podLatency | the number a load test reports; the median hides the queue |
+| 15 min | the whiteboard drill | rung three, recorded |
+
+### Prove it
+
+```bash
+kubectl get nodes -l type=kwok --no-headers | awk '{print $2}' | sort | uniq -c           # ① 1000 Ready
+kubectl get pods --no-headers | awk '{print $3}' | sort | uniq -c                           # ② Pending draining
+curl -sk -H "Authorization: Bearer $(kubectl create token default)" https://localhost:10259/metrics | grep '^scheduler_pending_pods'   # ③
+kubectl get --raw /metrics | grep -E '^apiserver_current_inflight_requests'                # ④
+docker exec scale-control-plane etcdctl ... endpoint status -w table                      # ⑤ DB SIZE
+cat podLatency-summary* | head                                                             # ⑥
+kubectl get pods --field-selector status.phase=Pending -o jsonpath='{.items[0].status.conditions[0].message}'   # ⑧ "Too many pods"
+```
+
+### The question a senior interviewer asks
+
+*"What is the first thing that breaks when a cluster gets big, and how would you know?"*
+Badge ⑧, with the metric for each step. The weak answer is "etcd"; the strong one is the order, and that etcd is last because by then the API server has been queueing for a while and you had three earlier signals.
 
 ---
 

@@ -1,6 +1,6 @@
 # Week 16 — Lab figures
 
-> One figure per lab, numbered 16.2 to 16.6. Figure 16.1 is the week figure in
+> One figure per lab, numbered 16.2 to 16.7. Figure 16.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these five go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
@@ -447,6 +447,102 @@ aws eks list-clusters && aws elbv2 describe-load-balancers --query 'LoadBalancer
 
 *"You ran `terraform destroy` on the cluster. What might still be billing you tomorrow, and why?"*
 Badge ⑦. Load balancers the ALB controller created from Ingress objects; they were made by a Kubernetes controller with its own AWS identity, so they are not in Terraform's state and destroy never saw them. The follow-up is "how do you prevent it?" and the answer is to delete the Ingress objects, or the cluster's workloads, before the cluster, and to check `describe-load-balancers` after.
+
+---
+
+## Figure 16.7 — Go deeper: CSI, sidecar by sidecar
+
+> Go deeper lab · badges ① to ⑪ · about three and a half minutes. One volume from a claim to a filesystem in a pod, as objects and gRPC calls; reads top-down.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 16.7 — Go deeper: CSI, sidecar by sidecar — diagram](../../../_figures/curriculum-week-16-labs-FIGURES-5-a0aad4d7.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  subgraph CTRL["ebs-csi-controller · Deployment · one plugin, four sidecars"]
+    direction TB
+    PVC["① PVC · WaitForFirstConsumer<br/><small>Pending until the scheduler picks a node, so the volume lands in that node's zone</small>"]:::crit
+    PROV["② csi-provisioner → CreateVolume<br/><small>watches PVCs · EC2 CreateVolume · writes the PV with the volume ID as volumeHandle</small>"]:::crit
+    ATT["④ csi-attacher → ControllerPublishVolume<br/><small>watches VolumeAttachments · EC2 AttachVolume · status.attached true</small>"]:::crit
+  end
+  AD["③ attach/detach controller<br/><small>in kube-controller-manager · creates the VolumeAttachment naming the PV and the node</small>"]:::data
+  subgraph NODE["ebs-csi-node · DaemonSet · the kubelet makes the calls"]
+    direction TB
+    REG["⑦ node-driver-registrar<br/><small>advertises the socket · writes the driver into CSINode with its attach limit</small>"]:::n
+    STAGE["⑤ kubelet → NodeStageVolume<br/><small>format if new · mount at the globalmount path once per node</small>"]:::crit
+    PUB["⑥ kubelet → NodePublishVolume<br/><small>bind mount into the pod's volume directory · df -h inside the container</small>"]:::crit
+  end
+  DEL["⑧ unwind<br/><small>unpublish · unstage · VolumeAttachment removed · detach · reclaim Delete removes the volume, Retain leaves it Released and billing</small>"]:::warn
+  EXP["⑨ expansion<br/><small>csi-resizer → ControllerExpandVolume · FileSystemResizePending · kubelet NodeExpandVolume online · EBS: one change per 6 h</small>"]:::n
+  SNAP["⑩ snapshot and restore<br/><small>snapshot controller + csi-snapshotter → CreateSnapshot · a PVC with dataSource restores it</small>"]:::n
+  IAM["⑪ the permission<br/><small>the controller calls EC2 · IRSA role on ebs-csi-controller-sa · or UnauthorizedOperation and a claim that never binds</small>"]:::warn
+
+  PVC ==> PROV ==> AD ==> ATT ==> STAGE ==> PUB
+  REG -.-> STAGE
+  PUB -.-> DEL
+  PVC -.-> EXP
+  PVC -.-> SNAP
+  IAM -.-> PROV
+  linkStyle 0,1,2,3,4 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "The EBS CSI driver is one program that speaks gRPC and six generic controllers around it, each watching one object and making one call. Follow one claim to a mounted filesystem and you have read the storage interface every driver implements."
+- **① PVC, WaitForFirstConsumer.** "The claim stays Pending on purpose until the scheduler has chosen a node. A volume created before scheduling can land in the wrong availability zone, and EBS cannot cross zones. The binding mode is the fix."
+- **② csi-provisioner.** "A sidecar that watches PVCs. When the claim has a selected node, it calls CreateVolume on the plugin, which calls EC2, and it writes the PersistentVolume with the EBS volume ID as the handle. The PVC goes Bound."
+- **③ attach/detach controller.** "Not a sidecar: part of kube-controller-manager. It sees a pod on a node needing a volume and creates a VolumeAttachment object naming both. That object exists because the driver said attachRequired."
+- **④ csi-attacher.** "Watches VolumeAttachments. Calls ControllerPublishVolume, which is EC2 AttachVolume, and sets status.attached when the device is on the instance. The event on the pod reads SuccessfulAttachVolume."
+- **⑤ NodeStageVolume.** "Now the kubelet, over the socket the registrar advertised. Stage formats the device if it is new and mounts it once per node at the global path. Two pods on one node sharing a volume share this mount."
+- **⑥ NodePublishVolume.** "A bind mount from the global path into the pod's directory. That is the filesystem df -h shows inside the container. Four calls from claim to here: Create, ControllerPublish, NodeStage, NodePublish."
+- **⑦ node-driver-registrar.** "Tells the kubelet where the plugin's socket is and writes the driver into the node's CSINode object, including how many more volumes this node can take. A pod Pending on 'exceeds max volume count' is that number."
+- **⑧ unwind.** "Delete the pod: unpublish, unstage, the VolumeAttachment disappears, detach. Delete the claim: reclaim policy Delete calls DeleteVolume; Retain leaves the PV Released and the EBS volume billing until a human clears the claimRef. That is what Retain means operationally."
+- **⑨ expansion.** "Grow the claim. csi-resizer calls ControllerExpandVolume, EC2 ModifyVolume, and the PVC says FileSystemResizePending. The kubelet then grows the filesystem online; the pod never restarts. Only with allowVolumeExpansion, and EBS takes one change per volume every six hours."
+- **⑩ snapshot and restore.** "The snapshot controller and CRDs are not part of the driver; install them. A VolumeSnapshot becomes a VolumeSnapshotContent, csi-snapshotter calls CreateSnapshot, and a new PVC with a dataSource restores it as a CreateVolume with a source. The old pod's dates are in the new volume."
+- **⑪ the permission.** "The controller calls EC2, so it needs an identity: an IRSA role on its ServiceAccount, Lab 2 applied to a component you did not write. Without it the first claim hangs with UnauthorizedOperation in the provisioner's log. The node role with the policy attached works and is the wrong shape."
+- **Close.** "Claim, provision, attach, stage, publish, and the same four steps in reverse. Swap the plugin and the sidecars stay; that is what an interface is for. Delete the volumes the Sunday destroy does not know about."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 7 containers | the controller Deployment and node DaemonSet | plugin · provisioner · attacher · resizer · snapshotter · registrar · liveness probe |
+| 4 gRPC calls to a mount | the CSI spec | CreateVolume · ControllerPublishVolume · NodeStageVolume · NodePublishVolume |
+| 1 global mount per node | NodeStageVolume | pods on the same node share it; publish is a bind mount |
+| `attachRequired: true` | the CSIDriver object | why VolumeAttachment objects exist; EFS says false |
+| `allocatable.count` | the node's CSINode | the attach limit; "exceeds max volume count" is this |
+| 6 hours | EBS ModifyVolume | the cooldown between two changes to one volume |
+| `Released` | a Retained PV after its claim is deleted | data kept, volume billing, claimRef must be cleared by hand |
+| 2 to 4 ¢ | a 20 GiB gp3 for a weekend, rough | the cost is the orphan, not the lab |
+
+### Prove it
+
+```bash
+kubectl -n kube-system get deploy ebs-csi-controller -o jsonpath='{range .spec.template.spec.containers[*]}{.name}{"\n"}{end}'   # ① ⑦ the names
+kubectl get pvc,pv,volumeattachment -w                                                                                      # ② ③ ④ in order
+kubectl describe pod writer | grep -E 'SuccessfulAttachVolume|Mount'                                                       # ④ ⑤ ⑥
+kubectl get csinode -o jsonpath='{.items[0].spec.drivers[0].allocatable.count}{"\n"}'                                      # ⑦
+kubectl get pvc data -o jsonpath='{.status.conditions[*].type}{"\n"}'                                                      # ⑨ FileSystemResizePending
+aws ec2 describe-volumes --filters Name=tag-key,Values=kubernetes.io/created-for/pvc/name --query 'Volumes[].VolumeId'     # ⑧ what is still billing
+```
+
+### The question a senior interviewer asks
+
+*"A pod is stuck ContainerCreating with 'Multi-Attach error for volume'. What happened, and which component is involved?"*
+Badges ③ and ④. The volume is still attached to a node the previous pod ran on, usually a node that died or was cordoned without draining; the attach/detach controller has not yet removed the VolumeAttachment, so the attacher cannot publish it elsewhere. Say that ReadWriteOnce is per node, name the VolumeAttachment object, and say what forces the detach: the old node coming back or being deleted from the API, or deleting the stale VolumeAttachment by hand with the risk that implies.
 
 ---
 

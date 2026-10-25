@@ -137,8 +137,8 @@ does debt.
 
 ## Loop 3 — the month, and the gates
 
-Six gates. Each is **demonstrated, not self-assessed** — you either did the thing under the timer or
-you didn't.
+Six gates, and a seventh if you take the CKA module. Each is **demonstrated, not self-assessed** — you
+either did the thing under the timer or you didn't.
 
 | Gate | Week | You must |
 |---|---|---|
@@ -148,6 +148,7 @@ you didn't.
 | **4** | [17](week-17/assessment.md) | Five broken clusters diagnosed unaided, under 15 min each, narrated |
 | **5** | [21](week-21/assessment.md) | Pipeline blocks a critical CVE and refuses an unsigned image, live |
 | **6** | [26](week-26/assessment.md) | A stranger deploys a service via PR in under 10 minutes |
+| **7** | [30](week-30/assessment.md) | The second killer.sh session at the pass mark, inside two hours, no solutions (CKA module only) |
 
 **Take the gate timed and cold.** An untimed gate you looked things up for tells you nothing, and the
 only person it fools is you.
@@ -155,6 +156,12 @@ only person it fools is you.
 **The gate's Sunday also redraws every figure since the last gate**, cold, in badge order: four or five
 figures, about twenty minutes. A figure you cannot redraw at the gate names the criterion you will
 fail next, one level below where you are looking.
+
+**From Gate 4 on, the gate's Sunday also scores the Kubernetes ladder**: twelve topics, five rungs, the
+table in [`../KUBERNETES-MASTERY.md`](../KUBERNETES-MASTERY.md) §6 copied under the retrospective. The exam is
+rung two; the ladder is how the rest is measured. After every lab, from week 1, read the lab's entry in
+[`KUBERNETES-THREAD.md`](KUBERNETES-THREAD.md) and say its sentence; that is the five minutes that turn the
+Linux, networking and AWS weeks into Kubernetes understanding instead of prerequisites.
 
 ### If you fail a gate — the important part
 

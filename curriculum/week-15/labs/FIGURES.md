@@ -1,6 +1,6 @@
 # Week 15 — Lab figures
 
-> One figure per lab, numbered 15.2 to 15.7. Figure 15.1 is the week figure in
+> One figure per lab, numbered 15.2 to 15.8. Figure 15.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these six go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
@@ -561,6 +561,94 @@ diff values-dev.yaml values-prod.yaml                             # ② only val
 
 *"Helm or Kustomize for your own services, and why?"*
 Badge ⑩, then a decision rather than a definition. Helm when you need versions, dependencies and a rollback history; Kustomize when the manifests are yours and the only difference between environments is a patch. Either is defensible; "we use Helm because everyone does" is not. The follow-up is badge ⑧: explain what `helm rollback` actually writes.
+
+---
+
+## Figure 15.8 — Go deeper: the scheduler, plugin by plugin
+
+> Go deeper lab · badges ① to ⑩ · about three minutes. The scheduler is a queue and two phases; everything you configured in Lab 2 is a plugin in one of them.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 15.8 — Go deeper: the scheduler, plugin by plugin — diagram](../../../_figures/curriculum-week-15-labs-FIGURES-6-d98d8fd9.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  POD["① a pod with no nodeName<br/><small>the scheduler's queue is a watch for exactly this</small>"]:::crit
+  Q["② the queue<br/><small>active · backoff 1 s doubling to 10 s · unschedulable pool until an event</small>"]:::crit
+  FILTER["③ filter plugins<br/><small>NodeResourcesFit · TaintToleration · NodeAffinity · PodTopologySpread · the list that can</small>"]:::crit
+  SCORE["④ score plugins<br/><small>NodeResourcesFit LeastAllocated · BalancedAllocation · ImageLocality · the best of the list · -v=10 prints each</small>"]:::crit
+  BIND["⑤ bind<br/><small>nodeName written · the kubelet takes over · Figure 14.2</small>"]:::crit
+  SEC["⑥ a second scheduler<br/><small>KubeSchedulerConfiguration profile · schedulerName packing · MostAllocated · counted per node</small>"]:::n
+  PRE["⑦ preemption<br/><small>PostFilter · PriorityClass · nominatedNodeName reserves the node · victims see Preempted by</small>"]:::warn
+  SPREAD["⑧ spread vs anti-affinity<br/><small>maxSkew 1 → 3 and 3 · required anti-affinity → 2 running, 4 Pending · preferred is a score</small>"]:::n
+  EMPTY["⑨ the filter emptied the list<br/><small>Pending with no fit · parked until a node, label or pod changes · then retried, no restart</small>"]:::warn
+  READ["⑩ the reading<br/><small>pkg/scheduler/framework · KEP-624 · ten extension points from PreFilter to PostBind</small>"]:::data
+
+  POD ==> Q ==> FILTER ==> SCORE ==> BIND
+  FILTER -.-> EMPTY -.-> Q
+  FILTER -.-> PRE
+  SCORE -.-> SEC
+  FILTER --> SPREAD
+  SCORE -.-> READ
+  linkStyle 0,1,2,3 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "Lab 2 asked the scheduler for things. This lab reads how it answers: a queue, a filter phase that produces a list, a score phase that picks from it, and a bind. Every placement rule you know is a plugin in one of those two phases."
+- **① a pod with no nodeName.** "That is the whole trigger. The scheduler watches for pods whose nodeName is empty; nothing else in the cluster asks it to do anything."
+- **② the queue.** "Three pools. Active: try it now. Backoff: it failed, wait one second, then two, up to ten. Unschedulable: no node fits, so park it until something in the cluster changes that could matter."
+- **③ filter plugins.** "Each plugin removes nodes: not enough allocatable, a taint without a toleration, an affinity rule unmet, a spread constraint that would be violated. What survives is the feasible list. The control plane node was never in it; TaintToleration took it out."
+- **④ score plugins.** "Each plugin scores every feasible node, weighted and summed. NodeResourcesFit's strategy decides whether you spread or pack; ImageLocality prefers nodes that already have the image. At `-v=10` the log prints every score, and you can see why a node won."
+- **⑤ bind.** "The scheduler writes nodeName. That is its only write, and it is the handoff to Figure 14.2, badge ⑤."
+- **⑥ a second scheduler.** "A profile with a different name, one plugin disabled, MostAllocated instead of LeastAllocated, running as a Deployment with its own RBAC. Pods choose it by schedulerName. Six pods, three per scheduler, counted per node, show the two opinions."
+- **⑦ preemption.** "A PostFilter plugin: when the filter list is empty, find a node where evicting lower-priority pods would make room, write nominatedNodeName so nobody else takes the space, delete the victims. The victim's event says who preempted it. Priority is the only input."
+- **⑧ spread versus anti-affinity.** "Spread bounds the imbalance: maxSkew 1 across two workers gives three and three. Required anti-affinity forbids co-location and will leave four of six Pending on two nodes. Preferred is a score and bends. Across zones the first is almost always the one you want."
+- **⑨ the filter emptied the list.** "No fit means Pending, not a loop. The pod sits in the unschedulable pool until a node joins, a label changes, or a pod leaves, then it is retried. Label the node and it binds in seconds with nothing restarted."
+- **⑩ the reading.** "The scheduling framework: ten extension points from PreFilter to PostBind, every rule a plugin, the code under pkg/scheduler/framework. Read it once and 'the scheduler decided' stops being a sentence you say about a black box."
+- **Close.** "Queue, filter, score, bind. Taints, affinity, spread and priority are plugins; a second scheduler is a profile; a Pending pod is a parked one. Say that and the scheduler is a thing you can modify, not just ask."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 2 phases | the framework | filter produces the list, score picks from it |
+| 10 extension points | PreFilter · Filter · PostFilter · PreScore · Score · Reserve · Permit · PreBind · Bind · PostBind | where a plugin can act; preemption is PostFilter |
+| 1 s → 10 s | `podInitialBackoffSeconds`, `podMaxBackoffSeconds` | the retry backoff for a pod that failed to schedule |
+| `-v=10` | the scheduler's log level | the only level that prints per-plugin, per-node scores |
+| 3 and 3 | six replicas, `maxSkew: 1`, two workers | what a spread constraint produces |
+| 2 running, 4 Pending | required anti-affinity on two workers | required means required |
+| 1000000 | the PriorityClass value | large enough to outrank anything the week created |
+| `nominatedNodeName` | the preempting pod's status | the reservation that stops a third pod stealing the freed space |
+
+### Prove it
+
+```bash
+kubectl -n kube-system logs -l component=kube-scheduler --tail=2000 | grep 'Plugin scored node' | grep scored | head   # ④
+kubectl get pods -o custom-columns='NAME:.metadata.name,SCHED:.spec.schedulerName,NODE:.spec.nodeName'                  # ⑥
+kubectl get pod vip -o jsonpath='{.status.nominatedNodeName}{"\n"}'                                                   # ⑦
+kubectl get events --sort-by=.lastTimestamp | grep Preempted | tail -2                                                 # ⑦
+kubectl get pods -l app=spread -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c             # ⑧
+kubectl label node mastery-worker2 disk=nvme && kubectl get pod stuck -o wide                                          # ⑨
+```
+
+### The question a senior interviewer asks
+
+*"Your cluster autoscaler never scales down, even at night. What scheduler setting is fighting it, and what would you change?"*
+Badges ④ and ⑥. The default LeastAllocated strategy spreads pods thinly across every node, so no node is ever empty enough to remove. A profile with MostAllocated packs them, and the autoscaler can drain and delete the empty ones. Then the follow-up you should raise yourself: packing concentrates blast radius, so pair it with spread constraints across zones for the tiers that need to survive a node loss.
 
 ---
 

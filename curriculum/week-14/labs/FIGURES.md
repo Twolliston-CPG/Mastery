@@ -1,6 +1,6 @@
 # Week 14 — Lab figures
 
-> One figure per lab, numbered 14.2 to 14.6. Figure 14.1 is the week figure in
+> One figure per lab, numbered 14.2 to 14.7. Figure 14.1 is the week figure in
 > [`../content/FIGURE.md`](../content/FIGURE.md); these five go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
@@ -440,6 +440,103 @@ kubectl exec deploy/flask -- cat /etc/app/db-password                       # �
 
 *"Map `depends_on: condition: service_healthy` to Kubernetes. Why does it take two mechanisms?"*
 Badges ③ and ④. Compose conflates startup order with traffic readiness; Kubernetes splits them because a pod can be started and not ready, or ready and later not. If you answer with only the init container, the follow-up is "and what stops traffic reaching the app while it waits?"
+
+---
+
+## Figure 14.7 — Go deeper: the API, watched and audited
+
+> Go deeper lab · badges ① to ⑪ · about three and a half minutes. This figure reads top-down: one request through the five stages, then the watch that every controller lives on.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 14.7 — Go deeper: the API, watched and audited — diagram](../../../_figures/curriculum-week-14-labs-FIGURES-5-b7e1efc2.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  subgraph REQ["One request, five stages · the audit log shows each"]
+    direction TB
+    AUTHN["① authentication<br/><small>client cert → user kubernetes-admin · groups kubeadm:cluster-admins, system:authenticated</small>"]:::crit
+    AUTHZ["② authorization<br/><small>RBAC · annotation decision=allow · reason names the binding</small>"]:::crit
+    MUT["③ mutating admission<br/><small>ServiceAccount token volume · default tolerations · then mutating webhooks</small>"]:::crit
+    VAL["④ validating admission<br/><small>Pod Security Admission · validating webhooks · validates the object, not the world</small>"]:::crit
+    WRITE["⑤ the write<br/><small>etcd through the API server · 201 · a new resourceVersion</small>"]:::crit
+  end
+  subgraph WCH["What every controller lives on"]
+    direction TB
+    LIST["⑥ list<br/><small>GET ...pods?limit=500 · metadata.resourceVersion = the revision served</small>"]:::crit
+    WATCH["⑦ watch<br/><small>GET ...?watch=true&amp;resourceVersion=N · held open · ADDED MODIFIED DELETED BOOKMARK</small>"]:::crit
+    INF["⑩ the informer you wrote<br/><small>list, watch, cache · resync on timeout · relist on 410 · client-go adds a shared cache, indexes, a workqueue</small>"]:::data
+  end
+  GONE["⑧ 410 Gone<br/><small>resourceVersion older than the watch cache · etcd compacted every 5 min · the only answer is relist</small>"]:::warn
+  CONF["⑨ 409 Conflict<br/><small>replace sends resourceVersion · compare-and-swap fails · read again and retry · apply patches without it</small>"]:::warn
+  PAGE["⑪ lists that hurt<br/><small>limit and continue · resourceVersion=0 hits the watch cache, none hits etcd · APF answers 429</small>"]:::n
+
+  AUTHN ==> AUTHZ ==> MUT ==> VAL ==> WRITE
+  WRITE ==> WATCH
+  LIST --> WATCH
+  WATCH --> INF
+  WATCH -.-> GONE
+  WRITE -.-> CONF
+  LIST -.-> PAGE
+  linkStyle 0,1,2,3,4 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "Every object in the cluster arrives through one door and leaves through one stream. The door is five stages you can read in an audit log. The stream is a list and a long-running GET, and every controller in the system is that stream plus a loop."
+- **① authentication.** "Your kubeconfig's client certificate becomes a user and a set of groups. The audit entry prints both. Nothing has been decided yet; the server only knows who is asking."
+- **② authorization.** "The RBAC authorizer answers allow or forbid and writes the reason into the entry, naming the ClusterRoleBinding that allowed it. `--as=nobody` gets `RBAC: no rules` and a 403 before anything else runs."
+- **③ mutating admission.** "The object is changed before it is validated: a ServiceAccount token volume, default tolerations, the scheduler name. Then mutating webhooks, in order. Compare requestObject to responseObject and the diff is this stage."
+- **④ validating admission.** "Pod Security Admission, then validating webhooks. They can only say no, and they judge the object, not the world: `nodeName: nope` is valid and will never run. That is not admission's job."
+- **⑤ the write.** "The API server is the only thing that writes to etcd. The response is a 201 and the object's first resourceVersion, a cluster-wide ordinal, not a timestamp."
+- **⑥ list.** "A GET with a limit. The response's resourceVersion is the point in history the list was served at. It is the starting line for the watch."
+- **⑦ watch.** "A GET that never returns, started at that resourceVersion so nothing between the two requests is lost. The server streams ADDED, MODIFIED, DELETED and BOOKMARK events, each with the whole object."
+- **⑧ 410 Gone.** "Ask for a point older than the server keeps and it cannot replay. etcd compacts every five minutes; the watch cache is bounded. The only correct response is to list again and watch from the new version."
+- **⑨ 409 Conflict.** "There are no locks. `replace` sends the resourceVersion it read and the server writes only if it still matches. A controller's loop is read, change, write, and on 409 read again. `apply` is a patch with no precondition, which is why it never conflicted all week."
+- **⑩ the informer you wrote.** "Forty lines: list, watch, a dictionary, a resync on the timeout, a relist on 410. client-go adds a shared cache so one watch serves many controllers, indexes for fast lookup, and a workqueue that dedupes keys. Week 28 writes the real one."
+- **⑪ lists that hurt.** "A list with resourceVersion zero is served from memory; a list with none is a quorum read from etcd, and a thousand of those at once is how clusters fall over. Priority and Fairness meters it and answers 429."
+- **Close.** "Five stages in, one stream out. When someone says 'the controller watches the API server', you can now say which requests, what the numbers in them mean, and what happens when the stream breaks."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 5 stages | the audit entry | authn · authz · mutating · validating · write; the order is the mechanism |
+| `resourceVersion` | every list and object | a cluster-wide revision ordinal; the watch start point and the compare-and-swap key |
+| 2 requests | `kubectl get -w -v=9` | a bounded list, then an unbounded watch from its resourceVersion |
+| 410 | a watch from too far back | the window is gone; relist |
+| 409 | `replace` with a stale resourceVersion | the whole concurrency model in one status code |
+| 5 min | `--etcd-compaction-interval` default | how often etcd history behind the watch cache is dropped |
+| 500 | kubectl's default `limit` | lists are paged; `continue` carries the cursor |
+| 429 | API Priority and Fairness | the server's no; week 30 provokes it on purpose |
+
+### Prove it
+
+```bash
+kubectl get pods -w -v=9 2>&1 | grep -E 'resourceVersion|watch=true' | head -4          # ⑥ ⑦ the two requests
+curl -sN "http://127.0.0.1:8001/api/v1/namespaces/default/pods?watch=1&resourceVersion=1"  # ⑧ 410 Expired
+kubectl replace -f b.yaml                                                                  # ⑨ Conflict
+jq -c 'select(.verb=="create" and .objectRef.resource=="pods") | .annotations' /tmp/audit/audit.log | head -1   # ② the decision and reason
+python3 informer.py                                                                        # ⑩ events, then recovery after an API server restart
+kubectl get --raw /metrics | grep apiserver_flowcontrol_rejected_requests_total            # ⑪
+```
+
+### The question a senior interviewer asks
+
+*"A controller lost its connection to the API server for ten minutes. What did it miss, and how does it catch up?"*
+Badges ⑦ and ⑧. It missed nothing it cannot recover: it resumes the watch from its last resourceVersion, and if that is older than the server keeps, it gets a 410, lists again, and reconciles from the fresh list. If you answer "it replays the events" you have described the happy path only; the 410 is the part that shows you have run one.
 
 ---
 

@@ -376,7 +376,7 @@ small VMs beside the lab VM, in the same subnet with the same guardrails, off un
 | API server | Port 6443 open from IAP's range only, for `gcloud compute start-iap-tunnel` from your laptop. Never from the internet |
 | Identity | No service account on any node, so no pod can call a GCP API |
 | Startup script | [`kubeadm-node.sh`](kubeadm-node.sh): swap off, `overlay` and `br_netfilter`, forwarding sysctls, containerd with the systemd cgroup driver, then `kubelet`, `kubeadm` and `kubectl` from pkgs.k8s.io at `kubernetes_minor`, held. **It does not run `kubeadm init` or `join`**; that is week 27 Lab 1, by hand |
-| Auto-stop | The same nightly schedule as the lab VM |
+| Auto-stop | The same nightly schedule as the lab VM, unless `kubeadm_keep = true` (below) |
 
 **Turn them on** in `terraform.tfvars`, then apply:
 
@@ -400,6 +400,14 @@ per minor, and switching it is the first step of that lab.
 **Cost.** Two e2-medium nodes for a three-hour session cost well under a dollar; the nightly stop
 covers forgotten sessions. Between weeks, `terraform apply -var kubeadm_nodes=0` removes the
 nodes and keeps the lab VM.
+
+**Keeping it alive.** The mastery ladder in [`KUBERNETES-MASTERY.md`](../../../KUBERNETES-MASTERY.md) wants one
+cluster that lives for months, because certificate expiry, etcd growth, disk pressure and version skew
+are failures only time produces. `kubeadm_keep = true` removes the nightly stop from the kubeadm nodes
+only; the lab VM keeps its schedule. Two e2-medium nodes around the clock cost roughly what the lab VM
+would, about $50 a month in most regions: set the budget alert before you flip it, and run the monthly
+checklist in that file. `03-teardown.sh` still lists the nodes every night so a RUNNING state is a
+decision you made, not one you forgot.
 
 **A broken node** is rebuilt, not repaired, unless repairing it is the lab:
 

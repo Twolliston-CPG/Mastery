@@ -46,7 +46,7 @@ Full analysis: [`../../CERTIFICATIONS.md`](../../CERTIFICATIONS.md) §3.
 - `_reference/kubernetes/03-production/02-security-rbac-*`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 24.2 to 24.5, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 24.2 to 24.5, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-24)
 
 ## Exit criteria
 - [ ] A stranger deploys a service following only the README — **no help**

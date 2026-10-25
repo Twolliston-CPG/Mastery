@@ -44,6 +44,6 @@
 **Templates:** `_shared/templates/POSTMORTEM-template.md`, `_shared/templates/RUNBOOK-template.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 21.2 to 21.5, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 21.2 to 21.5, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-21)
 
 ## ★ GATE 5 — [assessment.md](assessment.md)

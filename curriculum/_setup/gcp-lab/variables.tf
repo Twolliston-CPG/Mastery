@@ -132,6 +132,12 @@ variable "kubeadm_machine_type" {
   default     = "e2-medium"
 }
 
+variable "kubeadm_keep" {
+  description = "Exclude the kubeadm nodes from the nightly auto-stop so the cluster runs for months (the long-lived cluster in KUBERNETES-MASTERY.md). Budget it first: two e2-medium nodes around the clock cost roughly what the lab VM would, about $50 a month in most regions. The lab VM keeps its schedule either way"
+  type        = bool
+  default     = false
+}
+
 variable "kubeadm_disk_size_gb" {
   description = "Boot disk per kubeadm node. Images, etcd and container logs need more room than the week-1 VM"
   type        = number

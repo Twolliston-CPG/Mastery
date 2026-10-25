@@ -1,7 +1,7 @@
 # Week 15 Labs
 
 > **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
-> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (15.2 to 15.7). Read a lab's figure
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (15.2 to 15.8). Read a lab's figure
 > before you start it; redraw it after.
 
 ---
@@ -296,3 +296,185 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 dependencies, a registry, `rollback`. Kustomize is patching — no templating language, no
 dependencies, built into `kubectl`. Helm for third-party software you consume; Kustomize (or Helm)
 for your own manifests. ArgoCD supports both natively (week 16).
+
+---
+
+# Go deeper — The scheduler, plugin by plugin (3h · ladder: scheduling, rung 4)
+
+**Optional inside the week, mandatory for the ladder** ([`KUBERNETES-MASTERY.md`](../../../KUBERNETES-MASTERY.md)).
+Lab 2 used the scheduler: taints, affinity, a pod stuck Pending. This lab opens it. The scheduler is
+a loop over a queue, and each pod goes through a fixed list of **plugins** in two phases: filter
+(which nodes can take it) and score (which of those is best). By the end you have read a decision
+from the logs, run a second scheduler with a different opinion, caused a preemption, and watched the
+queue retry. On the `mastery` kind cluster: one control plane, two workers.
+
+## Part 1 — Read one decision (35 min)
+
+The default log level hides the scores. Raise it on the static pod; the kubelet restarts the
+scheduler for you (Figure 14.2, badge ③):
+
+```bash
+docker exec mastery-control-plane sed -i 's/- --v=[0-9]*//; s/- kube-scheduler/- kube-scheduler\n    - --v=10/' \
+  /etc/kubernetes/manifests/kube-scheduler.yaml
+sleep 15 && kubectl -n kube-system get pod -l component=kube-scheduler
+```
+
+`-v=10` is loud; you will filter. Schedule one pod and read it:
+
+```bash
+kubectl run scored --image=nginx:alpine --requests=cpu=100m,memory=64Mi
+kubectl -n kube-system logs -l component=kube-scheduler --tail=2000 \
+  | grep -E 'scored|"Attempting to schedule pod"|"Computing predicates"|feasible|Successfully bound' \
+  | grep scored
+```
+
+Expect, in order: `Attempting to schedule pod`, then one line per **score plugin per node**:
+`"Plugin scored node for pod" pod="default/scored" plugin="NodeResourcesFit" node="mastery-worker" score=...`,
+then the totals and `Successfully bound pod to node`. Write down which plugins scored (the defaults
+include `NodeResourcesFit`, `NodeResourcesBalancedAllocation`, `ImageLocality`, `TaintToleration`,
+`NodeAffinity`, `InterPodAffinity`, `PodTopologySpread`) and which node won and by how much. Then
+read the **filter** side: taint a worker and schedule again; the control plane node was never a
+candidate either, and the log says why (`TaintToleration` filtered it).
+
+```bash
+kubectl taint node mastery-worker2 deep=yes:NoSchedule
+kubectl run scored2 --image=nginx:alpine
+kubectl -n kube-system logs -l component=kube-scheduler --tail=500 | grep -E 'scored2' | grep -iE 'filter|feasible|taint' | head
+kubectl taint node mastery-worker2 deep-
+```
+
+The plugin list and the two phases are the **scheduling framework**; the reading is
+`pkg/scheduler/framework` in the Kubernetes repository and the enhancement proposal that introduced
+it (KEP-624). Every plugin implements one or more extension points: PreFilter, Filter, PostFilter,
+PreScore, Score, Reserve, Permit, PreBind, Bind, PostBind. Preemption is a PostFilter plugin.
+
+## Part 2 — A second scheduler with a different opinion (50 min)
+
+The default `NodeResourcesFit` scoring strategy is `LeastAllocated`: spread. Run a second scheduler
+that **packs** (`MostAllocated`) and ignores balanced allocation, and prove it chooses differently.
+
+```yaml
+# packing-config.yaml  (goes into a ConfigMap)
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+leaderElection:
+  leaderElect: false                 # one replica, no lease; the docs' manifest shows the leased form
+profiles:
+  - schedulerName: packing
+    plugins:
+      score:
+        disabled:
+          - name: NodeResourcesBalancedAllocation
+    pluginConfig:
+      - name: NodeResourcesFit
+        args:
+          scoringStrategy:
+            type: MostAllocated
+            resources:
+              - { name: cpu, weight: 1 }
+              - { name: memory, weight: 1 }
+```
+
+Deploy it as a Deployment in `kube-system`: the image is `registry.k8s.io/kube-scheduler:<your cluster
+version>` (`kubectl version` says which), the command is `kube-scheduler --config=/etc/kubernetes/packing-config.yaml --v=4`,
+the config is mounted from the ConfigMap, and the pod runs as a ServiceAccount bound to the
+`system:kube-scheduler` and `system:volume-scheduler` ClusterRoles. The Kubernetes docs page
+**"Configure Multiple Schedulers"** carries the complete manifest, RBAC included; copy it, change
+the config, and read every line you copied.
+
+```bash
+kubectl create cm packing-config -n kube-system --from-file=packing-config.yaml
+kubectl apply -f packing-scheduler.yaml        # the docs manifest, edited
+kubectl -n kube-system get pods -l component=scheduler
+```
+
+Now the experiment. Six pods with real requests, three per scheduler, and count where they land:
+
+```bash
+for s in default-scheduler packing; do
+  for i in 1 2 3; do
+    kubectl run $s-$i --image=nginx:alpine --requests=cpu=200m,memory=64Mi \
+      --overrides="{\"spec\":{\"schedulerName\":\"$s\"}}"
+  done
+done
+kubectl get pods -o custom-columns='NAME:.metadata.name,SCHED:.spec.schedulerName,NODE:.spec.nodeName'
+```
+
+`LeastAllocated` alternates between the workers; `MostAllocated` keeps choosing the fuller one until
+it cannot. Read the packing scheduler's own log and find the `NodeResourcesFit` scores that inverted.
+Say what each strategy is for: spreading survives a node loss; packing lets a cluster autoscaler
+remove a node. Neither is "right"; it is a question you ask about the workload.
+
+## Part 3 — Preemption (30 min)
+
+Fill one worker, then send a pod that outranks what is there:
+
+```bash
+ALLOC=$(kubectl get node mastery-worker -o jsonpath='{.status.allocatable.cpu}'); echo "allocatable cpu: $ALLOC"
+kubectl create deploy filler --image=nginx:alpine --replicas=4
+kubectl patch deploy filler -p '{"spec":{"template":{"spec":{"nodeSelector":{"kubernetes.io/hostname":"mastery-worker"},
+  "containers":[{"name":"nginx","resources":{"requests":{"cpu":"'$(( ${ALLOC%m} / 4 - 50 ))'m"}}}]}}}}'
+kubectl get pods -o wide                              # four fillers on mastery-worker, little cpu left
+kubectl create priorityclass urgent --value=1000000 --description="preempts"
+kubectl run vip --image=nginx:alpine --requests=cpu=500m \
+  --overrides='{"spec":{"priorityClassName":"urgent","nodeSelector":{"kubernetes.io/hostname":"mastery-worker"}}}'
+kubectl get pod vip -o jsonpath='{.status.nominatedNodeName}{"\n"}'
+kubectl get events --sort-by=.lastTimestamp | grep -iE 'preempt|vip|filler' | tail -8
+```
+
+The sequence: the filter phase finds no node for `vip`; the PostFilter (preemption) plugin picks a
+node where evicting the lowest-priority pods would make room, writes `status.nominatedNodeName`, and
+deletes the victims (the event on each says `Preempted by default/vip on node mastery-worker`). The
+victims get their graceful termination period; `vip` stays Pending until the resources are actually
+free, then binds. Note what `nominatedNodeName` is for: it reserves the node in the scheduler's
+accounting so a third pod does not take the freed space first. If `ALLOC` is large on your machine,
+raise the filler requests until the worker is actually full; preemption only happens when the filter
+phase fails.
+
+## Part 4 — Spread versus anti-affinity, counted (25 min)
+
+Same workload, three placements, counted per node. Two workers, six replicas:
+
+```bash
+count() { kubectl get pods -l app=$1 -o jsonpath='{range .items[*]}{.spec.nodeName}{"\n"}{end}' | sort | uniq -c; }
+kubectl create deploy spread --image=nginx:alpine --replicas=6
+kubectl patch deploy spread -p '{"spec":{"template":{"spec":{"topologySpreadConstraints":[{"maxSkew":1,
+  "topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"DoNotSchedule","labelSelector":{"matchLabels":{"app":"spread"}}}]}}}}'
+count spread                                            # 3 and 3
+kubectl create deploy anti --image=nginx:alpine --replicas=6
+kubectl patch deploy anti -p '{"spec":{"template":{"spec":{"affinity":{"podAntiAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":[
+  {"topologyKey":"kubernetes.io/hostname","labelSelector":{"matchLabels":{"app":"anti"}}}]}}}}}}'
+count anti; kubectl get pods -l app=anti | grep -c Pending     # 1 per worker, 4 Pending: required means required
+```
+
+Then change `required...` to `preferred...` with a weight and count again. The three say different
+things: spread constraints bound the **imbalance** (`maxSkew`); required anti-affinity forbids
+**co-location** and refuses to run more pods than nodes; preferred anti-affinity is a score, not a
+filter, and will co-locate when it must. For a web tier across zones the first is almost always the
+one you want, and `topologyKey: topology.kubernetes.io/zone` is the one-word change on EKS.
+
+## Part 5 — The queue, and when it retries (20 min)
+
+```bash
+kubectl run stuck --image=nginx:alpine --overrides='{"spec":{"nodeSelector":{"disk":"nvme"}}}'
+kubectl -n kube-system logs -l component=kube-scheduler --tail=200 | grep stuck | grep -iE 'unschedulable|no fit|backoff|retry' | head
+```
+
+A pod the filter phase rejects does not spin. It goes to the **unschedulable** pool, and the
+scheduler moves it back to the active queue when a cluster event could change the answer: a node
+joins, a node's labels change, a pod on a node ends. Retries that fail again back off, from one second
+doubling to ten (`podInitialBackoffSeconds` and `podMaxBackoffSeconds` in the configuration). Prove
+the event path: label a worker and watch the pod bind within seconds, with no restart of anything.
+
+```bash
+kubectl label node mastery-worker2 disk=nvme
+kubectl get pod stuck -o wide                           # Running, on mastery-worker2
+kubectl -n kube-system logs -l component=kube-scheduler --tail=100 | grep -E 'stuck' | tail -3
+```
+
+Clean up: delete the deployments, the priority class, the label, and the packing scheduler; put the
+scheduler's verbosity back (`docker exec mastery-control-plane sed -i '/- --v=10/d' /etc/kubernetes/manifests/kube-scheduler.yaml`).
+
+**From memory, timed (20 min):** with the file closed, name the two phases and five default plugins,
+write a `KubeSchedulerConfiguration` profile that packs, and produce a preemption whose victim's event
+you can quote. Target: under twenty minutes.

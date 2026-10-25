@@ -20,7 +20,7 @@
 
 ---
 
-**Figures:** [labs/FIGURES.md](labs/FIGURES.md) (figures 9.2 to 9.6, one per activity; 9.2 is the Gate 2 whiteboard drawing).
+**Figures:** [labs/FIGURES.md](labs/FIGURES.md) (figures 9.2 to 9.6, one per activity; 9.2 is the Gate 2 whiteboard drawing). · [Kubernetes thread](../KUBERNETES-THREAD.md#week-9)
 
 ## The week's shape
 

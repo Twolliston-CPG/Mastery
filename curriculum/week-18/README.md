@@ -46,7 +46,7 @@
   `-log4shell.md`, `-moveit.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 18.2 to 18.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 18.2 to 18.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-18)
 
 ## Exit criteria
 - [ ] Semgrep, Trivy, and gitleaks running in CI as **hard gates**

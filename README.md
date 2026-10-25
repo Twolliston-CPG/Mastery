@@ -19,6 +19,7 @@
 | 5 | **[PROJECTS.md](PROJECTS.md)** | Three flagship projects with hard acceptance criteria, 12 micro-projects, and how to present them so they actually convert. |
 | 6 | **[JOB-SEARCH.md](JOB-SEARCH.md)** | Starts week 14, not week 26. Target titles, pipeline math, résumé rules for career changers, referral scripts, interview loop prep. |
 | 7 | **[curriculum/](curriculum/)** | **The actual content.** All 26 weeks — labs, worked solutions, running code, assessments — plus a 58-scenario break/fix library, drills, an interview bank, 623 files of anonymized reference material, and three project implementations. Start at [curriculum/START-HERE.md](curriculum/START-HERE.md). |
+| 8 | **[KUBERNETES-MASTERY.md](KUBERNETES-MASTERY.md)** | The Kubernetes mastery ladder: five rungs, twelve topics, the rubric, the eleven Go deeper labs, the long-lived cluster, the reading, the scoring. The exam is rung two; this is the rest |
 
 ---
 

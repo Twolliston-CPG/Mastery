@@ -85,7 +85,9 @@ each with four parts:
 Redraw cadence is the week's, after the week figure. Lab figures are plain Mermaid, validated by
 `check-diagrams.py` and embedded as PNGs by `embed-figures.py`; they are not generated from a spec and
 are edited by hand (edit the Mermaid inside the `<details>`, then re-run the embed). A struck-through
-title is a lab with no mechanism to draw; its entry says why and what to redraw instead. Every Friday
+title is a lab with no mechanism to draw; its entry says why and what to redraw instead. **deeper:** marks a
+Go deeper lab from the Kubernetes mastery ladder ([`../KUBERNETES-MASTERY.md`](../KUBERNETES-MASTERY.md)):
+optional inside the week, mandatory for the ladder, redrawn once its lab is done. Every Friday
 break/fix lab shares [Figure BF.0, the diagnostic loop](_shared/breakfix/FIGURE.md).
 
 | Week | Lab figures |
@@ -103,9 +105,9 @@ break/fix lab shares [Figure BF.0, the diagnostic loop](_shared/breakfix/FIGURE.
 | 11 | [11.2 to 11.6](week-11/labs/FIGURES.md) — a module is an API · count and for_each, before and after removing one · two environments, one set of modules · the gate stack, and a test that tests the guardrail · Break/Fix and the Alpha milestone — a secret in state, rotation first |
 | 12 | [12.2 to 12.6](week-12/labs/FIGURES.md) — a workflow run from trigger to artifact, and the five rules · OIDC federation, the token, two trust policies, and no keys anywhere · the pipeline: gates, queue, approval, and the claim that pins prod · a container build with no keys: ECR, multi-arch, tags, attestations · branch protection that binds admins, and the Alpha milestone |
 | 13 | [13.2 to 13.6](week-13/labs/FIGURES.md) — the alarm path, proven, and the teardown that finds what still bills · the measurements a hiring manager reads in ninety seconds · the clean-account test, and the measured recovery · Terraform Associate prep, the HCP run lifecycle · ~~Lab 5~~ |
-| 14 | [14.2 to 14.6](week-14/labs/FIGURES.md) — a pod from manifest to running, and why delete is not kill · a rollout, and the datapath that reaches it · where a Secret lives, and where it leaks · the diagnostic ladder, describe before logs · the week-4 stack, as Kubernetes objects |
-| 15 | [15.2 to 15.7](week-15/labs/FIGURES.md) — what the kubelet throttles, kills, and restarts · who adds pods, who removes them, and who refuses to place them · a claim from Pending to Bound, and the modes that refuse · RBAC: who, may do what, where · the Gate 4 set, symptom to fault · a chart to a release, revision by revision |
-| 16 | [16.2 to 16.6](week-16/labs/FIGURES.md) — what the EKS module creates, and what it costs · IRSA, the token's path from webhook to STS · two controllers that turn annotations into AWS resources · ArgoCD, the pull loop · three failures, and the bill |
+| 14 | [14.2 to 14.7](week-14/labs/FIGURES.md) — a pod from manifest to running, and why delete is not kill · a rollout, and the datapath that reaches it · where a Secret lives, and where it leaks · the diagnostic ladder, describe before logs · the week-4 stack, as Kubernetes objects · **deeper:** the API, watched and audited |
+| 15 | [15.2 to 15.8](week-15/labs/FIGURES.md) — what the kubelet throttles, kills, and restarts · who adds pods, who removes them, and who refuses to place them · a claim from Pending to Bound, and the modes that refuse · RBAC: who, may do what, where · the Gate 4 set, symptom to fault · a chart to a release, revision by revision · **deeper:** the scheduler, plugin by plugin |
+| 16 | [16.2 to 16.7](week-16/labs/FIGURES.md) — what the EKS module creates, and what it costs · IRSA, the token's path from webhook to STS · two controllers that turn annotations into AWS resources · ArgoCD, the pull loop · three failures, and the bill · **deeper:** CSI, sidecar by sidecar |
 | 17 | [17.2 to 17.4](week-17/labs/FIGURES.md) — ~~Lab 1~~ · nine symptoms, nine first commands · threat, control, evidence |
 | 18 | [18.2 to 18.6](week-18/labs/FIGURES.md) — three scanners, one hard gate, and the proof that it refuses · five images, measured at every step · SBOM, a signature on the digest, and the admission check that enforces it · the SLSA ladder, and the four attacks it answers · the CVE you cannot fix, and the signature that did not move |
 | 19 | [19.2 to 19.6](week-19/labs/FIGURES.md) — a plan becomes JSON, and a Rego rule refuses it · the admission path, and the two ways it locks you out · default deny, the DNS trap, and the CNI that must enforce it · a rotated secret reaching a file, and a detection rule tuned instead of silenced · a control in code, traced to the requirement an auditor will ask about |
@@ -116,10 +118,10 @@ break/fix lab shares [Figure BF.0, the diagnostic loop](_shared/breakfix/FIGURE.
 | 24 | [24.2 to 24.5](week-24/labs/FIGURES.md) — ~~Lab 1~~ · the stranger test, and what each hesitation means · ~~Lab 3~~ · ~~Lab 4~~ |
 | 25 | [25.2 to 25.5](week-25/labs/FIGURES.md) — ~~Lab 1~~ · the six-step design method, with its minute budget · ~~Lab 3~~ · ~~Lab 4~~ |
 | 26 | [26.2 to 26.6](week-26/labs/FIGURES.md) — the funnel, and where it stalls · ~~Activity 2~~ · ~~Activity 3~~ · ~~Activity 4~~ · ~~Activity 5~~ |
-| 27 | [27.2 to 27.6](week-27/labs/FIGURES.md) — from a bare VM to three Ready nodes · who signed you, and for how long · a snapshot, a new directory, and the object that must disappear · one minor, control plane first · six ways a node fails, and the first command for each |
-| 28 | [28.2 to 28.6](week-28/labs/FIGURES.md) — one base, many overlays, and a chart you did not write · three roles, one route, and the names that resolve · teach the API a kind, then give it a controller · fourteen objects, three minutes each · a cluster with no storage, and what each field decides |
+| 27 | [27.2 to 27.10](week-27/labs/FIGURES.md) — from a bare VM to three Ready nodes · who signed you, and for how long · a snapshot, a new directory, and the object that must disappear · one minor, control plane first · six ways a node fails, and the first command for each · **deeper:** the kubelet, every ten seconds · **deeper:** a CNI plugin in forty lines of bash · **deeper:** etcd under the cluster · **hard way:** the certificate and kubeconfig fan-out |
+| 28 | [28.2 to 28.9](week-28/labs/FIGURES.md) — one base, many overlays, and a chart you did not write · three roles, one route, and the names that resolve · teach the API a kind, then give it a controller · fourteen objects, three minutes each · a cluster with no storage, and what each field decides · **deeper:** the controller you wrote, part by part · **deeper:** the Service datapath, three ways · **deeper:** five queries for one name |
 | 29 | [29.2 to 29.6](week-29/labs/FIGURES.md) — the per-task ritual, and why the wrong context scores zero · the four troubleshooting families, and the first command of each · ~~Lab 3~~ · ~~Lab 4~~ · the triage order, and the two-minute rule |
-| 30 | [30.2 to 30.6](week-30/labs/FIGURES.md) — ~~Lab 1~~ · ~~Lab 2~~ · exam day, from the day before to the note to self · ~~Lab 4~~ · after the result, both branches |
+| 30 | [30.2 to 30.7](week-30/labs/FIGURES.md) — ~~Lab 1~~ · ~~Lab 2~~ · exam day, from the day before to the note to self · ~~Lab 4~~ · after the result, both branches · **deeper:** the cluster you cannot afford |
 
 ## The lab platform and its guardrails
 

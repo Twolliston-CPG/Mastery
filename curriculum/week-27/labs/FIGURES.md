@@ -1,7 +1,8 @@
 # Week 27 — Lab figures
 
-> One figure per lab, numbered 27.2 to 27.6. Figure 27.1 is the week figure in
-> [`../content/FIGURE.md`](../content/FIGURE.md); these five go one level down, to the mechanism each
+> One figure per lab, numbered 27.2 to 27.6, and four more for the Go deeper labs and the hard-way
+> variant, 27.7 to 27.10. Figure 27.1 is the week figure in
+> [`../content/FIGURE.md`](../content/FIGURE.md); these go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
 > interview answer; each whole script is under three minutes.
@@ -438,6 +439,352 @@ Badges ① ② ③ ④. The kubelet stopped reporting, the node controller marke
 
 ---
 
+## Figure 27.7 — Go deeper: the kubelet, every ten seconds
+
+> Go deeper lab · badges ① to ⑩ · about three minutes. Rung 3 on kubelet and runtime, and on resources and scale. This figure reads top-down: one config file, and everything it decides.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 27.7 — Go deeper: the kubelet, every ten seconds — diagram](../../../_figures/curriculum-week-27-labs-FIGURES-5-0b376d36.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  FILE["① /var/lib/kubelet/config.yaml<br/><small>what it started with · survives a reboot · cgroupDriver, evictionHard, GC thresholds, staticPodPath</small>"]:::crit
+  CM["② kubelet-config ConfigMap<br/><small>what a joining node downloads · what upgrade rewrites</small>"]:::data
+  LIVE["③ nodes/&lt;n&gt;/proxy/configz<br/><small>what it runs with now</small>"]:::n
+  LIM["④ cpu.max · memory.max<br/><small>from limits · 200m = 20000 of 100000 · over memory.max: exit 137</small>"]:::crit
+  REQ["⑤ cpu.weight<br/><small>from requests · what the kernel honours under contention</small>"]:::crit
+  STAT["⑥ cpu.stat · memory.events<br/><small>nr_throttled · throttled_usec · oom_kill: the evidence</small>"]:::data
+  EV["⑦ eviction by threshold<br/><small>evictionHard · a Pressure condition · BestEffort, then Burstable over request, Guaranteed last</small>"]:::warn
+  GC["⑧ image garbage collection<br/><small>85 % high · 80 % low · 2 min minimum age · unused images only</small>"]:::n
+  PLEG["⑨ the PLEG<br/><small>relist the runtime every second · over 3 min: PLEG is not healthy → NotReady</small>"]:::warn
+  MIR["⑩ static pod → mirror pod<br/><small>staticPodPath on workers too · delete the mirror, it returns · remove the manifest, it goes</small>"]:::n
+  FILE ==> LIM ==> REQ ==> STAT
+  FILE --> CM
+  FILE --> LIVE
+  STAT -.-> EV
+  FILE -.-> GC
+  FILE -.-> PLEG
+  FILE -.-> MIR
+  linkStyle 0,1,2 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "The kubelet is a loop: watch the API for pods on this node, make the runtime match, report back every ten seconds. Everything it decides lands in a file you can read or a log line you can grep, and this figure is the map of those files."
+- **① config.yaml.** "The file the binary read at start. Lab 1 Part 5 listed it; this is where cgroupDriver, evictionHard, the GC thresholds and staticPodPath live, and it is what a reboot restores."
+- **② the ConfigMap.** "kubeadm's copy in kube-system. A joining node downloads it; `kubeadm upgrade node` downloads it again. Edit the file on one node and the ConfigMap disagrees until the next upgrade overwrites you."
+- **③ configz.** "The live values, through the API server's proxy to the kubelet. The one that tells the truth when the other two disagree."
+- **④ cpu.max and memory.max.** "Limits become two files in the pod's slice. 200m is 20000 microseconds of every 100000; cross it and the kernel throttles. 128Mi is 134217728; cross it and the OOM killer sends SIGKILL, exit 137, figure 14.5."
+- **⑤ cpu.weight.** "Requests become a weight. It does nothing while the node is idle and decides everything under contention. The scheduler used the same number to pick the node; the kernel uses it to share the CPU."
+- **⑥ the counters.** "`cpu.stat` says how often the quota bit; `memory.events` counts OOM kills. When someone says the app is slow with no errors, `nr_throttled` is the first number to read."
+- **⑦ eviction.** "Thresholds on memory, disk and PIDs. Cross one and the node sets a Pressure condition and evicts: BestEffort first, then Burstable pods using more than they requested, worst offender first, Guaranteed last. The QoS directory the slice lives in is the order."
+- **⑧ image GC.** "Above 85 percent disk, remove images no container references, oldest first, until under 80. It never touches an image in use, which is why a full disk with every image in use is an eviction, not a GC."
+- **⑨ the PLEG.** "The pod lifecycle event generator asks the runtime what exists, every second, and diffs. If one relist takes three minutes the kubelet declares itself unhealthy and the node goes NotReady with every pod still running. The evented PLEG replaces the poll with CRI events."
+- **⑩ static pod and mirror.** "A manifest in staticPodPath is run by the kubelet with no API server involved; the object you see in the API is a mirror it publishes. Delete the mirror and it comes back; remove the manifest and the container stops. The control plane is four of these."
+- **Close.** "One config, three views. Limits are two files, requests are a weight, the counters are the evidence, eviction reads the QoS directory, GC reads the disk, the PLEG reads the runtime, and a static pod is a file. Nothing here needs the API server to be up, which is why the kubelet is the component that can survive everything else."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 10 s | `nodeStatusUpdateFrequency` | how often the kubelet posts node status; the node controller marks NotReady after 40 s without it |
+| `20000 100000` | `cpu.max` for a 200m limit | quota and period in microseconds; the throttle you can read |
+| 134217728 | `memory.max` for 128Mi | over it: SIGKILL, exit 137, `oom_kill` increments |
+| 85 % · 80 % · 2 min | image GC defaults | high mark, low mark, minimum age |
+| 1 s · 3 min | PLEG relist period and health threshold | a hung runtime becomes NotReady after three minutes |
+| 3 QoS directories | `/sys/fs/cgroup/kubepods.slice/` | besteffort, burstable, and Guaranteed at the top level; the eviction order |
+
+### Prove it
+
+```bash
+sudo cat /var/lib/kubelet/config.yaml | grep -E 'cgroupDriver|staticPodPath|evictionHard' -A2       # ①
+kubectl get --raw "/api/v1/nodes/$(hostname)/proxy/configz" | jq .kubeletconfig.nodeStatusUpdateFrequency   # ③
+cat /sys/fs/cgroup/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-pod*/cpu.max             # ④
+cat /sys/fs/cgroup/kubepods.slice/kubepods-burstable.slice/kubepods-burstable-pod*/cpu.stat | grep throttled   # ⑥
+kubectl get events -A --field-selector reason=Evicted                                               # ⑦
+sudo journalctl -u kubelet -o cat | grep -ci pleg                                                    # ⑨
+kubectl get pod static-web-$(hostname) -o jsonpath='{.metadata.annotations.kubernetes\.io/config\.mirror}'   # ⑩
+```
+
+### The question a senior interviewer asks
+
+*"A pod's CPU limit is 500m and the app is slow, but CPU usage on the node is 20 percent. What is happening?"*
+Badges ④ and ⑥. The limit is a quota per 100 ms period; a bursty app spends its 50 ms early and waits out the rest, and `nr_throttled` in `cpu.stat` proves it while the node-level graph shows nothing. The fix is a higher limit or none; the expertise is knowing which file to read.
+
+---
+
+## Figure 27.8 — Go deeper: a CNI plugin in forty lines of bash
+
+> Go deeper lab · badges ① to ⑨ · about three minutes. Rung 4 on the networking datapath. This figure reads top-down.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 27.8 — Go deeper: a CNI plugin in forty lines of bash — diagram](../../../_figures/curriculum-week-27-labs-FIGURES-6-e1533994.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  KL["① the kubelet asks for a sandbox<br/><small>a pod bound to this node · CRI RunPodSandbox</small>"]:::crit
+  CT["② containerd creates the netns<br/><small>then reads the lexically first file in /etc/cni/net.d</small>"]:::crit
+  EXEC["③ exec /opt/cni/bin/&lt;type&gt;<br/><small>CNI_COMMAND=ADD · CNI_NETNS · CNI_IFNAME · the config JSON on stdin</small>"]:::crit
+  PLUG["④ the plugin<br/><small>a bridge on first use · the next free address from the node's /24 · veth pair, one end in the netns · route</small>"]:::crit
+  RES["⑤ result JSON on stdout<br/><small>interfaces · ips · routes · containerd puts the address in the pod status</small>"]:::data
+  NODE["⑥ reachable from the node<br/><small>through the bridge · MASQUERADE out to the internet</small>"]:::n
+  XN["⑦ cross-node fails here<br/><small>a static route is not enough: the VPC drops a foreign source address · IP forwarding is off on purpose</small>"]:::warn
+  VX["⑧ the overlay by hand<br/><small>vxlan0 · id 42 · UDP 4789 · neighbour and fdb entries · the VPC sees node traffic only</small>"]:::crit
+  CAL["⑨ what Calico adds<br/><small>IPAM across nodes · routing by BGP or VXLAN · policy by Felix · a plugin is not a policy engine</small>"]:::n
+  KL ==> CT ==> EXEC ==> PLUG ==> RES ==> NODE
+  NODE -.-> XN -.-> VX
+  VX --> CAL
+  linkStyle 0,1,2,3,4 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "A network plugin is an executable that the runtime calls with four environment variables and a JSON document, and that answers with a JSON document. Forty lines of bash satisfy the contract. Follow the blue path from a pod being scheduled to a packet leaving the node, then watch where forty lines stop being enough."
+- **① the kubelet asks.** "A pod is bound to this node. The kubelet asks containerd through the CRI for a sandbox: a namespace set, a pause container, and a network."
+- **② containerd reads the directory.** "It creates the network namespace, then loads the first config file alphabetically from `/etc/cni/net.d`. `00-bashcni.conf` outranks Calico's `10-calico.conflist`; that one filename is how you swap the plugin on one node."
+- **③ exec.** "It runs `/opt/cni/bin/bashcni` with `CNI_COMMAND=ADD`, the namespace path, the interface name, and the config on stdin. That is the whole protocol; there is no daemon and no API."
+- **④ the plugin.** "A bridge with the gateway address, created on first use. The next free address from the node's range, remembered in a file. A veth pair with one end already in the pod's namespace, addressed, up, with a default route to the bridge."
+- **⑤ the result.** "A JSON document naming the interface, the address and the route. containerd reads it and the kubelet writes it into the pod status. `kubectl get pod -o wide` is showing you this document."
+- **⑥ reachable.** "From the node, through the bridge; from the pod, out through MASQUERADE as the node's address. Two pods on this node reach each other across the bridge with no further help."
+- **⑦ cross-node fails.** "A static route on the other node points at this one, and the ping dies. The reply leaves with a pod source address that is not the VM's, and the cloud drops it unless IP forwarding is on. The lab nodes have it off on purpose, and so does most of production."
+- **⑧ the overlay by hand.** "A VXLAN device on each node, id 42, UDP 4789, a neighbour entry and a forwarding entry pointing at the peer. The pod packet travels inside a UDP packet between node addresses; the VPC never sees a pod address. That is what flannel and Calico's VXLAN mode do with a daemon instead of your hands."
+- **⑨ what Calico adds.** "Ranges handed to nodes from one datastore, routes advertised so every node knows every range, repair when a node dies, and policy: Felix programs rules on every pod interface. A CNI plugin connects a pod; a policy engine decides what may cross. Week 19 showed what happens when you mistake one for the other."
+- **Close.** "Sandbox, directory, exec, plugin, result. That path runs for every pod ever created. The forty lines prove the contract is small; the overlay proves why nobody stops at forty lines; and Calico is the forty lines plus everything a cluster needs when the second node arrives."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 4 | the commands a plugin must answer | ADD · DEL · CHECK · VERSION |
+| `00-` | the config filename prefix | lexically first wins; how one node swaps plugins without touching Calico |
+| 1 | `/24` per node | the simplest IPAM: a file of allocations and a counter |
+| 4789 | VXLAN's UDP port | the hole in `lab-allow-k8s-internal` that exists for this |
+| 42 | the VXLAN network id in the lab | any number both ends agree on |
+| 0 | pod addresses the VPC ever sees under an overlay | the reason the overlay exists |
+
+### Prove it
+
+```bash
+ls /etc/cni/net.d/                                                           # ② the first file wins
+sudo tail -3 /var/log/bashcni.log                                            # ③ the env the runtime passed
+kubectl get pod bashpod -o jsonpath='{.status.podIP}{"\n"}'                 # ⑤ the result, as the API shows it
+ping -c1 "$(kubectl get pod bashpod -o jsonpath='{.status.podIP}')"           # ⑥
+sudo tcpdump -ni any udp port 4789 -c 4                                      # ⑧ the wrapped packet
+```
+
+### The question a senior interviewer asks
+
+*"What does a CNI plugin actually do, and what is the difference between it and a NetworkPolicy implementation?"*
+Badges ③ ④ ⑤ for the first half, ⑨ for the second. An executable that wires one namespace and reports an address; a policy engine is a daemon that programs the rules every packet crosses. If you answer "Calico" to both, the follow-up is "and what did the kind default CNI do with your NetworkPolicy in week 19?"
+
+---
+
+## Figure 27.9 — Go deeper: etcd under the cluster
+
+> Go deeper lab · badges ① to ⑩ · about three and a half minutes. Rung 3 on etcd and state.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 27.9 — Go deeper: etcd under the cluster — diagram](../../../_figures/curriculum-week-27-labs-FIGURES-7-41837f30.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart LR
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  subgraph MVCC["Revisions"]
+    direction TB
+    KEYS["① /registry keys, protobuf values<br/><small>k8s + a null byte, then the wire format · kubectl only ever sees the conversion</small>"]:::data
+    REV["② revision<br/><small>one cluster-wide counter · every write bumps it · mod_revision IS resourceVersion</small>"]:::crit
+    WATCH["③ watch --rev<br/><small>replays every event since · the stream the API server fans out</small>"]:::crit
+  end
+  COMP["④ compaction<br/><small>the apiserver asks every 5 min · old revisions gone · a watch from before them: 410 too old resource version</small>"]:::warn
+  DEFRAG["⑤ defrag<br/><small>compaction frees nothing on disk · defrag rewrites the file · one member at a time</small>"]:::n
+  QUOTA["⑥ the quota<br/><small>2 GiB default · NOSPACE alarm · writes refused · compact, defrag, disarm</small>"]:::warn
+  FSYNC["⑦ fsync<br/><small>every write hits the WAL and the disk before it is committed · wal_fsync p99 under 10 ms</small>"]:::crit
+  SLOW["⑧ a slow disk<br/><small>io.max on the etcd slice · seconds per write · request timed out · controllers fall behind</small>"]:::warn
+  CACHE["⑨ the watch cache<br/><small>the apiserver caches per resource · informers watch it, not etcd · empty after a restart: the relist storm</small>"]:::data
+  Q["⑩ quorum<br/><small>a majority must fsync · 3 tolerates 1 · 5 tolerates 2 · stacked on the control planes or external</small>"]:::n
+  KEYS ==> REV ==> WATCH ==> COMP
+  COMP --> DEFRAG
+  COMP -.-> QUOTA
+  REV ==> FSYNC
+  FSYNC -.-> SLOW
+  WATCH --> CACHE
+  FSYNC --> Q
+  linkStyle 0,1,2,5 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "The API server is validation and admission in front of one key-value store with revisions and watches. Every Kubernetes behaviour you have met that felt arbitrary, resourceVersion, 410 Gone, the cluster that stops taking writes, is etcd showing through. Follow the revisions first, then the disk."
+- **① keys and values.** "Objects live under `/registry/<resource>/<namespace>/<name>`, stored in protobuf because it is small and fast to decode. The JSON you see is the server converting on the way out."
+- **② revision.** "One counter for the whole store, incremented by every write to any key. A key's `mod_revision` is the `resourceVersion` kubectl shows. That is why it is opaque, monotonic, and why an update with a stale one is refused: the key moved."
+- **③ watch.** "A watch from a revision replays every change since it, in order. The API server opens one of these per resource and fans it out to every informer in the cluster."
+- **④ compaction.** "The API server asks etcd every five minutes to discard revisions older than a point. A watch that tries to resume from before that point gets `410 Gone`, and the client relists. The error is not a bug; it is history being removed."
+- **⑤ defrag.** "Compaction marks space free inside the file; the file does not shrink until defrag rewrites it, and defrag blocks the member. On three members, one at a time."
+- **⑥ the quota.** "Two gibibytes by default. Past it, etcd raises NOSPACE and refuses every write, and the cluster is read-only until you compact, defrag and disarm. Three commands; know them cold."
+- **⑦ fsync.** "A write is committed when it is in the write-ahead log and on the disk. The fsync histogram is the one etcd number worth alerting on: a 99th percentile over ten milliseconds is a slow disk, over a hundred is an election."
+- **⑧ a slow disk.** "Limit the etcd slice to half a megabyte a second and a ConfigMap takes seconds to create, then the API server reports `request timed out`, then controllers fall behind. That is what shared or network-attached storage under etcd looks like from the outside."
+- **⑨ the watch cache.** "The API server keeps a cache per resource so a thousand informers do not open a thousand etcd watches. After a control-plane restart the cache is empty, every client relists at once, and that storm is the price of the design, not a fault in your controller."
+- **⑩ quorum.** "A write commits when a majority has fsynced. Three members survive one loss; five survive two; two survive none. Stacked etcd shares the control-plane nodes; external etcd separates the two failure domains."
+- **Close.** "Keys, revisions, watches, compaction, defrag, quota, fsync, cache, quorum. Nine things, one store, and every one of them has a Kubernetes symptom you have already seen or will see at three in the morning."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| `k8s` + `\0` | the first bytes of every stored value | protobuf follows; the store is not JSON |
+| 5 min | `--etcd-compaction-interval` default on the API server | who compacts, and how often |
+| 410 | HTTP status for *too old resource version* | a watch resumed from before compaction or past the cache |
+| 2 GiB · 8 GiB | default quota and the recommended ceiling | NOSPACE, and the three commands that clear it |
+| 10 ms · 100 ms | fsync p99 thresholds, healthy and election-prone | the one etcd metric to alert on |
+| 3 → 1 · 5 → 2 | members → failures tolerated | a majority must fsync; two members tolerate none |
+
+### Prove it
+
+```bash
+sudo -E etcdctl get /registry/configmaps/default/rev -w json | jq '.kvs[0].mod_revision'; kubectl get cm rev -o jsonpath='{.metadata.resourceVersion}'   # ② the same number
+sudo -E etcdctl endpoint status -w table                                                   # ④ ⑤ revision, db size, db size in use
+sudo -E etcdctl alarm list                                                                 # ⑥
+curl -s http://127.0.0.1:2381/metrics | grep '^etcd_disk_wal_fsync_duration_seconds_bucket{le="0.016"}'   # ⑦
+kubectl get --raw '/api/v1/namespaces/default/configmaps?watch=1&resourceVersion=1&timeoutSeconds=2'      # ⑨ 410
+```
+
+### The question a senior interviewer asks
+
+*"The cluster is refusing all writes and reads are fine. What happened and what do you do?"*
+Badge ⑥, then ④ and ⑤: the backend quota was hit and the NOSPACE alarm is raised; compact to the current revision, defrag each member in turn, disarm the alarm, then find what wrote the history (events, a controller updating status in a loop). If the answer starts with "restart etcd", the follow-up is "and the alarm?"
+
+---
+
+## Figure 27.10 — Lab 1, the hard way: the certificate and kubeconfig fan-out
+
+> The hard-way variant · badges ① to ⑩ · about three minutes. Rung 3 on lifecycle, and on authn, authz, admission. The subject of a certificate is the identity.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 27.10 — Lab 1, the hard way: the certificate and kubeconfig fan-out — diagram](../../../_figures/curriculum-week-27-labs-FIGURES-8-ea2d2f08.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart LR
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  CA["① the CA<br/><small>one key, one self-signed cert · everything below is signed by it · 10 years</small>"]:::crit
+  subgraph CP["The control plane's identities"]
+    direction TB
+    API["② kube-apiserver serving cert<br/><small>SANs: kubernetes.default.svc, 10.32.0.1, the node IP · what every client verifies</small>"]:::crit
+    CMG["③ CN=system:kube-controller-manager<br/><small>a built-in ClusterRole is bound to exactly this user</small>"]:::n
+    SCH["④ CN=system:kube-scheduler<br/><small>likewise · the scheduler is just another client</small>"]:::n
+    SA["⑤ the service-account key pair<br/><small>not TLS · the controller-manager signs tokens, the apiserver verifies them</small>"]:::data
+  end
+  subgraph NODES["The nodes' identities"]
+    direction TB
+    KLT["⑥ CN=system:node:&lt;name&gt; O=system:nodes<br/><small>the Node authorizer reads the CN · a kubelet sees only its own node's objects</small>"]:::crit
+    KP["⑦ O=system:node-proxier<br/><small>kube-proxy may list Services and EndpointSlices, nothing more</small>"]:::n
+  end
+  ADM["⑧ CN=admin O=system:masters<br/><small>bound to cluster-admin by a built-in ClusterRoleBinding · the break-glass identity</small>"]:::warn
+  KC["⑨ a kubeconfig<br/><small>server + CA + credential · --embed-certs · 127.0.0.1 for the control plane, the advertise address for nodes</small>"]:::crit
+  KA["⑩ kubeadm init phase certs, kubeconfig<br/><small>the same files under /etc/kubernetes/pki and *.conf · certs renew all a year later</small>"]:::data
+  CA ==> API ==> KLT ==> KC
+  CA --> CMG
+  CA --> SCH
+  CA --> KP
+  CA --> ADM
+  CA -.-> SA
+  KC -.-> KA
+  linkStyle 0,1,2 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "kubeadm prints eleven certificate lines and four kubeconfig lines in three seconds. This figure is what they mean, learned by typing them once. The sentence to keep: the subject of a certificate is the identity, and RBAC is written against those subjects."
+- **① the CA.** "One key and one self-signed certificate, valid ten years. Every other certificate in the cluster is signed by it, and every component trusts the cluster because it trusts this one file."
+- **② the API server's serving certificate.** "The one clients verify. Its SANs are every name the server is dialled by: `kubernetes.default.svc`, the first service address, the node address, localhost. A client that dials a name not in the list fails with x509 even though the key is right."
+- **③ the controller manager.** "A client certificate whose CN is `system:kube-controller-manager`. A built-in ClusterRole is bound to that exact user, which is why the name is not a choice."
+- **④ the scheduler.** "The same pattern. The scheduler is a client of the API server like any other; it is privileged only because a built-in binding names its CN."
+- **⑤ the service-account key pair.** "Not a TLS certificate. The controller manager signs ServiceAccount tokens with the private key; the API server verifies them with the public one. kubeadm calls these `sa.key` and `sa.pub`, and a pod's token is worthless outside this pair."
+- **⑥ the kubelets.** "CN `system:node:<name>`, O `system:nodes`. The Node authorizer, the first word in `--authorization-mode=Node,RBAC`, reads that CN and lets a kubelet touch only the pods, secrets and nodes that are its own. A stolen kubelet certificate is one node's worth of access, by design."
+- **⑦ kube-proxy.** "Group `system:node-proxier`: list Services and EndpointSlices. It programs iptables from a watch and needs nothing else."
+- **⑧ admin.** "Group `system:masters`, bound to `cluster-admin` by a binding you cannot remove. kubeadm keeps it in `super-admin.conf` and gives you `admin.conf` with a narrower group instead; the hard way shows you why that split exists."
+- **⑨ a kubeconfig.** "Three things: a server to dial, a CA to verify it by, a credential to present. `--embed-certs` inlines the files. The control plane's configs point at `127.0.0.1` because they share the host; the nodes' point at the advertise address."
+- **⑩ kubeadm.** "`init phase certs all` and `init phase kubeconfig all` write exactly these files under `/etc/kubernetes/pki` and `/etc/kubernetes/*.conf`, and `certs renew all` rewrites them with new dates a year later. Lab 2 was the renewal; this was the issuance."
+- **Close.** "One CA, a serving certificate with the right names, a client certificate per component whose subject RBAC already knows, a key pair for tokens, and a kubeconfig that packages a credential with the server and the CA. kubeadm is a program that does this in order, and now you can read its output."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 3653 days | the CA's validity | ten years; the one certificate you do not renew yearly |
+| 365 days | every client and serving certificate | why `kubeadm certs check-expiration` exists, Lab 2 |
+| `10.32.0.1` | the first service address, in the apiserver's SANs | how a pod verifies `https://kubernetes.default` |
+| `Node,RBAC` | `--authorization-mode` | the Node authorizer runs first and reads `system:node:<name>` |
+| 3 | things in a kubeconfig | server, CA, credential |
+| 11 · 4 | certificates and kubeconfigs kubeadm prints | the lines you can now read |
+
+### Prove it
+
+```bash
+openssl x509 -in ~/pki/k8s-w1.crt -noout -subject                                         # ⑥ CN=system:node:k8s-w1, O=system:nodes
+openssl x509 -in ~/pki/kube-apiserver.crt -noout -ext subjectAltName                       # ②
+kubectl --kubeconfig ~/pki/k8s-w1.kubeconfig get pods -A                                   # ⑥ Forbidden beyond its own node
+kubectl --kubeconfig ~/pki/kube-proxy.kubeconfig auth can-i list endpointslices           # ⑦ yes
+kubectl --kubeconfig ~/pki/admin.kubeconfig get clusterrolebinding cluster-admin -o yaml | grep system:masters   # ⑧
+grep -c 'certificate-authority-data' ~/pki/admin.kubeconfig                                # ⑨ embedded
+```
+
+### The question a senior interviewer asks
+
+*"A kubelet's client certificate leaks. What can the attacker do?"*
+Badge ⑥. Read that node's pods and the secrets mounted into them, update that node's status, and nothing on any other node, because the Node authorizer scopes by the CN. Then badge ⑩: rotate it with `kubeadm certs renew` or by deleting the node's kubelet PKI and re-bootstrapping. If the answer is "everything", the certificate's subject was never read.
+
+---
+
 ## Redraw schedule
 
-Same cadence as the week figure, see [`../../FIGURES.md`](../../FIGURES.md): Friday of this week after break/fix, Sunday of week 29, and cold at the Gate 7 Sunday in week 30. Lab figures are redrawn **after** the week figure, one at a time, and only the badge order has to be right; the captions are the check, not the test.
+Same cadence as the week figure, see [`../../FIGURES.md`](../../FIGURES.md): Friday of this week after break/fix, Sunday of week 29, and cold at the Gate 7 Sunday in week 30. Lab figures are redrawn **after** the week figure, one at a time, and only the badge order has to be right; the captions are the check, not the test. The Go deeper figures 27.7 to 27.10 join the cold redraw only once their labs are done; they are ladder work, not exam work.

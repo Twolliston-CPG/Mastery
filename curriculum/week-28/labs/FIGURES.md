@@ -1,7 +1,8 @@
 # Week 28 — Lab figures
 
-> One figure per lab, numbered 28.2 to 28.6. Figure 28.1 is the week figure in
-> [`../content/FIGURE.md`](../content/FIGURE.md); these five go one level down, to the mechanism each
+> One figure per lab, numbered 28.2 to 28.6, then 28.7 to 28.9 for the three "Go deeper" labs of the
+> mastery ladder. Figure 28.1 is the week figure in
+> [`../content/FIGURE.md`](../content/FIGURE.md); these go one level down, to the mechanism each
 > lab makes you touch. Same language: gray is structure, **blue is the path to follow first**,
 > orange-red is where something refuses, washed boxes are stores. Each badge line is a thirty-second
 > interview answer; each whole script is under three minutes.
@@ -435,6 +436,268 @@ kubectl get sc local-path -o jsonpath='{.allowVolumeExpansion}{"\n"}'           
 
 *"A PVC is Pending. Give me the three reasons in the order you check them."*
 Badges ① ③ ④: no class and no default, a class with no provisioner behind it (or the wrong name, BF-46), or WaitForFirstConsumer with no pod yet, which is not a problem. Then the fourth, from the week: the provisioner's node is down, which looks like storage and is BF-63.
+
+---
+
+## Figure 28.7 — Go deeper: the controller you wrote, part by part
+
+> Go deeper, controllers · badges ① to ⑪ · about three and a half minutes. This figure reads top-down.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 28.7 — Go deeper: the controller you wrote, part by part — diagram](../../../_figures/curriculum-week-28-labs-FIGURES-5-8bcb80fb.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  TYPES["① types with markers<br/><small>backup_types.go · enum, pattern, default as comments · the schema is Go</small>"]:::crit
+  GEN["② generated<br/><small>deepcopy · the CRD YAML · a ClusterRole from the rbac markers · make manifests generate</small>"]:::crit
+  INF["③ informer and cache<br/><small>one list-then-watch per kind · r.Get reads the cache · writes go to the server</small>"]:::data
+  WQ["④ workqueue<br/><small>namespace/name keys · de-duplicated · rate limited on error, 5 ms doubling</small>"]:::crit
+  REC["⑤ Reconcile<br/><small>read · compute desired · create or update · level-triggered and idempotent</small>"]:::crit
+  CJ["⑥ the CronJob, owned<br/><small>SetControllerReference · garbage collection deletes it with the parent</small>"]:::n
+  ST["⑦ status subresource<br/><small>observedGeneration · a Ready condition · written through /status, never with the spec</small>"]:::data
+  OWNS["⑧ Owns(CronJob)<br/><small>a child event maps to the parent's key · delete the child and it comes back</small>"]:::crit
+  LEASE["⑨ leader election<br/><small>one Lease · only the holder runs workers · moves in about 15 s</small>"]:::n
+  WH["⑩ validating webhook<br/><small>cron.ParseStandard · cert-manager issues the serving cert · denied the request</small>"]:::warn
+  COST["⑪ what it costs<br/><small>two cluster-wide watches · every object in memory · 409 on a stale write</small>"]:::warn
+
+  TYPES ==> GEN ==> INF ==> WQ ==> REC ==> CJ
+  REC ==> ST
+  OWNS -.-> WQ
+  CJ -.-> OWNS
+  LEASE -.-> REC
+  WH -.-> TYPES
+  INF -.-> COST
+  linkStyle 0,1,2,3,4,5 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "Lab 3 watched cert-manager reconcile. This is the same loop with your name on it: a kind, a controller, a child it owns, status it reports, a lease so two copies do not fight, and a webhook for what the schema cannot say. Eleven parts, every one of them in every real operator."
+- **① types with markers.** "The schema is a Go struct. The enum, the pattern, the default and the printer columns are comments above the fields, and the CRD you wrote by hand in Lab 3 is now generated from them. Change a field, regenerate, the API server learns it."
+- **② generated.** "DeepCopy, so the cache can hand you a copy you cannot corrupt. The CRD YAML. A ClusterRole from the rbac markers, which is week 15 Lab 4 applied to a program instead of a person. None of it is typed."
+- **③ informer and cache.** "Your reads never hit the API server. The manager opened one list-then-watch per kind and keeps every object in memory; r.Get answers from there. Cheap at steady state, expensive at startup, and the reason a thousand controllers listing pods is a scaling problem."
+- **④ workqueue.** "Every watch event becomes a key, namespace slash name, on a queue that de-duplicates. Ten edits while you are busy are one reconcile. An error puts the key back with exponential backoff, five milliseconds doubling, so a bad object cannot hammer the server."
+- **⑤ Reconcile.** "Given a key, read the object, compute what should exist, compare with what does, create or update, return. It does not know why it was called, so it reads the current state, not the event. Level-triggered. Run it twice and the second run changes nothing. Idempotent. Those two words are the whole discipline."
+- **⑥ the CronJob, owned.** "The child carries an owner reference to the Backup. Delete the Backup and garbage collection deletes the CronJob; your code never handles deletion at all. That is why the not-found branch just returns."
+- **⑦ status subresource.** "observedGeneration says which spec you acted on; a Ready condition says how it went. Written through the /status endpoint, which is why a kubectl apply of the spec cannot clobber it and why two writers never fight."
+- **⑧ Owns.** "A second watch, on CronJobs, mapped back to the owning Backup. Delete the CronJob by hand and the Backup is reconciled and recreates it. Without Owns you created it once; with Owns you keep it existing, and that is what controller means."
+- **⑨ leader election.** "Two replicas, one Lease. The holder runs workers; the other keeps its cache warm and waits. Kill the holder and the Lease moves in about fifteen seconds. kube-system has the same object for the scheduler and the controller-manager."
+- **⑩ validating webhook.** "The pattern accepts 'a b c d e'. Code that parses cron does not. The API server calls your HTTPS endpoint during admission; cert-manager issued the certificate it trusts; and a bad schedule is refused before it is stored. The failurePolicy on that configuration is week 19's lockout, now yours to cause."
+- **⑪ what it costs.** "Two cluster-wide watches and a copy of every CronJob in the cluster in memory. A controller that watches Pods on five thousand nodes holds every Pod. Scope the cache before you ship, and read the 409 as the concurrency model: no locks, just resourceVersion and a retry."
+- **Close.** "Types, generated artefacts, cache, queue, reconcile, owned child, status, Owns, Lease, webhook, cost. pkg/controller/deployment in the Kubernetes source is this exact shape; now you can read it."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 1 watch per kind | the manager's informers | reads are free, startup lists are not; the cost of a controller is its watches |
+| 5 ms, doubling | the default rate limiter | an erroring key backs off toward about 17 minutes, protecting the API server |
+| 1 reconcile for 10 events | the workqueue's de-duplication | why reconcile must read state, not the event |
+| 2 endpoints, 2 writers | spec and `/status` | kubectl owns the spec, the controller owns status, nobody clobbers anybody |
+| 15 s | the Lease duration by default | how long a failover of the controller takes |
+| 409 | the conflict on a stale `resourceVersion` | the whole concurrency model: optimistic, retry on requeue |
+| 60 min | the from-memory target for Parts 1 to 3 | scaffold, types, reconcile with status and Owns |
+
+### Prove it
+
+```bash
+git diff config/crd config/rbac                                                         # ② what the markers became
+kubectl -n web get cronjob backup-nightly -o jsonpath='{.metadata.ownerReferences[0].kind}'   # ⑥ Backup
+kubectl -n web get bk nightly -o jsonpath='{.metadata.generation} {.status.observedGeneration}'   # ⑦ equal when reconciled
+kubectl -n web delete cronjob backup-nightly && sleep 1 && kubectl -n web get cronjob    # ⑧ back
+kubectl -n backup-operator-system get lease -o jsonpath='{.items[0].spec.holderIdentity}'   # ⑨
+kubectl get --raw /metrics | grep apiserver_registered_watchers | grep -i cronjob         # ⑪
+```
+
+### The question a senior interviewer asks
+
+*"Your controller is called once but the object changed five times. Is that a bug?"*
+Badges ④ and ⑤. No: the queue de-duplicated the key, and reconcile reads the current state, so one run converges on all five changes. The follow-up is "then why does it sometimes run with nothing changed?" Resyncs and watch reconnects; which is why it must be idempotent.
+
+---
+
+## Figure 28.8 — Go deeper: the Service datapath, three ways
+
+> Go deeper, networking datapath · badges ① to ⑨ · about three minutes. This figure reads top-down.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 28.8 — Go deeper: the Service datapath, three ways — diagram](../../../_figures/curriculum-week-28-labs-FIGURES-6-7595a4ab.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  EPS["① EndpointSlices<br/><small>written by the endpointslice controller · 100 endpoints per slice · ready pods only</small>"]:::data
+  KP["② kube-proxy<br/><small>watches Services and slices · writes the kernel's rules · one of three backends</small>"]:::crit
+  IPT["③ iptables<br/><small>KUBE-SERVICES → KUBE-SVC → KUBE-SEP · statistic random, 1/N each · DNAT</small>"]:::crit
+  IPVS["④ IPVS<br/><small>a hash table per VIP · rr, lc, sh · kube-ipvs0 holds every ClusterIP</small>"]:::n
+  NFT["⑤ nftables<br/><small>a verdict map · numgen random mod N · the same DNAT</small>"]:::n
+  CT["⑥ conntrack<br/><small>one entry per connection · un-NATs the reply · shared by all three</small>"]:::data
+  PKT["⑦ the packet<br/><small>dst VIP on the client's veth · dst pod IP after the nat table · tcpdump both sides</small>"]:::crit
+  ETP["⑧ externalTrafficPolicy<br/><small>Cluster: SNAT to the node, source lost · Local: no SNAT, local endpoints only, healthCheckNodePort</small>"]:::warn
+  CIL["⑨ Cilium<br/><small>eBPF at the veth and the socket · no kube-proxy · no conntrack entry for the Service</small>"]:::n
+
+  EPS ==> KP ==> IPT ==> PKT
+  KP --> IPVS
+  KP --> NFT
+  IPT --> CT
+  IPVS --> CT
+  NFT --> CT
+  PKT -.-> ETP
+  EPS -.-> CIL
+  linkStyle 0,1,2 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "Week 14 said a Service is a virtual IP that kube-proxy turns into iptables rules. Here are the rules, the packet going through them, the two other kernels mechanisms that can do the same job, and the one that removes kube-proxy entirely."
+- **① EndpointSlices.** "kube-proxy never looks at Pods. A controller writes the ready pod addresses for each Service into slices of up to a hundred, so one pod changing rewrites one small object. A Service with no endpoints is an empty slice, and -o yaml tells you why."
+- **② kube-proxy.** "A DaemonSet that watches Services and slices and programs the kernel on its node. It owns no packets; it writes rules and leaves. Which rules depends on its mode."
+- **③ iptables.** "Three chains per Service. KUBE-SERVICES matches the VIP and port and jumps to KUBE-SVC, which picks an endpoint with a random-probability rule per endpoint, one half then the rest, and jumps to KUBE-SEP, which DNATs to a pod IP. Every packet walks the list; ten thousand Services is a long list."
+- **④ IPVS.** "The kernel's load balancer. One hash entry per VIP, real schedulers like round robin and source hash, and a dummy interface that holds every ClusterIP so the kernel accepts them as local. iptables stays for the masquerade decision, matching an ipset instead of a rule per Service."
+- **⑤ nftables.** "The backend kube-proxy is moving to. A verdict map looks the destination up in one step and jumps to the Service's chain; a random number modulo N picks the endpoint; the DNAT is unchanged. The hash property of IPVS inside the firewall model of iptables."
+- **⑥ conntrack.** "All three only rewrite the first packet's destination. Connection tracking remembers the translation and un-NATs every reply. One entry per connection, visible with conntrack -L, and the same entry whichever mode wrote the rules."
+- **⑦ the packet.** "tcpdump on the client's veth shows the VIP as the destination. tcpdump on the node for the pod IP shows the same packet after the nat table. One packet, two addresses, one hook between them. That is the whole of 'virtual'."
+- **⑧ externalTrafficPolicy.** "On a NodePort, Cluster mode SNATs the packet to the receiving node so the reply returns the same way, and the pod sees the node's address. Local mode drops the masquerade, keeps the client's address, and only routes to endpoints on that node, so the load balancer needs the health-check port to know which nodes have one."
+- **⑨ Cilium.** "eBPF programs on the veth and at the socket layer. A pod's connect() is rewritten to a pod IP before any packet exists, so there is no per-packet NAT and no conntrack entry for the Service. kube-proxy is not installed. The rules are kernel maps, and policy and observability hang off the same hook."
+- **Close.** "Slices feed a proxy that writes rules; iptables walks, IPVS hashes, nftables maps; conntrack remembers; the packet changes address once. And Cilium moves the whole thing out of netfilter. Four mechanisms, one sentence each, and you have seen all four."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| 3 chains | `KUBE-SERVICES` → `KUBE-SVC-*` → `KUBE-SEP-*` | the path every packet to a ClusterIP walks in iptables mode |
+| 0.5, then 1.0 | `--probability` per endpoint rule | how N rules give 1/N each: the first takes half, the rest the remainder |
+| 1 conntrack entry per connection | `conntrack -L -d $VIP` | the reply path; the same in all three modes |
+| 100 | endpoints per EndpointSlice | one pod change rewrites one slice |
+| 0 | `KUBE-SVC` rules on a Cilium node | kube-proxy replacement means no netfilter rules for Services |
+| 2 addresses | one packet, before and after the nat table | the demonstration that "virtual IP" is a DNAT |
+| 15 min | the from-memory target for Part 1 | chains, probability, DNAT, conntrack, both tcpdumps |
+
+### Prove it
+
+```bash
+kubectl -n web get endpointslices -l kubernetes.io/service-name=web                     # ①
+sudo iptables -t nat -S KUBE-SVC-XXXX | grep -E 'statistic|KUBE-SEP'                     # ③ the probabilities
+sudo conntrack -L -d $VIP 2>/dev/null | head -1                                          # ⑥
+sudo ipvsadm -Ln | grep -A2 $VIP; ip addr show kube-ipvs0 | grep -c inet                 # ④
+sudo nft list table ip kube-proxy | grep -E 'vmap|numgen' | head -3                      # ⑤
+sudo tcpdump -ni "$VETH" port 80 -c 2; sudo tcpdump -ni any "host $POD1 and port 80" -c 2   # ⑦
+```
+
+### The question a senior interviewer asks
+
+*"A client behind a NodePort sees the node's IP instead of its own. Why, and what does fixing it cost?"*
+Badge ⑧. Cluster mode masquerades so the reply comes back through the node that received it. Local mode keeps the source but only serves local endpoints, so balancing is uneven and the load balancer must use the health-check port to skip nodes with none. If you can also say where the SNAT rule is (KUBE-MARK-MASQ, then POSTROUTING), you are at rung three.
+
+---
+
+## Figure 28.9 — Go deeper: five queries for one name
+
+> Go deeper, DNS · badges ① to ⑨ · about three minutes. This figure reads top-down.
+
+<!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
+![Figure 28.9 — Go deeper: five queries for one name — diagram](../../../_figures/curriculum-week-28-labs-FIGURES-7-929c1912.png)
+
+<details>
+<summary>Diagram source (Mermaid)</summary>
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{'fontFamily':'Helvetica, Arial, sans-serif','fontSize':'13px','primaryColor':'#ffffff','primaryTextColor':'#2d3436','primaryBorderColor':'#9aa3ab','lineColor':'#9aa3ab','textColor':'#2d3436','clusterBkg':'#fbfcfd','clusterBorder':'#d4dae0','edgeLabelBackground':'#ffffff','tertiaryColor':'#eef4fb'},'flowchart':{'curve':'basis','padding':14,'nodeSpacing':42,'rankSpacing':58}}}%%
+flowchart TB
+  classDef default fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef n    fill:#ffffff,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef crit fill:#eef4fb,stroke:#2f6fb8,stroke-width:1.8px,color:#1b3a5c
+  classDef data fill:#f4f7fa,stroke:#9aa3ab,stroke-width:1.3px,color:#2d3436
+  classDef mut  fill:#ffffff,stroke:#cfd6dc,stroke-width:1.1px,color:#7a8288
+  classDef warn fill:#fdf0ec,stroke:#c0522d,stroke-width:1.6px,color:#8a3a1e
+
+  RC["① resolv.conf<br/><small>written by the kubelet · search list · nameserver 10.96.0.10 · ndots:5</small>"]:::crit
+  SRCH["② the search list<br/><small>fewer than five dots → three suffixes first · NXDOMAIN × 3 · A and AAAA in parallel</small>"]:::warn
+  FIX["③ two fixes<br/><small>a trailing dot · dnsConfig ndots:1</small>"]:::n
+  DNAT["④ UDP to a VIP<br/><small>DNAT by kube-proxy · a conntrack entry per query</small>"]:::data
+  CHAIN["⑤ the plugin chain<br/><small>order fixed by plugin.cfg, not the Corefile · log, cache, rewrite, hosts, kubernetes, forward</small>"]:::crit
+  K8S["⑥ the kubernetes plugin<br/><small>an informer on Services, slices and Pods · A · headless A per pod · SRV · PTR</small>"]:::crit
+  FWD["⑦ forward<br/><small>everything outside cluster.local → the node's resolver</small>"]:::n
+  POL["⑧ dnsPolicy<br/><small>ClusterFirst · Default · ClusterFirstWithHostNet · None · hostNetwork silently gets Default</small>"]:::warn
+  NLD["⑨ NodeLocal DNSCache<br/><small>169.254.20.10 on every node · no DNAT, no conntrack race · TCP upstream</small>"]:::n
+
+  RC ==> SRCH ==> DNAT ==> CHAIN ==> K8S
+  SRCH -.-> FIX
+  CHAIN --> FWD
+  RC -.-> POL
+  DNAT -.-> NLD
+  linkStyle 0,1,2,3 stroke:#2f6fb8,stroke-width:2px
+```
+
+</details>
+
+### Say it, badge by badge
+
+- **Open.** "A pod asks for a name. Between that and an answer are a file the kubelet wrote, a search list that multiplies the question, a DNAT, a chain of plugins in an order you do not control, and a cache that exists because of a kernel race. Follow one lookup of example.com."
+- **① resolv.conf.** "The kubelet wrote it: the cluster DNS address, three search suffixes for your namespace, the svc domain and the cluster domain, and ndots five. Every pod with the default policy has this file."
+- **② the search list.** "A name with fewer than five dots is tried with each suffix first and as typed last. example.com has one dot, so three NXDOMAINs come back before the real question is asked, and resolvers send A and AAAA together, so that is eight packets for one answer. Ten thousand calls a minute makes this the DNS load."
+- **③ two fixes.** "A trailing dot makes the name absolute and skips the list. dnsConfig with ndots one does it for the whole pod and still resolves short Service names. The default of five exists so web.other-ns works without a suffix; most clusters should not pay for it."
+- **④ UDP to a VIP.** "The query goes to a ClusterIP, so it is DNATed by whichever kube-proxy mode is running, and conntrack records it. That is the datapath lab, and it is where the five-second stall in badge nine comes from."
+- **⑤ the plugin chain.** "The Corefile lists plugins; the order in the file is irrelevant. CoreDNS compiles a fixed order from plugin.cfg: errors and log wrap everything, cache sits before rewrite, hosts, kubernetes and forward. So a cached answer never reaches the plugin that would compute it, which is what cache 300 did to a changed Service IP."
+- **⑥ the kubernetes plugin.** "An informer on Services, slices and Pods, answering from its cache: an A record for a Service's VIP, one A per ready pod for a headless Service, an SRV for a named port, a PTR for the reverse zone. The controller pattern again, as a DNS server."
+- **⑦ forward.** "Anything outside cluster.local goes to the node's resolver, with recursion requested. The log line's rd,ra flags are that handoff."
+- **⑧ dnsPolicy.** "ClusterFirst is the default and the file in badge one. Default means the node's file. None means you write every line. And a hostNetwork pod with the default policy silently behaves as Default and cannot resolve Services; ClusterFirstWithHostNet is the one-line fix, and it is why node agents set it."
+- **⑨ NodeLocal DNSCache.** "Two queries from the same source port at the same instant race to insert one conntrack entry; the loser is dropped and the resolver waits five seconds. A CoreDNS on every node at a link-local address takes the DNAT and the race out of the path and talks upstream over TCP. The install is a DaemonSet and a kubelet setting."
+- **Close.** "File, search list, DNAT, chain, plugin, forward. Then the policy that chooses the file and the cache that removes the DNAT. One lookup, eight packets, and now you can say why each one exists."
+
+### Numbers to own
+
+| Number | Where it comes from | Why it matters |
+|---|---|---|
+| `ndots:5` | the kubelet's resolv.conf | fewer than five dots means the search list runs first |
+| 3 suffixes · 3 NXDOMAINs | the search list for a one-dot name | the multiplier on every external lookup |
+| 8 packets | 4 queries × A and AAAA | what one `example.com` costs without a fix |
+| 1 | `dnsConfig` ndots, or a trailing dot | the fix; short Service names still resolve |
+| 5 s | the resolver's default timeout | the stall a lost conntrack race produces |
+| `169.254.20.10` | NodeLocal DNSCache's link-local address | no DNAT, so no conntrack entry, so no race |
+| 15 min | the from-memory target for Parts 1 and 3 | the five queries, both fixes, four record types |
+
+### Prove it
+
+```bash
+kubectl -n web exec dns -- cat /etc/resolv.conf                                          # ①
+kubectl -n kube-system logs deploy/coredns | grep -c 'example.com.web.svc'               # ② the NXDOMAIN suffix tries
+kubectl -n web exec dns1 -- cat /etc/resolv.conf | tail -1                               # ③ ndots:1
+sudo conntrack -L -p udp --dport 53 2>/dev/null | head -2                                # ④
+kubectl -n web exec dns -- dig +short SRV _http._tcp.web.web.svc.cluster.local           # ⑥
+kubectl -n web exec hn -- cat /etc/resolv.conf                                           # ⑧ the node's file
+kubectl -n kube-system get ds node-local-dns                                             # ⑨
+```
+
+### The question a senior interviewer asks
+
+*"DNS in the cluster randomly takes five seconds. Where do you look?"*
+Badges ② ④ ⑨, in that order: is ndots multiplying queries, is the query UDP to a VIP through DNAT, and is a conntrack race dropping the twin. The fix is NodeLocal DNSCache or a lower ndots, and saying the race out loud is what separates "restart CoreDNS" from an answer.
 
 ---
 

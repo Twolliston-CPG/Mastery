@@ -14,6 +14,7 @@ make the rest work. Then [**STEP-BY-STEP.md**](STEP-BY-STEP.md) — the operatin
 | Directory | What it is |
 |---|---|
 | **[`week-01/`](week-01/) … [`week-30/`](week-30/)** | One directory per week (27–30 are the CKA module): `README.md` (objectives, day plan, reading map, exit criteria), `labs/` (the work), `solutions/` (worked answers **and running code**), `assessment.md` (self-test with an answer key) |
+| **[`KUBERNETES-THREAD.md`](KUBERNETES-THREAD.md)** | Every lab, weeks 1 to 30, read as Kubernetes: how it relates, the mechanism one level under the lab, a command that shows it, a sentence to say. Read the entry after each lab; the ladder it feeds is in [`../KUBERNETES-MASTERY.md`](../KUBERNETES-MASTERY.md) |
 | **[`FIGURES.md`](FIGURES.md)** | Index of the 30 weekly figures, the lab figures underneath them, and the 10 platform figures, each with a numbered spoken walkthrough. Read a week's figure before its day plan |
 | **[`_setup/`](_setup/)** | Runnable environment scripts — toolchain, AWS cost guardrails, local Kubernetes, nightly teardown, verification. [`ARCHITECTURE.md`](_setup/ARCHITECTURE.md) explains the lab platform and its guardrails in ten figures |
 | **[`_shared/`](_shared/)** | Cross-cutting assets used every week: break/fix library, drills, Anki decks, interview bank, templates |

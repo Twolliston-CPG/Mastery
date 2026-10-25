@@ -44,7 +44,7 @@
   `phase-3-databases-integration-labs-lab-03-sqs-sns-messaging.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 8.2 to 8.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 8.2 to 8.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-8)
 
 | # | Lab | Time |
 |---|---|---|

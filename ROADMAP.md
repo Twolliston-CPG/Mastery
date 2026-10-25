@@ -281,7 +281,7 @@ The second half of this month is **conversion**: interviewing is now the primary
 
 **Coverage:** kubeadm on two or three lab VMs · Calico · certificates and kubeconfigs · etcd snapshot and restore · a one-minor upgrade · Kustomize and Helm as install tools · Gateway API and CoreDNS · CRDs and an operator · scheduling, Jobs, CronJobs, DaemonSets · dynamic provisioning · the four troubleshooting families on real nodes · two mock exams with weights · both killer.sh sessions.
 
-**Deliverable:** the certificate, and a kubeadm cluster you built, broke, restored and upgraded, which is the story you tell about it.
+**Deliverable:** the certificate, and a kubeadm cluster you built, broke, restored and upgraded, which is the story you tell about it. The exam is rung two of the Kubernetes mastery ladder in [KUBERNETES-MASTERY.md](KUBERNETES-MASTERY.md); the ladder runs from week 1 through the thread and continues after week 30.
 
 ---
 

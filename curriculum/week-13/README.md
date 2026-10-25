@@ -54,6 +54,6 @@ close the gaps that real work skips.
 - The official HashiCorp study guide and exam objectives (short, and genuinely sufficient)
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 13.2 to 13.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 13.2 to 13.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-13)
 
 ## ★ GATE 3 — see [assessment.md](assessment.md)

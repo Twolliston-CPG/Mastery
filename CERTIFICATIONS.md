@@ -120,7 +120,7 @@ It is not in the six-month core plan because it needs ~70 hours of dedicated pra
 | 29 | Troubleshooting on real nodes and speed: the exam terminal, a mock exam, killer.sh session 1 | |
 | 30 | killer.sh session 2 as **★ Gate 7**, weak-domain drills, the exam | ★ CKA |
 
-Book the exam on the Monday of week 27 for the end of week 30; an unbooked exam slips, and the package carries one free retake. The kubeadm nodes live in `curriculum/_setup/gcp-lab/` (`kubeadm_nodes = 2`), because kind cannot teach the install-and-upgrade quarter of the exam. If the KCNA decision at week 17 goes to "skip," those hours are already banked toward this. Week 17 Thursday is the first `kubeadm init`; the module is where you own it.
+Book the exam on the Monday of week 27 for the end of week 30; an unbooked exam slips, and the package carries one free retake. The kubeadm nodes live in `curriculum/_setup/gcp-lab/` (`kubeadm_nodes = 2`), because kind cannot teach the install-and-upgrade quarter of the exam. If the KCNA decision at week 17 goes to "skip," those hours are already banked toward this. Week 17 Thursday is the first `kubeadm init`; the module is where you own it. The exam is rung two of the five-rung ladder in [`KUBERNETES-MASTERY.md`](KUBERNETES-MASTERY.md); the module's Go deeper labs and the long-lived cluster are rungs three and four.
 
 ---
 

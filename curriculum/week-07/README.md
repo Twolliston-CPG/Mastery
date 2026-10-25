@@ -44,7 +44,7 @@
   `phase-3-databases-integration-labs-lab-02-dynamodb-crud.md`
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 7.2 to 7.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 7.2 to 7.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-7)
 
 | # | Lab | Time | Cost |
 |---|---|---|---|

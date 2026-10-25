@@ -45,7 +45,7 @@
 - `_reference/kubernetes/02-core-ops/01-networking-deep-dive-exercises-04-dns-service-discovery.md`
 - `_reference/kubernetes/02-core-ops/01-networking-deep-dive-exercises-05-cni-plugins.md`
 - `_shared/breakfix/06-kubernetes.md` (BF-41 to BF-50) and `_shared/breakfix/08-cluster-nodes.md` (BF-59 to BF-64)
-- `week-17/labs/FIGURES.md` — figure 17.3, the nine-symptom ladder; this week adds the node and control-plane rungs
+- `week-17/labs/FIGURES.md` — figure 17.3, the nine-symptom ladder; this week adds the node and control-plane rungs · [Kubernetes thread](../KUBERNETES-THREAD.md#week-29)
 - The Kubernetes docs: the twenty pages in Lab 1, each reached by its search term in under thirty seconds
 
 ## Labs

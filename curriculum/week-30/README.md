@@ -44,7 +44,7 @@
 - `ROADMAP.md` §8 for the CKS line, on Sunday
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/MOCK-EXAM-2.md](labs/MOCK-EXAM-2.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 30.2 to 30.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [solutions/MOCK-EXAM-2-SOLUTIONS.md](solutions/MOCK-EXAM-2-SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/MOCK-EXAM-2.md](labs/MOCK-EXAM-2.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 30.2 to 30.7, one per lab plus the Go deeper labs) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [solutions/MOCK-EXAM-2-SOLUTIONS.md](solutions/MOCK-EXAM-2-SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-30)
 
 ## Exit criteria
 - [ ] ★ **Gate 7:** killer.sh session 2 completed inside two hours, at or above the pass mark, solutions closed until the timer stopped; score and minutes-left logged

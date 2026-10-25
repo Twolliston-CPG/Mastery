@@ -43,7 +43,7 @@
 - `_reference/linux-networking/python/PYTHON_DEVOPS_ROADMAP.md` (skim for the Python-for-ops arc)
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 4.2 to 4.7, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 4.2 to 4.7, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-4)
 
 | # | Lab | Time |
 |---|---|---|

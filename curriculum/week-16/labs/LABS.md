@@ -1,7 +1,7 @@
 # Week 16 Labs
 
 > **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
-> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (16.2 to 16.6). Read a lab's figure
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (16.2 to 16.7). Read a lab's figure
 > before you start it; redraw it after.
 
 > **`bash ../../_setup/03-teardown.sh` before you close the laptop. Every night.**
@@ -350,3 +350,225 @@ aws elbv2 describe-load-balancers --query 'LoadBalancers[].LoadBalancerName'
 ```
 **Load balancers created by the ALB controller are NOT managed by Terraform** — deleting the cluster
 can orphan them. Check explicitly. This is a real and expensive gotcha.
+
+---
+
+# Go deeper — CSI, sidecar by sidecar (2h · ladder: storage and CSI, rung 3)
+
+**Optional inside the week, mandatory for the ladder** ([`KUBERNETES-MASTERY.md`](../../../KUBERNETES-MASTERY.md)).
+Lab 1 installed the EBS CSI driver as an add-on and week 15 used claims. This lab reads the driver
+as the set of small programs it is, and follows one volume from a claim to a filesystem in a pod and
+back, as objects, events and gRPC calls. On EKS, before the Sunday destroy. Everything here costs
+cents, and the cost note at the end says what to delete.
+
+**First, the permission the add-on needs.** The controller calls the EC2 API (`CreateVolume`,
+`AttachVolume`, ...). With the module snippet in Lab 1 it runs with the **node's** role, which has no
+EBS rights, and the first claim hangs with `UnauthorizedOperation` in the provisioner's log. Give it
+an IRSA role, which is Lab 2 applied to a component you did not write:
+
+```hcl
+# in the eks module call: the add-on's service account assumes a role scoped to EBS
+cluster_addons = {
+  aws-ebs-csi-driver = {
+    most_recent              = true
+    service_account_role_arn = module.ebs_csi_irsa.iam_role_arn
+  }
+}
+module "ebs_csi_irsa" {
+  source                = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version               = "~> 5.44"
+  role_name             = "mastery-ebs-csi"
+  attach_ebs_csi_policy = true
+  oidc_providers = { main = { provider_arn = module.eks.oidc_provider_arn, namespace_service_accounts = ["kube-system:ebs-csi-controller-sa"] } }
+}
+```
+
+(The quick alternative is attaching `AmazonEBSCSIDriverPolicy` to the node role. It works and it is
+the wrong shape: every pod on every node could then create volumes.)
+
+## Part 1 — Name every container (20 min)
+
+```bash
+kubectl -n kube-system get pods -l app.kubernetes.io/name=aws-ebs-csi-driver -o wide
+kubectl -n kube-system get deploy ebs-csi-controller -o jsonpath='{range .spec.template.spec.containers[*]}{.name}{"\n"}{end}'
+kubectl -n kube-system get ds ebs-csi-node -o jsonpath='{range .spec.template.spec.containers[*]}{.name}{"\n"}{end}'
+```
+
+Two pods kinds, one driver. The controller Deployment and the node DaemonSet both carry the same
+`ebs-plugin` container; what differs is the **sidecars** around it, each one a generic Kubernetes
+controller that watches one object type and turns it into one gRPC call on the plugin:
+
+| Container | Runs in | Watches | Calls on the plugin |
+|---|---|---|---|
+| `ebs-plugin` | both | nothing: it answers gRPC on a Unix socket | the EC2 and local mount work |
+| `csi-provisioner` | controller | PersistentVolumeClaims | `CreateVolume`, `DeleteVolume` → creates the PV |
+| `csi-attacher` | controller | VolumeAttachments | `ControllerPublishVolume` (EC2 AttachVolume), `ControllerUnpublishVolume` |
+| `csi-resizer` | controller | PVCs whose request grew | `ControllerExpandVolume` (EC2 ModifyVolume) |
+| `csi-snapshotter` | controller | VolumeSnapshotContents | `CreateSnapshot`, `DeleteSnapshot` |
+| `node-driver-registrar` | node | nothing: registers the socket with the kubelet | writes the driver into the node's `CSINode` |
+| `liveness-probe` | both | the plugin's socket | `Probe`; exposes an HTTP health endpoint for the kubelet |
+
+The kubelet itself makes the two node-side calls, `NodeStageVolume` and `NodePublishVolume`, over
+the socket the registrar advertised. Nothing in this table is EBS-specific except the plugin; swap
+it for the EFS or the GCE plugin and the sidecars are the same images. That is the point of the
+Container Storage Interface: the **spec** (the `container-storage-interface/spec` repository is the
+reading, `spec.md`) fixes the gRPC calls, and Kubernetes supplies the controllers that make them.
+
+Two objects describe the driver to the cluster:
+
+```bash
+kubectl get csidriver ebs.csi.aws.com -o yaml | grep -E 'attachRequired|podInfoOnMount|fsGroupPolicy|volumeLifecycleModes' 
+kubectl get csinode $(kubectl get nodes -o jsonpath='{.items[0].metadata.name}') -o yaml | grep -A6 'drivers:'
+```
+
+`attachRequired: true` is why a VolumeAttachment object exists at all (EFS says false: nothing to
+attach). `CSINode.spec.drivers[].allocatable.count` is the number of volumes this node can still
+take; a Nitro instance's limit is the number most people learn the day a pod sits Pending with
+"exceeds max volume count".
+
+## Part 2 — One volume, from claim to mount (35 min)
+
+```bash
+cat <<'EOF' | kubectl apply -f -
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata: { name: gp3 }
+provisioner: ebs.csi.aws.com
+parameters: { type: gp3 }
+volumeBindingMode: WaitForFirstConsumer
+allowVolumeExpansion: true
+reclaimPolicy: Delete
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: { name: data }
+spec: { accessModes: [ReadWriteOnce], storageClassName: gp3, resources: { requests: { storage: 10Gi } } }
+---
+apiVersion: v1
+kind: Pod
+metadata: { name: writer }
+spec:
+  containers: [{ name: c, image: busybox:1.36, command: [sh, -c, "date >> /data/log; sleep 3600"], volumeMounts: [{ name: d, mountPath: /data }] }]
+  volumes: [{ name: d, persistentVolumeClaim: { claimName: data } }]
+EOF
+kubectl get pvc,pv,volumeattachment -w                     # leave this running in a second terminal
+```
+
+Watch the objects appear in this order and say who made each:
+
+1. **PVC Pending** with reason `WaitForFirstConsumer`: the provisioner deliberately waits until the
+   scheduler has chosen a node, so the volume is created in that node's **availability zone**. A
+   volume provisioned before scheduling can land in a zone the pod cannot reach; this mode is the
+   fix, and it is why the class sets it.
+2. **PV Bound.** `csi-provisioner` saw the PVC get `volume.kubernetes.io/selected-node`, called
+   `CreateVolume`, and created the PV with the EBS volume ID in `spec.csi.volumeHandle`.
+3. **VolumeAttachment.** The attach/detach controller in `kube-controller-manager` created it,
+   naming the PV and the node. `csi-attacher` saw it, called `ControllerPublishVolume`, and set
+   `status.attached: true` when EC2 reported the device attached.
+4. **Staged and published.** The kubelet called `NodeStageVolume` (format if new, mount at the
+   global path) then `NodePublishVolume` (bind-mount into the pod's directory).
+
+```bash
+kubectl describe pvc data | tail -6                                           # ProvisioningSucceeded
+kubectl describe pod writer | grep -E 'AttachVolume|SuccessfulAttachVolume|Mount'
+NODE=$(kubectl get pod writer -o jsonpath='{.spec.nodeName}')
+kubectl get volumeattachment -o custom-columns='NAME:.metadata.name,PV:.spec.source.persistentVolumeName,NODE:.spec.nodeName,ATTACHED:.status.attached'
+kubectl -n kube-system logs -l app=ebs-csi-controller -c csi-provisioner --tail=50 | grep -iE 'provision|CreateVolume' | tail -3
+kubectl -n kube-system logs -l app=ebs-csi-controller -c csi-attacher --tail=50 | grep -iE 'attach' | tail -3
+kubectl debug node/$NODE -it --image=busybox:1.36 -- sh -c 'mount | grep -E "globalmount|kubernetes.io~csi"'    # stage path, then the pod's bind mount
+aws ec2 describe-volumes --filters Name=tag:kubernetes.io/created-for/pvc/name,Values=data \
+  --query 'Volumes[].{id:VolumeId,az:AvailabilityZone,state:State,attached:Attachments[0].InstanceId}'
+```
+
+The last command closes the loop: the EBS volume carries tags naming the PVC, and its zone is the
+pod's node's zone.
+
+## Part 3 — Unwind it: detach and reclaim (20 min)
+
+```bash
+kubectl delete pod writer                      # NodeUnpublish, NodeUnstage, then the VolumeAttachment is removed → ControllerUnpublish
+kubectl get volumeattachment                   # gone within a minute; the PV is still Bound to the PVC
+kubectl delete pvc data                        # reclaimPolicy Delete: csi-provisioner calls DeleteVolume
+aws ec2 describe-volumes --filters Name=tag:kubernetes.io/created-for/pvc/name,Values=data --query 'Volumes[].State'   # [] or ["deleting"]
+```
+
+Now the other policy. Recreate the claim and pod, then **edit the PV** to `persistentVolumeReclaimPolicy: Retain`
+before deleting the claim:
+
+```bash
+PV=$(kubectl get pvc data -o jsonpath='{.spec.volumeName}')
+kubectl patch pv $PV -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+kubectl delete pod writer pvc data
+kubectl get pv $PV                             # STATUS Released: the data is safe and the volume is billing
+```
+
+A Released PV cannot be claimed again until someone clears `spec.claimRef`. That is the operational
+meaning of Retain: a human is now in the loop, and the volume costs money until they act. Delete the
+PV and the EBS volume by hand when you have read it.
+
+## Part 4 — Expansion, controller side and node side (20 min)
+
+```bash
+kubectl apply -f - <<'EOF'      # the claim and pod again, 10Gi
+...
+EOF
+kubectl patch pvc data -p '{"spec":{"resources":{"requests":{"storage":"20Gi"}}}}'
+kubectl get pvc data -o jsonpath='{.status.conditions}{"\n"}'          # Resizing, then FileSystemResizePending
+kubectl -n kube-system logs -l app=ebs-csi-controller -c csi-resizer --tail=30 | grep -iE 'expand|resize' | tail -3
+kubectl exec writer -- df -h /data                                     # 20G once the node side is done
+```
+
+Two halves. `csi-resizer` calls `ControllerExpandVolume` (EC2 `ModifyVolume`), and the PVC condition
+flips to `FileSystemResizePending`. The kubelet then calls `NodeExpandVolume` to grow the filesystem;
+the driver does it online, so the pod never restarts. Two facts to own: expansion only works when
+the class says `allowVolumeExpansion: true`, and EBS allows one modification per volume every **six
+hours**, so the second resize of a demo volume waits.
+
+## Part 5 — Snapshot and restore (20 min)
+
+Snapshots need the snapshot CRDs and controller, which are not part of the driver: install the EKS
+**snapshot-controller** add-on (or the upstream `kubernetes-csi/external-snapshotter` manifests),
+then:
+
+```bash
+kubectl apply -f - <<'EOF'
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshotClass
+metadata: { name: ebs }
+driver: ebs.csi.aws.com
+deletionPolicy: Delete
+---
+apiVersion: snapshot.storage.k8s.io/v1
+kind: VolumeSnapshot
+metadata: { name: data-snap }
+spec: { volumeSnapshotClassName: ebs, source: { persistentVolumeClaimName: data } }
+EOF
+kubectl get volumesnapshot data-snap -w                     # READYTOUSE true when EC2 reports the snapshot completed
+aws ec2 describe-snapshots --owner-ids self --query 'Snapshots[?Tags[?Key==`kubernetes.io/created-for/snapshot/name`]].{id:SnapshotId,state:State,size:VolumeSize}'
+kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: { name: data-restored }
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: gp3
+  resources: { requests: { storage: 20Gi } }
+  dataSource: { apiGroup: snapshot.storage.k8s.io, kind: VolumeSnapshot, name: data-snap }
+EOF
+```
+
+Mount `data-restored` in a new pod and `cat /data/log`: the dates the first pod wrote are there.
+The chain is the same shape as provisioning: the snapshot controller creates a
+`VolumeSnapshotContent`, `csi-snapshotter` calls `CreateSnapshot`, and a restore is a `CreateVolume`
+with a source. The EBS console shows a snapshot and, after the restore, a volume created from it.
+
+**Cost note.** gp3 bills per provisioned GiB-month (about $0.08 in us-east-1 at the time of writing,
+check the calculator) and snapshots per stored GiB-month; a 20 GiB volume plus one snapshot for a
+weekend is cents. The trap is Part 3's **Retain** and anything the Sunday destroy does not know
+about: `terraform destroy` removes the cluster, not volumes the driver created. Add to the teardown:
+`aws ec2 describe-volumes --filters Name=tag-key,Values=kubernetes.io/created-for/pvc/name --query 'Volumes[].VolumeId'`
+and `describe-snapshots --owner-ids self`, and delete what they list.
+
+**From memory, timed (15 min):** with the file closed, name the seven containers and the object each
+one watches, then say the provisioning sequence from claim to bind mount as four gRPC calls in order.
+Target: under fifteen minutes, no gaps.
