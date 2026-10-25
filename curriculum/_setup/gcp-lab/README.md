@@ -270,17 +270,24 @@ You now have what Week 1, Lab 1 asks for. Go back to the lab.
 ## Every session
 
 ```bash
-gcloud compute instances start lab --zone=us-central1-a     # the schedule stopped it overnight
+gcloud compute instances resume lab --zone=us-central1-a    # if you suspended it below: back in seconds, memory intact
+gcloud compute instances start lab --zone=us-central1-a     # if the midnight schedule stopped it
 $(terraform -chdir=curriculum/_setup/gcp-lab output -raw ssh_command)
 ```
 
-When you finish, stop it yourself instead of waiting for midnight:
+When you finish, suspend it yourself instead of waiting for midnight:
 
 ```bash
-gcloud compute instances stop lab --zone=us-central1-a
+gcloud compute instances suspend lab --zone=us-central1-a
 ```
 
-The external IP changes on every start. Nothing in weeks 1–2 depends on it.
+Suspend keeps the VM's memory, so the next session picks up where it left off; `start` on a
+suspended VM fails, which is why `resume` is listed first. The trade: a suspended VM bills for its
+memory as well as its disk, a stopped one for the disk only, and the nightly schedule issues a
+stop, not a suspend. If you want the cheaper state, `gcloud compute instances stop` still works.
+`gcloud compute instances describe lab --format='value(status)'` says which state you are in.
+
+The external IP changes on every start or resume. Nothing in weeks 1–2 depends on it.
 
 ---
 
