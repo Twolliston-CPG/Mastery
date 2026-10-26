@@ -38,7 +38,9 @@ multipass stop lab && multipass snapshot lab --name clean
 ### Tasks
 1. Launch the VM and SSH into it
 2. `sudo apt update && sudo apt install -y tree jq curl git vim htop net-tools`
-   (**Arch path:** `arch-bootstrap.sh` already installed these — confirm with `pacman -Q tree jq htop`)
+   (**Arch path:** these were installed by `arch-bootstrap.sh`, *if* you copied it to the VM and ran it in
+   the runbook's bootstrap step; it does not run by itself. Confirm with `pacman -Q tree jq htop`. A
+   `was not found` answer means the script was never copied or run: go back to that step)
 3. Take the `clean` snapshot
 4. Verify you can restore it (do this once now, so you trust it later)
 

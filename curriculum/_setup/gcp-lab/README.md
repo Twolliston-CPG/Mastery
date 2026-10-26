@@ -238,18 +238,29 @@ That is why it had to exist before `apply`; the reason is in the table above.
 
 ### 11. Arch only — bootstrap
 
-A fresh Arch image lacks much of what Ubuntu ships by default. From this directory on your
-workstation:
+A fresh Arch image lacks much of what Ubuntu ships by default; `arch-bootstrap.sh` installs it.
+**The script is not on the VM.** Nothing bakes it into the image or passes it through metadata; it
+lives on your workstation at `curriculum/_setup/arch-bootstrap.sh`, and this step copies it over.
+Skip the copy and `bash arch-bootstrap.sh` on the VM fails with `No such file or directory`.
+
+**On your workstation, from this directory** (`curriculum/_setup/gcp-lab`; the path inside the
+command is relative to it, so it fails from anywhere else):
 
 ```bash
-$(terraform output -raw bootstrap_command)   # copies arch-bootstrap.sh to the VM
+terraform output -raw bootstrap_command      # read it: gcloud compute scp ../arch-bootstrap.sh arch@lab:~ ... --tunnel-through-iap
+$(terraform output -raw bootstrap_command)   # run it
 ```
 
-Then on the VM:
+- **Prints nothing?** `distro` is not `"arch"` in `terraform.tfvars`. Ubuntu needs no bootstrap.
+- **Made the VM by hand, not with Terraform?** Then the user is yours, not `arch`:
+  `gcloud compute scp ../arch-bootstrap.sh lab:~ --zone=$ZONE --tunnel-through-iap`.
+
+**Then on the VM** (`$(terraform output -raw ssh_command)` from the same directory):
 
 ```bash
-less arch-bootstrap.sh     # read it first
-bash arch-bootstrap.sh
+ls -l ~/arch-bootstrap.sh  # must exist before you go on; if it does not, the copy above did not run
+less ~/arch-bootstrap.sh   # read it first
+bash ~/arch-bootstrap.sh
 sudo reboot                # if the kernel was upgraded
 ```
 

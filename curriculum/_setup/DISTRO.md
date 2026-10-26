@@ -146,17 +146,26 @@ cloud. Where it shows a `gcloud` command, the AWS runbook has the equivalent.
 
 A fresh Arch image is far barer than Ubuntu's — no `man`, no `which`, no `dig`, no cron, possibly
 no Python. [`arch-bootstrap.sh`](arch-bootstrap.sh) closes that gap: it does a full upgrade, then
-installs what Ubuntu ships by default and the labs assume. Copy it to the VM and run it once:
+installs what Ubuntu ships by default and the labs assume.
+
+**The script is not on the VM until you copy it.** It lives in this directory on your workstation;
+neither the image nor the instance metadata carries it. Copy it, confirm it landed, then run it once:
 
 ```bash
-# on your workstation, from curriculum/_setup/
+# on your workstation, from curriculum/_setup/ (the filename is relative to this directory)
 gcloud compute scp arch-bootstrap.sh arch@lab:~ --zone=$ZONE --tunnel-through-iap   # Terraform path: user is arch
 gcloud compute scp arch-bootstrap.sh lab:~ --zone=$ZONE --tunnel-through-iap        # hand-made VM from the 2022 image: your own user
+# on AWS the equivalent is `scp arch-bootstrap.sh lab:~`, using the Host block from the AWS runbook
 
 # on the VM
-bash arch-bootstrap.sh
+ls -l ~/arch-bootstrap.sh # not there? the copy did not run, or went to another user's home
+less ~/arch-bootstrap.sh  # read it first
+bash ~/arch-bootstrap.sh
 sudo reboot               # if the kernel was upgraded
 ```
+
+The Terraform lab prints the right copy command for your cloud and user as the `bootstrap_command`
+output (step 11 of the GCP runbook, step 9 of the AWS one).
 
 The login user differs because the images differ. The imported official image has cloud-init
 and one user, `arch`. The 2022 community image has Google's guest agent, which creates whatever
