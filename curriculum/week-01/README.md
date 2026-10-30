@@ -64,6 +64,10 @@
 
 ## Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`labs/FIGURES.md`](labs/FIGURES.md) (1.2 to 1.7). Read a lab's figure · [Kubernetes thread](../KUBERNETES-THREAD.md#week-1)
+> before you start it; redraw it after.
+
 | # | Lab | Time |
 |---|---|---|
 | 1 | [Environment setup and filesystem tour](labs/lab-01-environment.md) | 3h |

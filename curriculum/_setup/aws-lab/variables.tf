@@ -1,3 +1,7 @@
+# Every knob the lab exposes, each with its description. Values come from terraform.tfvars (not
+# committed) or from the defaults here. Comments below appear only where a default is a judgement
+# worth questioning, or where two variables act together.
+
 variable "region" {
   description = "AWS region for everything in the lab"
   type        = string
@@ -15,6 +19,8 @@ variable "distro" {
   }
 }
 
+# Acts with distro: the validation refuses distro = "arch" with no AMI, because there is no official
+# Arch AMI to look up and trusting a third-party image is a decision, not a default.
 variable "arch_ami_id" {
   description = "Arch path only: the AMI to boot, copied from the community listing for your region (see README). Deliberately not looked up automatically -- you choose which third-party image to trust"
   type        = string
@@ -26,6 +32,8 @@ variable "arch_ami_id" {
   }
 }
 
+# t3 is a burstable family. main.tf sets cpu_credits = "standard", so a runaway process makes the VM
+# slow instead of billing unlimited credits. Must be x86_64: the Arch images are x86_64 only.
 variable "instance_type" {
   description = "t3.medium matches the Week 1 lab VM: 2 vCPU, 4 GB. Must be x86_64"
   type        = string
@@ -44,6 +52,8 @@ variable "ssh_public_key_path" {
   default     = "~/.ssh/surge-lab.pub"
 }
 
+# open_web and web_source_ranges act together: main.tf builds one ingress rule per (port, range)
+# pair only while open_web is true, so false here removes every web rule whatever the ranges say.
 variable "open_web" {
   description = "Open 80/443. Leave false until Week 3 asks for it"
   type        = bool
@@ -62,6 +72,8 @@ variable "flow_logs" {
   default     = true
 }
 
+# EventBridge Scheduler syntax, not Unix cron: six fields, with ? for day-of-month or day-of-week.
+# Evaluated in time_zone below, so "0 0" means midnight where you are, not UTC.
 variable "auto_stop_cron" {
   description = "When to stop the VM every day, as an EventBridge Scheduler expression in var.time_zone. Set to null to disable"
   type        = string

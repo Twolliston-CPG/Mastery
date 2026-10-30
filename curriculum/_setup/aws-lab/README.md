@@ -154,13 +154,26 @@ after reconnecting.
 
 ### 9. Arch only — bootstrap
 
+**The script is not on the VM.** It lives on your workstation at `curriculum/_setup/arch-bootstrap.sh`
+and nothing in the AMI or the instance metadata carries it over; this step copies it. Run the copy
+**from this directory** (`curriculum/_setup/aws-lab`, the path is relative to it), using the `Host lab`
+block from step 8:
+
 ```bash
-scp ../arch-bootstrap.sh lab:~
+scp ../arch-bootstrap.sh lab:~               # or: $(terraform output -raw bootstrap_command)
 ssh lab
-less arch-bootstrap.sh     # read it first
-bash arch-bootstrap.sh
+```
+
+Then on the VM:
+
+```bash
+ls -l ~/arch-bootstrap.sh  # must exist before you go on; if not, the copy did not run
+less ~/arch-bootstrap.sh   # read it first
+bash ~/arch-bootstrap.sh
 sudo reboot                # if the kernel was upgraded
 ```
+
+`bootstrap_command` prints nothing when `distro` is not `"arch"`; Ubuntu needs no bootstrap.
 
 ### 10. Take the `clean` snapshot
 

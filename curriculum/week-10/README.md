@@ -46,7 +46,7 @@
 the provider registry docs are the reference you will live in.
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) ·
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 10.2 to 10.5, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · · [Kubernetes thread](../KUBERNETES-THREAD.md#week-10)
 Project Alpha starter: [`../projects/alpha-cloud-foundation/`](../projects/alpha-cloud-foundation/)
 
 | # | Lab | Time |

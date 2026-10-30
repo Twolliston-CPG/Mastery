@@ -1,5 +1,9 @@
 # Week 22 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (22.2 to 22.6). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — What an IDP Actually Is (3h)
@@ -225,7 +229,7 @@ platform-engineering instinct worth saying out loud.
 | `service-pipeline/` | ECR repo, OIDC role, branch protection |
 | `service-database/` | RDS instance, secret, security group rule |
 | `service-storage/` | S3 bucket, least-privilege IAM policy |
-| service-observability/ dashboard, alerts, SLO recording rules |  |
+| `service-observability/` | dashboard, alerts, SLO recording rules |
 
 
 Each module: documented variables, `terraform-docs` README, **tagged releases**, and a `CHANGELOG`.

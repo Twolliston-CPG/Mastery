@@ -76,8 +76,8 @@ Sequence: **AWS SAA (wk10) → Terraform Associate (wk14) → optional K8s cert 
 **On KCNA and KCSA — my honest read, then a decision rule.** Both are multiple-choice associate-tier certs. KCNA is a Kubernetes *awareness* credential; hiring managers who care about Kubernetes filter on **CKA**, which is hands-on and carries several times the signal. KCSA is more defensible: the DevSecOps niche has few entry credentials, so it stands out more than KCNA does, and it maps directly to month 5's material.
 
 Decision rule at week 15:
-- If Kubernetes clicks quickly (student is comfortable debugging a broken pod by week 16) → **skip KCNA, put those hours and dollars toward CKA** in week 25–26 or month 7.
-- If Kubernetes feels shaky → **take KCNA in week 17** as a forcing function and a confidence win, then target CKA post-hire.
+- If Kubernetes clicks quickly (student is comfortable debugging a broken pod by week 16) → **skip KCNA, put those hours and dollars toward CKA** in weeks 27–30, the module after Gate 6.
+- If Kubernetes feels shaky → **take KCNA in week 17** as a forcing function and a confidence win, then take the weeks 27–30 CKA module after the first job.
 - Take **KCSA in week 25** only if DevSecOps is genuinely the destination. Otherwise skip it and ship a better Project Charlie.
 
 Full analysis, costs, and three alternative tracks in [CERTIFICATIONS.md](CERTIFICATIONS.md).
@@ -160,7 +160,7 @@ At 8 hrs/day, extend blocks 2 and 3 — never block 1. More passive input is the
 ## 4. The six-month arc
 
 <!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
-![4. The six-month arc — diagram](_figures/ROADMAP-0-a20dcb45.png)
+![4. The six-month arc — diagram](_figures/ROADMAP-0-3e16089e.png)
 
 <details>
 <summary>Diagram source (Mermaid)</summary>
@@ -194,7 +194,11 @@ flowchart TB
   M6["<b>M6 · weeks 22–26 · PLATFORM + CONVERSION</b><br/>★ KCSA, wk 25 (optional) &nbsp;·&nbsp; ⚑ Project CHARLIE<br/><small>IDP · golden paths · self-service · full-time interviewing</small>"]:::n
   G6(["<b>Gate 6</b> &nbsp;·&nbsp; a stranger deploys a service via pull request in under 10 minutes"]):::gate
 
+  M7["<b>M7 · weeks 27–30 · CKA MODULE</b><br/>★ CKA, wk 30 &nbsp;·&nbsp; alongside the search<br/><small>kubeadm · etcd · upgrade · Gateway API · troubleshooting at speed</small>"]:::mut
+  G7(["<b>Gate 7</b> &nbsp;·&nbsp; the second killer.sh session at the pass mark, inside two hours"]):::gate
+
   M1 --> G1 --> M2 --> G2 --> M3 --> G3 --> M4 --> G4 --> M5 --> G5 --> M6 --> G6
+  G6 -.-> M7 --> G7
 
   linkStyle 0,1,2,3,4,5,6,7,8,9,10 stroke:#2f6fb8,stroke-width:2px
 ```
@@ -271,6 +275,14 @@ The second half of this month is **conversion**: interviewing is now the primary
 
 **Deliverable:** **Project CHARLIE** plus a full interview kit — see [JOB-SEARCH.md](JOB-SEARCH.md).
 
+### Month 7 · Weeks 27–30 — The CKA module ★ CKA week 30
+
+**The thesis:** the CKA is the Kubernetes credential hiring managers filter on, and it cannot be passed from videos. The core plan taught the objects; this module teaches the quarter of the exam that lives on real nodes (kubeadm install and upgrade, etcd backup and restore, certificates, node failures) and the speed the exam demands. It runs alongside the week-26 cadence, about 17 hours of labs a week, and it is optional: [CERTIFICATIONS.md](CERTIFICATIONS.md) Track B.
+
+**Coverage:** kubeadm on two or three lab VMs · Calico · certificates and kubeconfigs · etcd snapshot and restore · a one-minor upgrade · Kustomize and Helm as install tools · Gateway API and CoreDNS · CRDs and an operator · scheduling, Jobs, CronJobs, DaemonSets · dynamic provisioning · the four troubleshooting families on real nodes · two mock exams with weights · both killer.sh sessions.
+
+**Deliverable:** the certificate, and a kubeadm cluster you built, broke, restored and upgraded, which is the story you tell about it. The exam is rung two of the Kubernetes mastery ladder in [KUBERNETES-MASTERY.md](KUBERNETES-MASTERY.md); the ladder runs from week 1 through the thread and continues after week 30.
+
 ---
 
 ## 6. Go / no-go gates
@@ -285,6 +297,7 @@ Each gate is tested at month end. Passing is binary and demonstrated, not self-a
 | **4 · Kubernetes** | 17 | Diagnose 5 broken-cluster scenarios unaided, under 15 minutes each, narrating the reasoning aloud. Write a Deployment + Service + Ingress + RBAC from memory. |
 | **5 · DevSecOps** | 21 | The Bravo pipeline blocks a deliberately-introduced critical CVE and refuses to deploy an unsigned image — both demonstrated live. Write a PromQL query and a valid SLO from scratch. |
 | **6 · Platform** | 26 | A person who has never seen the repo follows the README and deploys a new service via pull request in under 10 minutes, unaided. |
+| **7 · CKA** (optional) | 30 | The second killer.sh session finished inside two hours at or above the pass mark, without opening the solutions. Then the exam is sat. |
 
 Gate 6 is the real one. If a stranger can self-serve against the platform, the student has *built a platform*, and can say so in an interview without qualification.
 

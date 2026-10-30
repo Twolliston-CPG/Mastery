@@ -1,5 +1,9 @@
 # Week 12 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (12.2 to 12.6). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — GitHub Actions Fundamentals (3h)

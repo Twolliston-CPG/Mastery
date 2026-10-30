@@ -1,5 +1,9 @@
 # Week 18 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (18.2 to 18.6). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — SAST, SCA, Secret Scanning (3h)
@@ -67,6 +71,9 @@ history, still cloneable, and still valid unless it was rotated.
 ## Wire them into CI
 
 ```yaml
+  # Tags (@v4, @v2 ...) are shown for readability. Before this is committed, every `uses:` is pinned
+  # to a commit SHA with the tag in a trailing comment, which is Lab 4's control and the root
+  # ci.yml's convention. A tag can be moved by whoever owns the action; a SHA cannot.
   security:
     runs-on: ubuntu-latest
     permissions:
@@ -85,7 +92,7 @@ history, still cloneable, and still valid unless it was rotated.
         with: { config: p/security-audit p/secrets }
 
       - name: trivy filesystem
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@<release-commit-sha>   # never @master: it moves daily
         with:
           scan-type: fs
           severity: HIGH,CRITICAL

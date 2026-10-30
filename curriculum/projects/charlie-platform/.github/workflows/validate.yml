@@ -23,6 +23,14 @@ jobs:
 
       - run: pip install pyyaml
 
+      # The business rules (policies/contract) run after the shape check; validate.py shells out
+      # to conftest when it is on PATH and says so when it is not.
+      - name: install conftest
+        run: |
+          curl -sSL https://github.com/open-policy-agent/conftest/releases/latest/download/conftest_Linux_x86_64.tar.gz \
+            | tar -xz conftest && sudo mv conftest /usr/local/bin/
+          conftest verify --policy policies/contract --data platform/teams
+
       - name: find changed service definitions
         id: changed
         run: |

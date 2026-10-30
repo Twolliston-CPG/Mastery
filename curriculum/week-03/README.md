@@ -41,7 +41,7 @@
 certificates in week 13, and Ingress in weeks 16 and 23. It is the best $12 in the program.
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 3.2 to 3.7, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-3)
 
 | # | Lab | Time |
 |---|---|---|

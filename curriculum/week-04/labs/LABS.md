@@ -1,5 +1,9 @@
 # Week 4 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (4.2 to 4.7). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — Python Ops CLI (3h)

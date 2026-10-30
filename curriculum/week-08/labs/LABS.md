@@ -1,5 +1,9 @@
 # Week 8 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (8.2 to 8.6). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — Decoupling (3h)

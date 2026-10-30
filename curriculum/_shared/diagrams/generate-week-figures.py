@@ -17,7 +17,7 @@ The specs live in week_figures/ in a small Mermaid-shaped DSL so they stay reada
 ICONS maps each node id to an icon class, per week.
 
     pip install -r requirements.txt   # pinned diagrams + graphviz bindings; needs graphviz (dot) on PATH
-    ./generate-week-figures.py                 # all 26
+    ./generate-week-figures.py                 # all 30
     ./generate-week-figures.py --only 14       # one week
     ./generate-week-figures.py --no-docs       # images only, leave FIGURE.md and the README alone
     ./generate-week-figures.py --no-pdf        # skip the two-page numbered-spoken PDF (needs Chrome)
@@ -110,6 +110,10 @@ ICONS = {
  24: dict(GS="Document", CR="Document", TR="Document", EH="Document", ADR="MultipleDocuments", RBK="MultipleDocuments", DIA="Action", ST="User", VID="Action", RM="Github", PIN="Github", KC="Decision"),
  25: dict(IJ="MultipleDocuments", PJ="Github", BL="Document", STAR="Document", EXP="Action", SD="Action", LIVE="Bash", Q="Document", MOCK="Users", REV="Action", APP="Client"),
  26: dict(APP="Client", INT="Users", G6="StartEnd", MOCK="Users", NETW="Users", BLD="Github", RET="Document", PLAN="Document", LAG="Delay", GATES="MultipleDocuments"),
+ 27: dict(INIT="Master", STATIC="APIServer", PKI="Vault", CNI="NetworkPolicy", JOIN="Node", ETCD="ETCD", UPG="Action", HA="Server", BF="Decision", BOOK="Document"),
+ 28: dict(KUST="MultipleDocuments", HELM="Document", GW="Ingress", DNS="Coredns", CRD="CRD", SCHED="Scheduler", JOBS="Job", STOR="StorageClass", BF="Decision", MEM="Delay"),
+ 29: dict(TERM="Bash", RIT="PredefinedProcess", DOCS="Document", FAM="Decision", FIRST="Action", MOCK="Document", KS="StartEnd", TALLY="MultipleDocuments", TRI="Decision", BF="Kubelet"),
+ 30: dict(KS2="StartEnd", WEAK="Action", CHK="MultipleDocuments", REST="Delay", EXAM="Client", RES="Document", PASS="Users", FAIL="Decision", CAD="Delay", GATES="MultipleDocuments"),
 }
 # Boundary styles that differ from the default (top-level = enclosure, nested = zone).
 CLUSTER_STYLE = {

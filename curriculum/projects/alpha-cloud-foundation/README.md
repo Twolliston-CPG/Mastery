@@ -71,6 +71,7 @@ make bootstrap                      # create the state bucket, once
 cp environments/dev/terraform.tfvars.example environments/dev/terraform.tfvars
 make init ENV=dev
 make plan ENV=dev
+make policy ENV=dev                 # the organization's rules against that plan; a deny stops here
 make apply ENV=dev
 make verify ENV=dev                 # proves the acceptance criteria
 make destroy ENV=dev                # leaves nothing billable
@@ -173,10 +174,29 @@ environments/
   dev/               single NAT, no Multi-AZ, small instances
   prod/              per-AZ NAT, Multi-AZ, 3 AZs
 .github/workflows/
-  terraform.yml      fmt→validate→tflint→checkov→plan-on-PR→apply-on-merge
+  terraform.yml      fmt→validate→tflint→checkov→plan-on-PR→policy gate→apply-on-merge
   drift.yml          nightly refresh-only plan, opens an issue on drift
 docs/adr/            architecture decision records
+policies/conftest/   the policy gate: five Rego rules, their tests, and plan fixtures to run them against
 ```
+
+## Policy gate
+
+checkov knows the industry's rules; it cannot know this organization's. `policies/conftest/` holds the
+five that are ours, in Rego, run by Conftest against the plan JSON between `plan` and `apply`: no
+public S3, every RDS instance encrypted, no admin or database port open to `0.0.0.0/0`, the three
+tags Cost Explorer and the on-call rota depend on, every volume encrypted. The plan, not the HCL, so
+the rules see merged `default_tags` and computed values.
+
+```bash
+conftest verify --policy policies/conftest                      # 17 tests: each rule fires on the bad shape, stays quiet on the good
+conftest test   --policy policies/conftest policies/conftest/fixtures/plan-bad.json    # five denies and a warning, on purpose
+make policy ENV=dev                                             # the same against a real plan
+```
+
+A rule ships as `warn` first, so its noise is measured before it can block anyone; then it is
+promoted to `deny`. The tests are the part people skip, and the part that matters: a rule with a typo
+in its condition matches nothing, and the pipeline stays green while you believe you are protected.
 
 ## Teardown
 

@@ -18,6 +18,8 @@ echo "== Containers / K8s =="
 chk docker "docker --version"; chk kubectl "kubectl version --client"; chk kind; chk helm; chk k9s
 echo "== Security =="
 chk trivy; chk syft; chk cosign; chk gitleaks; chk semgrep
+echo "== Policy =="
+chk conftest; chk sentinel "sentinel version"; chk opa "opa version"; chk regal
 echo "== Dev =="
 chk gh; chk pre-commit
 echo

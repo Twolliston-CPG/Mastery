@@ -54,6 +54,7 @@ Arch itself publishes a fresh [cloud image](https://geo.mirror.pkgbuild.com/imag
 month, with cloud-init. The Terraform lab imports that into your own project as a custom image
 (`gcp-lab/image/`), so the VM starts from a current build and the first `pacman -Syu` is small.
 The manual `gcloud` path below uses the 2022 community image; expect a long first upgrade.
+Building the image, step by step, is [`gcp-lab/image/README.md`](gcp-lab/image/README.md).
 
 ### Create it
 
@@ -101,7 +102,7 @@ cd curriculum/_setup/gcp-lab
 gcloud auth application-default login          # Terraform's credentials, separate from `gcloud auth login`
 cp terraform.tfvars.example terraform.tfvars   # set project_id, and distro = "arch" for the Arch path
 (cd state && terraform init && terraform apply -var project_id=YOUR_PROJECT && terraform output -raw backend_config > ../backend.hcl)
-(cd image && bash fetch.sh && terraform init -backend-config=../backend.hcl && terraform apply -var project_id=YOUR_PROJECT)   # Arch only
+(cd image && bash fetch.sh && terraform init -backend-config=../backend.hcl && terraform apply -var project_id=YOUR_PROJECT)   # Arch only: gcp-lab/image/README.md
 terraform init -backend-config=backend.hcl && terraform apply
 terraform output image                         # which image build you got, and its age
 terraform output -raw ssh_command
@@ -120,6 +121,14 @@ everything.
 If you have not reached the Terraform weeks yet, create the VM by hand once first. The
 configuration is short enough to read afterwards and recognise every resource.
 
+### The kubeadm nodes for weeks 27 to 30
+
+The same configuration can add two or three Ubuntu nodes prepared for `kubeadm` (`kubeadm_nodes`
+in `terraform.tfvars`), for the CKA module: a real control plane to break, an etcd to restore and
+a cluster to upgrade, which kind cannot provide. They are off until week 27. The runbook section
+["Kubeadm nodes"](gcp-lab/README.md#kubeadm-nodes-weeks-27-to-30) covers turning them on, the
+version to pick, and the cost.
+
 ### Or run the VM on AWS instead
 
 [`aws-lab/`](aws-lab/README.md) is the same VM on AWS: its own VPC, SSH only through an EC2
@@ -137,17 +146,26 @@ cloud. Where it shows a `gcloud` command, the AWS runbook has the equivalent.
 
 A fresh Arch image is far barer than Ubuntu's — no `man`, no `which`, no `dig`, no cron, possibly
 no Python. [`arch-bootstrap.sh`](arch-bootstrap.sh) closes that gap: it does a full upgrade, then
-installs what Ubuntu ships by default and the labs assume. Copy it to the VM and run it once:
+installs what Ubuntu ships by default and the labs assume.
+
+**The script is not on the VM until you copy it.** It lives in this directory on your workstation;
+neither the image nor the instance metadata carries it. Copy it, confirm it landed, then run it once:
 
 ```bash
-# on your workstation, from curriculum/_setup/
+# on your workstation, from curriculum/_setup/ (the filename is relative to this directory)
 gcloud compute scp arch-bootstrap.sh arch@lab:~ --zone=$ZONE --tunnel-through-iap   # Terraform path: user is arch
 gcloud compute scp arch-bootstrap.sh lab:~ --zone=$ZONE --tunnel-through-iap        # hand-made VM from the 2022 image: your own user
+# on AWS the equivalent is `scp arch-bootstrap.sh lab:~`, using the Host block from the AWS runbook
 
 # on the VM
-bash arch-bootstrap.sh
+ls -l ~/arch-bootstrap.sh # not there? the copy did not run, or went to another user's home
+less ~/arch-bootstrap.sh  # read it first
+bash ~/arch-bootstrap.sh
 sudo reboot               # if the kernel was upgraded
 ```
+
+The Terraform lab prints the right copy command for your cloud and user as the `bootstrap_command`
+output (step 11 of the GCP runbook, step 9 of the AWS one).
 
 The login user differs because the images differ. The imported official image has cloud-init
 and one user, `arch`. The 2022 community image has Google's guest agent, which creates whatever

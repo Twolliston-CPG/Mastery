@@ -1,5 +1,9 @@
 # Week 10 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (10.2 to 10.5). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — HCL Fundamentals (3h)
@@ -17,7 +21,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.60"
+      version = "~> 6.68"
     }
   }
 }
@@ -345,8 +349,8 @@ and read which attribute Terraform marks `# forces replacement`.
 
 # Lab 4 — ⚑ Project Alpha Kickoff (4h)
 
-Full spec: [`../../PROJECTS.md`](../../../PROJECTS.md) §2.
-Reference implementation: [`../projects/alpha-cloud-foundation/`](../../projects/alpha-cloud-foundation/)
+Full spec: [`../../../PROJECTS.md`](../../../PROJECTS.md) §2.
+Reference implementation: [`../../projects/alpha-cloud-foundation/`](../../projects/alpha-cloud-foundation/)
 
 ## Today's scope
 

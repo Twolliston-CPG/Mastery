@@ -35,7 +35,7 @@ FileTransferApp Transfer is an enterprise managed file transfer (MFT) solution u
 **Three CVEs in three weeks, each found while patching the last**
 
 <!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
-![The Vulnerability Chain — diagram](../../../../_figures/curriculum-_reference-devsecops-threat-modeling-case-studies-filetransferapp-0-b4606356.png)
+![The Vulnerability Chain — diagram](../../../../_figures/curriculum-_reference-devsecops-threat-modeling-case-studies-filetransferapp-0-a95a70e9.png)
 
 <details>
 <summary>Diagram source (Mermaid)</summary>

@@ -43,7 +43,7 @@
 - **Drill:** `_shared/drills/terraform-recall.md` — Tiers 3, 4, 6
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) ·
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 11.2 to 11.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · · [Kubernetes thread](../KUBERNETES-THREAD.md#week-11)
 Reference: [`../projects/alpha-cloud-foundation/modules/`](../projects/alpha-cloud-foundation/modules/)
 
 ## Exit criteria

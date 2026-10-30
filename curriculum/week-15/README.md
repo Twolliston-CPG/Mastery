@@ -42,7 +42,7 @@
 - **Drill:** `_shared/drills/kubectl-speed.md` Tiers 2–4, daily
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 15.2 to 15.8, one per lab plus the Go deeper labs) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-15)
 
 ## Exit criteria
 - [ ] Explain requests vs limits, QoS classes, and why CPU is throttled but memory is killed

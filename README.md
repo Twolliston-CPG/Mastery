@@ -1,7 +1,7 @@
 # Zero to Hired — 6-Month DevOps / DevSecOps / Platform Engineering Track
 
 > A 26-week, 1,000+ hour program for a student starting at zero, studying 4–8+ hours/day,
-> targeting AWS SAA + HashiCorp Terraform Associate (+ optional KCNA / KCSA),
+> targeting AWS SAA + HashiCorp Terraform Associate (+ optional KCSA, and CKA in a four-week module after week 26),
 > three shipped portfolio projects, and a job offer.
 
 **Built:** 2026-09-20 · **Audience:** absolute beginner with full-time study availability
@@ -19,13 +19,14 @@
 | 5 | **[PROJECTS.md](PROJECTS.md)** | Three flagship projects with hard acceptance criteria, 12 micro-projects, and how to present them so they actually convert. |
 | 6 | **[JOB-SEARCH.md](JOB-SEARCH.md)** | Starts week 14, not week 26. Target titles, pipeline math, résumé rules for career changers, referral scripts, interview loop prep. |
 | 7 | **[curriculum/](curriculum/)** | **The actual content.** All 26 weeks — labs, worked solutions, running code, assessments — plus a 58-scenario break/fix library, drills, an interview bank, 623 files of anonymized reference material, and three project implementations. Start at [curriculum/START-HERE.md](curriculum/START-HERE.md). |
+| 8 | **[KUBERNETES-MASTERY.md](KUBERNETES-MASTERY.md)** | The Kubernetes mastery ladder: five rungs, thirteen topics, the rubric, the eleven Go deeper labs, the long-lived cluster, the reading, the scoring. The exam is rung two; this is the rest |
 
 ---
 
 ## The 30-second version
 
 <!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
-![The 30-second version — diagram](_figures/README-0-5f5a9180.png)
+![The 30-second version — diagram](_figures/README-0-8d1b87e9.png)
 
 <details>
 <summary>Diagram source (Mermaid)</summary>
@@ -50,6 +51,7 @@ flowchart LR
   SAA["★ SAA<br/><small>wk 10</small>"]:::crit
   TF["★ Terraform Assoc<br/><b>APPLY</b> · wk 14"]:::crit
   KCSA["★ KCSA<br/><small>wk 25 · optional</small>"]:::crit
+  CKA["★ CKA<br/><small>wks 27–30 · its own module</small>"]:::crit
 
   A["<b>Project ALPHA</b><br/><small>cloud foundation</small>"]:::n
   B["<b>Project BRAVO</b><br/><small>secure delivery</small>"]:::n
@@ -59,6 +61,7 @@ flowchart LR
   M3 -.-> SAA
   M4 -.-> TF
   M6 -.-> KCSA
+  M6 -.-> CKA
   M3 --> A
   M5 --> B
   M6 --> C
@@ -87,7 +90,7 @@ See [ROADMAP.md § Honest framing](ROADMAP.md#1-honest-framing--read-this-before
 
 ## The curriculum
 
-[`curriculum/`](curriculum/) contains everything needed to actually execute the 26 weeks.
+[`curriculum/`](curriculum/) contains everything needed to actually execute the 26 weeks, plus the four-week CKA module (weeks 27–30) that runs alongside the job search.
 
 **`curriculum/`**
 
