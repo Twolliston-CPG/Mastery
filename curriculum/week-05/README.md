@@ -67,7 +67,7 @@ inverts in month 3. Console-first builds the mental model that makes Terraform l
 straight to Terraform means learning two things at once and understanding neither.
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 5.2 to 5.6, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-5)
 
 | # | Lab | Time | Cost |
 |---|---|---|---|

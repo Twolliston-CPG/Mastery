@@ -38,7 +38,7 @@
 - `../../JOB-SEARCH.md` §6 — what each interview stage tests
 
 ## Labs
-[labs/LABS.md](labs/LABS.md) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md)
+[labs/LABS.md](labs/LABS.md) · [labs/FIGURES.md](labs/FIGURES.md) (figures 25.2 to 25.5, one per lab) · [solutions/SOLUTIONS.md](solutions/SOLUTIONS.md) · [Kubernetes thread](../KUBERNETES-THREAD.md#week-25)
 
 ## Exit criteria
 - [ ] 8 STAR stories written and **timed at 90 seconds each**

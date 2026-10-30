@@ -94,11 +94,27 @@ jobs:
         run: |
           terraform init
           terraform plan -no-color -out=tf.plan | tee plan.txt
+          terraform show -json tf.plan > plan.json
           {
             echo 'stdout<<PLANEOF'
             tail -c 60000 plan.txt
             echo 'PLANEOF'
           } >> "$GITHUB_OUTPUT"
+
+      # The policy gate: the organization's rules (policies/conftest) against the plan the
+      # reviewer is about to read. checkov in `validate` is the industry baseline on the HCL;
+      # this is the plan itself, so it sees merged default_tags and computed values. A deny
+      # fails the job, so a PR with a public bucket never reaches apply.
+      - uses: open-policy-agent/setup-opa@v2
+        with: { version: latest }
+      - name: policy tests (the guardrail's own tests)
+        run: opa test policies/conftest -v
+      - name: policy gate
+        working-directory: environments/${{ matrix.environment }}
+        run: |
+          curl -sSL https://github.com/open-policy-agent/conftest/releases/latest/download/conftest_Linux_x86_64.tar.gz \
+            | tar -xz conftest && sudo mv conftest /usr/local/bin/
+          conftest test --policy ../../policies/conftest --output github plan.json
 
       - name: comment plan on PR
         uses: actions/github-script@v7
@@ -119,6 +135,8 @@ jobs:
             });
 
   apply:
+    # Apply only after plan has passed on the PR; the policy gate ran there. The same plan.json
+    # is regenerated here and gated again, because the merge commit is what actually applies.
     needs: validate
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -140,8 +158,20 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: gha-apply-${{ github.run_id }}
 
-      - name: apply
+      - name: plan for apply
         working-directory: environments/${{ matrix.environment }}
         run: |
           terraform init
-          terraform apply -auto-approve -input=false
+          terraform plan -no-color -input=false -out=tf.plan
+          terraform show -json tf.plan > plan.json
+
+      - name: policy gate
+        working-directory: environments/${{ matrix.environment }}
+        run: |
+          curl -sSL https://github.com/open-policy-agent/conftest/releases/latest/download/conftest_Linux_x86_64.tar.gz \
+            | tar -xz conftest && sudo mv conftest /usr/local/bin/
+          conftest test --policy ../../policies/conftest --output github plan.json
+
+      - name: apply the gated plan
+        working-directory: environments/${{ matrix.environment }}
+        run: terraform apply -input=false tf.plan

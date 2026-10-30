@@ -1,5 +1,9 @@
 # Week 9 — Consolidation Activities
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (9.2 to 9.6). Read a lab's figure
+> before you start it; redraw it after.
+
 There are no new labs this week. These are consolidation exercises.
 
 ---

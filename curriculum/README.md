@@ -1,11 +1,11 @@
 # The Curriculum
 
 > Complete content, labs, and **worked solutions** for all 26 weeks of
-> [`../WEEK-BY-WEEK.md`](../WEEK-BY-WEEK.md).
+> [`../WEEK-BY-WEEK.md`](../WEEK-BY-WEEK.md), plus the four-week CKA module (weeks 27–30).
 
 **New here? Read [START-HERE.md](START-HERE.md) first.** It is the day-one setup and the rules that
 make the rest work. Then [**STEP-BY-STEP.md**](STEP-BY-STEP.md) — the operating manual for the whole
-26 weeks: the daily loop, the weekly loop, the six gates, and what to do when one of them fails.
+26 weeks: the daily loop, the weekly loop, the seven gates, and what to do when one of them fails.
 
 ---
 
@@ -13,8 +13,9 @@ make the rest work. Then [**STEP-BY-STEP.md**](STEP-BY-STEP.md) — the operatin
 
 | Directory | What it is |
 |---|---|
-| **[`week-01/`](week-01/) … [`week-26/`](week-26/)** | One directory per week: `README.md` (objectives, day plan, reading map, exit criteria), `labs/` (the work), `solutions/` (worked answers **and running code**), `assessment.md` (self-test with an answer key) |
-| **[`FIGURES.md`](FIGURES.md)** | Index of the 26 weekly figures and the 10 platform figures, each with a numbered spoken walkthrough. Read a week's figure before its day plan |
+| **[`week-01/`](week-01/) … [`week-30/`](week-30/)** | One directory per week (27–30 are the CKA module): `README.md` (objectives, day plan, reading map, exit criteria), `labs/` (the work), `solutions/` (worked answers **and running code**), `assessment.md` (self-test with an answer key) |
+| **[`KUBERNETES-THREAD.md`](KUBERNETES-THREAD.md)** | Every lab, weeks 1 to 30, read as Kubernetes: how it relates, the mechanism one level under the lab, a command that shows it, a sentence to say. Read the entry after each lab; the ladder it feeds is in [`../KUBERNETES-MASTERY.md`](../KUBERNETES-MASTERY.md) |
+| **[`FIGURES.md`](FIGURES.md)** | Index of the 30 weekly figures, the lab figures underneath them, and the 10 platform figures, each with a numbered spoken walkthrough. Read a week's figure before its day plan |
 | **[`_setup/`](_setup/)** | Runnable environment scripts — toolchain, AWS cost guardrails, local Kubernetes, nightly teardown, verification. [`ARCHITECTURE.md`](_setup/ARCHITECTURE.md) explains the lab platform and its guardrails in ten figures |
 | **[`_shared/`](_shared/)** | Cross-cutting assets used every week: break/fix library, drills, Anki decks, interview bank, templates |
 | **[`_reference/`](_reference/)** | 623 files of curated, **anonymized** long-form reference material, organized by topic |
@@ -36,7 +37,7 @@ make the rest work. Then [**STEP-BY-STEP.md**](STEP-BY-STEP.md) — the operatin
 
 | | Contents |
 |---|---|
-| [`breakfix/`](_shared/breakfix/) | **58 break/fix scenarios** with full diagnosis and solutions, across Linux, networking, containers, AWS, Terraform/CI, Kubernetes, and security/observability |
+| [`breakfix/`](_shared/breakfix/) | **64 break/fix scenarios** with full diagnosis and solutions, across Linux, networking, containers, AWS, Terraform/CI, Kubernetes, security/observability, and cluster nodes |
 | [`drills/`](_shared/drills/) | Subnetting (with answer key and a generator), kubectl speed, bash one-liners, PromQL, Terraform recall, AWS comparisons |
 | [`anki/`](_shared/anki/) | Four importable TSV decks |
 | [`interview-bank/`](_shared/interview-bank/) | ~60 questions with **model answers** across fundamentals, cloud/IaC, Kubernetes/security, system design, and behavioral |

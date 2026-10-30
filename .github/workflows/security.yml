@@ -6,7 +6,8 @@ name: security
 #   shell     -> shell-lint    (shellcheck on every tracked .sh)
 #   IaC       -> iac-scan      (checkov + trivy on the whole repository: the Terraform that
 #                               touches real accounts, the workflows, and the teaching projects
-#                               and solutions, which are held to the same bar)
+#                               and solutions, which are held to the same bar; then the repository's
+#                               own Conftest policy gate, infra/policy/terraform, on raw HCL)
 #
 # Supply chain: binaries come from pinned releases through ./.github/actions/fetch-tool, which
 # verifies a sha256 per CPU architecture; Python tools install from hash-locked requirements
@@ -43,6 +44,9 @@ env:
   TRIVY_VERSION: 0.76.0
   TRIVY_SHA256_AMD64: e24b1c51293c1b15e4ba8d45bbc7891ba053f90278ec2698f3562c993e145fe7
   TRIVY_SHA256_ARM64: aab21e677a7b7071fc79f1711480840754c18a1b9d9cefa7ccd06af63a0e8f4c
+  CONFTEST_VERSION: 0.71.1
+  CONFTEST_SHA256_AMD64: c3f6b2a753bd56e377a1e51a95ae3e057f926f2e9139f7d5b5dfbbaf810f7985
+  CONFTEST_SHA256_ARM64: 218c682e110ae7e826dc14a746a6f9b43eb782643dbe730b771fd305634e3f47
   # ShellCheck publishes no checksums; these were computed from the release assets on 2026-10-17
   # and recorded here (trust on first use). The runner image's shellcheck is 0.9.0, two years
   # older than what runs locally, so it is installed rather than inherited.
@@ -150,6 +154,14 @@ jobs:
           sha256-amd64: ${{ env.TRIVY_SHA256_AMD64 }}
           sha256-arm64: ${{ env.TRIVY_SHA256_ARM64 }}
 
+      - uses: ./.github/actions/fetch-tool
+        with:
+          name: conftest
+          url-amd64: https://github.com/open-policy-agent/conftest/releases/download/v${{ env.CONFTEST_VERSION }}/conftest_${{ env.CONFTEST_VERSION }}_Linux_x86_64.tar.gz
+          url-arm64: https://github.com/open-policy-agent/conftest/releases/download/v${{ env.CONFTEST_VERSION }}/conftest_${{ env.CONFTEST_VERSION }}_Linux_arm64.tar.gz
+          sha256-amd64: ${{ env.CONFTEST_SHA256_AMD64 }}
+          sha256-arm64: ${{ env.CONFTEST_SHA256_ARM64 }}
+
       # Everything checkov understands here: Terraform, Dockerfiles, Kubernetes manifests, the
       # workflows, and secrets. Every suppression is an inline `checkov:skip` comment (Terraform)
       # or a `checkov.io/skip` annotation (Kubernetes) on the resource it excuses, with its reason.
@@ -170,6 +182,17 @@ jobs:
             --ignorefile .trivyignore.yaml \
             --skip-dirs curriculum/_reference --skip-dirs _figures --skip-dirs _backups \
             .
+
+      # The repository's own policy gate, in Rego (infra/policy/terraform), evaluated on raw HCL so
+      # it needs no plan and no credentials. Its unit tests run first; then every tracked .tf file in
+      # the roots that touch real accounts and the Alpha reference project. There is no inline skip
+      # for this gate on purpose: an exception is a rule change in a pull request. Locally: `make policy`.
+      - name: conftest policy gate (repository Terraform)
+        run: |
+          set -euo pipefail
+          conftest verify --no-color --policy infra/policy/terraform --namespace terraform
+          git ls-files -z -- 'infra/**/*.tf' 'curriculum/_setup/**/*.tf' 'curriculum/projects/alpha-cloud-foundation/**/*.tf' \
+            | xargs -0 conftest test --no-color --parser hcl2 --policy infra/policy/terraform --namespace terraform
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()

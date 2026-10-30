@@ -6,7 +6,7 @@
 #
 # Versions are read from the workflow env blocks, so there is one place to bump them. Archives
 # are verified against the vendor's published checksums file; ShellCheck publishes none, so its
-# hashes are recorded here and in security.yml.
+# hashes are recorded here and in security.yml. Conftest's are in its release checksums.txt.
 #
 #   bash .github/scripts/tools.sh        # or: make tools
 set -euo pipefail
@@ -21,16 +21,17 @@ ver() { sed -nE "s/^[[:space:]]+$1:[[:space:]]+([^[:space:]#]+).*/\1/p" "$ROOT/.
 TRIVY_VERSION="$(ver TRIVY_VERSION security.yml)"
 ACTIONLINT_VERSION="$(ver ACTIONLINT_VERSION security.yml)"
 SHELLCHECK_VERSION="$(ver SHELLCHECK_VERSION security.yml)"
-for v in TRIVY_VERSION ACTIONLINT_VERSION SHELLCHECK_VERSION; do
+CONFTEST_VERSION="$(ver CONFTEST_VERSION security.yml)"
+for v in TRIVY_VERSION ACTIONLINT_VERSION SHELLCHECK_VERSION CONFTEST_VERSION; do
   [[ -n "${!v}" ]] || { echo "tools.sh: could not read $v from security.yml" >&2; exit 1; }
 done
 
 case "$(uname -s)/$(uname -m)" in
-  Darwin/arm64)  trivy_os=macOS-ARM64; al_os=darwin_arm64; sc_os=darwin.aarch64
+  Darwin/arm64)  trivy_os=macOS-ARM64; al_os=darwin_arm64; sc_os=darwin.aarch64; ct_os=Darwin_arm64
                  SHELLCHECK_SHA256=56affdd8de5527894dca6dc3d7e0a99a873b0f004d7aabc30ae407d3f48b0a79 ;;
-  Linux/x86_64)  trivy_os=Linux-64bit; al_os=linux_amd64; sc_os=linux.x86_64
+  Linux/x86_64)  trivy_os=Linux-64bit; al_os=linux_amd64; sc_os=linux.x86_64; ct_os=Linux_x86_64
                  SHELLCHECK_SHA256="$(ver SHELLCHECK_SHA256_AMD64 security.yml)" ;;
-  Linux/aarch64) trivy_os=Linux-ARM64; al_os=linux_arm64;  sc_os=linux.aarch64
+  Linux/aarch64) trivy_os=Linux-ARM64; al_os=linux_arm64;  sc_os=linux.aarch64; ct_os=Linux_arm64
                  SHELLCHECK_SHA256="$(ver SHELLCHECK_SHA256_ARM64 security.yml)" ;;
   *) echo "tools.sh: unsupported platform $(uname -s)/$(uname -m)" >&2; exit 1 ;;
 esac
@@ -82,4 +83,11 @@ fetch shellcheck "$SHELLCHECK_VERSION" \
   "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.${sc_os}.tar.xz" \
   "shellcheck-v${SHELLCHECK_VERSION}/shellcheck" "$SHELLCHECK_SHA256"
 
-echo "tools.sh: done. Add to PATH or use the make targets: make scan, make lint-workflows, make shellcheck"
+# Conftest: the repository's own policy gate (infra/policy/terraform). The Homebrew build reports
+# its version as "dev", so it can never satisfy the pin; the Makefile uses this one.
+ct_archive="conftest_${CONFTEST_VERSION}_${ct_os}.tar.gz"
+fetch conftest "$CONFTEST_VERSION" \
+  "https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/${ct_archive}" conftest \
+  "$(vendor_sha "https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VERSION}/checksums.txt" "$ct_archive")"
+
+echo "tools.sh: done. Add to PATH or use the make targets: make scan, make policy, make lint-workflows, make shellcheck"

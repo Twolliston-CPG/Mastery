@@ -16,7 +16,7 @@ What a certification does for a candidate with no professional experience, ranke
 | **HashiCorp Terraform Associate** | Week 14 | ~$70 | ~30 (after 4 wks real use) | **Medium-High** | **Take it. Best value in the industry.** |
 | **KCNA** | Week 17 | ~$250 | ~25 | **Low-Medium** | **Conditional — see §3.** |
 | **KCSA** | Week 25 | ~$250 | ~30 | **Medium** (in DevSecOps only) | Conditional — see §3. |
-| **CKA** | Wk 25–26 or month 7 | ~$445 | ~70 | **High** | **The K8s cert that moves hiring decisions.** |
+| **CKA** | Weeks 27–30 (month 7) | ~$445 | ~70 (its own module) | **High** | **Take it. The K8s cert that moves hiring decisions, in a four-week module after Gate 6.** |
 | AWS Cloud Practitioner | — | ~$100 | ~25 | Very low | **Skip.** Go straight to SAA. |
 | CompTIA Security+ | — | ~$400 | ~60 | Situationally **very high** | See §5 — the one wildcard. |
 
@@ -35,7 +35,7 @@ Roughly $70 and ~30 hours *after* the student has already been writing Terraform
 ## 2. Sequencing, and why this order
 
 <!-- figure: generated from the Mermaid below by _shared/diagrams/embed-figures.py — do not edit the image -->
-![2. Sequencing, and why this order — diagram](_figures/CERTIFICATIONS-0-da3e9f2b.png)
+![2. Sequencing, and why this order — diagram](_figures/CERTIFICATIONS-0-5a728ad2.png)
 
 <details>
 <summary>Diagram source (Mermaid)</summary>
@@ -54,7 +54,7 @@ flowchart LR
   TF["<b>★ Terraform Associate</b> · wk 14<br/><small>cheap and fast, ridden on<br/>4 weeks of real use</small>"]:::crit
   KCNA["<b>◇ KCNA</b> · wk 17<br/><small>only if Kubernetes<br/>hasn't clicked</small>"]:::mut
   KCSA["<b>◇ KCSA</b> · wk 25<br/><small>only if DevSecOps is<br/>genuinely the destination</small>"]:::mut
-  CKA["<b>★ CKA</b> · month 7+<br/><small>the one that actually moves<br/>K8s hiring decisions</small>"]:::crit
+  CKA["<b>★ CKA</b> · wk 30<br/><small>weeks 27–30, its own module · the one<br/>that moves K8s hiring decisions</small>"]:::crit
 
   SAA --> TF
   TF -.-> KCNA
@@ -111,11 +111,16 @@ You asked about both. Here is the straight read.
 
 Performance-based, 2 hours in a live terminal, real clusters, real broken things. It cannot be passed by someone who has only watched videos, and hiring managers know that. It is the K8s credential that changes a screening decision.
 
-It is not in the six-month core plan because it needs ~70 hours of dedicated practice on top of everything else, and weeks 22–26 belong to Project Charlie and interviewing. But:
+It is not in the six-month core plan because it needs ~70 hours of dedicated practice on top of everything else, and weeks 22–26 belong to Project Charlie and interviewing. So it has its own module: **weeks 27–30**, month 7, run alongside the week-26 cadence (20 h interviewing, 10 h building, ~17 h of labs a week).
 
-- If the KCNA decision goes to "skip," bank those hours toward CKA.
-- If weeks 22–24 run ahead of schedule, pull CKA into week 26.
-- Otherwise schedule it for month 7, during the interview window, where it also functions as productive structure during a stretch that can otherwise feel like waiting.
+| Week | Focus | Gate |
+|---|---|---|
+| 27 | Cluster architecture on kubeadm: init, join, certificates, etcd backup and restore, upgrade one minor | |
+| 28 | The objects the 2025 blueprint added: Kustomize, Helm, Gateway API, CoreDNS, CRDs and operators, scheduling, dynamic provisioning | |
+| 29 | Troubleshooting on real nodes and speed: the exam terminal, a mock exam, killer.sh session 1 | |
+| 30 | killer.sh session 2 as **★ Gate 7**, weak-domain drills, the exam | ★ CKA |
+
+Book the exam on the Monday of week 27 for the end of week 30; an unbooked exam slips, and the package carries one free retake. The kubeadm nodes live in `curriculum/_setup/gcp-lab/` (`kubeadm_nodes = 2`), because kind cannot teach the install-and-upgrade quarter of the exam. If the KCNA decision at week 17 goes to "skip," those hours are already banked toward this. Week 17 Thursday is the first `kubeadm init`; the module is where you own it. The exam is rung two of the five-rung ladder in [`KUBERNETES-MASTERY.md`](KUBERNETES-MASTERY.md); the module's Go deeper labs and the long-lived cluster are rungs three and four.
 
 ---
 
@@ -135,7 +140,7 @@ Broadest keyword coverage, four line items on the résumé, four deadline-driven
 
 Fewer credentials, heavier ones. SAA and CKA are the two that most reliably change a screening outcome, and Terraform Associate is nearly free. This is the strongest résumé of the three tracks for the target roles.
 
-The tradeoff is real: CKA is hard, and a fail in week 26 during an active job search is demoralizing. Mitigate by scheduling it for month 7, not week 26, unless the student is visibly ahead.
+The tradeoff is real: CKA is hard, and a fail during an active job search is demoralizing. That is why it sits in weeks 27–30, after Gate 6, with a simulator session as the gate before the exam is sat, and a free retake in the package.
 
 ### Track C — Budget-constrained (2 certs, ~$220)
 
@@ -178,6 +183,7 @@ Deliberately short. One spine per exam, plus one question bank. **More resources
 - **Note:** both come with a free retake in the standard Linux Foundation package — confirm at purchase.
 
 ### CKA
+- **In this plan:** [`curriculum/week-27/`](curriculum/week-27/) to [`week-30/`](curriculum/week-30/): the kubeadm lab, two mock exams with weights, the node-level break/fix set, and the gate. The exam facts there are planning estimates; the candidate handbook is the contract.
 - **Spine:** Killer.sh simulator (two sessions included with the exam and harder than the real thing — this is the single highest-value resource) plus Mumshad Mannambeth's CKA course with KodeKloud labs.
 - **Method:** the exam is a speed test as much as a knowledge test. Drill `kubectl` imperative commands, aliases, `--dry-run=client -o yaml`, and fluent use of `kubectl explain` and the docs site, because the docs are available during the exam and navigating them fast is a scored skill in practice.
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A 26-week DevOps/DevSecOps/Platform Engineering curriculum — **not an application.** The "source" is
+A 26-week DevOps/DevSecOps/Platform Engineering curriculum plus a four-week CKA module (weeks 27–30) — **not an application.** The "source" is
 ~360,000 lines of Markdown plus a small Python toolchain that generates and validates parts of it.
 Changes are almost always *content* changes, and the risk is silent breakage across hundreds of files
 rather than a failing build.
@@ -38,7 +38,7 @@ for how a learner moves through it.
   Decision needed: upgrade to Pro (recommended), transfer to an organization for read-only roles, or make the
   repo public. Removing collaborators is not the intent.
 - **Unverified on a live system (2026-10-17):** Contour on kind (`02-kind-cluster.sh`), OS Login on the
-  Ubuntu GCP lab image, `windows-setup.ps1`, the `figures-fresh` CI job, and all four `security.yml` jobs
+  Ubuntu GCP lab image, the kubeadm nodes (`gcp-lab/kubeadm.tf`, weeks 27–30), `windows-setup.ps1`, the `figures-fresh` CI job, and all four `security.yml` jobs
   (every one passes locally; `gh` is not authenticated here, so runner results have not been seen). A job
   joins `required_status_checks` only after it has run green on the runner; the full target list is in
   `infra/github/terraform.tfvars.example`.
@@ -84,6 +84,7 @@ Don't put dates, versions, or blockers anywhere but `## Status` — they go stal
 # Run the CI checks locally with the exact tool versions CI pins (needs curl + uv)
 make check            # lint-workflows + shellcheck + scan
 make scan             # checkov + trivy, as the iac-scan job runs them
+make policy           # the repository's own Conftest gate (infra/policy/terraform) on its Terraform, as iac-scan runs it
 make tools            # (re)install pinned trivy/actionlint/shellcheck into .tools/bin
 
 # Validate diagrams, markdown structure, and relative links (~1s, no browser)
@@ -100,7 +101,7 @@ python3 curriculum/_shared/feynman/inject.py --apply
 # Re-render the ten lab-platform figures for curriculum/_setup/ARCHITECTURE.md (diagrams lib + graphviz)
 python3 curriculum/_shared/diagrams/generate-setup-figures.py
 
-# Re-render the 26 weekly figures + their content/FIGURE.md scripts + README sections (same toolchain)
+# Re-render the 30 weekly figures + their content/FIGURE.md scripts + README sections (same toolchain)
 python3 curriculum/_shared/diagrams/generate-week-figures.py            # --only 14 for one week
 python3 curriculum/_shared/diagrams/generate-week-figures.py --docs-only # what CI runs: FIGURE.md + README only
 pip install --require-hashes -r curriculum/_shared/diagrams/requirements.txt  # hash-locked; edit requirements.in, then recompile (command in that file)
@@ -133,6 +134,7 @@ between a small edit and 600 quietly-broken files.
 | `.github/requirements/`, `curriculum/_shared/diagrams/requirements.{in,txt}` | Hash-locked pip pins (`uv pip compile --generate-hashes`). Edit the `.in`, recompile the `.txt` (command in the file), CI installs with `--require-hashes`. Dependabot regenerates hashes on bumps |
 | `Makefile`, `.github/scripts/tools.sh` | `make check` runs the CI checks locally at CI's pinned versions (`uvx` for checkov/zizmor, `.tools/bin` for binaries verified against vendor checksums). Never trust the Homebrew checkov: it ships without the graph policies |
 | `.github/workflows/links.yml` | Weekly external link check |
+| `infra/policy/terraform/` | The repository's own policy gate in Rego: six rules on raw HCL (public access blocked on every bucket, SSH never open to the world, IMDSv2 required, no service account on a GCP lab VM, every GCP ingress rule names its source), with a passing and a failing test per rule. `iac-scan` runs `conftest verify` then `conftest test --parser hcl2` over every tracked `.tf` in `infra/`, `_setup/` and Alpha; `make policy` does the same at the pinned version. **No inline skip exists for this gate on purpose**: an exception is a rule change in a PR |
 | `.checkov.yaml`, `.trivyignore.yaml` | Scanner config. Suppressions live on the resource they excuse, with the reason: Terraform uses `# checkov:skip=...: reason` inside the block and `#trivy:ignore:AVD-...` directly above it; Kubernetes uses `checkov.io/skipN: ID=reason` annotations. trivy has no inline form for YAML, so those few go in `.trivyignore.yaml` scoped to one file. `.checkov.yaml` holds frameworks and skip-paths only; skip-path patterns are relative to the scanned directory |
 | `.github/PULL_REQUEST_TEMPLATE.md`, `.github/CODEOWNERS` | The human half of the review requirements: author checklist (anonymization, PII, decoded allowlist entries, pinned actions) and ownership of the token-bearing paths. Policy summary: `infra/github/README.md` → "Review requirements" |
 | `.pre-commit-config.yaml` | gitleaks, private-key, large-file (5 MB), yaml/json, shellcheck, `terraform fmt` on every root, `check-diagrams.py` on changed `.md`; a **pre-push** hook refuses a direct push to `main`. **No formatters on purpose** — a fixer would rewrite ~1,000 files |
@@ -166,9 +168,9 @@ Four layers, each with a different audience:
 
 | Layer | Purpose |
 |---|---|
-| Root `*.md` | Strategy — roadmap, certs, projects, job search. Read by a human deciding whether to commit |
-| `curriculum/week-01…26/` | Execution. Every week is `README.md` (thesis · **Figure W.1**, always the first H2 · day plan · reading map · exit criteria) + `content/` (the figure as PNG/SVG and `FIGURE.md`, its numbered spoken script) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates**. `curriculum/FIGURES.md` indexes the figures and states the convention |
-| `curriculum/_shared/` | Cross-cutting: 58 break/fix scenarios (`BF-01`–`BF-58`), drills, Anki, interview bank, templates, and the `diagrams/` + `feynman/` toolchains |
+| Root `*.md` | Strategy — roadmap, certs, projects, job search, and the Kubernetes mastery ladder (`KUBERNETES-MASTERY.md`; its per-lab companion is `curriculum/KUBERNETES-THREAD.md`, linked from every week README). Read by a human deciding whether to commit |
+| `curriculum/week-01…30/` | Execution (27–30 are the CKA module). Every week is `README.md` (thesis · **Figure W.1**, always the first H2 · day plan · reading map · exit criteria) + `content/` (the figure as PNG/SVG and `FIGURE.md`, its numbered spoken script) + `labs/` + `solutions/` + `assessment.md`. Weeks 4/9/13/17/21/26 are the six **gates**; week 30 is the seventh, the CKA simulator session. `curriculum/FIGURES.md` indexes the figures and states the convention |
+| `curriculum/_shared/` | Cross-cutting: 64 break/fix scenarios (`BF-01`–`BF-64`), drills, Anki, interview bank, templates, and the `diagrams/` + `feynman/` toolchains |
 | `curriculum/_reference/` | 623 files of anonymized long-form material, ten domains. A **lookup, not a course** — each week's reading map names the exact files |
 
 The coupling that matters: **week READMEs reference `_reference/` files by path.** Renaming or moving

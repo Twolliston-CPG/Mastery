@@ -1,5 +1,9 @@
 # Week 25 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (25.2 to 25.5). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — The Eight STAR Stories (Tue, 6h)
@@ -160,7 +164,7 @@ of the week.
 ## What to fix, in priority order
 1. **Silences over five seconds** → narrate
 2. **Rambling past 2 minutes** on a STAR story → you haven't practiced the 90-second version
-3. **No numbers** → memorize the ten from Lab 1
+3. **No numbers** → memorize the nine from Lab 1
 4. **No trade-offs named** → say "the tradeoff is" out loud in every design answer
 5. Filler words → slow down; a pause is better than "um"
 6. Trailing off → end your answers deliberately: *"...so that's the approach I'd take."*

@@ -53,6 +53,11 @@ formula|kubectx|kubectx
 formula|argocd|argocd
 formula|kubeseal|kubeseal
 formula|kyverno|kyverno
+# Policy as code (weeks 13, 19, 23, 28; conftest above covers week 19 Lab 1)
+formula|hashicorp/tap/sentinel|sentinel
+formula|opa|opa
+formula|regal|regal
+formula|gator|gator
 # Security tooling (weeks 18-19)
 formula|trivy|trivy
 formula|syft|syft
@@ -72,6 +77,10 @@ formula|librsvg|rsvg-convert
 # Notes on the list:
 #   terraform  from HashiCorp's tap: homebrew-core is frozen at 1.5.x, the configs need >= 1.9
 #   tflint     from its maintainers' tap: there is no tflint formula in homebrew-core
+#   sentinel   from HashiCorp's tap, like terraform. The CLI is free; it evaluates and tests
+#              policies locally (week 13 Go deeper). Enforcement needs HCP Terraform
+#   opa, regal, gator  the OPA evaluator itself (Conftest embeds the same one), the Rego
+#              linter, and Gatekeeper's offline policy tester (weeks 19 and 28 Go deeper)
 #   multipass  not listed: only the Ubuntu path uses it. brew install --cask multipass
 #   qemu, gnupg  not listed: only the Arch-on-GCP path uses them, to import the Arch cloud image
 #              (gcp-lab/README.md step 8). brew install qemu gnupg

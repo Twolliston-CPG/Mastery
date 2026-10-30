@@ -2,7 +2,7 @@
 ENV ?= dev
 TF  := terraform -chdir=environments/$(ENV)
 
-.PHONY: help bootstrap init plan apply destroy fmt validate lint scan verify cost clean
+.PHONY: help bootstrap init plan apply destroy fmt validate lint scan policy verify cost clean
 
 help:  ## show this help
 	@grep -E '^[a-z-]+:.*?##' $(MAKEFILE_LIST) | awk -F':.*?## ' '{printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
@@ -40,6 +40,11 @@ lint:  ## tflint across the repo
 scan:  ## checkov security scan
 	checkov -d . --framework terraform --quiet \
 		--skip-check CKV_AWS_18,CKV_AWS_144
+
+policy:  ## the policy gate: test the policies, then run them against $(ENV)'s plan
+	conftest verify --policy policies/conftest
+	$(TF) show -json tf.plan > environments/$(ENV)/plan.json
+	conftest test --policy policies/conftest environments/$(ENV)/plan.json
 
 verify:  ## prove the acceptance criteria for $(ENV)
 	@echo "--- no static AWS credentials anywhere ---"

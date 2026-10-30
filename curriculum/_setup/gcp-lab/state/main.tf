@@ -13,6 +13,8 @@
 #   terraform import -var project_id=YOUR_PROJECT google_project_service.storage YOUR_PROJECT/storage.googleapis.com
 #   terraform import -var project_id=YOUR_PROJECT google_project_iam_audit_config.storage YOUR_PROJECT/storage.googleapis.com
 
+# The same pins as the lab's versions.tf, duplicated because this is its own root module. No
+# backend block on purpose: the state for this directory is the local terraform.tfstate.
 terraform {
   required_version = ">= 1.9"
   required_providers {
@@ -23,15 +25,23 @@ terraform {
   }
 }
 
+# Project only: a bucket is regional or multi-regional, chosen by `location` below, so the
+# provider needs no zone.
 provider "google" {
   project = var.project_id
 }
 
+# The Storage API switch for the project. disable_on_destroy = false because image/ uses the same
+# API for its staging bucket; this root must never switch it off under another.
 resource "google_project_service" "storage" {
   service            = "storage.googleapis.com"
   disable_on_destroy = false
 }
 
+# The bucket. Everything below the name is a protection for a file that can contain secrets and
+# that nothing else can reconstruct: IAM-only access, versions to roll back to, a soft-delete
+# window, and two refusals to destroy. The inline skip is for a checkov rule about bucket access
+# logs, which the audit config below replaces with something better.
 resource "google_storage_bucket" "state" {
   # checkov:skip=CKV_GCP_62: Bucket access logging needs a second bucket to log into. Data Access audit logs (below) already record every read and write of the state object, with the caller's identity.
   name          = "${var.project_id}-tfstate" # bucket names are global; the project ID makes it unique
@@ -83,6 +93,8 @@ resource "google_storage_bucket" "state" {
     prevent_destroy = true
   }
 
+  # The API must be enabled before the first bucket call, and Terraform cannot infer that from the
+  # arguments, so it is stated.
   depends_on = [google_project_service.storage]
 }
 
@@ -114,11 +126,15 @@ resource "google_project_iam_audit_config" "storage" {
   }
 }
 
+# The learner, once, to confirm the name; state/README.md's second-machine recovery uses it too.
 output "bucket" {
   description = "Name of the state bucket"
   value       = google_storage_bucket.state.name
 }
 
+# Written to ../backend.hcl by the README's step 6 (`terraform output -raw backend_config >
+# ../backend.hcl`). A backend block cannot read variables, so the lab's and image/'s `init` take
+# this file instead: one line, the bucket's name.
 output "backend_config" {
   description = "Contents for ../backend.hcl"
   value       = "bucket = \"${google_storage_bucket.state.name}\"\n"

@@ -1,5 +1,9 @@
 # Week 23 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (23.2 to 23.7). Read a lab's figure
+> before you start it; redraw it after.
+
 ---
 
 # Lab 1 — The Platform Controller (4h)
@@ -51,8 +55,6 @@ flowchart TB
 ```
 
 </details>
-
-## Build vs buy, one more time```
 
 ## Build vs buy, one more time
 
@@ -268,3 +270,103 @@ Write down every place they hesitate. Every hesitation is a bug. Fix all of them
 
 **This exercise is the entire difference between a repo and a platform**, and it is what lets you
 talk about developer experience from experience rather than from a blog post.
+
+---
+
+# Go deeper — The contract's business rules in Rego (2h · ladder: policy as code, rung 4)
+
+Optional inside the week; mandatory for the ladder ([`KUBERNETES-MASTERY.md`](../../../KUBERNETES-MASTERY.md),
+the policy-as-code row). Lab 3 gave `service.yaml` a JSON Schema and a validator with good error
+messages. This lab adds the part a schema cannot express, and ships it in the same gate.
+
+## 1. Shape is schema, rules are policy
+
+A schema answers "may this field hold this value": types, enums, patterns, required keys. It cannot
+answer "does this file make sense": the owner must be a team that exists in `teams.yaml`; a
+critical service must be able to survive a node drain; an experimental service, which nobody is
+paged for and which expires in thirty days, must not be public; a dependency must be something the
+platform actually provisions; a name must not already belong to another service. Those are rules.
+They depend on other fields, on other files, and on data outside the document. That is what a
+policy engine is for, and the reference implementation now has one:
+
+```
+platform/schemas/service.schema.json   shape
+policies/contract/contract.rego        rules
+policies/contract/contract_test.rego   the rules' own tests
+cli/validate.py                        shape first, then the rules, when conftest is installed
+```
+
+## 2. Read the rules, then run them
+
+```bash
+cd ~/charlie-platform
+conftest verify --policy policies/contract --data platform/teams          # 10 tests
+conftest test   --policy policies/contract --data platform/teams services/*/service.yaml
+```
+
+Three mechanisms in that file to be able to explain:
+
+- **Data.** `--data platform/teams` loads `teams.yaml`, so `data.teams` is the authoritative list
+  and `known_teams := {t.name | some t in data.teams}` is a set comprehension over it. The policy
+  never hard-codes a team; change the YAML and the rule changes.
+- **Cross-field.** `spec.tier == "critical"` and `spec.resources.replicas.min < 2` in the same
+  rule body. A schema's `minimum` is one number for every file; a rule's minimum depends on the
+  tier.
+- **Cross-file.** `--combine` hands every file in as one array of `{path, contents}`, which is the
+  only way to check that a name is unique. The uniqueness rule is guarded by `is_array(input)`,
+  the single-file rules by `is_object(input)`, so one package serves both modes:
+
+```bash
+conftest test --policy policies/contract --data platform/teams --combine services/*/service.yaml
+```
+
+Then break one on purpose and read the message:
+
+```bash
+cat > /tmp/bad.yaml <<'YAML'
+apiVersion: platform.internal/v1
+kind: Service
+metadata: { name: Orders_API, owner: team-paymnts }
+spec:
+  language: go
+  port: 8080
+  tier: experimental
+  routing: { public: true }
+  dependencies: [{ type: kafka }]
+YAML
+conftest test --policy policies/contract --data platform/teams /tmp/bad.yaml
+```
+
+Four failures, and each one says where, what, the valid options with their meaning, and what to do
+next. That is the discipline from Lab 3, kept: a policy message that only says "denied" is half a
+feature.
+
+## 3. Wire it where the developer already is
+
+`cli/validate.py` runs the schema check, prints its findings, and only if the shape is clean shells
+out to conftest with the same two flags. No conftest on the laptop: it says so and stops after the
+shape check, so the validator still works on day one. In CI, `.github/workflows/validate.yml`
+installs conftest, runs `conftest verify` so a broken rule fails before any service is judged, and
+then runs the validator on the changed files.
+
+Order matters: shape first, rules second. A rule that reads `spec.resources.replicas.min` on a file
+where `spec` is a string produces a confusing error; the schema has already refused that file.
+
+## 4. Tasks
+
+1. **Expiry.** The tier description says experimental services auto-expire after 30 days. Make it a
+   contract: add `metadata.expires` (a date) to the schema, then a rule that denies an experimental
+   service without it, and one that denies an `expires` more than 30 days from today, which Rego
+   reaches with `time.now_ns()`. Say in the message what the platform will do on that date.
+2. **Budget.** `teams.yaml` carries `budget_monthly_usd`. Give each dependency type a rough monthly
+   cost in a `data` file under `platform/catalog/`, and deny a service whose declared dependencies
+   would exceed the owning team's budget. The message names the team, the budget, the total, and
+   the dependency to drop first.
+3. **Warn, then deny.** Ship the budget rule as `warn` and run it against both example services and
+   the bad file. Promote it to `deny` only when the two examples pass. That is the rollout discipline
+   from week 19, applied to your own platform.
+4. **Explain it.** Three minutes, out loud: what the schema refuses, what the policy refuses, and why
+   the split exists. Figure 23.7 is the picture.
+
+**From memory, timed:** rules 1 to 5 of `contract.rego` with the file closed, `conftest verify`
+green, in under 25 minutes.

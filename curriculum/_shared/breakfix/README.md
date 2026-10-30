@@ -1,7 +1,7 @@
 # The Break/Fix Library
 
-> 58 scenarios. Every Friday you break something, diagnose it under a timer, and log it.
-> By week 26 you will have done this ~58 times, and "how would you debug X?" stops being scary.
+> 64 scenarios. Every Friday you break something, diagnose it under a timer, and log it.
+> By week 30 you will have done this ~64 times, and "how would you debug X?" stops being scary.
 
 ## Why this exists
 
@@ -37,6 +37,8 @@ failure mode you are training away.
 
 Saying *"I don't know, but here's how I'd find out"* is a **passing answer.** Silence is not.
 
+The loop as a figure, with a spoken script: [`FIGURE.md`](FIGURE.md) (Figure BF.0). Every Friday lab links to it.
+
 ## Logging (non-negotiable)
 
 Every scenario gets an entry in `progress/incident-journal.md`:
@@ -66,6 +68,7 @@ mental model, and by week 26 those lines are your best interview stories.
 | [05-terraform-cicd.md](05-terraform-cicd.md) | BF-33 – BF-40 | weeks 10–13 |
 | [06-kubernetes.md](06-kubernetes.md) | BF-41 – BF-50 | weeks 14–17 |
 | [07-security-observability.md](07-security-observability.md) | BF-51 – BF-58 | weeks 18–21 |
+| [08-cluster-nodes.md](08-cluster-nodes.md) | BF-59 – BF-64 | weeks 27–30 (the CKA module; needs the kubeadm nodes) |
 
 Scenarios are cumulative. Week 20's Friday should re-run two old scenarios plus two new ones —
 spaced repetition applies to skills, not just facts.

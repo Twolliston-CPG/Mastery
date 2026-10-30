@@ -1,5 +1,9 @@
 # Week 5 Labs
 
+> **Figures:** one numbered mechanism figure per lab, with the spoken script, the numbers to own and
+> the command that proves each badge, in [`FIGURES.md`](FIGURES.md) (5.2 to 5.6). Read a lab's figure
+> before you start it; redraw it after.
+
 > **Every lab ends with teardown.** Run `bash ../../_setup/03-teardown.sh` before you close the laptop.
 
 ---
@@ -151,8 +155,7 @@ cat > trust.json <<JSON
   "Statement": [{
     "Effect": "Allow",
     "Principal": {"AWS": "arn:aws:iam::${ACCT}:user/iam-lab-user"},
-    "Action": "sts:AssumeRole",
-    "Condition": {"Bool": {"aws:MultiFactorAuthPresent": "false"}}
+    "Action": "sts:AssumeRole"
   }]
 }
 JSON
@@ -164,6 +167,19 @@ aws iam attach-role-policy --role-name LabReadOnly \
 # Assume it
 aws sts assume-role --role-arn "arn:aws:iam::${ACCT}:role/LabReadOnly" \
   --role-session-name lab --profile iamlab
+```
+
+**Harden it, then read the failure.** Add a condition to the trust policy and update it:
+
+```json
+"Condition": {"Bool": {"aws:MultiFactorAuthPresent": "true"}}
+```
+
+```bash
+aws iam update-assume-role-policy --role-name LabReadOnly --policy-document file://trust.json
+aws sts assume-role --role-arn "arn:aws:iam::${ACCT}:role/LabReadOnly" --role-session-name lab --profile iamlab
+# AccessDenied: the CLI session has no MFA claim. That denial comes from the TRUST policy (who),
+# not the permissions policy (what). `true` requires MFA; `false` would admit only sessions WITHOUT it.
 ```
 
 **The two policies on a role — this distinction is essential:**
@@ -264,7 +280,8 @@ aws ec2 run-instances \
 **Tasks:**
 1. Launch it, `curl` the public IP
 2. Read `/var/log/user-data.log` — the `exec > >(tee ...)` line is what makes user data debuggable,
-   and it is the answer to "my user data didn't run" (BF-29)
+   and it is the answer to "my user data didn't run" (not a numbered break/fix scenario; it is
+   the week-7 BF-29 loop's most common hidden cause)
 3. Break the user data deliberately and diagnose with `aws ec2 get-console-output`
 
 ## Part 2 — EBS

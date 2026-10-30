@@ -16,6 +16,8 @@ locals {
   iap_range = "35.235.240.0/20" # Google's IAP TCP-forwarding source range
 }
 
+# Read, not created: the project's numeric ID. Only the auto-stop grant below needs it, because
+# the Compute Engine service agent's address is built from the number, not the project ID.
 data "google_project" "this" {}
 
 # Looked up only to report which build the family currently points at (see outputs).
@@ -30,6 +32,10 @@ data "google_compute_image" "lab" {
   family  = local.image.family
 }
 
+# The two APIs this root calls. Enabling an API is a project-wide switch, and image/ enables
+# compute too, so disable_on_destroy = false: destroying the lab must not switch the API off
+# underneath the other root. Everything that calls the API depends on these, directly or through
+# the network.
 resource "google_project_service" "compute" {
   service            = "compute.googleapis.com"
   disable_on_destroy = false
@@ -42,6 +48,9 @@ resource "google_project_service" "iap" {
 
 # --- Network -------------------------------------------------------------------
 
+# The VPC. auto_create_subnetworks = false means no subnet appears in every region of the world;
+# the one subnet below is the whole network. A custom VPC also starts from an implied deny-all on
+# ingress, so every open port is a rule you can read in this file.
 resource "google_compute_network" "lab" {
   name                    = "lab"
   auto_create_subnetworks = false
@@ -49,6 +58,11 @@ resource "google_compute_network" "lab" {
   depends_on = [google_project_service.compute]
 }
 
+# One subnet in one region: 10.10.0.0/24, 251 usable addresses, far more than the VM and the
+# kubeadm nodes will use. private_ip_google_access lets the VM reach Google APIs (the package
+# mirror, gcloud) on internal addresses even without an external IP. The log_config block exists
+# only when flow_logs is true: samples half the flows at five-second aggregation with all
+# metadata, which is enough for Logs Explorer to show the denied connections week 3 looks for.
 resource "google_compute_subnetwork" "lab" {
   name          = "lab"
   network       = google_compute_network.lab.id
@@ -70,6 +84,10 @@ resource "google_compute_subnetwork" "lab" {
 # A custom VPC starts with implied deny-all ingress and allow-all egress.
 # Everything below is an explicit hole in that deny.
 
+# tcp/22 from IAP's TCP-forwarding range only. `gcloud compute ssh --tunnel-through-iap` connects
+# to Google's proxy, which connects to the VM from this range after checking your IAM identity;
+# the internet never sees port 22. target_tags binds the rule to every instance tagged `lab`,
+# which is how the kubeadm nodes get SSH too.
 resource "google_compute_firewall" "iap_ssh" {
   name          = "lab-allow-iap-ssh"
   network       = google_compute_network.lab.id
@@ -83,6 +101,9 @@ resource "google_compute_firewall" "iap_ssh" {
   }
 }
 
+# Zero rules until open_web = true (the count), then 80 and 443 from web_source_ranges. Let's
+# Encrypt needs the world to reach port 80 for its challenge; everything else in week 3 works
+# with your own address alone.
 resource "google_compute_firewall" "web" {
   count = var.open_web ? 1 : 0
 
@@ -113,6 +134,10 @@ resource "google_project_iam_custom_role" "instance_scheduler" {
   permissions = ["compute.instances.start", "compute.instances.stop"]
 }
 
+# The grant itself: the custom role above, bound to the Compute Engine service agent. That agent
+# is a Google-managed account whose address is service-<project number>@compute-system, which
+# is why the google_project data source exists. Without this grant the policy below attaches but
+# every scheduled stop fails with a permission error in the operation log.
 resource "google_project_iam_member" "schedule_agent" {
   count = var.auto_stop_cron == null ? 0 : 1
 
@@ -123,6 +148,9 @@ resource "google_project_iam_member" "schedule_agent" {
   depends_on = [google_project_service.compute]
 }
 
+# The schedule: a regional resource policy with a stop time and no start time, attached to the VM
+# through resource_policies below. The cron and the time zone are variables so the stop lands at
+# midnight where you are, not in UTC.
 resource "google_compute_resource_policy" "auto_stop" {
   count = var.auto_stop_cron == null ? 0 : 1
 
@@ -159,6 +187,8 @@ resource "google_compute_instance" "lab" {
     managed-by = "terraform"
   }
 
+  # pd-balanced: SSD-class latency at well under pd-ssd's price; pd-standard makes package installs
+  # noticeably slow. The size is a variable because week 4's images and the kubeadm nodes want more.
   boot_disk {
     initialize_params {
       # The full family path, not the "project/family" shorthand. The shorthand makes
@@ -211,6 +241,10 @@ resource "google_compute_instance" "lab" {
     }
   }
 
+  # The auto-stop schedule, or an empty list when auto_stop_cron is null (the for over a zero-count
+  # resource yields nothing). allow_stopping_for_update lets Terraform stop and restart the VM for
+  # changes that need it, such as the machine type, instead of refusing the plan. The depends_on
+  # orders the IAM grant before the VM so the first scheduled stop already has permission.
   resource_policies = [for p in google_compute_resource_policy.auto_stop : p.id]
 
   allow_stopping_for_update = true

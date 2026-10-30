@@ -2,7 +2,12 @@
 #
 # The same design as ../gcp-lab: a dedicated network, no SSH port open to the internet,
 # no cloud identity on the VM, and a schedule that stops it every night.
+#
+# In here, in order: the lookups (who am I, which zone, which AMI), the network, the firewall,
+# flow logs, the VM, and the nightly stop. versions.tf pins the provider, variables.tf holds the
+# knobs, outputs.tf prints how to connect, backend.tf says where state lives.
 
+# Values derived from the variables, computed once and referenced below.
 locals {
   # Login user baked into each image by cloud-init.
   ssh_user = { ubuntu = "ubuntu", arch = "arch" }[var.distro]
@@ -11,18 +16,28 @@ locals {
   # Arch: no official AMI exists; you supply a community one (var.arch_ami_id).
   ami_id = var.distro == "ubuntu" ? data.aws_ssm_parameter.ubuntu.insecure_value : var.arch_ami_id
 
+  # One ingress rule per (port, source range) pair, keyed "80-1.2.3.4/32" so for_each has stable
+  # names: removing one range removes only its rules, nothing shifts. An empty map when open_web
+  # is false means the rules do not exist, not that a rule exists and allows nothing.
   web_rules = var.open_web ? {
     for pair in setproduct([80, 443], var.web_source_ranges) : "${pair[0]}-${pair[1]}" => { port = pair[0], cidr = pair[1] }
   } : {}
 }
 
+# The account ID. It pins the two IAM trust policies below to this account (aws:SourceAccount),
+# so the same AWS service acting on behalf of another account cannot assume them.
 data "aws_caller_identity" "this" {}
 
+# The zones this region offers right now; the subnet takes the first. One VM needs one zone, and
+# reading the list keeps the configuration valid in any region var.region names.
 data "aws_availability_zones" "available" {
   # checkov:skip=CKV_AWS_394: One lab VM in the first available zone. Allowlisting zone names would hard-code a region into a configuration that takes var.region.
   state = "available"
 }
 
+# Canonical publishes the current Ubuntu 24.04 AMI ID for every region as a public SSM parameter,
+# so no AMI is hard-coded to go stale. It is read on every plan; the instance ignores changes to
+# it (lifecycle, below), so a newer image is reported by the `image` output, never applied.
 data "aws_ssm_parameter" "ubuntu" {
   name = "/aws/service/canonical/ubuntu/server/24.04/stable/current/amd64/hvm/ebs-gp3/ami-id"
 }
@@ -40,6 +55,10 @@ data "aws_ami" "lab" {
 
 # --- Network -------------------------------------------------------------------
 
+# A dedicated VPC rather than the account's default one: the default VPC hands every instance a
+# public IP and its default security group lets members talk to each other. 10.20.0.0/16 is
+# private space chosen not to overlap the GCP lab (10.10.0.0/24), so the two could be joined
+# later. DNS support and hostnames give the VM a resolver and an internal name.
 resource "aws_vpc" "lab" {
   cidr_block           = "10.20.0.0/16"
   enable_dns_support   = true
@@ -54,12 +73,16 @@ resource "aws_default_security_group" "lab" {
   vpc_id = aws_vpc.lab.id
 }
 
+# The VPC's only path to the internet. Without it the 0.0.0.0/0 route below has nowhere to point,
+# and the symptom is package installs that time out rather than fail.
 resource "aws_internet_gateway" "lab" {
   vpc_id = aws_vpc.lab.id
 
   tags = { Name = "lab" }
 }
 
+# One /24 of the /16, in one zone: a subnet is zonal, a VPC is regional. 251 usable addresses,
+# because AWS reserves five per subnet, which the week-2 subnetting drill asks you to explain.
 resource "aws_subnet" "lab" {
   vpc_id            = aws_vpc.lab.id
   cidr_block        = "10.20.0.0/24"
@@ -71,6 +94,8 @@ resource "aws_subnet" "lab" {
   tags = { Name = "lab" }
 }
 
+# The route table is what makes a subnet "public": a default route pointing at the internet
+# gateway. Traffic inside the VPC is routed implicitly; only 0.0.0.0/0 needs a line.
 resource "aws_route_table" "lab" {
   vpc_id = aws_vpc.lab.id
 
@@ -82,6 +107,9 @@ resource "aws_route_table" "lab" {
   tags = { Name = "lab" }
 }
 
+# Until a subnet is associated with a route table it uses the VPC's main table, which has no
+# internet route. This is the step people forget; the symptom is a VM that boots fine and cannot
+# reach apt.
 resource "aws_route_table_association" "lab" {
   subnet_id      = aws_subnet.lab.id
   route_table_id = aws_route_table.lab.id
@@ -93,6 +121,10 @@ resource "aws_route_table_association" "lab" {
 # explicit hole. SSH reaches the VM only from the EC2 Instance Connect Endpoint --
 # the AWS counterpart of GCP's IAP -- never from the internet.
 
+# Two groups that reference each other by ID rather than by CIDR. The endpoint's group may send
+# SSH only to members of the lab group; the lab group accepts SSH only from members of the
+# endpoint group. A CIDR says where packets come from; a group reference says who, and it keeps
+# working when addresses change.
 resource "aws_security_group" "endpoint" {
   name        = "lab-endpoint"
   description = "EC2 Instance Connect Endpoint for the lab"
@@ -101,6 +133,8 @@ resource "aws_security_group" "endpoint" {
   tags = { Name = "lab-endpoint" }
 }
 
+# The VM's group. Deliberately empty here: every rule is its own aws_vpc_security_group_*_rule
+# resource below, so adding or removing one rule never makes the provider rewrite the whole group.
 resource "aws_security_group" "lab" {
   name        = "lab"
   description = "Lab VM"
@@ -109,6 +143,8 @@ resource "aws_security_group" "lab" {
   tags = { Name = "lab" }
 }
 
+# The endpoint's one permission: open port 22 on members of the lab group. Security groups are
+# stateful, so the replies on that connection need no ingress rule of their own.
 resource "aws_vpc_security_group_egress_rule" "endpoint_to_lab_ssh" {
   security_group_id            = aws_security_group.endpoint.id
   description                  = "The endpoint may open SSH to the lab VM and nothing else"
@@ -118,6 +154,9 @@ resource "aws_vpc_security_group_egress_rule" "endpoint_to_lab_ssh" {
   to_port                      = 22
 }
 
+# The matching half on the VM: SSH in, but only when the source is the endpoint's group. There is
+# no port-22 rule from any CIDR, which is how the VM has a public IP and still no SSH port on the
+# internet.
 resource "aws_vpc_security_group_ingress_rule" "lab_ssh_from_endpoint" {
   # checkov:skip=CKV_AWS_24: False positive. The source is the endpoint's security group, not 0.0.0.0/0.
   security_group_id            = aws_security_group.lab.id
@@ -128,6 +167,9 @@ resource "aws_vpc_security_group_ingress_rule" "lab_ssh_from_endpoint" {
   to_port                      = 22
 }
 
+# Week 3 only. for_each over local.web_rules: no rules until open_web = true, then one per port
+# per source range. The map key becomes the address, lab_web["80-0.0.0.0/0"], so the plan says
+# exactly which hole is being opened.
 resource "aws_vpc_security_group_ingress_rule" "lab_web" {
   for_each = local.web_rules
 
@@ -139,6 +181,8 @@ resource "aws_vpc_security_group_ingress_rule" "lab_web" {
   to_port           = each.value.port
 }
 
+# Outbound: anything, anywhere; ip_protocol -1 is every protocol. This is the rule that lets apt,
+# pip and docker pull work. The trivy note below records why it is not narrowed.
 # trivy: unrestricted egress is the point of this rule. The VM installs packages and pulls
 # images from the internet; there is no NAT or proxy to pin it to, and inbound stays default-deny.
 #trivy:ignore:AVD-AWS-0104
@@ -149,6 +193,11 @@ resource "aws_vpc_security_group_egress_rule" "lab_out" {
   ip_protocol       = "-1"
 }
 
+# The EC2 Instance Connect Endpoint: an AWS-managed network interface in the subnet that ends SSH
+# tunnels opened through the AWS API. You authenticate to AWS with IAM to open the tunnel, then to
+# the VM with your key through it, and port 22 is never on the internet. preserve_client_ip is
+# false because the VM's SSH rule names the endpoint's security group as the source; preserving
+# the client IP would make packets arrive from your laptop's address and the rule would not match.
 resource "aws_ec2_instance_connect_endpoint" "lab" {
   subnet_id          = aws_subnet.lab.id
   security_group_ids = [aws_security_group.endpoint.id]
@@ -159,6 +208,9 @@ resource "aws_ec2_instance_connect_endpoint" "lab" {
 
 # --- Flow logs -----------------------------------------------------------------
 
+# Where flow logs land. One record per accepted or rejected 5-tuple with byte and packet counts:
+# the evidence the week-3 packet-path work reads. 14 days covers a week of labs with room to look
+# back. Every flow-log resource is behind count so flow_logs = false removes all four together.
 resource "aws_cloudwatch_log_group" "flow" {
   # checkov:skip=CKV_AWS_158: Encrypted at rest with the CloudWatch Logs service key. A customer-managed KMS key costs money monthly and protects nothing extra in a lab.
   # checkov:skip=CKV_AWS_338: 14 days is enough to review a week's lab. A year of retention is a compliance requirement, not a lab one.
@@ -168,6 +220,9 @@ resource "aws_cloudwatch_log_group" "flow" {
   retention_in_days = 14
 }
 
+# The identity the VPC Flow Logs service assumes to write into that group. The trust policy names
+# the service principal and pins it to this account, so the same service acting for another
+# account is refused.
 resource "aws_iam_role" "flow" {
   count = var.flow_logs ? 1 : 0
 
@@ -184,6 +239,8 @@ resource "aws_iam_role" "flow" {
   })
 }
 
+# What that identity may do: create streams and put events in this one log group, nothing else.
+# The ":*" suffix covers the streams inside the group; the group's ARN alone would not.
 resource "aws_iam_role_policy" "flow" {
   count = var.flow_logs ? 1 : 0
 
@@ -200,6 +257,9 @@ resource "aws_iam_role_policy" "flow" {
   })
 }
 
+# Turns logging on for the whole VPC, accepted and rejected traffic both ("ALL"). The rejected
+# half is the useful one: a packet a security group dropped appears as REJECT, which is how you
+# tell "never arrived" from "refused" in week 3.
 resource "aws_flow_log" "lab" {
   count = var.flow_logs ? 1 : 0
 
@@ -211,11 +271,16 @@ resource "aws_flow_log" "lab" {
 
 # --- VM ------------------------------------------------------------------------
 
+# Registers the public half of your SSH key with EC2; cloud-init installs it for the login user at
+# first boot. Terraform reads only the .pub file. The private half never leaves your machine.
 resource "aws_key_pair" "lab" {
   key_name   = "lab"
   public_key = file(pathexpand(var.ssh_public_key_path))
 }
 
+# The VM: the image distro chose, in the one subnet, with the lab security group, a public IP for
+# outbound traffic, and no IAM role. Each checkov skip inside is a deliberate decision, explained
+# where it sits.
 resource "aws_instance" "lab" {
   # checkov:skip=CKV_AWS_88: The public IP is deliberate - outbound package installs without paying for a NAT gateway, and Week 3 serves 80/443. Inbound is default-deny; SSH is endpoint-only.
   # checkov:skip=CKV2_AWS_41: No IAM role on purpose. The VM gets no AWS identity, so nothing running on it can call AWS APIs.
@@ -229,6 +294,10 @@ resource "aws_instance" "lab" {
   associate_public_ip_address = true
   ebs_optimized               = true
 
+  # http_tokens = "required": every metadata GET must carry a session token obtained with a PUT,
+  # which closes the classic SSRF path to instance credentials (week 5, Lab 5). hop_limit = 1:
+  # the token reply will not cross a second network hop, so a process inside a Docker container on
+  # this VM, one hop further away on its bridge, cannot reach the metadata service at all.
   # IMDSv2 only, and not reachable from inside a container on the VM (hop limit 1).
   metadata_options {
     http_endpoint               = "enabled"
@@ -236,6 +305,7 @@ resource "aws_instance" "lab" {
     http_put_response_hop_limit = 1
   }
 
+  # gp3: 3,000 IOPS baseline at any size (week 5). Encrypted with the account's default EBS key.
   root_block_device {
     volume_size = var.disk_size_gb
     volume_type = "gp3"
@@ -275,6 +345,8 @@ resource "aws_iam_role" "auto_stop" {
   })
 }
 
+# Exactly one action on exactly one resource. StopInstances on any other instance, or
+# StartInstances on this one, is refused: the schedule can only ever turn this VM off.
 resource "aws_iam_role_policy" "auto_stop" {
   count = var.auto_stop_cron == null ? 0 : 1
 
@@ -291,6 +363,10 @@ resource "aws_iam_role_policy" "auto_stop" {
   })
 }
 
+# The schedule. EventBridge Scheduler is managed cron: an expression in a named time zone, a
+# target that is an AWS API call rather than a function, and the role above to make the call.
+# flexible_time_window OFF means at that minute, not somewhere inside a window. The target ARN is
+# the universal-target form for EC2 StopInstances, and `input` is that API's request body.
 resource "aws_scheduler_schedule" "auto_stop" {
   # checkov:skip=CKV_AWS_297: The schedule holds an instance ID, not a secret. A customer-managed KMS key adds cost and nothing else.
   count = var.auto_stop_cron == null ? 0 : 1
