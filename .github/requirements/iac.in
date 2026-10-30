@@ -1,3 +1,3 @@
 # Scanner installed by the iac-scan job. Edit the pin here, then regenerate the hash lock:
 #   uv pip compile --generate-hashes --python-version 3.12 --universal -o .github/requirements/iac.txt .github/requirements/iac.in
-checkov==3.3.29
+checkov==3.3.30
